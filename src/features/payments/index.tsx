@@ -1,9 +1,8 @@
 
-
-
 import { VerticalPaymentStepper } from './stepper'
 import { NavBar } from 'components/navBar';
 import { useSPaymentsStyles } from './classes'
+
 
 
 

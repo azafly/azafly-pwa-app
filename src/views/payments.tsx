@@ -1,4 +1,3 @@
-import { AnimatePresence } from 'framer-motion'
 import { lazy, Suspense } from 'react'
 
 
@@ -9,9 +8,7 @@ const Payments = () => {
     return (
 
         <Suspense fallback={SuspenseComponent}>
-            <AnimatePresence exitBeforeEnter initial={false}>
-                <LazyPayments />
-            </AnimatePresence>
+            <LazyPayments />
         </Suspense>
     )
 }

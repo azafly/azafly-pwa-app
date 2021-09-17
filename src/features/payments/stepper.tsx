@@ -16,13 +16,9 @@ const containerVariants: Variants = {
     enter: {
         x: 0,
         opacity: 1,
-        decelerate: 20,
-        transition: {
-            when: 'beforeChildren',
-            staggerChildren: 0.4,
-        },
+        decelerate: 5
     },
-    exit: { x: -300, opacity: 0 },
+    exit: { x: -100, opacity: 0 },
 };
 
 

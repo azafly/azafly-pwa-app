@@ -6,6 +6,7 @@ import { Button, Stepper, Step, StepContent, StepLabel, Paper, Typography } from
 import { useStepperStyles } from './classes'
 import { RatesInfo } from './forms/rates-info';
 import { FadeInWhenVisible } from 'components/animate-in-view'
+import { PayerInfo } from './forms/payer-info';
 
 function getSteps() {
     return ['Payment Info', 'Payment method', 'Info for the receiver', 'Review & Confirm', 'Make payment']
@@ -27,7 +28,7 @@ function getStepContent(step: number) {
         case 0:
             return <RatesInfo />
         case 1:
-            return <RatesInfo />
+            return <PayerInfo />
         case 2:
             return <RatesInfo />
         case 3:

@@ -19,7 +19,7 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
         root: {
             width: 'calc(100vw - 5vw)',
             margin: 'auto',
-            marginTop: 100,
+            marginTop: '20vh',
             marginBottom: 100,
             [theme.breakpoints.up('md')]: {
                 width: 'calc(100vw - 20vw)',

@@ -3,6 +3,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core'
 export const useCardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboardCardroot: {
+            cursor: 'pointer',
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             borderRadius: 12,
             zIndex: 99999,
@@ -35,7 +36,7 @@ export const useCardStyles = makeStyles((theme: Theme) =>
         serviceInitiated: {
             backgroundColor: '#C5FAAC',
             borderRadius: 100,
-            width: 120,
+            width: '20ch',
             height: 30,
             color: '#0D324D',
             fontWeight: 450,
@@ -45,7 +46,7 @@ export const useCardStyles = makeStyles((theme: Theme) =>
             alignContent: 'center',
             '& span': {
                 margin: 'auto'
-            }
+            },
         },
         starter: {
             display: 'flex',

@@ -69,7 +69,7 @@ const ForgotPassword = () => {
                     <div>
                         <Button className={classes.submit} onClick={() => sendPasswordResetEmail(email)}>Send Reset Link</Button>
                     </div>
-                    <Link to="signin" className={classes.loginLink}> Login with your new password</Link>
+                    <Link to="reset-password" className={classes.loginLink}> Login with your new password</Link>
                 </div>
             </div>
         </>

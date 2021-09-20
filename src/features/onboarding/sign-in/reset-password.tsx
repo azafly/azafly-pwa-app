@@ -1,7 +1,8 @@
-import { SyntheticEvent, useEffect, useState } from 'react'
+import { SyntheticEvent, useState } from 'react'
 import { Button, Input, Snackbar, SnackbarCloseReason, SnackbarOrigin } from '@material-ui/core'
 import { Alert, AlertTitle } from '@material-ui/lab';
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+
 
 import { useFirebaseAuthContext } from 'providers/auth/firebase'
 import { NavBar } from 'components/navBar';
@@ -18,8 +19,10 @@ interface SnackBarAlertState {
 
 const ResetPassword = () => {
     const classes = useForgotPasswordStyles()
-    const { authError, confirmPasswordReset, verifyPasswordCode } = useFirebaseAuthContext()
+    const { confirmPasswordReset, verifyPasswordCode } = useFirebaseAuthContext()
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+    const history = useHistory();
     const [alertState, setAlertState] = useState<SnackBarAlertState>({
         open: false,
         vertical: 'top',
@@ -36,17 +39,21 @@ const ResetPassword = () => {
         setPassword(value)
     }
 
-    const handlePasswordReset = () => {
-        verifyPasswordCode(verificationCode).then((result: any) => {
-            confirmPasswordReset(verificationCode, password)
-        }).catch((error: any) => console.log(error))
-    }
+    const handlePasswordReset = async () => {
+        try {
+            await verifyPasswordCode(verificationCode)
+            await confirmPasswordReset(verificationCode, password)
+            history.push('/dashboard')
 
+        } catch {
+            setError('Error occurred with the request')
+        }
+    }
     const handleClose = (_: SyntheticEvent<Element, Event>, reason?: SnackbarCloseReason) => {
         if (reason === 'clickaway') {
             return;
         }
-
+        setError('')
         setAlertState({ ...alertState, open: false })
     };
 
@@ -55,18 +62,17 @@ const ResetPassword = () => {
         <>
             < NavBar classNames='reset-navbar' />
             <div className={classes.forgotPasswordRoot}>
-                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
-                    <Alert onClose={handleClose} className={`${classes.alert}`} severity={'success'} >
+                <Snackbar open={!!error} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleClose} className={`${classes.alert}`} severity={'error'} >
                         <AlertTitle> <strong>Error</strong>    </AlertTitle>
-                        {'message'}
+                        {error}
                     </Alert>
                 </Snackbar>
 
                 <div className={classes.form_container}>
-                    {/* <Input classes={{ underline: classes.underline }} type='password' id='reset-email' placeholder='Old Password' name={'oldPassword'} className={classes.input} onChange={(e) => handleFieldUpdate(e)} /> */}
                     <Input classes={{ underline: classes.underline }} type='password' id='reset-email' placeholder='New Password' name={'password'} className={classes.input} onChange={(e) => handleFieldUpdate(e)} />
                     <div >
-                        <Button className={classes.submit} size={'large'} color="inherit" onClick={handlePasswordReset}>Reset Password</Button>
+                        <Button className={classes.submit} disabled={!!error || !password} size={'large'} color="inherit" onClick={handlePasswordReset}>Reset Password</Button>
                     </div>
                     <Link to="/signin" className={classes.loginLink}> Login with your new password</Link>
                 </div>

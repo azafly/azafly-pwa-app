@@ -4,12 +4,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { PrivateRoute } from './private-routes';
 
 
-
-
-
-
 import BookingPage from 'features/booking'
 import ForgotPassword from 'features/onboarding/sign-in/forgot-password'
+import ResetPassword from 'features/onboarding/sign-in/reset-password'
 import Onboarding from 'views/onboarding'
 import Page404 from 'views/404'
 import Profile from 'views/profile'
@@ -38,6 +35,9 @@ export const Routes = () => {
       </Route>
       <Route exact path='/forgot-password' >
         <ForgotPassword />
+      </Route>
+      <Route exact path='/reset-password' >
+        <ResetPassword />
       </Route>
       <PrivateRoute path='/booking' >
         <BookingPage />

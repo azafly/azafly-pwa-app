@@ -165,6 +165,7 @@ export const useForgotPasswordStyles = makeStyles((theme: Theme) =>
         form_container: {
             display: 'flex',
             maxWidth: 600,
+            width: 300,
             margin: 30,
             flexDirection: 'column',
             justifyContent: 'center',
@@ -182,21 +183,20 @@ export const useForgotPasswordStyles = makeStyles((theme: Theme) =>
         submit: {
             background: theme.colors.mainGreen,
             borderRadius: 6,
-            padding: 5,
+            padding: '20px',
             margin: '15px 0px',
             height: 30,
+            width: '100%',
             textAlign: 'center',
+            textTransform: 'none',
+            color: 'white',
             cursor: 'pointer',
+            fontWeight: 500,
             boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)',
             '&:hover': {
                 background: '#4990a4',
                 opacity: 0.9
             },
-            '& button': {
-                color: 'white',
-                fontWeight: 500,
-                textTransform: 'none',
-            }
         },
         underline: {
             '&::before': {

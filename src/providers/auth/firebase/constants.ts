@@ -38,5 +38,6 @@ export const defaultAuhContext = {
     signinWithEmailPassword: () => new Promise(() => { }),
     signupWithEmailPassword: () => new Promise(() => { }),
     authState: defaultAuthState,
-    resetLinkSuccess: false
+    resetLinkSuccess: false,
+    verifyPasswordCode: () => new Promise(() => { }),
 }

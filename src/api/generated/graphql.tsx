@@ -3247,7 +3247,10 @@ export type InsertNewFreeConsulationTransactionMutationResult = Apollo.MutationR
 export type InsertNewFreeConsulationTransactionMutationOptions = Apollo.BaseMutationOptions<InsertNewFreeConsulationTransactionMutation, InsertNewFreeConsulationTransactionMutationVariables>;
 export const GetUserTransactionsDocument = gql`
     query getUserTransactions($id: String!) {
-  transaction(where: {user_id: {_eq: $id}}, order_by: {created_at: desc}) {
+  transaction(
+    where: {user_id: {_eq: $id}}
+    order_by: {is_success_done: asc, updated_at: desc}
+  ) {
     amount
     created_at
     id

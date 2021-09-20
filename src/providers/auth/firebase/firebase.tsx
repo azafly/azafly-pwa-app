@@ -12,8 +12,8 @@ firebaseApp.initializeApp(firebaseConfig)
 
 
 interface AuthContext {
-    signInWithGoogle: () => Promise<unknown>
-    signInWithFacebook: () => Promise<unknown>
+    signInWithGoogle: any
+    signInWithFacebook: any
     confirmPasswordReset: any,
     sendPasswordResetEmail: any,
     signout: any,
@@ -22,6 +22,7 @@ interface AuthContext {
     authState: AuthState,
     authError?: string,
     resetLinkSuccess: boolean
+    verifyPasswordCode: any
 }
 const HASURA_CLAIMS_URL = 'https://hasura.io/jwt/claims'
 
@@ -33,6 +34,8 @@ export function FirebaseAuthProvider({ children }: PropsWithChildren<any>) {
     const auth = useFirebaseProviderAuth();
     return <authContext.Provider value={auth}> {children} </authContext.Provider>;
 }
+
+
 
 export const useFirebaseAuthContext = () => {
     return useContext(authContext);
@@ -72,6 +75,13 @@ function useFirebaseProviderAuth() {
             .sendPasswordResetEmail(email).then(() => setResetLinkSuccess(true)).catch((error) => setAuthError(error.message))
     };
 
+    const verifyPasswordCode = async (code: string) => {
+        return firebaseApp
+            .auth()
+            .verifyPasswordResetCode(code)
+            .then((hey) => console.log(hey, 'done')).catch((error) => console.log(error))
+    };
+
     const confirmPasswordReset = async (code: string, password: string) => {
         return firebaseApp
             .auth()
@@ -102,7 +112,7 @@ function useFirebaseProviderAuth() {
 
     useEffect(() => {
         const unsubscribe = firebaseApp.auth().onAuthStateChanged(async (user) => {
-            const testChange = user ? 'Authed' : 'Neien'
+
             if (user) {
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
@@ -150,6 +160,7 @@ function useFirebaseProviderAuth() {
         signupWithEmailPassword,
         signInWithGoogle,
         signInWithFacebook,
+        verifyPasswordCode,
         authState,
         authError,
         resetLinkSuccess

@@ -6,6 +6,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import { StepIconProps } from '@mui/material/StepIcon';
@@ -64,8 +65,10 @@ function ColorlibStepIcon(props: StepIconProps) {
 
     const icons: { [index: string]: React.ReactElement } = {
         1: <SettingsIcon />,
-        2: <HourglassEmptyIcon />,
-        3: <DoneOutlineIcon />,
+        2: <AccountBalanceWalletIcon />,
+        3: <HourglassEmptyIcon />,
+        4: <DoneOutlineIcon />,
+
 
     };
 
@@ -81,8 +84,14 @@ const steps = [{
     label: 'Started',
     completed: true,
     active: false
-}, {
-    label: 'In progress',
+},
+{
+    label: 'Confirmed',
+    completed: true,
+    active: false
+},
+{
+    label: 'Processing',
     completed: true,
     active: false
 }, {

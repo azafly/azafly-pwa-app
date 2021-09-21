@@ -1,10 +1,11 @@
 import Dashboard from 'features/user-dasboard/dashboard'
 
-
+import { useLocation } from 'react-router-dom';
 
 const UserDashboard = () => {
+    const location = useLocation()
     return <>
-        <Dashboard />
+        <Dashboard key={location.key} />
     </>
 }
 

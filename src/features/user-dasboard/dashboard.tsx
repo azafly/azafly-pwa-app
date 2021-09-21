@@ -2,7 +2,7 @@ import { Typography } from '@material-ui/core';
 
 import UserNavBar from './bottom-navbar'
 import { CardContainer } from './card-container';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 import { useDashboardStyles } from './classes'
@@ -15,6 +15,9 @@ import { useFirebaseAuthContext } from 'providers/auth/firebase';
 
 import DesktopNabBar from './nav';
 import { SpeedDialTooltip } from 'components/speed-dial';
+
+
+
 
 
 export default function Dashboard() {
@@ -42,6 +45,7 @@ export default function Dashboard() {
 
 
     const classes = useDashboardStyles()
+
 
     return (
         <>

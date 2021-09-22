@@ -18,7 +18,7 @@ import { DashboardLoaderSkeleton } from '../user-dasboard/loader-skeleton';
 import DesktopNabBar from '../user-dasboard/nav';
 
 
-const CALENDAR_URL = 'https://us-central1-pick-safe.cloudfunctions.net/consultationCalendar '
+const CALENDAR_URL = process.env.REACT_APP_CALENDAR_URL as string
 
 
 const BookingService = () => {
@@ -55,6 +55,7 @@ const BookingService = () => {
     const onDateSelected = (selectedDate: any) => {
         new Promise((resolve) => {
             setDate(selectedDate)
+            // scroll the available time to review on mobile
             if (isMobileScreen && timesRef && timesRef.current) {
                 timesRef.current.scrollIntoView({ behavior: 'smooth' })
             }
@@ -75,6 +76,7 @@ const BookingService = () => {
         return <DashboardLoaderSkeleton />
     }
 
+    // TODO => UPDATE TO PROPER COMPONENT
     if (userData?.used_free_consultation) {
         return <div> Hey Yo, you sued your free consultation. Go to dashboard</div>
     }
@@ -85,7 +87,7 @@ const BookingService = () => {
             <div className={classes.bookingPage_container}>
                 <Grid container spacing={3} justifyContent={'space-around'} alignItems={'center'}>
                     <BookingInfo />
-                    <BookingCalendar date={date} onDateSelected={onDateSelected} availableDates={availableDates} />
+                    <BookingCalendar date={date} onDateSelected={onDateSelected} availableDates={availableDates} loading={loading} />
                     <AvailableTimes availableTimesArray={availableTimesArray} ref={timesRef} />
                 </Grid>
             </div>

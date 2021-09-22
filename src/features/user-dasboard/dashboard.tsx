@@ -2,7 +2,7 @@ import { Typography } from '@material-ui/core';
 
 import UserNavBar from './bottom-navbar'
 import { CardContainer } from './card-container';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 
 import { useDashboardStyles } from './classes'

@@ -32,7 +32,7 @@ const ResetPassword = () => {
     const verificationCode = useURLParams('oobCode')
 
 
-    const { vertical, horizontal, open } = alertState;
+    const { vertical, horizontal } = alertState;
 
     const handleFieldUpdate = (e: any) => {
         const { value } = e.target;
@@ -40,14 +40,12 @@ const ResetPassword = () => {
     }
 
     const handlePasswordReset = async () => {
-        try {
-            await verifyPasswordCode(verificationCode)
-            await confirmPasswordReset(verificationCode, password)
-            history.push('/dashboard')
+        verifyPasswordCode(verificationCode).then(() => {
+            confirmPasswordReset(verificationCode, password).then(() => {
+                history.push('/dashboard')
+            })
+        }).catch(() => setError('Error occurred with the password reset. Try again'))
 
-        } catch {
-            setError('Error occurred with the request')
-        }
     }
     const handleClose = (_: SyntheticEvent<Element, Event>, reason?: SnackbarCloseReason) => {
         if (reason === 'clickaway') {
@@ -72,7 +70,7 @@ const ResetPassword = () => {
                 <div className={classes.form_container}>
                     <Input classes={{ underline: classes.underline }} type='password' id='reset-email' placeholder='New Password' name={'password'} className={classes.input} onChange={(e) => handleFieldUpdate(e)} />
                     <div >
-                        <Button className={classes.submit} disabled={!!error || !password} size={'large'} color="inherit" onClick={handlePasswordReset}>Reset Password</Button>
+                        <Button className={classes.submit} disabled={!password} size={'large'} color="inherit" onClick={handlePasswordReset}>Reset Password</Button>
                     </div>
                     <Link to="/signin" className={classes.loginLink}> Login with your new password</Link>
                 </div>

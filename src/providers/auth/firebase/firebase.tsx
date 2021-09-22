@@ -72,7 +72,7 @@ function useFirebaseProviderAuth() {
     const sendPasswordResetEmail = async (email: string) => {
         return firebaseApp
             .auth()
-            .sendPasswordResetEmail(email).then(() => setResetLinkSuccess(true)).catch((error) => setAuthError(error.message))
+            .sendPasswordResetEmail(email)
     };
 
     const verifyPasswordCode = async (code: string) => {
@@ -85,7 +85,7 @@ function useFirebaseProviderAuth() {
     const confirmPasswordReset = async (code: string, password: string) => {
         return firebaseApp
             .auth()
-            .confirmPasswordReset(code, password).catch((error) => setAuthError(error.message))
+            .confirmPasswordReset(code, password)
 
     };
 

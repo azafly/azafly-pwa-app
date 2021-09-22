@@ -6,7 +6,7 @@ import { useState, forwardRef } from 'react'
 
 import { DayAvailableTime } from './day-available-time'
 import { useDaysTimeContainerStyles } from './classes'
-import { ConfrimationDialog } from './info/confirm-modal';
+import { ConfrimationDialog } from './confirm-modal';
 
 interface AvailableTimesProps {
     availableTimesArray: any
@@ -64,7 +64,7 @@ export const AvailableTimes = forwardRef((props: AvailableTimesProps, ref: any) 
                     </Typography>
                             </>
                         }
-                        {availableTimesArray?.length &&
+                        {!!availableTimesArray?.length &&
                             <Typography gutterBottom className={classes.available} color="secondary" variant="h6">{format(new Date(availableTimesArray[0]?.start), 'EEEE,  dd MMMM yyyy')}</Typography>}
                         {availableTimesArray?.map((availability: any) => <DayAvailableTime key={`${availability.start}`} availableTimes={availability} onClickOpen={handleClickOpen} />)}
                     </div>

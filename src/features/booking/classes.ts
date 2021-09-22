@@ -15,39 +15,6 @@ export const useMainBookingStyle = makeStyles((theme: Theme) =>
 
 );
 
-export const useCalendarStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        calendarContainer: {
-            minWidth: 350,
-            margin: 'auto',
-            padding: 10,
-            [theme.breakpoints.only('xs')]: {
-                marginTop: 20,
-                borderRadius: 10,
-            },
-        },
-    })
-);
-
-export const useDayAvailableTimeStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        timesContainer: {
-            padding: '10px 30px',
-            minWidth: 70,
-            textAlign: 'center',
-            border: `2px solid ${theme.colors.mainGreen}`,
-            borderRadius: 6,
-            margin: 'auto',
-            cursor: 'pointer',
-            background: 'white',
-            marginBottom: 10,
-            fontWeight: 800,
-            '&:hover': {
-                background: theme.colors.mainGreen,
-            }
-        }
-    })
-);
 
 
 
@@ -87,7 +54,10 @@ export const useBookingInfoStyles = makeStyles((theme: Theme) =>
     createStyles({
         booking_info_container: {
             height: '100%',
-            minWidth: 350
+            minWidth: 350,
+            [theme.breakpoints.up('sm')]: {
+                minWidth: 600
+            }
         },
         title: {
             fontWeight: 900,

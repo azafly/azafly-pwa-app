@@ -1,11 +1,10 @@
 import * as yup from 'yup';
 import { Button, TextField } from '@material-ui/core'
 import { useFormik } from 'formik';
-import { useHistory, useLocation, Link, Redirect } from 'react-router-dom'
+import { useHistory, useLocation, Link } from 'react-router-dom'
 import { FacebookSvgComponent } from 'components/icons'
 import { useFirebaseAuthContext } from 'providers/auth/firebase'
 import { useFormStyles } from './classes'
-import { useCallback, useEffect } from 'react'
 
 
 const validationSchema = yup.object().shape({

@@ -1,10 +1,11 @@
-import { Paper, Grid, Card, Typography, CardContent, CardMedia, Avatar } from '@material-ui/core';
+import { Avatar, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 import { useBookingInfoStyles, StyledBadge } from '../classes'
 
 // methods
 import { useFirebaseAuthContext } from 'providers/auth/firebase'
+import { Confrimation } from '../confirmation';
 
 
 
@@ -31,7 +32,7 @@ export const BookingInfo = () => {
                             variant="dot"
                         >
                             <Avatar className={classes.large} alt="consultant" src="https://images.pexels.com/photos/718978/pexels-photo-718978.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
-                            
+
                         </StyledBadge>
                         <span> <span className={classes.tip}>
                             &nbsp; Your Advisor :
@@ -50,10 +51,10 @@ export const BookingInfo = () => {
                         Hey  {user?.displayName} . Here is your chance to have a free no-string attached consulation with Azafly.
                         Our expereinced counstants will give you the best advices. Select a time on the calendar.
                     </Typography>
-                    <Typography className={classes.tip}>
-                        Tip: available dates are highlighted in green
-                    </Typography>
                 </CardContent>
+                <CardActionArea>
+                    <CardActions>  <Confrimation /> </CardActions>
+                </CardActionArea>
 
             </Card>
         </Grid>

@@ -94,6 +94,7 @@
   "devDependencies": {
     "@types/faker": "^5.5.8",
     "env-cmd": "^10.1.0",
-    "eslint-plugin-prettier": "^3.4.0"
+    "eslint-plugin-prettier": "^3.4.0",
+    "unused-webpack-plugin": "^2.4.0"
   }
 }

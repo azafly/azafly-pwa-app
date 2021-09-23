@@ -1,11 +1,9 @@
 declare module '@material-ui/core/styles/createTheme' {
     interface Theme {
         colors: {
-            yellow: string
-            mainGreen: string
-            pink: string
+            base: string
             white: string
-            black: string
+            textPrimary: string
         }
     }
     // allow configuration using `createMuiTheme`
@@ -14,12 +12,9 @@ declare module '@material-ui/core/styles/createTheme' {
             danger?: string;
         }
         colors: {
-            yellow: string
-            mainGreen: string
-            pink: string
+            base: string
             white: string
-            black: string
-            darkGreen: string
+            textPrimary: string
         }
     }
 }
@@ -34,9 +29,9 @@ export const theme = {
             main: '#0D324D'
         },
         text: {
-            primary: 'rgba(0, 0, 0, 0.5)',
+            primary: '#0d324d',
             secondary: '#333333',
-            hint: '#4990A4'
+            hint: '#4990a4'
 
         },
         background: {
@@ -45,12 +40,9 @@ export const theme = {
 
     },
     colors: {
-        yellow: '#FFDC5F',
-        mainGreen: '#4990a4',
-        pink: '#4990a4',
+        base: '#4990a4',
         white: '#FFFFFF',
-        black: '#0d324d',
-        darkGreen: '#09273d'
+        textPrimary: '#0d324d',
     },
     typography: {
         fontFamily: [

@@ -171,7 +171,7 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
 
         },
         submit: {
-            background: theme.colors.mainGreen,
+            background: theme.colors.base,
             borderRadius: 6,
             textAlign: 'center',
             cursor: 'pointer',

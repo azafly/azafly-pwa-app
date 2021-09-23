@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme: Theme) =>
             '& .payment_button': {
                 fontWeight: 550,
                 background: 'white',
-                color: theme.colors.black,
+                color: theme.colors.textPrimary,
                 textTransform: 'capitalize'
             },
         },
@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         },
         menuItem_text: {
-            color: theme.colors.black,
+            color: theme.colors.textPrimary,
             fontWeight: 450,
         }
 

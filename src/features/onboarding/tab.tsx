@@ -60,10 +60,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
         },
         '& .PrivateTabIndicator-colorSecondary-92': {
-            backgroundColor: theme.colors.mainGreen
+            backgroundColor: theme.colors.base
         },
         '& .PrivateTabIndicator-colorSecondary-24': {
-            backgroundColor: theme.colors.mainGreen
+            backgroundColor: theme.colors.base
         }
     },
 }));

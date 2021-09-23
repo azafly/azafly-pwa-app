@@ -70,11 +70,11 @@ export const useBookingInfoStyles = makeStyles((theme: Theme) =>
         },
         infoText: {
             fontSize: '0.85rem',
-            color: theme.colors.black
+            color: theme.colors.textPrimary
         },
         tip: {
             fontSize: '0.85rem',
-            color: theme.colors.mainGreen,
+            color: theme.colors.base,
             marginTop: 30
         },
         large: {
@@ -83,7 +83,7 @@ export const useBookingInfoStyles = makeStyles((theme: Theme) =>
         },
         advisor: {
             fontWeight: 700,
-            color: theme.colors.black
+            color: theme.colors.textPrimary
         }
     })
 );
@@ -104,7 +104,7 @@ export const useDaysTimeContainerStyles = makeStyles((theme: Theme) =>
         },
         tip: {
             fontSize: '0.8rem',
-            color: theme.colors.mainGreen,
+            color: theme.colors.base,
             marginTop: 30
         },
 
@@ -123,11 +123,11 @@ export const useModalStyles = makeStyles((theme: Theme) =>
         },
         text: {
             fontSize: '1rem',
-            color: theme.colors.black
+            color: theme.colors.textPrimary
         },
         actions: {
             '& .yes': {
-                color: theme.colors.mainGreen,
+                color: theme.colors.base,
                 fontSize: '1rem',
                 textTransform: 'capitalize',
                 fontWeight: 900

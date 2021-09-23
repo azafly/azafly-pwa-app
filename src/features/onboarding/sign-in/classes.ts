@@ -93,7 +93,7 @@ export const useFormStyles = makeStyles((theme: Theme) =>
             }
         },
         submit: {
-            background: theme.colors.mainGreen,
+            background: theme.colors.base,
             borderRadius: 6,
             padding: 5,
             margin: '15px 0px',
@@ -112,7 +112,7 @@ export const useFormStyles = makeStyles((theme: Theme) =>
             }
         },
         forgotPassword: {
-            color: theme.colors.mainGreen,
+            color: theme.colors.base,
             fontSize: '0.8rem',
             float: 'right',
             margin: '10px 0px',
@@ -181,7 +181,7 @@ export const useForgotPasswordStyles = makeStyles((theme: Theme) =>
             height: 40,
         },
         submit: {
-            background: theme.colors.mainGreen,
+            background: theme.colors.base,
             borderRadius: 6,
             padding: '20px',
             margin: '15px 0px',
@@ -204,7 +204,7 @@ export const useForgotPasswordStyles = makeStyles((theme: Theme) =>
             }
         },
         loginLink: {
-            color: theme.colors.mainGreen
+            color: theme.colors.base
         }
     })
 );

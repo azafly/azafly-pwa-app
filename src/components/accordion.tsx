@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
         },
         typography: {
-            color: theme.colors.black,
+            color: theme.colors.textPrimary,
             paddingTop: 5,
             fontWeight: 600,
             margin: 'auto',

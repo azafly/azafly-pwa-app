@@ -12,17 +12,17 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         speedDial: {
             position: 'fixed',
-            bottom: 170,
-            right: -30,
+            bottom: 120,
+            right: -15,
             '& .MuiSpeedDialAction-tooltipPlacementLeft .MuiSpeedDialAction-staticTooltipLabel': {
-                minWidth: 220,
+                width: 250,
                 paddingLeft: 20,
                 paddingRight: 20,
                 fontWeight: 600,
                 color: 'white',
                 marginBottom: 10,
                 borderRadius: 80,
-                background: theme.colors.mainGreen
+                background: theme.colors.base
             }
         },
 

@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         },
         '& .name': {
             marginRight: 5,
-            color: theme.colors.black,
+            color: theme.colors.textPrimary,
             fontWeight: 550,
 
         },

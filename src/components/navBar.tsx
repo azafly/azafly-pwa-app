@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 duration: theme.transitions.duration.leavingScreen,
             }),
             background: 'inherit',
-            color: theme.colors.black,
+            color: theme.colors.textPrimary,
             boxShadow: '0 2px 16px 0 rgb(0 0 0 / 8%)'
         },
         appBarShift: {
@@ -70,20 +70,20 @@ const useStyles = makeStyles((theme: Theme) =>
         active: {
             display: 'inline-block',
             borderBottom: '2px solid #4990A4',
-            color: theme.colors.mainGreen,
+            color: theme.colors.base,
             paddingRight: 0,
         },
         title: {
             flexGrow: 1,
             fontWeight: 900,
             opacity: 0.7,
-            color: theme.colors.black
+            color: theme.colors.textPrimary
         },
         hide: {
             display: 'none',
         },
         menuIcon: {
-            color: theme.colors.pink,
+            color: theme.colors.textPrimary,
             position: 'absolute',
             right: 0,
             justifySelf: 'flex-end'

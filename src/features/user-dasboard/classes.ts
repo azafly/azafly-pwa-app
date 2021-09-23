@@ -58,7 +58,7 @@ export const useCardStyles = makeStyles((theme: Theme) =>
             },
             '& .date': {
                 fontSize: '0.9rem',
-                color: theme.colors.mainGreen
+                color: theme.colors.base
             }
         }
     })
@@ -99,7 +99,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             fontSize: '2rem',
             fontFamily: 'Nunito',
             fontWeight: 900,
-            color: theme.colors.black,
+            color: theme.colors.textPrimary,
             [theme.breakpoints.up('md')]: {
                 marginLeft: '13vw',
             },

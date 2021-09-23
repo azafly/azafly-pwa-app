@@ -136,7 +136,7 @@ export const useTabStyles = makeStyles((theme: Theme) => ({
         display: 'flex',
         '& .MuiTab-wrapper': {
             textTransform: 'capitalize',
-            color: theme.colors.black,
+            color: theme.colors.textPrimary,
             fontWeight: 550
 
         },

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         done: {
             textDecoration: 'line-through',
-            color: theme.colors.mainGreen
+            color: theme.colors.base
         },
         listItem: {
             transition: theme.transitions.create(['margin', 'width'], {

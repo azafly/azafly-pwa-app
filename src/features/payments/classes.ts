@@ -32,7 +32,7 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
             '& .MuiStepLabel-label': {
                 cursor: 'pointer',
                 fontWeight: 650,
-                color: theme.colors.black
+                color: theme.colors.textPrimary
             }
         },
         stepperLabel: {

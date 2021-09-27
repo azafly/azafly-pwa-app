@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: 350,
-            marginLeft: 20,
             display: 'flex',
             height: '5rem',
             alignItems: 'center',
@@ -61,7 +60,7 @@ export function CurrencyAmount({ country, handleCountryChange }: CurrencyAmountP
 
     const handleShow = (e: any) => {
         e.preventDefault()
-        setShowCountryList(true)
+        setShowCountryList(!showCountryList)
     }
 
     return (
@@ -74,7 +73,7 @@ export function CurrencyAmount({ country, handleCountryChange }: CurrencyAmountP
                 onChange={handleChange}
             />
             <CountrySelectToggle handleShowToggle={handleChange} selectedCountry={country} />
-            {showCountryList && < CountryList countries={[country]} />}
+            {showCountryList && <CountryList countries={[country]} />}
         </div>
     );
 }

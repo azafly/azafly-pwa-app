@@ -1,21 +1,30 @@
-import { AppBar, Toolbar, Button, IconButton, useMediaQuery, MenuItem } from '@material-ui/core';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import {
+    AppBar,
+    Toolbar,
+    Button,
+    IconButton,
+    useMediaQuery,
+    MenuItem
+} from '@material-ui/core';
+import {
+    makeStyles,
+    createStyles,
+    Theme
+} from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { Logo1SvgComponent } from 'components/icons'
+import { Logo1SvgComponent } from 'components/icons';
 import MenuIcon from '@material-ui/icons/Menu';
-
 
 import { Link } from 'react-router-dom';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
-import { MobileBackButton } from 'components'
-
+import { MobileBackButton } from 'components';
 
 import { ThreeDots } from './css-loaders/three-dots/three-dots';
 
 interface NavbarProps {
-    handleDrawerOpen?: () => void
-    classNames?: any,
-    open?: boolean,
+    handleDrawerOpen?: () => void;
+    classNames?: any;
+    open?: boolean;
 }
 
 const drawerWidth = 180;
@@ -27,21 +36,28 @@ const useStyles = makeStyles((theme: Theme) =>
             overflowX: 'hidden'
         },
         appBar: {
-            transition: theme.transitions.create(['margin', 'width'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
+            transition: theme.transitions.create(
+                ['margin', 'width'],
+                {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.leavingScreen
+                }
+            ),
             background: 'inherit',
             color: theme.colors.textPrimary,
             boxShadow: '0 2px 16px 0 rgb(0 0 0 / 8%)'
         },
         appBarShift: {
             width: `calc(100% - ${drawerWidth}px)`,
-            transition: theme.transitions.create(['margin', 'width'], {
-                easing: theme.transitions.easing.easeOut,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-            marginRight: drawerWidth,
+            transition: theme.transitions.create(
+                ['margin', 'width'],
+                {
+                    easing: theme.transitions.easing.easeOut,
+                    duration:
+                        theme.transitions.duration.enteringScreen
+                }
+            ),
+            marginRight: drawerWidth
         },
         toolBar: {
             display: 'flex',
@@ -49,14 +65,13 @@ const useStyles = makeStyles((theme: Theme) =>
             alignContent: 'center',
             width: '80vw',
             margin: 'auto',
-            height: 70,
+            height: 70
         },
         logo: {
             flexGrow: 1,
             textDecoration: 'none',
             display: 'flex',
             width: 100
-
         },
         links: {
             color: theme.palette.secondary.main,
@@ -64,13 +79,13 @@ const useStyles = makeStyles((theme: Theme) =>
             fontWeight: 400,
             fontSize: '0.85rem',
             marginRight: 15,
-            justifyContent: 'space-around',
+            justifyContent: 'space-around'
         },
         active: {
             display: 'inline-block',
             borderBottom: '2px solid #4990A4',
             color: theme.colors.base,
-            paddingRight: 0,
+            paddingRight: 0
         },
         title: {
             flexGrow: 1,
@@ -79,7 +94,7 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.colors.textPrimary
         },
         hide: {
-            display: 'none',
+            display: 'none'
         },
         menuIcon: {
             color: theme.colors.textPrimary,
@@ -101,14 +116,14 @@ const useStyles = makeStyles((theme: Theme) =>
             fontWeight: 500,
             paddingRight: 25,
             paddingLeft: 25,
-            transition: 'background .25s ease-in -out, transform .15s ease,- webkit - transform .15s ease',
+            transition:
+                'background .25s ease-in -out, transform .15s ease,- webkit - transform .15s ease',
             '&:hover': {
                 opacity: 0.9,
                 background: theme.palette.primary.main,
                 transform: 'scale(1.01)',
                 borderRadius: 6
-            },
-
+            }
         },
         signin: {
             textTransform: 'capitalize',
@@ -119,69 +134,89 @@ const useStyles = makeStyles((theme: Theme) =>
         underline: {
             border: '3px solid #4990A4'
         }
-    }),
+    })
 );
 
 export const NavBar = ({ handleDrawerOpen, open }: NavbarProps) => {
-    const classes = useStyles()
-    const { authState } = useFirebaseAuthContext()
+    const classes = useStyles();
+    const { authState } = useFirebaseAuthContext();
 
     const isSmallScreen = useMediaQuery('(max-width:950px)');
 
-
-
     return (
         <div className={`${classes.navbarContainer} classNames`}>
-            { isSmallScreen ?
+            {isSmallScreen ? (
                 <AppBar
                     elevation={0}
-                    position="fixed"
+                    position='fixed'
                     className={clsx(classes.appBar, {
-                        [classes.appBarShift]: open,
+                        [classes.appBarShift]: open
                     })}
                 >
                     <Toolbar>
-                        <MobileBackButton stroke={'#4990a4'} fill={'#4990a4'} />
-                        <Link to="/" className={`${classes.logo}`}><Logo1SvgComponent /> </Link>
+                        <MobileBackButton
+                            stroke={'#4990a4'}
+                            fill={'#4990a4'}
+                        />
+                        <Link to='/' className={`${classes.logo}`}>
+                            <Logo1SvgComponent />{' '}
+                        </Link>
                         <IconButton
-                            color="secondary"
-                            aria-label="open drawer"
-                            edge="end"
+                            color='secondary'
+                            aria-label='open drawer'
+                            edge='end'
                             onClick={handleDrawerOpen}
                             className={clsx(open && classes.hide)}
                         >
                             <MenuIcon className={classes.menuIcon} />
                         </IconButton>
                     </Toolbar>
-                </AppBar> :
-                <AppBar
-                    className={classes.appBar}
-                    elevation={0}
-                >
+                </AppBar>
+            ) : (
+                <AppBar className={classes.appBar} elevation={0}>
                     <Toolbar className={classes.toolBar}>
-                        <Link to="/" className={`${classes.logo}`}><Logo1SvgComponent /> </Link>
-                        <section className={classes.links}>
-
-                        </section>
-                        {authState.isLoading ? <ThreeDots /> :
+                        <Link to='/' className={`${classes.logo}`}>
+                            <Logo1SvgComponent />{' '}
+                        </Link>
+                        <section className={classes.links}></section>
+                        {authState.isLoading ? (
+                            <ThreeDots />
+                        ) : (
                             <section className={classes.downloadLink}>
-
-                                {!authState.isLoading && authState.isAuth ?
-                                    <Button className={classes.register}
+                                {!authState.isLoading &&
+                                authState.isAuth ? (
+                                    <Button
+                                        className={classes.register}
                                         component={Link}
                                         to='/dashboard'
-                                    >Go to Dashboard </Button>
-                                    :
+                                    >
+                                        Go to Dashboard{' '}
+                                    </Button>
+                                ) : (
                                     <>
-                                        <Button component={Link} to="/signin" className={classes.signin} >Sign in</Button>
-                                        <Button component={Link} to="/signup" className={classes.register} >Register</Button>
+                                        <Button
+                                            component={Link}
+                                            to='/signin'
+                                            className={classes.signin}
+                                        >
+                                            Sign in
+                                        </Button>
+                                        <Button
+                                            component={Link}
+                                            to='/signup'
+                                            className={
+                                                classes.register
+                                            }
+                                        >
+                                            Register
+                                        </Button>
                                     </>
-                                }
+                                )}
                             </section>
-                        }
+                        )}
                     </Toolbar>
-                </AppBar>}
-        </div >
-
+                </AppBar>
+            )}
+        </div>
     );
-}
+};

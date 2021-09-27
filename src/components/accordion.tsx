@@ -1,19 +1,25 @@
-import { PropsWithChildren, ReactElement } from 'react'
-import { motion, AnimatePresence } from "framer-motion";
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { useMediaQuery } from '@material-ui/core'
+import { PropsWithChildren, ReactElement } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    makeStyles,
+    createStyles,
+    Theme
+} from '@material-ui/core/styles';
+import { useMediaQuery } from '@material-ui/core';
 
-import { ArrowDownSvgComponent, ArrowUpSvgComponent } from 'components/icons'
-
+import {
+    ArrowDownSvgComponent,
+    ArrowUpSvgComponent
+} from 'components/icons';
 
 interface AccordionProps {
-    index: any
-    expanded: any
-    setExpanded: (arg: any) => void
-    openedColor?: string
-    closedColor?: string,
-    headerIcon?: ReactElement,
-    title: string
+    index: any;
+    expanded: any;
+    setExpanded: (arg: any) => void;
+    openedColor?: string;
+    closedColor?: string;
+    headerIcon?: ReactElement;
+    title: string;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,9 +47,8 @@ const useStyles = makeStyles((theme: Theme) =>
             '& svg': {
                 padding: 5,
                 height: 40,
-                width: 40,
-            },
-
+                width: 40
+            }
         },
         typography: {
             color: theme.colors.textPrimary,
@@ -56,35 +61,39 @@ const useStyles = makeStyles((theme: Theme) =>
             paddingLeft: 50,
             fontSize: '0.95em',
             [theme.breakpoints.only('xs')]: {
-                paddingLeft: 30,
+                paddingLeft: 30
             }
         },
         arrow: {
             opacity: 0.4,
-            paddingTop: 5,
+            paddingTop: 5
         },
         section: {
             display: 'flex',
             justifyContent: 'center',
             alignContent: 'center'
-        },
-
+        }
     })
 );
 
-
 const computeAnimations = ({ isOpen, isMobileScreen }: any) => ({
     margin: isOpen ? '10px auto' : '20px auto',
-    padding: isOpen ? 10 : 5,
+    padding: isOpen ? 10 : 5
+});
 
-})
-
-export const Accordion = ({ index, expanded, setExpanded, headerIcon, title, children }: PropsWithChildren<AccordionProps>) => {
+export const Accordion = ({
+    index,
+    expanded,
+    setExpanded,
+    headerIcon,
+    title,
+    children
+}: PropsWithChildren<AccordionProps>) => {
     const isOpen = index === expanded;
-    const classes = useStyles()
+    const classes = useStyles();
 
     const isMobileScreen = useMediaQuery('(max-width:500px)');
-    const animations = computeAnimations({ isOpen, isMobileScreen })
+    const animations = computeAnimations({ isOpen, isMobileScreen });
 
     return (
         <>
@@ -94,20 +103,33 @@ export const Accordion = ({ index, expanded, setExpanded, headerIcon, title, chi
                 onClick={() => setExpanded(isOpen ? false : index)}
                 className={classes.header}
             >
-                <div className={classes.icon}>{headerIcon} </div> <span className={classes.typography} color='primary'>{title}</span> {isOpen ? <ArrowUpSvgComponent className={classes.arrow} /> : <ArrowDownSvgComponent className={classes.arrow} />}
+                <div className={classes.icon}>{headerIcon} </div>{' '}
+                <span className={classes.typography} color='primary'>
+                    {title}
+                </span>{' '}
+                {isOpen ? (
+                    <ArrowUpSvgComponent className={classes.arrow} />
+                ) : (
+                    <ArrowDownSvgComponent
+                        className={classes.arrow}
+                    />
+                )}
             </motion.header>
             <AnimatePresence initial={false}>
                 {isOpen && (
                     <motion.section
-                        key="content"
-                        initial="collapsed"
-                        animate="open"
-                        exit="collapsed"
+                        key='content'
+                        initial='collapsed'
+                        animate='open'
+                        exit='collapsed'
                         variants={{
-                            open: { opacity: 1, height: "auto" },
+                            open: { opacity: 1, height: 'auto' },
                             collapsed: { opacity: 0, height: 0 }
                         }}
-                        transition={{ duration: 0.4, ease: [0.04, 0.12, 0.23, 0.18] }}
+                        transition={{
+                            duration: 0.4,
+                            ease: [0.04, 0.12, 0.23, 0.18]
+                        }}
                         className={classes.section}
                     >
                         {children}
@@ -115,7 +137,5 @@ export const Accordion = ({ index, expanded, setExpanded, headerIcon, title, chi
                 )}
             </AnimatePresence>
         </>
-    )
-}
-
-
+    );
+};

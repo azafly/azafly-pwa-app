@@ -67,10 +67,10 @@ export function RatesInfo() {
         <form className={classes.root} noValidate autoComplete="off">
             <div>
                 <Grid container >
-                    <Grid xs={12} md={6}>
+                    <Grid xs={12}>
                         <CountrySelect handleCountryChange={handleCountryChange} classKeys={{ option: classes.option }} />
                     </Grid>
-                    <Grid xs={12} md={6}>
+                    <Grid xs={12}>
                         <CurrencyAmount country={country} handleCountryChange={handleCountryChange} />
                     </Grid>
                 </Grid>

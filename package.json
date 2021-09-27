@@ -68,13 +68,14 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "PORT=3006 react-app-rewired start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "generate": "graphql-codegen --config codegen.js",
     "prettier": "prettier src/**/*.{ts,tsx,js,json,d.ts}",
     "build:staging": "env-cmd -f .env.staging react-app-rewired build && firebase deploy -P staging",
-    "build:prod": "env-cmd -f .env.production react-app-rewired build && firebase deploy -P prod"
+    "build:prod": "env-cmd -f .env.production react-app-rewired build && firebase deploy -P prod",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -91,10 +92,26 @@
       "last 1 safari version"
     ]
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint -c .eslintrc-next.js --fix --quiet",
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,scss,md,json,yml}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "@types/faker": "^5.5.8",
     "env-cmd": "^10.1.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

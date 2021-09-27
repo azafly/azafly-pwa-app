@@ -12,7 +12,7 @@ import reportWebVitals from './reportWebVitals';
 
 // stylings
 import './index.css';
-import 'react-nice-dates/build/style.css'
+
 
 
 ReactDOM.render(

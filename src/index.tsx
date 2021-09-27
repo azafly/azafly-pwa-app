@@ -11,19 +11,20 @@ import reportWebVitals from './reportWebVitals';
 
 // stylings
 import './index.css';
-// import 'react-nice-dates/build/style.css'
+
+
 
 ReactDOM.render(
-    <React.StrictMode>
-        <ErrorBoundary>
-            <FirebaseAuthProvider>
-                <ApolloProvider client={client}>
-                    <App />
-                </ApolloProvider>
-            </FirebaseAuthProvider>
-        </ErrorBoundary>
-    </React.StrictMode>,
-    document.getElementById('root')
+  <React.StrictMode>
+    <ErrorBoundary>
+      <FirebaseAuthProvider>
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
+      </FirebaseAuthProvider>
+    </ErrorBoundary>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

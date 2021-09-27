@@ -18,17 +18,3 @@ section {
   overflow: hidden;
 }
 
-
-.nice-dates-day.disabled {
-   pointer-events: none;
-    color: #DCDCDC;
-    text-decoration: line-through;
-  }
-
-  
-
-  .nice-dates-day.available {
-    border-bottom: 2px solid #4990a4;
-    font-weight: 900;
-   
-  }

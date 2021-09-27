@@ -4,15 +4,16 @@ import Badge from '@material-ui/core/Badge';
 export const useMainBookingStyle = makeStyles((theme: Theme) =>
     createStyles({
         bookingPage_container: {
-            marginTop: '150px',
-            margin: '150px 10vw',
+            backgroundColor: 'rgb(239, 242, 246)',
+            height: '100vh',
+            paddingTop: 10,
             zIndex: 999,
             [theme.breakpoints.only('xs')]: {
-                margin: '90px 5vw',
+                margin: '0px 5vw',
+                paddingTop: 30
             }
         },
     }),
-
 );
 
 
@@ -53,11 +54,20 @@ export const StyledBadge = withStyles((theme: Theme) =>
 export const useBookingInfoStyles = makeStyles((theme: Theme) =>
     createStyles({
         booking_info_container: {
-            height: '100%',
             minWidth: 350,
+            maxWidth: '100vw',
+            overflowX: 'hidden',
             [theme.breakpoints.up('sm')]: {
-                minWidth: 600
+                minWidth: 600,
+                maxWidth: 800,
+                margin: 20
             }
+        },
+        card: {
+            transition: 'all 0.28s cubic-bezier(0.15, 0, 0.15, 1) 0s',
+            boxShadow: 'rgba(0, 27, 71, 0.16) 0px 29px 32px -25px',
+            borderRadius: 8,
+
         },
         title: {
             fontWeight: 900,
@@ -89,27 +99,6 @@ export const useBookingInfoStyles = makeStyles((theme: Theme) =>
 );
 
 
-export const useDaysTimeContainerStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        days_time_container: {
-            margin: 'auto',
-        },
-        notavailable: {
-            fontWeight: 900,
-            fontSize: '1rem'
-        },
-        available: {
-            fontWeight: 900,
-            fontSize: '1rem'
-        },
-        tip: {
-            fontSize: '0.8rem',
-            color: theme.colors.base,
-            marginTop: 30
-        },
-
-    })
-);
 
 
 export const useModalStyles = makeStyles((theme: Theme) =>

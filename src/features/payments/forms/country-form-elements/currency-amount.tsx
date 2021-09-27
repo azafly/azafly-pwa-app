@@ -1,19 +1,25 @@
 import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import { Country, useCountryList } from './use-country-list';
-import { Input } from '@material-ui/core'
+import { TextField } from '@material-ui/core';
 
+
+import { Country } from './use-country-list';
+import { CountryList } from '../country-list';
+import { CountrySelectToggle } from '../country-select-toggle'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: 350,
-            marginRight: 20,
-            marginBottom: 30,
+            marginLeft: 20,
+            display: 'flex',
+            height: '5rem',
+            alignItems: 'center',
+            padding: '15px 20px',
+            justifyContent: 'space-between',
+            borderRadius: 8,
+            boxShadow: '0 0 7px 0 #bac4cf',
+            position: 'relative',
             [theme.breakpoints.only('xs')]: {
                 width: 270
             }
@@ -24,48 +30,51 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         input: {
-            borderRadius: 4,
-            WebkitAppearance: 'none',
-            boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)',
-            background: '#fff !important',
+            webkitAppearance: 'none',
             border: 'none',
-            padding: 20,
-            margin: '10px 0px',
-            height: 40,
+            height: '100%',
+        },
+        listbox: {
+            width: 500,
+        },
+        automCompleteRoot: {
+            width: 500,
         },
     }),
 );
 
 interface CurrencyAmountProps {
     country: Country
+    handleCountryChange: any
 }
 
-export function CurrencyAmount({ country }: CurrencyAmountProps) {
+export function CurrencyAmount({ country, handleCountryChange }: CurrencyAmountProps) {
     const classes = useStyles();
     const [amount, setAmount] = React.useState(0);
-
-    const { currency } = useCountryList()
+    const [showCountryList, setShowCountryList] = React.useState(false)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAmount(event.target.valueAsNumber);
+        setAmount(parseInt(event.target.value));
     };
 
+
+
+    const handleShow = (e: any) => {
+        e.preventDefault()
+        setShowCountryList(true)
+    }
+
     return (
+
         <div className={classes.root}>
-            <div>
-                <FormControl fullWidth variant="outlined">
-                    {/* <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
-                    <OutlinedInput
-                        id="outlined-adornment-amount"
-                        value={amount}
-                        type='number'
-                        onChange={handleChange}
-                        startAdornment={<InputAdornment position="start">{currency}</InputAdornment>}
-                        labelWidth={60}
-                    /> */}
-                    <Input classes={{ underline: classes.underline }} type='password' id='reset-email' placeholder='New Password' name={'password'} className={classes.input} />
-                </FormControl>
-            </div>
+            <TextField
+                id="outlined-adornment-amount"
+                value={amount}
+                type='text'
+                onChange={handleChange}
+            />
+            <CountrySelectToggle handleShowToggle={handleChange} selectedCountry={country} />
+            {showCountryList && < CountryList countries={[country]} />}
         </div>
     );
 }

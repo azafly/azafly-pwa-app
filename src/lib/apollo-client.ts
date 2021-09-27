@@ -2,7 +2,7 @@
 import { ApolloClient, InMemoryCache, ApolloLink, HttpLink, from } from '@apollo/client';
 
 import { onError } from "@apollo/client/link/error";
-
+import { IS_LOGGED_IN } from 'api/grapqhl/queries/users'
 
 const HTTPS_URL = process.env.REACT_APP_HASURA_GRAPHQL_HTTPS_URL as string
 
@@ -35,6 +35,13 @@ const authMiddleware = new ApolloLink((operation: any, forward: any) => {
     return forward(operation)
 })
 
+
+cache.writeQuery({
+    query: IS_LOGGED_IN,
+    data: {
+        isLoggedIn: !!localStorage.getItem("token"),
+    },
+});
 
 
 // Set up http link

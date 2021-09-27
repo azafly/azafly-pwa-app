@@ -24,8 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         navbarContainer: {
             width: '100vw',
-            overflowX: 'hidden',
-            background: theme.colors.white,
+            overflowX: 'hidden'
         },
         appBar: {
             transition: theme.transitions.create(['margin', 'width'], {

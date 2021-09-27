@@ -68,11 +68,11 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "start": "PORT=3006 react-app-rewired start",
+    "start": "react-app-rewired start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "generate": "graphql-codegen --config codegen.js",
-    "prettier": "prettier src/**/*.{ts,tsx,js,css,scss,md,json,yml,d.ts}",
+    "prettier": "prettier src/**/*.{ts,tsx,js,json,d.ts}",
     "build:staging": "env-cmd -f .env.staging react-app-rewired build && firebase deploy -P staging",
     "build:prod": "env-cmd -f .env.production react-app-rewired build && firebase deploy -P prod"
   },
@@ -94,7 +94,7 @@
   "devDependencies": {
     "@types/faker": "^5.5.8",
     "env-cmd": "^10.1.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "unused-webpack-plugin": "^2.4.0"
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0"
   }
 }

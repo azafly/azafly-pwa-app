@@ -1,2 +1,2 @@
-export { CountrySelect } from './source-country-select';
+export { CountrySelect } from './country-select';
 export { CurrencyAmount } from './currency-amount';

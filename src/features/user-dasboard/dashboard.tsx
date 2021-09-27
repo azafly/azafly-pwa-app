@@ -1,8 +1,8 @@
 import { Typography } from '@material-ui/core';
+import { useState } from 'react';
 
 import UserNavBar from './bottom-navbar'
 import { CardContainer } from './card-container';
-import { useState } from 'react';
 
 
 import { useDashboardStyles } from './classes'
@@ -20,9 +20,11 @@ import { SpeedDialTooltip } from 'components/speed-dial';
 
 
 
+
 export default function Dashboard() {
     const { authState: { user } } = useFirebaseAuthContext()
-    const id = user!.uid ?? ''
+
+    const id = user?.uid ?? ''
 
     const { data: transactionData, error, loading } = useGetUserTransactionsQuery({ variables: { id } })
     const transactions = transactionData?.transaction

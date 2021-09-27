@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import useCountries from "use-countries";
-
+import { currencies } from './currency-symbols-encoded'
 
 export interface Country {
     name: string
@@ -10,6 +10,7 @@ export interface Country {
     isComingSoon: boolean
     isNotSupported: boolean
     isPopular: boolean
+    symbol?: string
 }
 
 const COMING_SOON_CURRENCIES = {
@@ -32,10 +33,10 @@ const POPULAR_CURRENCIES = {
     AUD: true
 }
 
+const getCurrencySymbol = (countryCode?: string) => `&#66;&#90;&#36;`
 
 export const useCountryList = () => {
     const { countries } = useCountries();
-
 
     const formattedCountries: Country[] = countries.map(({ name, currency, emoji, code }) => ({
         name,
@@ -61,6 +62,7 @@ export const useCountryList = () => {
         popularCurrencies,
         topSources,
         NIGERIA,
-        currency
+        currency,
+        formattedCountries
     }
 }

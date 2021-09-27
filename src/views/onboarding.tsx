@@ -9,7 +9,8 @@ import { OnboardingIllustration } from 'features/onboarding/illustration';
 
 import { useOnboardingMainStyles } from 'features/onboarding/sign-up/classes'
 import { OnboardingTab } from 'features/onboarding/tab'
-
+// import { useQuery } from '@apollo/client';
+// import { IS_LOGGED_IN } from 'api/grapqhl/queries/users';
 
 
 interface SnackBarAlertState {
@@ -29,6 +30,7 @@ const Onboarding = () => {
     })
 
     const { vertical, horizontal, open } = alertState;
+    // const { data: userAuth } = useQuery<{ isLoggedIn: boolean }>(IS_LOGGED_IN);
 
     const { authError, resetLinkSuccess, authState: { isAuth } } = useFirebaseAuthContext()
     const handleClose = (_: SyntheticEvent<Element, Event>, reason?: SnackbarCloseReason) => {
@@ -42,7 +44,8 @@ const Onboarding = () => {
 
     const { from } = location.state || { from: { pathname: "/dashboard" } };
 
-    if (isAuth) history.replace(from)
+    // console.log(userAuth)
+    // if (userAuth?.isLoggedIn) history.replace(from)
 
 
     const message = resetLinkSuccess ? 'Link was sent Successfully' : authError

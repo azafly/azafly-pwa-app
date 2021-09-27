@@ -8,6 +8,8 @@ import "firebase/database";
 
 
 
+
+
 firebaseApp.initializeApp(firebaseConfig)
 
 
@@ -50,22 +52,20 @@ function useFirebaseProviderAuth() {
         return firebaseApp
             .auth()
             .signInWithEmailAndPassword(email, password)
-            .catch((error) => setAuthError(error.message))
-
-
     };
 
     const signupWithEmailPassword = async (email: string, password: string) => {
         return firebaseApp
             .auth()
-            .createUserWithEmailAndPassword(email, password).catch((error) => setAuthError(error.message))
+            .createUserWithEmailAndPassword(email, password)
 
     };
 
     const signout = async () => {
         return firebaseApp
             .auth()
-            .signOut().catch((error) => setAuthError(error.message))
+            .signOut().then(() => localStorage.removeItem('token')).catch(error => console.log(error))
+
 
     };
 
@@ -79,7 +79,6 @@ function useFirebaseProviderAuth() {
         return firebaseApp
             .auth()
             .verifyPasswordResetCode(code)
-            .then((hey) => console.log(hey, 'done')).catch((error) => console.log(error))
     };
 
     const confirmPasswordReset = async (code: string, password: string) => {
@@ -91,22 +90,15 @@ function useFirebaseProviderAuth() {
 
     const signInWithGoogle = async () => {
         const googleProvider = new firebaseApp.auth.GoogleAuthProvider()
-        try {
-            return firebaseApp.auth().signInWithPopup(googleProvider)
-        } catch (error) {
-            console.warn(error)
-            setAuthError(error.message)
-        }
+        return firebaseApp
+            .auth()
+            .signInWithPopup(googleProvider)
+
     }
 
     const signInWithFacebook = async () => {
         const FacebookAuthProvider = new firebaseApp.auth.FacebookAuthProvider()
-        try {
-            return firebaseApp.auth().signInWithPopup(FacebookAuthProvider)
-        } catch (error) {
-            setAuthError(error.message)
-            console.warn(error)
-        }
+        return firebaseApp.auth().signInWithPopup(FacebookAuthProvider)
     }
 
 
@@ -118,11 +110,7 @@ function useFirebaseProviderAuth() {
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
                 if (hasuraClaim) {
-                    new Promise((resolve) => {
-                        resolve(token)
-                        setAuthState({ isLoading: false, isError: false, isAuth: true, user, token })
-                    }).then(() => localStorage.setItem('token', token))
-
+                    localStorage.setItem('token', token)
                 } else {
                     // Check if refresh is required.
                     const metadataRef = firebaseApp
@@ -133,20 +121,11 @@ function useFirebaseProviderAuth() {
                         if (!data.exists) return
                         // Force refresh to pick up the latest custom claims changes.
                         const token = await user.getIdToken(true);
-                        new Promise(() => {
-                            localStorage.setItem('token', token)
-                            setAuthState({ isLoading: false, isError: false, isAuth: true, user, token })
-                        }).then(() => localStorage.setItem('token', token))
-
+                        localStorage.setItem('token', token)
                     });
                 }
             } else {
-                new Promise(() => {
-                    setAuthState({ isLoading: false, isError: false, isAuth: false, user: null })
-                }).then(() => localStorage.removeItem('token'))
-
-
-
+                localStorage.removeItem('token')
             }
         });
         return () => unsubscribe();

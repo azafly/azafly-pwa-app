@@ -54,3 +54,8 @@ mutation insertNeUser($email: String! $email_verified: Boolean $image_url: Strin
 }
 `
 
+export const IS_LOGGED_IN = gql`
+  query IsUserLoggedIn {
+    isLoggedIn @client
+  }
+`;

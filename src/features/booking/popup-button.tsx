@@ -29,12 +29,12 @@ const BokkingButton = ({ url, prefill, pageSettings }: BookinButtonProps) => {
 
     const onClick = () => openPopupWidget({ url, prefill, pageSettings });
 
-    return <Button variant={'contained'} size={"large"} color={"primary"} onClick={onClick} endIcon={<CalendarSvgComponent />}> Book a Date</Button>;
+    return <Button variant={'contained'} size={"large"} color={"primary"} onClick={onClick} endIcon={<CalendarSvgComponent />} style={{ textTransform: 'none' }}> Book free consultation</Button>;
 
 };
 
 interface PopUpButtonProps {
-    onDateSelected: (date: Date | null) => void
+    onDateSelected: () => void
 }
 export function PopUpButton({ onDateSelected }: PopUpButtonProps) {
     const { authState: { user } } = useFirebaseAuthContext()
@@ -61,7 +61,7 @@ export function PopUpButton({ onDateSelected }: PopUpButtonProps) {
                 url={CALENDAR_URL}
             />
             <CalendlyEventListener
-                onDateAndTimeSelected={(e) => onDateSelected}
+                onDateAndTimeSelected={(e) => onDateSelected()}
                 onEventScheduled={(e) => console.log(e)}
                 onEventTypeViewed={function noRefCheck() { }}
                 onProfilePageViewed={function noRefCheck() { }}

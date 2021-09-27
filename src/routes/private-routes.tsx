@@ -4,6 +4,7 @@ import {
     Redirect,
 } from "react-router-dom";
 
+
 import { useFirebaseAuthContext } from "providers/auth/firebase";
 
 export function PrivateRoute({ children, ...rest }: PropsWithChildren<any>) {

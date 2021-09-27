@@ -5,22 +5,36 @@ import { useBookingInfoStyles, StyledBadge } from '../classes'
 
 // methods
 import { useFirebaseAuthContext } from 'providers/auth/firebase'
-import { Confrimation } from '../confirmation';
+import { Confirmation, BookingConfirmationProps } from '../confirmation';
+
+//api 
+import { useGetCurrentUserQuery } from 'api/generated/graphql'
+
+
+
+interface BookingInfoProps {
+    confirmationProps: BookingConfirmationProps
+}
 
 
 
 
-
-
-export const BookingInfo = () => {
+export const BookingInfo = ({ confirmationProps }: BookingInfoProps) => {
     const { authState: { user } } = useFirebaseAuthContext()
+
+    const { data } = useGetCurrentUserQuery({
+        variables: {
+            email: user!.email ?? '',
+            id: user?.uid ?? ''
+        }
+    })
 
 
 
     const classes = useBookingInfoStyles()
     return (
         <Grid item xs={12} lg={4} className={classes.booking_info_container}>
-            <Card variant="outlined">
+            <Card className={classes.card}>
                 <CardContent>
                     <CardMedia>
                         <StyledBadge
@@ -53,7 +67,7 @@ export const BookingInfo = () => {
                     </Typography>
                 </CardContent>
                 <CardActionArea>
-                    <CardActions>  <Confrimation /> </CardActions>
+                    <CardActions>  <Confirmation {...confirmationProps} /> </CardActions>
                 </CardActionArea>
 
             </Card>

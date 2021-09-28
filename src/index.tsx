@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { FirebaseAuthProvider } from 'providers/auth/firebase'
+import { FirebaseAuthProvider } from 'providers/auth/firebase';
 import { ErrorBoundary } from 'components/error-boundary';
 import { ApolloProvider } from '@apollo/client';
 
@@ -8,7 +8,6 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import client from 'lib/apollo-client';
 import reportWebVitals from './reportWebVitals';
-
 
 // stylings
 import './index.css';
@@ -24,7 +23,7 @@ ReactDOM.render(
         </ApolloProvider>
       </FirebaseAuthProvider>
     </ErrorBoundary>
-  </React.StrictMode >,
+  </React.StrictMode>,
   document.getElementById('root')
 );
 

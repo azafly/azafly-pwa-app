@@ -1,6 +1,6 @@
 import React from 'react'
 import { useCardStyles } from './classes';
-import { Card, CardContent, Collapse, Typography } from '@material-ui/core'
+import { Card, CardContent, Chip, Collapse, Typography } from '@material-ui/core'
 import { format } from 'date-fns';
 
 import { dashboard as data } from 'mocks/dashboard';
@@ -36,7 +36,7 @@ export const CardContainer = ({ transactionData }: CardProps) => {
                         <h1 className='name'>{name} </h1>
                         <Typography className='date' paragraph color="secondary">Started on {date}</Typography>
                     </div>
-                    <div className={classes.serviceInitiated}><span>{is_success_done ? 'Completed' : 'In Progress'}</span> </div>
+                    <Chip className={classes.serviceInitiated} label={is_success_done ? 'Completed' : 'In Progress'} />
                 </div>
                 <InfoText text={data.infoText} />
                 <div className={classes.divider} />

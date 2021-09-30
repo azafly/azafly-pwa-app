@@ -1,7 +1,7 @@
-import { Box } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-import { Country } from './country-form-elements/use-country-list';
+import { Country } from '../hooks';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -10,20 +10,25 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             alignContent: 'center',
+            cursor: 'pointer',
             '& .emoji': {
                 fontSize: 24,
+                margin: 'auto',
+                marginRight: 5,
+                marginLeft: 5,
             },
             '& .currency': {
-                margin: "0px 5px",
+                marginRight: 5,
+                marginLeft: 5,
                 color: theme.colors.textPrimary,
-                fontWeight: 650,
-                fontSize: '1rem',
-
+                fontWeight: 750,
+                fontSize: '1.3rem',
+                margin: 'auto',
             },
             "& .toggle": {
                 marginLeft: 20,
                 color: theme.colors.base,
-                fontWeight: 700
+                margin: 'auto',
             },
         },
 
@@ -34,20 +39,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface ICountrySelectToggle {
     selectedCountry: Country
-    handleShowToggle: (e: any) => void
-
 }
 
-export const CountrySelectToggle = ({ selectedCountry, handleShowToggle }: ICountrySelectToggle) => {
+export const CountrySelectToggle = ({ selectedCountry }: ICountrySelectToggle) => {
 
     const classes = useStyles();
     return (
         <div
-            className={classes.root}
-            onClick={handleShowToggle}>
-            <span className={'emoji'}> {selectedCountry.emoji}</span>
-            <span className={'currency'}> {selectedCountry.currency}</span>
-            <span className={'toggle'}> {'v'}</span>
+            className={classes.root}>
+            <span className={'emoji'}> {selectedCountry?.flag}</span>
+            <span className={'currency'}> {selectedCountry?.currency.code}</span>
+            <ArrowDropDownIcon  fontSize={'medium'}/>
         </div>
     )
 }

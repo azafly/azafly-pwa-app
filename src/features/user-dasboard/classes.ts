@@ -6,7 +6,6 @@ export const useCardStyles = makeStyles((theme: Theme) =>
             cursor: 'pointer',
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             borderRadius: 12,
-            zIndex: 99999,
             margin: 'auto',
             marginBottom: 20,
             [theme.breakpoints.up('md')]: {
@@ -81,7 +80,6 @@ export const useInfoTextStyles = makeStyles((theme: Theme) =>
             color: theme.palette.text.hint
         }
     }),
-
 );
 
 export const useDashboardStyles = makeStyles((theme: Theme) =>
@@ -112,7 +110,6 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
         },
         name: {
             marginTop: 100,
-
         }
     }),
 

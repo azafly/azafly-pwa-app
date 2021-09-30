@@ -5,7 +5,7 @@ import { FormControl, Grid, InputLabel, OutlinedInput, InputAdornment } from '@m
 
 
 
-import { Country, useCountryList } from './country-form-elements/use-country-list';
+import { Country, useCountryList } from './../hooks';
 
 
 import { PAYER_INFO } from './form-fields';
@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function PayerInfo() {
     const classes = useStyles();
-    const { NIGERIA } = useCountryList()
-    const [country, setCountry] = React.useState<Country>(NIGERIA);
+    const { NIGERIA } = useCountryList() || {}
+    const [country, setCountry] = React.useState<Country>(NIGERIA!);
 
 
     const handleCountryChange = (_: any, value: Country) => {
@@ -47,7 +47,7 @@ export function PayerInfo() {
             <div>
                 <Grid container >
                     {PAYER_INFO.map(({ label }) => {
-                        return <Grid xs={12} md={6} spacing={3} className={classes.formControl}>
+                        return <Grid xs={12} md={6} spacing={3} className={classes.formControl} key={label}>
                             <FormControl fullWidth variant="outlined" className={classes.formField}>
                                 <InputLabel htmlFor="outlined-adornment-amount">{label}</InputLabel>
                                 <OutlinedInput

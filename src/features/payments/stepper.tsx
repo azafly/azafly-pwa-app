@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion, Variants } from 'framer-motion'
 import { Button, Stepper, Step, StepContent, StepLabel, Paper, Typography } from '@material-ui/core';
 
 
@@ -12,15 +11,6 @@ function getSteps() {
     return ['Payment Info', 'Payment method', 'Info for the receiver', 'Review & Confirm', 'Make payment']
 }
 
-
-const containerVariants: Variants = {
-    enter: {
-        x: 0,
-        opacity: 1,
-        decelerate: 5
-    },
-    exit: { x: -100, opacity: 0 },
-};
 
 
 function getStepContent(step: number) {
@@ -60,18 +50,16 @@ export function VerticalPaymentStepper() {
         setActiveStep(0);
     };
 
+    const isCurrentStateDone = true
+
     return (
         <FadeInWhenVisible>
-            <motion.div
-                variants={containerVariants}
-                initial="exit"
-                animate="enter"
-                exit="exit"
+            <div
                 className={classes.root}>
                 <Stepper activeStep={activeStep} orientation="vertical">
                     {steps.map((label, index) => (
                         <Step key={label} >
-                            <StepLabel className={classes.stepperLabel} onClick={() => setActiveStep(index)}>{label}</StepLabel>
+                            <StepLabel className={classes.stepperLabel} onClick={() => isCurrentStateDone && setActiveStep(index)}>{label}</StepLabel>
                             <StepContent>
                                 {getStepContent(index)}
                                 <div className={classes.actionsContainer}>
@@ -105,7 +93,7 @@ export function VerticalPaymentStepper() {
           </Button>
                     </Paper>
                 )}
-            </motion.div>
+            </div>
         </FadeInWhenVisible>
     );
 }

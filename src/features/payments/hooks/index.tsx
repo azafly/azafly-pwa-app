@@ -19,7 +19,7 @@ export interface Country {
     symbol?: string;
 }
 
-interface CountriesByRegion {
+export interface CountriesByRegion {
     Africa: Country[];
     North_America: Country[];
     Oceania: Country[];

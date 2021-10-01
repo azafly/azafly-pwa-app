@@ -10,14 +10,18 @@ import { Country } from '../../hooks';
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         minWidth: 350,
-        marginRight: 20,
+        maxWidth: 500,
         marginBottom: 30,
+        marginRight: 20,
         padding: '15px 20px',
         borderRadius: 8,
         backgroundColor: theme.palette.background.paper,
         boxShadow: '0 0 7px 0 #bac4cf',
         [theme.breakpoints.only('xs')]: {
             width: 270
+        },
+        '& .MuiInput-underline::before': {
+            borderBottom: 'none'
         }
     },
     option: {
@@ -39,7 +43,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     input: {
         color: theme.colors.textPrimary,
         fontWeight: 850,
-        fontSize: '18px'
+        fontSize: '18px',
+        borderBottom: 'none'
     }
 }));
 
@@ -55,13 +60,23 @@ export type CountrySelectProps = {
     renderOption?: (option: Country) => ReactElement;
 };
 
-export const CountrySelect = ({ handleCountryChange, classKeys, options, defaultOption, getOptionLabel, getOptionDisabled }: CountrySelectProps) => {
+export const CountrySelect = ({
+    handleCountryChange,
+    classKeys,
+    options,
+    defaultOption,
+    getOptionLabel,
+    getOptionDisabled,
+    renderOption
+}: CountrySelectProps) => {
     const classes = useStyles();
     const classOverrides = {
         option: classes.option,
         root: classes.root,
         ...classKeys
     };
+
+    const optionRenderer = (optionData: Country) => (renderOption ? renderOption : <RenderOptions option={optionData} />);
 
     return (
         <Autocomplete
@@ -75,7 +90,7 @@ export const CountrySelect = ({ handleCountryChange, classKeys, options, default
             autoComplete
             getOptionDisabled={option => getOptionDisabled(option)}
             getOptionLabel={option => getOptionLabel(option)}
-            renderOption={optionData => <RenderOptions option={optionData} />}
+            renderOption={optionData => optionRenderer(optionData)}
             renderInput={params => {
                 return (
                     <TextField

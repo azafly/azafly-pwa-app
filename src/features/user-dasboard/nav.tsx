@@ -12,20 +12,21 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Avatar, Box, Button } from '@material-ui/core';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { Link } from 'react-router-dom';
-import { SignOutSvgComponent, ProfileSvgComponent, SettingsSvgComponent, HelpSvgComponent, } from 'components/icons';
+import { SignOutSvgComponent, ProfileSvgComponent, SettingsSvgComponent, HelpSvgComponent } from 'components/icons';
 
 import { Logo2SvgComponent } from 'components/icons/logo-style-2';
-import { MobileBackButton } from '../../components'
+import { MobileBackButton } from '../../components';
 import { DashboardSvgComponent } from '../../components/icons/dashboard';
-
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         grow: {
             flexGrow: 1,
+            marginBottom: 100,
+            zIndex: 99999
         },
         menuButton: {
-            marginRight: theme.spacing(2),
+            marginRight: theme.spacing(2)
         },
         title: {
             display: 'flex',
@@ -34,41 +35,43 @@ const useStyles = makeStyles((theme: Theme) =>
         sectionDesktop: {
             display: 'none',
             [theme.breakpoints.up('md')]: {
-                display: 'flex',
+                display: 'flex'
             },
             '& .name': {
                 textTransform: 'capitalize'
             },
             '& .link': {
                 textDecoration: 'none',
-                fontWeight: 700,
+                fontWeight: 700
             },
             '& .payment_button': {
                 fontWeight: 550,
                 background: 'white',
                 color: theme.colors.textPrimary,
                 textTransform: 'capitalize'
-            },
+            }
         },
         sectionMobile: {
             display: 'flex',
             [theme.breakpoints.up('md')]: {
-                display: 'none',
-            },
+                display: 'none'
+            }
         },
         menuItem_text: {
             color: theme.colors.textPrimary,
-            fontWeight: 450,
+            fontWeight: 450
         }
-
-    }),
+    })
 );
 
 export default function DesktopNabBar() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
-    const { authState: { user }, signout } = useFirebaseAuthContext()
+    const {
+        authState: { user },
+        signout
+    } = useFirebaseAuthContext();
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -90,7 +93,7 @@ export default function DesktopNabBar() {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
-    const profileSrc = user?.photoURL ?? undefined
+    const profileSrc = user?.photoURL ?? undefined;
     const menuId = 'primary-account-menu';
     const renderMenu = (
         <Menu
@@ -103,36 +106,20 @@ export default function DesktopNabBar() {
             onClose={handleMenuClose}
         >
             <MenuItem>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
+                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <ProfileSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Profile</Typography>
             </MenuItem>
             <MenuItem style={{ margin: 2 }}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
+                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <SettingsSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Settings</Typography>
             </MenuItem>
             <MenuItem>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
+                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <HelpSvgComponent />
-
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Help</Typography>
             </MenuItem>
@@ -140,12 +127,7 @@ export default function DesktopNabBar() {
             <MenuItem /> <MenuItem /> <MenuItem /> <MenuItem />
             <MenuItem />
             <MenuItem onClick={() => signout()}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
+                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <SignOutSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Signout</Typography>
@@ -165,45 +147,25 @@ export default function DesktopNabBar() {
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
+                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <ProfileSvgComponent />
                 </IconButton>
                 <Typography>Profile</Typography>
             </MenuItem>
             <MenuItem style={{ margin: 2 }}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
+                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <SettingsSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Settings</Typography>
             </MenuItem>
             <MenuItem>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
+                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <HelpSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Help</Typography>
             </MenuItem>
             <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="dashboard"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
+                <IconButton aria-label='account of current user' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
                     <DashboardSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Dashboard</Typography>
@@ -212,12 +174,7 @@ export default function DesktopNabBar() {
             <MenuItem /> <MenuItem />
             <MenuItem />
             <MenuItem onClick={() => signout()}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
+                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <SignOutSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Signout</Typography>
@@ -226,59 +183,66 @@ export default function DesktopNabBar() {
     );
 
     return (
-        <div className={classes.grow} style={{ marginBottom: 100 }} >
-            <AppBar position="fixed" >
+        <div className={classes.grow}>
+            <AppBar position='fixed'>
                 <Toolbar>
                     <MobileBackButton />
-                    <Link to="/" className={classes.title}> <Logo2SvgComponent /> </Link>
+                    <Link to='/' className={classes.title}>
+                        {' '}
+                        <Logo2SvgComponent />{' '}
+                    </Link>
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         <IconButton
-                            edge="end"
-                            aria-label="account of current user"
+                            edge='end'
+                            aria-label='account of current user'
                             aria-controls={menuId}
-                            aria-haspopup="true"
+                            aria-haspopup='true'
                             onClick={handleProfileMenuOpen}
-                            color="inherit"
+                            color='inherit'
                         >
                             <Avatar src={profileSrc} />
                         </IconButton>
                         <IconButton
-                            edge="end"
-                            aria-label="account of current user"
+                            edge='end'
+                            aria-label='account of current user'
                             aria-controls={menuId}
-                            aria-haspopup="true"
+                            aria-haspopup='true'
                             onClick={handleProfileMenuOpen}
-                            color="inherit"
+                            color='inherit'
                         >
                             <Box className={'name'}>
-                                <Typography >{user?.displayName}</Typography>
+                                <Typography>{user?.displayName}</Typography>
                             </Box>
-
                         </IconButton>
-                        <IconButton aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={17} color="secondary">
+                        <IconButton aria-label='show 17 new notifications' color='inherit'>
+                            <Badge badgeContent={17} color='secondary'>
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
                         <IconButton
-                            edge="end"
-                            aria-label="account of current user"
+                            edge='end'
+                            aria-label='account of current user'
                             aria-controls={menuId}
-                            aria-haspopup="true"
+                            aria-haspopup='true'
                             onClick={handleProfileMenuOpen}
-                            color="inherit"
+                            color='inherit'
                         >
-                            <Link to="/payment" className="link">  <Button variant="contained" className='payment_button' >New Payment</Button></Link>
+                            <Link to='/payment' className='link'>
+                                {' '}
+                                <Button variant='contained' className='payment_button'>
+                                    New Payment
+                                </Button>
+                            </Link>
                         </IconButton>
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton
-                            aria-label="show more"
+                            aria-label='show more'
                             aria-controls={mobileMenuId}
-                            aria-haspopup="true"
+                            aria-haspopup='true'
                             onClick={handleMobileMenuOpen}
-                            color="inherit"
+                            color='inherit'
                         >
                             <MenuIcon />
                         </IconButton>

@@ -3,13 +3,15 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 
 import { Country, useCountryList } from '../../hooks';
-import { CountryList } from '../country-list';
-import { CountrySelectToggle } from '../country-select-toggle';
+import { CountryList } from './country-list';
+import { CountrySelectToggle } from './country-select-toggle';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            width: 350,
+            minWidth: 350,
+            maxWidth: 500,
+            marginBottom: 30,
             display: 'flex',
             height: '5rem',
             alignItems: 'center',
@@ -38,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
         listbox: {
             width: 500
         },
-        automCompleteRoot: {
+        autoCompleteRoot: {
             width: 500
         }
     })
@@ -51,9 +53,11 @@ interface CurrencyAmountProps {
 
 export function CurrencyAmount({ country, handleCountryChange }: CurrencyAmountProps) {
     const classes = useStyles();
-    const [amount, setAmount] = React.useState(0);
+    const [amount, setAmount] = React.useState(100);
     const [showCountryList, setShowCountryList] = React.useState(false);
-    const { popularTargetCountries } = useCountryList() || {};
+
+    const { popularTargetCountries } = useCountryList();
+    const defaultTargetCountry = popularTargetCountries.filter(({ name }) => name === 'United Kingdom of Great Britain and Northern Ireland')[0];
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAmount(parseInt(event.target.value));
@@ -67,19 +71,23 @@ export function CurrencyAmount({ country, handleCountryChange }: CurrencyAmountP
     return (
         <div className={classes.root} onClick={handleShow}>
             <TextField
-                id='outlined-adornment-amount'
+                id='amount'
                 value={amount}
                 type='number'
-                defaultValue={100}
+                label={'Amount'}
                 className={classes.input}
                 onChange={handleChange}
                 InputProps={{
                     className: classes.input
                 }}
             />
-            <CountrySelectToggle selectedCountry={country} />
-            {showCountryList && !!popularTargetCountries && (
-                <CountryList show={showCountryList && !!popularTargetCountries} countryList={popularTargetCountries} />
+            <CountrySelectToggle selectedCountry={country ?? defaultTargetCountry} />
+            {showCountryList && (
+                <CountryList
+                    show={showCountryList && !!popularTargetCountries}
+                    countryList={popularTargetCountries}
+                    handleCountryChange={handleCountryChange}
+                />
             )}
         </div>
     );

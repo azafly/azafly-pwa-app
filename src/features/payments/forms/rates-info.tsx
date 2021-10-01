@@ -41,11 +41,18 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function RatesInfo() {
     const classes = useStyles();
-    const [country, setCountry] = React.useState<Country>(NIGERIA);
-    const { popularSourceCountries } = useCountryList();
+    const [sourceCountry, setSourceCountry] = React.useState<Country>(NIGERIA);
 
-    const handleCountryChange = (_: React.ChangeEvent<unknown>, value: Country) => {
-        setCountry(value);
+    const { popularSourceCountries, popularTargetCountries } = useCountryList();
+    const defaultTargetCountry = popularTargetCountries.filter(country => country.name === 'United Kingdom of Great Britain and Northern Ireland')[0];
+    const [targetCountry, setTargetCountry] = React.useState<Country>(defaultTargetCountry);
+
+    const handleSourceCountryChange = (_: React.ChangeEvent<unknown>, value: Country) => {
+        setSourceCountry(value);
+    };
+
+    const handleTargetCountryChange = (value: Country) => {
+        setTargetCountry(value);
     };
 
     const getOptionLabel = (option: Country) => `${option.currency.symbol} ${option.name}(${option.currency.code})`;
@@ -57,16 +64,16 @@ export function RatesInfo() {
                 <Grid container>
                     <Grid xs={12} md={6}>
                         <CountrySelect
-                            handleCountryChange={handleCountryChange}
+                            handleCountryChange={handleSourceCountryChange}
                             classKeys={{ option: classes.option }}
                             options={[NIGERIA, ...popularSourceCountries]}
-                            defaultOption={NIGERIA}
+                            defaultOption={sourceCountry}
                             getOptionLabel={getOptionLabel}
                             getOptionDisabled={getOptionDisabled}
                         />
                     </Grid>
                     <Grid xs={12} md={6}>
-                        <CurrencyAmount country={country} handleCountryChange={handleCountryChange} />
+                        <CurrencyAmount country={targetCountry} handleCountryChange={handleTargetCountryChange} />
                     </Grid>
                 </Grid>
             </div>

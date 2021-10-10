@@ -1,4 +1,4 @@
-import Dashboard from 'features/user-dasboard/dashboard';
+import Dashboard from 'features/user-dashboard/dashboard';
 
 import { useLocation } from 'react-router-dom';
 

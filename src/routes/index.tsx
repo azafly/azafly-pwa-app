@@ -1,14 +1,9 @@
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { PrivateRoute } from './private-routes';
 
-import BookingPage from 'features/booking';
 import ForgotPassword from 'features/onboarding/sign-in/forgot-password';
-import ResetPassword from 'features/onboarding/sign-in/reset-password';
+import VerifyUser from 'features/onboarding/sign-in/auth-verify';
 import Onboarding from 'views/onboarding';
 import Page404 from 'views/404';
 import Profile from 'views/profile';
@@ -37,12 +32,9 @@ export const Routes = () => {
                 <Route exact path='/forgot-password'>
                     <ForgotPassword />
                 </Route>
-                <Route exact path='/reset-password'>
-                    <ResetPassword />
+                <Route exact path='/auth-verify'>
+                    <VerifyUser />
                 </Route>
-                <PrivateRoute path='/booking'>
-                    <BookingPage />
-                </PrivateRoute>
                 <PrivateRoute path='/dashboard'>
                     <UserDashboard />
                 </PrivateRoute>

@@ -1,11 +1,6 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import {
-    Grid,
-    Snackbar,
-    SnackbarCloseReason,
-    SnackbarOrigin
-} from '@material-ui/core';
+import { Grid, Snackbar, SnackbarCloseReason, SnackbarOrigin } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
@@ -13,8 +8,6 @@ import { OnboardingIllustration } from 'features/onboarding/illustration';
 
 import { useOnboardingMainStyles } from 'features/onboarding/sign-up/classes';
 import { OnboardingTab } from 'features/onboarding/tab';
-// import { useQuery } from '@apollo/client';
-// import { IS_LOGGED_IN } from 'api/grapqhl/queries/users';
 
 interface SnackBarAlertState {
     open: boolean;
@@ -36,14 +29,9 @@ const Onboarding = () => {
     // const { data: userAuth } = useQuery<{ isLoggedIn: boolean }>(IS_LOGGED_IN);
 
     const {
-        authError,
-        resetLinkSuccess,
         authState: { isAuth }
     } = useFirebaseAuthContext();
-    const handleClose = (
-        _: SyntheticEvent<Element, Event>,
-        reason?: SnackbarCloseReason
-    ) => {
+    const handleClose = (_: SyntheticEvent<Element, Event>, reason?: SnackbarCloseReason) => {
         if (reason === 'clickaway') {
             return;
         }
@@ -55,19 +43,18 @@ const Onboarding = () => {
         from: { pathname: '/dashboard' }
     };
 
-    // console.log(userAuth)
-    // if (userAuth?.isLoggedIn) history.replace(from)
+    const token = localStorage.getItem('token');
 
-    const message = resetLinkSuccess
-        ? 'Link was sent Successfully'
-        : authError;
+    if (token) history.replace(from);
 
-    useEffect(() => {
-        setAlertState({
-            ...alertState,
-            open: resetLinkSuccess || Boolean(authError)
-        });
-    }, [authError, resetLinkSuccess]);
+    // const message = resetLinkSuccess ? 'Link was sent Successfully' : authError;
+
+    // useEffect(() => {
+    //     setAlertState({
+    //         ...alertState,
+    //         open: resetLinkSuccess || Boolean(authError)
+    //     });
+    // }, [authError, resetLinkSuccess]);
 
     return (
         <div className={classes.onboarding}>
@@ -79,18 +66,12 @@ const Onboarding = () => {
                     anchorOrigin={{ vertical, horizontal }}
                     key={vertical + horizontal}
                 >
-                    <Alert
-                        onClose={handleClose}
-                        className={`${classes.alert}`}
-                        severity={
-                            resetLinkSuccess ? 'success' : 'error'
-                        }
-                    >
+                    <Alert onClose={handleClose} className={`${classes.alert}`} severity={'success'}>
                         <AlertTitle>
                             {' '}
                             <strong>Error</strong>{' '}
                         </AlertTitle>
-                        {message}
+                        {'message'}
                     </Alert>
                 </Snackbar>
                 <Grid container>

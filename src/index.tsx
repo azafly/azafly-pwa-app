@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { FirebaseAuthProvider } from 'providers/auth/firebase'
+import { FirebaseAuthProvider } from 'providers/auth/firebase';
 import { ErrorBoundary } from 'components/error-boundary';
 import { ApolloProvider } from '@apollo/client';
 
@@ -9,22 +9,20 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import client from 'lib/apollo-client';
 import reportWebVitals from './reportWebVitals';
 
-
 // stylings
 import './index.css';
 
-
 ReactDOM.render(
-  <React.StrictMode>
-    <ErrorBoundary>
-      <FirebaseAuthProvider>
-        <ApolloProvider client={client}>
-          <App />
-        </ApolloProvider>
-      </FirebaseAuthProvider>
-    </ErrorBoundary>
-  </React.StrictMode >,
-  document.getElementById('root')
+    <React.StrictMode>
+        <ErrorBoundary>
+            <FirebaseAuthProvider>
+                <ApolloProvider client={client}>
+                    <App />
+                </ApolloProvider>
+            </FirebaseAuthProvider>
+        </ErrorBoundary>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

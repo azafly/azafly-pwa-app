@@ -1,24 +1,15 @@
-import {
-    ApolloClient,
-    InMemoryCache,
-    ApolloLink,
-    HttpLink,
-    from
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloLink, HttpLink, from, NormalizedCacheObject, gql } from '@apollo/client';
 
 import { onError } from '@apollo/client/link/error';
-import { IS_LOGGED_IN } from 'api/grapqhl/queries/users';
+import { typeDefs, CAN_MOVE_TO_NEXT_STEP } from 'api/grapqhl/queries/client';
 
-const HTTPS_URL = process.env
-    .REACT_APP_HASURA_GRAPHQL_HTTPS_URL as string;
+const HTTPS_URL = process.env.REACT_APP_HASURA_GRAPHQL_HTTPS_URL as string;
 
 //log errors to the console
 const logErrors = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
         graphQLErrors.map(({ message, locations, path }) =>
-            console.log(
-                `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-            )
+            console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
         );
     if (networkError) console.log(`[Network error]: ${networkError}`);
 });
@@ -27,26 +18,15 @@ const logErrors = onError(({ graphQLErrors, networkError }) => {
 const cache = new InMemoryCache();
 
 // pass authentication header when exists
-const authMiddleware = new ApolloLink(
-    (operation: any, forward: any) => {
-        if (localStorage.getItem('token')) {
-            operation.setContext({
-                headers: {
-                    authorization: `Bearer ${localStorage.getItem(
-                        'token'
-                    )}`
-                }
-            });
-        }
-        return forward(operation);
+const authMiddleware = new ApolloLink((operation: any, forward: any) => {
+    if (localStorage.getItem('token')) {
+        operation.setContext({
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        });
     }
-);
-
-cache.writeQuery({
-    query: IS_LOGGED_IN,
-    data: {
-        isLoggedIn: !!localStorage.getItem('token')
-    }
+    return forward(operation);
 });
 
 // Set up http link
@@ -57,10 +37,19 @@ const httpLink = new HttpLink({
     }
 });
 
+cache.writeQuery({
+    query: CAN_MOVE_TO_NEXT_STEP,
+    data: {
+        canGoToNextStep: false
+    }
+});
+
 // Apollo
-const client = new ApolloClient({
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     link: from([logErrors, authMiddleware, httpLink]),
-    cache
+    cache,
+    typeDefs,
+    connectToDevTools: true
 });
 
 export default client;

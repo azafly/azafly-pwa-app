@@ -1,4 +1,4 @@
-import { NavBar } from 'components/navBar';
+import { NavBar } from 'features/user-dashboard/nav-bar';
 import { Svg404Component } from 'components/illustrations';
 
 import { Button, Box } from '@material-ui/core';
@@ -30,10 +30,7 @@ const Page404 = () => {
                 }}
             >
                 {isAuth ? (
-                    <Link
-                        to='/dashboard'
-                        style={{ textDecoration: 'none' }}
-                    >
+                    <Link to='/dashboard' style={{ textDecoration: 'none' }}>
                         <Button
                             variant='contained'
                             color='primary'

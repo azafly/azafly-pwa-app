@@ -1,8 +1,3 @@
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-} from 'react-router-dom';
 interface RouteConfig {
     name: string;
     path: string;

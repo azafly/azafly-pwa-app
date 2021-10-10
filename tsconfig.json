@@ -29,7 +29,7 @@
     "src/**/*",
     "src/utils/calendar",
     "webpack.config.js"
-  ],
+, "cache.ts"  ],
   "exclude": [
     "node_modules",
     "build"

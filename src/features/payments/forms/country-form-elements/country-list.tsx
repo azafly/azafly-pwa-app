@@ -1,20 +1,12 @@
-import React from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
+import { Avatar, Box, List, ClickAwayListener, IconButton, ListItemAvatar, ListItem, ListItemText, Paper, styled } from '@mui/material';
 
 import { Country } from '../../hooks';
 
-const Demo = styled('div')(({ theme }) => ({
+const ListContainer = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: 8,
     height: 320,
-    boxShadow: 'rgb(0 27 71 / 16%) -20px -29px 90px -25px',
+    zIndex: 999,
     overflowY: 'scroll',
     '& .code': {
         fontWeight: 900,
@@ -35,7 +27,7 @@ interface ICountryListProp {
 export function CountryList({ countryList, handleCountryChange }: ICountryListProp) {
     return (
         <Box sx={{ flexGrow: 1, width: '100%', position: 'absolute', left: 0, top: '5.2rem', borderRadius: 8 }}>
-            <Demo>
+            <ListContainer elevation={10}>
                 <List dense>
                     {countryList?.map(country => {
                         const { flag, name, currency } = country;
@@ -58,7 +50,7 @@ export function CountryList({ countryList, handleCountryChange }: ICountryListPr
                         );
                     })}
                 </List>
-            </Demo>
+            </ListContainer>
         </Box>
     );
 }

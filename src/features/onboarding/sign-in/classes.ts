@@ -1,26 +1,26 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
 
 export const useFormStyles = makeStyles((theme: Theme) =>
     createStyles({
         signInformRoot: {
             [theme.breakpoints.only('xs')]: {
-                paddingTop: 0,
+                paddingTop: 0
             }
         },
         alert: {
             margin: 15,
-            overflowWrap: 'break-word',
+            overflowWrap: 'break-word'
         },
         heading: {
             fontSize: 45,
             marginTop: '20vh',
             marginBottom: 30,
-            fontWeight: 900,
+            fontWeight: 900
         },
         form_container: {
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'center'
         },
         divider: {
             display: 'flex',
@@ -32,12 +32,11 @@ export const useFormStyles = makeStyles((theme: Theme) =>
                 backgroundColor: 'rgb(212, 227, 235)',
                 border: 'medium none',
                 height: 1
-
             },
             '& .or': {
                 padding: '0px 18px',
                 color: 'rgb(175, 199, 209)',
-                fontWeight: 400,
+                fontWeight: 400
             }
         },
         facebook: {
@@ -89,7 +88,6 @@ export const useFormStyles = makeStyles((theme: Theme) =>
             },
             '& .text': {
                 margin: 'auto'
-
             }
         },
         submit: {
@@ -108,7 +106,7 @@ export const useFormStyles = makeStyles((theme: Theme) =>
             '& button': {
                 color: 'white',
                 fontWeight: 500,
-                textTransform: 'none',
+                textTransform: 'none'
             }
         },
         forgotPassword: {
@@ -121,7 +119,7 @@ export const useFormStyles = makeStyles((theme: Theme) =>
         },
         input: {
             '& .MuiInput-formControl::before': {
-                opacity: 0.7,
+                opacity: 0.7
             },
             '& .MuiFormLabel-root': {
                 opacity: 0.7,
@@ -129,15 +127,14 @@ export const useFormStyles = makeStyles((theme: Theme) =>
                 fontSize: '0.8rem',
                 [theme.breakpoints.down('md')]: {
                     marginLeft: 5,
-                    fontSize: '0.7rem',
+                    fontSize: '0.7rem'
                 }
             },
-            [theme.breakpoints.down("sm")]: {
-                flexDirection: 'column',
-            },
+            [theme.breakpoints.down('sm')]: {
+                flexDirection: 'column'
+            }
         }
-    }),
-
+    })
 );
 
 export const useForgotPasswordStyles = makeStyles((theme: Theme) =>
@@ -149,18 +146,18 @@ export const useForgotPasswordStyles = makeStyles((theme: Theme) =>
             height: '100vh',
             width: '100vw',
             position: 'relative',
-            background: theme.palette.background.default,
-
+            background: theme.palette.background.default
         },
         alert: {
             margin: 15,
             overflowWrap: 'break-word',
+            width: 350
         },
         heading: {
             fontSize: 45,
             marginTop: '20vh',
             marginBottom: 30,
-            fontWeight: 900,
+            fontWeight: 900
         },
         form_container: {
             display: 'flex',
@@ -168,7 +165,7 @@ export const useForgotPasswordStyles = makeStyles((theme: Theme) =>
             width: 300,
             margin: 30,
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'center'
         },
         input: {
             borderRadius: 4,
@@ -178,7 +175,7 @@ export const useForgotPasswordStyles = makeStyles((theme: Theme) =>
             border: 'none',
             padding: 20,
             margin: '10px 0px',
-            height: 40,
+            height: 40
         },
         submit: {
             background: theme.colors.base,
@@ -196,7 +193,7 @@ export const useForgotPasswordStyles = makeStyles((theme: Theme) =>
             '&:hover': {
                 background: '#4990a4',
                 opacity: 0.9
-            },
+            }
         },
         underline: {
             '&::before': {
@@ -204,22 +201,21 @@ export const useForgotPasswordStyles = makeStyles((theme: Theme) =>
             }
         },
         loginLink: {
-            color: theme.colors.base
+            color: theme.colors.base,
+            textAlign: 'center'
         }
     })
 );
 
 export const useIllustrationStyles = makeStyles((theme: Theme) =>
     createStyles({
-        onboarding_container_sign_in: {
-        },
+        onboarding_container_sign_in: {},
         signupSVG: {
             paddingBottom: 50,
             [theme.breakpoints.only('xs')]: {
                 display: 'none',
                 width: '100vw'
             }
-        },
-    }),
-
+        }
+    })
 );

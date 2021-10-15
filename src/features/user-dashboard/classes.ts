@@ -38,6 +38,7 @@ export const useCardStyles = makeStyles((theme: Theme) =>
             fontWeight: 450,
             display: 'flex',
             justifyContent: 'center',
+            minWidth: '15ch',
             alignContent: 'center',
             '& span': {
                 margin: 'auto'
@@ -78,6 +79,22 @@ export const useInfoTextStyles = makeStyles((theme: Theme) =>
     })
 );
 
+export const StyledBadge = makeStyles(() =>
+    createStyles({
+        badge: {
+            animation: '$ripple 1.4s infinite ease-in-out'
+        },
+        '@keyframes ripple': {
+            '0%': {
+                transform: 'scale(1.0)'
+            },
+            '100%': {
+                transform: 'scale(1.3)'
+            }
+        }
+    })
+);
+
 export const useDashboardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboard_container: {
@@ -86,12 +103,6 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             width: '100%',
             flexDirection: 'column',
             position: 'relative'
-        },
-        animate: {
-            transition: theme.transitions.create(['margin', 'width'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen
-            })
         },
         heading: {
             marginBottom: 30,

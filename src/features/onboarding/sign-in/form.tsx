@@ -9,8 +9,7 @@ import { FacebookSvgComponent } from 'components/icons';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useFormStyles } from '../classes';
-
-import Logo from 'assets/logo.svg';
+import Logo from 'assets/google.svg';
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Enter a valid email').required('Email is required'),

@@ -7,7 +7,7 @@ import { DashboardLoaderSkeleton } from './loader-skeleton';
 import { EmptyCardContainer } from './empty-service';
 import { NavBar } from './nav-bar';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
-import { useDashboardStyles } from './classes';
+import { useDashboardStyles, StyledBadge } from './classes';
 import UserNavBar from './bottom-navbar';
 
 // queries and co
@@ -47,6 +47,7 @@ export default function Dashboard() {
     };
 
     const classes = useDashboardStyles();
+    const ripples = StyledBadge();
 
     const handleSendVerificationEmail = () => {
         if (localStorage.getItem('verification_email_sent')) {
@@ -73,11 +74,11 @@ export default function Dashboard() {
         <ThreeDots />
     ) : (
         <>
-            <ErrorIcon />
-            {'You need to verify your email to make payments. Click here to get a new Verification Email'}
+            <ErrorIcon className={ripples.badge} />
+            {' You need to verify your email to make payments. Click here to get a new Verification Email'}
         </>
     );
-    const className = highlightEmailVerify ? classes.animate : '';
+    const className = highlightEmailVerify ? ripples.badge : '';
     const alertSeverity = verificationEmailSent.includes('Error') ? 'error' : 'success';
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
 
@@ -112,7 +113,7 @@ export default function Dashboard() {
                                     justifyContent: 'center',
                                     marginRight: 10,
                                     marginLeft: 10,
-                                    maxWidth: '80vw',
+                                    maxWidth: 900,
                                     margin: 'auto',
                                     borderRadius: 3,
                                     flexWrap: 'wrap',
@@ -121,7 +122,6 @@ export default function Dashboard() {
                                     cursor: 'pointer',
                                     background: '#FFEBE9'
                                 }}
-                                className={className}
                                 onClick={handleSendVerificationEmail}
                             >
                                 <Box fontWeight={500}>{emailLink}</Box>

@@ -1,4 +1,4 @@
-import { Card, CardContent, Collapse, Typography } from '@material-ui/core';
+import { Card, CardContent, Chip, Collapse, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
 import { useCardStyles } from './classes';
 import React from 'react';
@@ -34,9 +34,7 @@ export const CardContainer = ({ transactionData }: CardProps) => {
                             {date}
                         </Typography>
                     </div>
-                    <div className={classes.serviceInitiated}>
-                        <span>{is_success_done ? 'Completed' : 'In Progress'}</span>{' '}
-                    </div>
+                    <Chip className={classes.serviceInitiated} label={is_success_done ? 'Completed' : 'In Progress'} />
                 </div>
                 <InfoText text={data.infoText} />
                 <div className={classes.divider} />

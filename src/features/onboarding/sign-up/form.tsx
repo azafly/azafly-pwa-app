@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { Button, Checkbox, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import * as yup from 'yup';
 
+import { addUser } from 'providers/auth/firebase/firebase';
 import { DefaultSnackbar } from 'components';
 import { FacebookSvgComponent } from 'components/icons';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useSignUpFormStyles } from './classes';
+import Logo from 'assets/google.svg';
 
 const formFieldArray = [
     {
@@ -53,7 +55,12 @@ export const SignUpForm = () => {
     const [authError, setAuthError] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
 
-    const { signupWithEmailPassword, signInWithFacebook, signInWithGoogle } = useFirebaseAuthContext();
+    const {
+        signupWithEmailPassword,
+        signInWithFacebook,
+        signInWithGoogle,
+        authState: { user }
+    } = useFirebaseAuthContext();
 
     const formik = useFormik({
         initialValues: {
@@ -74,17 +81,16 @@ export const SignUpForm = () => {
     type FormValue = keyof typeof formik.initialValues;
 
     const history = useHistory();
-    const location = useLocation();
 
     const handleSignUp = (method: SignUpMethod, email?: string, password?: string, displayName?: string) => {
-        const { from } = location.state || { from: { pathname: '/dashboard' } };
+        const DASHBOARD = '/dashboard';
         setAuthLoadingState(true);
         switch (method) {
             case SignUpMethod.FACEBOOK:
                 return signInWithFacebook()
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace(from);
+                        history.replace(DASHBOARD);
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setAuthLoadingState(false);
@@ -95,7 +101,7 @@ export const SignUpForm = () => {
                 return signInWithGoogle()
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace(from);
+                        history.replace(DASHBOARD);
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setOpenSnackBar(true);
@@ -103,11 +109,20 @@ export const SignUpForm = () => {
                         setAuthLoadingState(false);
                     });
             case SignUpMethod.EMAIL_AND_PASSWORD:
-                if (!email || !password || !displayName) return;
-                return signupWithEmailPassword!({ email, password, displayName })
+                if (!email || !password || !displayName || !user) return;
+                return signupWithEmailPassword({ email, password, displayName })
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace('/dashboard');
+                        history.replace(DASHBOARD);
+                        addUser({
+                            email,
+                            displayName,
+                            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                            firebaseId: user.uid,
+                            phone: null,
+                            emailVerified: false,
+                            photoURL: null
+                        });
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setOpenSnackBar(true);
@@ -128,7 +143,7 @@ export const SignUpForm = () => {
                     <div className={'text'}>Facebook</div>
                 </div>
                 <div className={` ${classes.google}`} onClick={() => handleSignUp(SignUpMethod.GOOGLE)}>
-                    <img className='google-icon-svg' src='https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg' />
+                    <img className='google-icon-svg' src={Logo} alt={'goggle-logo'} />
                     <div className={'text'}>Google</div>
                 </div>
                 <div className={`${classes.divider}`}>

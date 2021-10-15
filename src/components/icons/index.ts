@@ -2,7 +2,6 @@ export { ActivitySvgComponent } from './activity';
 export { ArrowDownSvgComponent } from './arrow-down';
 export { ArrowUpSvgComponent } from './arrow-up';
 export { BackwardSvgComponent } from './backward';
-export { CalendarSvgComponent } from './calendar';
 export { ChatSvgComponent } from './chat';
 export { DashboardSvgComponent } from './dashboard';
 export { FacebookSvgComponent } from './facebook';

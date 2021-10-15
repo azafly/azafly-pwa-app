@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction } from 'react';
 import { EmailAndPasswordSignUp } from './firebase';
+import 'firebase/firestore';
 
 export interface User {
     displayName: string | null;
     email: string | null;
     photoURL: string | null;
-    uid: string | null;
+    uid: string;
     emailVerified: boolean;
     sendEmailVerification: Function;
 }
@@ -36,7 +37,7 @@ export interface AuthState {
 }
 
 export const defaultUser: User = {
-    displayName: 'John',
+    displayName: '',
     email: 'olajohn@gmail.com',
     photoURL: '',
     uid: '',
@@ -57,7 +58,7 @@ export interface AuthContext {
     sendPasswordResetEmail: any;
     signout: any;
     signinWithEmailPassword: any;
-    signupWithEmailPassword: ((additionalInfo: EmailAndPasswordSignUp) => Promise<void>) | null;
+    signupWithEmailPassword: (additionalInfo: EmailAndPasswordSignUp) => Promise<void>;
     authState: AuthState;
     verifyPasswordCode: any;
     verifyEmail: any;
@@ -72,7 +73,7 @@ export const defaultAuhContext: AuthContext = {
     sendPasswordResetEmail: () => new Promise(() => {}),
     signout: () => new Promise(() => {}),
     signinWithEmailPassword: () => new Promise(() => {}),
-    signupWithEmailPassword: null,
+    signupWithEmailPassword: () => new Promise(() => {}),
     authState: defaultAuthState,
     verifyPasswordCode: () => new Promise(() => {}),
     verifyEmail: () => new Promise(() => {}),

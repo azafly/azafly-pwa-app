@@ -1,4 +1,3 @@
-export { Accordion } from './accordion';
 export { DefaultSnackbar } from './snackbar';
 export { GenericButton } from './button';
 export { MenuListItem } from './menuListItem';

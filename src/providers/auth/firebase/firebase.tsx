@@ -56,7 +56,6 @@ function useFirebaseProviderAuth() {
             user.updateProfile(profile)
                 .then(() => {
                     setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
-                    addUser({ email, displayName, firebaseId: user.uid, phone: user.phoneNumber, emailVerified: false, photoURL: null });
                 })
                 .catch(error => console.log(error));
         }
@@ -105,13 +104,15 @@ function useFirebaseProviderAuth() {
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
-                setAuthState(prevState => {
-                    const newUser = { ...user, emailVerified: true };
-                    return {
-                        ...prevState,
-                        user: newUser
-                    };
-                });
+                if (user.emailVerified) {
+                    setAuthState(prevState => {
+                        const newUser = { ...user, emailVerified: true };
+                        return {
+                            ...prevState,
+                            user: newUser
+                        };
+                    });
+                }
                 if (hasuraClaim) {
                     localStorage.setItem('token', token);
                     setAuthState(prevState => ({ ...prevState, isAuth: true, user }));

@@ -171,7 +171,7 @@ export const useForgotPasswordStyles = makeStyles((theme: Theme) =>
             borderRadius: 4,
             WebkitAppearance: 'none',
             boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)',
-            background: '#fff !important',
+            backgroundColor: '#fff !important',
             border: 'none',
             padding: 20,
             margin: '10px 0px',

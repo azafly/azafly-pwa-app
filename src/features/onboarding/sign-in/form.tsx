@@ -1,6 +1,7 @@
 import { Button, TextField } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
+import { useState } from 'react';
 import * as yup from 'yup';
 
 import { DefaultSnackbar } from 'components';
@@ -8,7 +9,7 @@ import { FacebookSvgComponent } from 'components/icons';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useFormStyles } from '../classes';
-import { useState } from 'react';
+
 import Logo from 'assets/logo.svg';
 
 const validationSchema = yup.object().shape({

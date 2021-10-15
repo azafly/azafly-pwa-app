@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import * as yup from 'yup';
 import { Button, Checkbox, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import * as yup from 'yup';
 
 import { DefaultSnackbar } from 'components';
 import { FacebookSvgComponent } from 'components/icons';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useSignUpFormStyles } from './classes';
-import { useState } from 'react';
 
 const formFieldArray = [
     {

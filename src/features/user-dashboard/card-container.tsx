@@ -1,7 +1,7 @@
-import React from 'react';
-import { useCardStyles } from './classes';
 import { Card, CardContent, Collapse, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
+import { useCardStyles } from './classes';
+import React from 'react';
 
 import { dashboard as data } from 'mocks/dashboard';
 import { formatCurrency } from 'utils';
@@ -19,7 +19,7 @@ export const CardContainer = ({ transactionData }: CardProps) => {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-    const { amount, created_at, is_success_done, tasks, name, id } = transactionData;
+    const { amount, created_at, is_success_done, tasks } = transactionData;
 
     const date = `${format(new Date(created_at), 'dd, MMMM yyyy')}`;
     const classes = useCardStyles();

@@ -34,12 +34,8 @@ export const useCardStyles = makeStyles((theme: Theme) =>
         },
         serviceInitiated: {
             backgroundColor: '#C5FAAC',
-            borderRadius: 100,
-            width: '20ch',
-            height: 30,
             color: '#0D324D',
             fontWeight: 450,
-            padding: '0px 20px',
             display: 'flex',
             justifyContent: 'center',
             alignContent: 'center',

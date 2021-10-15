@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,6 +17,7 @@ import { SignOutSvgComponent, ProfileSvgComponent, SettingsSvgComponent, HelpSvg
 import { Logo2SvgComponent } from 'components/icons/logo-style-2';
 import { MobileBackButton } from '../../components';
 import { DashboardSvgComponent } from '../../components/icons/dashboard';
+import { getUserById } from 'providers/auth/firebase/firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -69,6 +70,7 @@ export function NavBar() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+
     const {
         authState: { user },
         signout
@@ -94,7 +96,9 @@ export function NavBar() {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
-    const profileSrc = user?.photoURL ?? undefined;
+    const profileSrc = user?.photoURL ?? '';
+    const displayName = user?.displayName;
+
     const menuId = 'primary-account-menu';
     const renderMenu = (
         <Menu
@@ -185,7 +189,7 @@ export function NavBar() {
 
     return (
         <div className={classes.grow}>
-            <AppBar position='fixed'>
+            <AppBar position='fixed' elevation={0}>
                 <Toolbar>
                     <MobileBackButton />
                     <Link to='/' className={classes.title}>
@@ -213,7 +217,7 @@ export function NavBar() {
                             color='inherit'
                         >
                             <Box className={'name'}>
-                                <Typography>{user?.displayName}</Typography>
+                                <Typography>{displayName}</Typography>
                             </Box>
                         </IconButton>
                         <IconButton aria-label='notifications' color='inherit'>

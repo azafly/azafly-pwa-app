@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { DefaultSnackbar } from 'components';
 import { FacebookSvgComponent } from 'components/icons';
+import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
-import { useFormStyles } from './classes';
+import { useFormStyles } from '../classes';
+import { useState } from 'react';
 import Logo from 'assets/logo.svg';
 
 const validationSchema = yup.object().shape({
@@ -15,6 +18,9 @@ const validationSchema = yup.object().shape({
 
 export const SignInForm = () => {
     const { signInWithFacebook, signInWithGoogle, signinWithEmailPassword } = useFirebaseAuthContext();
+    const [isAuthStateIsLoading, setAuthLoadingState] = useState(false);
+    const [authError, setAuthError] = useState('');
+    const [openSnackBar, setOpenSnackBar] = useState(false);
 
     const formik = useFormik({
         initialValues: {
@@ -23,13 +29,21 @@ export const SignInForm = () => {
         },
         validationSchema,
         onSubmit: values => {
-            signinWithEmailPassword(values.email, values.password);
+            setAuthLoadingState(true);
+            signinWithEmailPassword(values.email, values.password)
+                .then(() => setAuthLoadingState(false))
+                .catch(({ message }: Record<string, string>): void => {
+                    setAuthLoadingState(false);
+                    setOpenSnackBar(true);
+                    setAuthError(message);
+                });
         }
     });
 
     const classes = useFormStyles();
     return (
         <div className={classes.signInformRoot}>
+            <DefaultSnackbar open={openSnackBar} handleClose={() => setOpenSnackBar(false)} severity={'error'} title={'Error'} info={authError} />
             <div className={classes.form_container}>
                 <div className={classes.facebook} onClick={signInWithFacebook}>
                     <FacebookSvgComponent />
@@ -74,7 +88,7 @@ export const SignInForm = () => {
                         Forgot Password?
                     </Link>
                     <Button color='primary' variant='contained' fullWidth type='submit'>
-                        Submit
+                        {isAuthStateIsLoading ? <ThreeDots /> : 'Submit'}
                     </Button>
                 </form>
             </div>

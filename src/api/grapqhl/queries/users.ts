@@ -9,19 +9,6 @@ export const GET_CURRENT_USER = gql`
             id
             image_url
             phone
-            used_free_consultation
-            transactions {
-                id
-                amount
-                id
-                is_success_done
-                service_type
-                tasks(where: { user_id: { _eq: $id } }, order_by: { created_at: asc, isDone: asc }) {
-                    created_at
-                    info_text
-                    isDone
-                }
-            }
         }
     }
 `;

@@ -1,11 +1,10 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-export const useSPaymentsStyles = makeStyles((theme: Theme) =>
+export const useSPaymentsStyles = makeStyles(() =>
     createStyles({
         root: {
             width: '100vw',
-            overflowX: 'hidden',
-            background: theme.palette.background.default
+            overflowX: 'hidden'
         }
     })
 );
@@ -14,10 +13,10 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: 'calc(100vw - 5vw)',
+            maxWidth: 1020,
             margin: 'auto',
             marginBottom: 100,
             marginTop: '15vh',
-            boxShadow: 'rgb(0 27 71 / 16%) -20px -29px 90px -25px',
             [theme.breakpoints.up('md')]: {
                 width: 'calc(100vw - 20vw)',
                 marginTop: '20vh'
@@ -26,7 +25,7 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
                 marginTop: '15vh'
             },
             '& .MuiStepper-root': {
-                boxShadow: 'rgb(0 27 71/16%) 0px 29px 32px -25px',
+                background: 'inherit',
                 borderRadius: 15
             },
             '& .MuiStepLabel-label': {

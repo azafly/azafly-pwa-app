@@ -1,28 +1,44 @@
 import { createContext, PropsWithChildren, useState, useContext, useEffect } from 'react';
 
 import { firebaseApp, firebaseConfig } from './firebase-config';
-import { AuthState, defaultAuthState, defaultAuhContext } from './constants';
+import { AuthContext, AuthState, defaultAuthState, defaultAuhContext, FirebaseUser } from './constants';
 
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/firestore';
 
 firebaseApp.initializeApp(firebaseConfig);
+const fireStore = firebaseApp.firestore();
 
-interface AuthContext {
-    signInWithGoogle: any;
-    signInWithFacebook: any;
-    confirmPasswordReset: any;
-    sendPasswordResetEmail: any;
-    signout: any;
-    signinWithEmailPassword: any;
-    signupWithEmailPassword: any;
-    authState: AuthState;
-    verifyPasswordCode: any;
-    verifyEmail: any;
-}
 const HASURA_CLAIMS_URL = 'https://hasura.io/jwt/claims';
 
+export interface EmailAndPasswordSignUp {
+    email: string;
+    password: string;
+    displayName: string;
+}
+
 const authContext = createContext<AuthContext>(defaultAuhContext);
+
+export const getUserById = async (firebaseId: string) => {
+    return new Promise((resolve, reject) => {
+        fireStore.collection('user').onSnapshot(snapshot => {
+            const updatedData = snapshot.docs.map(doc => doc.data());
+            const updatedUser = updatedData.filter(({ user }) => user.firebaseId === firebaseId);
+            resolve(updatedUser);
+        }, reject);
+    });
+};
+
+export const addUser = (user: FirebaseUser) => {
+    return fireStore.collection('user').add({
+        user
+    });
+};
+
+export const updateUserVerification = (userId: string) => {
+    return fireStore.collection('user').doc(userId).set({ emailVerified: true }, { merge: true });
+};
 
 function useFirebaseProviderAuth() {
     const [authState, setAuthState] = useState<AuthState>(defaultAuthState);
@@ -32,20 +48,18 @@ function useFirebaseProviderAuth() {
         return firebaseApp.auth().signInWithEmailAndPassword(email, password);
     };
 
-    const signupWithEmailPassword = async (email: string, password: string) => {
-        return firebaseApp
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(({ user }) => {
-                if (!user?.emailVerified) {
-                    // Void the sign in session until email is verified
-                    user?.sendEmailVerification()
-                        .then(data => {
-                            console.log(data, 'email Sent');
-                        })
-                        .catch(error => console.log(error));
-                }
-            });
+    const signupWithEmailPassword = async ({ email, password, displayName }: EmailAndPasswordSignUp) => {
+        const { user } = await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
+        if (user) {
+            const profile = { displayName };
+            localStorage.setItem('is_email_signup', 'true');
+            user.updateProfile(profile)
+                .then(() => {
+                    setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
+                    addUser({ email, displayName, firebaseId: user.uid, phone: user.phoneNumber, emailVerified: false, photoURL: null });
+                })
+                .catch(error => console.log(error));
+        }
     };
 
     const signout = async () => {
@@ -82,12 +96,7 @@ function useFirebaseProviderAuth() {
     };
 
     const verifyEmail = async (actionCode: string) => {
-        try {
-            await firebaseApp.auth().applyActionCode(actionCode);
-            location.replace('/dashboard');
-        } catch (error) {
-            setAuthError('Error verifying your email');
-        }
+        return firebaseApp.auth().applyActionCode(actionCode);
     };
 
     useEffect(() => {
@@ -96,6 +105,13 @@ function useFirebaseProviderAuth() {
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
+                setAuthState(prevState => {
+                    const newUser = { ...user, emailVerified: true };
+                    return {
+                        ...prevState,
+                        user: newUser
+                    };
+                });
                 if (hasuraClaim) {
                     localStorage.setItem('token', token);
                     setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
@@ -129,7 +145,9 @@ function useFirebaseProviderAuth() {
         signInWithFacebook,
         verifyPasswordCode,
         verifyEmail,
-        authState
+        authState,
+        authError,
+        setAuthError
     };
 }
 

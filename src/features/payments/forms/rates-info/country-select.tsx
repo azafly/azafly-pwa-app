@@ -9,16 +9,19 @@ import { Country } from '../../hooks';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
-        maxWidth: 500,
+        maxWidth: 700,
         marginBottom: 30,
         marginRight: 20,
         padding: '5px 20px',
         borderRadius: 8,
-        height: '4rem',
+        height: '4.5rem',
         backgroundColor: theme.palette.background.paper,
         boxShadow: '0 0 7px 0 #bac4cf',
         [theme.breakpoints.only('xs')]: {
-            width: 270
+            width: '76vw'
+        },
+        [theme.breakpoints.up('md')]: {
+            width: 400
         },
         '& .MuiInput-underline::before': {
             borderBottom: 'none'
@@ -29,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             marginRight: 10
         },
         '& .emoji': {
-            fontSize: '1rem',
+            fontSize: '1.1rem',
             margin: 'auto',
             [theme.breakpoints.only('xs')]: {
                 fontSize: '1rem'
@@ -39,14 +42,14 @@ const useStyles = makeStyles((theme: Theme) => ({
             marginRight: 5,
             color: theme.colors.textPrimary,
             fontWeight: 450,
-            fontSize: '0.8rem',
+            fontSize: '1.1rem',
             margin: 'auto'
         }
     },
     input: {
         color: theme.colors.textPrimary,
         fontWeight: 850,
-        fontSize: '0.8rem',
+        fontSize: '1.1rem',
         borderBottom: 'none'
     }
 }));
@@ -99,7 +102,6 @@ export const CountrySelect = ({
                     <TextField
                         {...params}
                         label='From'
-                        classes={{}}
                         inputProps={{
                             ...params.inputProps,
                             className: classes.input

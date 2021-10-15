@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { useForgotPasswordStyles } from './classes';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
-import { useURLParams } from '../../../hooks/use-url-params';
+import { useURLParams } from '../../hooks/use-url-params';
 
 interface PasswordVerificationProps {
     setError: Dispatch<SetStateAction<string>>;
@@ -23,7 +23,7 @@ export const PasswordVerification = ({ setError }: PasswordVerificationProps) =>
     };
 
     const verificationCode = useURLParams('oobCode');
-    const isResetPasswordReferer = useURLParams('mode') === 'verifyEmail';
+    const isResetPasswordReferer = useURLParams('mode') === 'resetPassword';
     if (!isResetPasswordReferer) return null;
     const handlePasswordReset = async () => {
         verifyPasswordCode(verificationCode)

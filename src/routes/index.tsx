@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { PrivateRoute } from './private-routes';
 
-import ForgotPassword from 'features/onboarding/sign-in/forgot-password';
-import VerifyUser from 'features/onboarding/sign-in/auth-verify';
+import ForgotPassword from 'features/onboarding/forgot-password';
+import VerifyUser from 'features/onboarding/auth-verify';
 import Onboarding from 'views/onboarding';
 import Page404 from 'views/404';
 import Profile from 'views/profile';

@@ -1,3 +1,6 @@
+import { Dispatch, SetStateAction } from 'react';
+import { EmailAndPasswordSignUp } from './firebase';
+
 export interface User {
     displayName: string | null;
     email: string | null;
@@ -7,6 +10,23 @@ export interface User {
     sendEmailVerification: Function;
 }
 
+export interface FirebaseUser {
+    displayName: string;
+    firebaseId: string;
+    email: string;
+    phone: string | null;
+    emailVerified: boolean;
+    photoURL: string | null;
+}
+
+export const defaultFirebaseUser: FirebaseUser = {
+    displayName: '',
+    firebaseId: '',
+    email: '',
+    phone: null,
+    emailVerified: false,
+    photoURL: null
+};
 export interface AuthState {
     user: User | null;
     isLoading: boolean;
@@ -30,18 +50,32 @@ export const defaultAuthState: AuthState = {
     isError: false,
     isAuth: false
 };
+export interface AuthContext {
+    signInWithGoogle: any;
+    signInWithFacebook: any;
+    confirmPasswordReset: any;
+    sendPasswordResetEmail: any;
+    signout: any;
+    signinWithEmailPassword: any;
+    signupWithEmailPassword: ((additionalInfo: EmailAndPasswordSignUp) => Promise<void>) | null;
+    authState: AuthState;
+    verifyPasswordCode: any;
+    verifyEmail: any;
+    setAuthError: Dispatch<SetStateAction<string>>;
+    authError: string;
+}
 
-export const defaultAuhContext = {
+export const defaultAuhContext: AuthContext = {
     signInWithGoogle: () => new Promise(() => {}),
     signInWithFacebook: () => new Promise(() => {}),
-    user: defaultUser,
     confirmPasswordReset: () => new Promise(() => {}),
     sendPasswordResetEmail: () => new Promise(() => {}),
     signout: () => new Promise(() => {}),
     signinWithEmailPassword: () => new Promise(() => {}),
-    signupWithEmailPassword: () => new Promise(() => {}),
+    signupWithEmailPassword: null,
     authState: defaultAuthState,
-    resetLinkSuccess: false,
     verifyPasswordCode: () => new Promise(() => {}),
-    verifyEmail: () => new Promise(() => {})
+    verifyEmail: () => new Promise(() => {}),
+    setAuthError: () => {},
+    authError: ''
 };

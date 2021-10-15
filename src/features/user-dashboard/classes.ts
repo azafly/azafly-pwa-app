@@ -53,11 +53,11 @@ export const useCardStyles = makeStyles((theme: Theme) =>
         },
         serviceName: {
             '& .name': {
-                fontWeight: 300
+                fontWeight: 600
             },
             '& .date': {
                 fontSize: '0.9rem',
-                color: theme.colors.base
+                fontWeight: 500
             }
         }
     })
@@ -90,6 +90,12 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             width: '100%',
             flexDirection: 'column',
             position: 'relative'
+        },
+        animate: {
+            transition: theme.transitions.create(['margin', 'width'], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen
+            })
         },
         heading: {
             marginBottom: 30,

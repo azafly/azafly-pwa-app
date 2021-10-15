@@ -1,7 +1,8 @@
 import * as yup from 'yup';
-import { MenuItem, Select, TextField } from '@mui/material';
-import { ClassNames } from '@emotion/react';
+import { NativeSelect } from '@mui/material';
+import { TextField, InputLabel } from '@material-ui/core';
 
+import { transformCase } from 'utils';
 interface PaymentInfo {
     label: string;
     name: string;
@@ -131,16 +132,21 @@ export const validationSchema = yup.object().shape({
 
 export const generateInputType = (props: any, option: PaymentInfo) => {
     if (option?.type === 'select') {
+        const label = option.name === 'by' ? `Who's making payment` : `Select Purpose`;
+        const defaultValue: PURPOSE | BY_WHOM = option.name === 'by' ? 'self' : 'education';
         return (
-            <Select labelId='' id='demo-simple-select' {...props} name={option?.name} label={option?.label}>
-                {option?.items?.map(item => (
-                    <MenuItem key={item} value={item} defaultValue={''}>
-                        {item}
-                    </MenuItem>
-                ))}
-            </Select>
+            <>
+                <InputLabel id={label}>{label}</InputLabel>
+                <NativeSelect label={label} labelId='' id={label} {...props} name={option?.name} style={{ width: '100%' }}>
+                    {option?.items?.map(item => (
+                        <option key={item} value={item} defaultValue={defaultValue}>
+                            {transformCase(item)}
+                        </option>
+                    ))}
+                </NativeSelect>
+            </>
         );
     } else {
-        return <TextField fullWidth id={option?.label} name={option?.name} label={option?.label} type={option?.type ?? 'text'} variant={'filled'} />;
+        return <TextField fullWidth id={option?.label} name={option?.name} label={option?.label} type={option?.type ?? 'text'} {...props} />;
     }
 };

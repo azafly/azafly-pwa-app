@@ -25,18 +25,12 @@ const taskList = [
     }
 ];
 
-const steps = [
-    'Service started',
-    'Payment Received',
-    'Payment Sent to Recieving institution',
-    'Completed'
-];
+const steps = ['Service started', 'Payment Received', 'Payment Sent to Recieving institution', 'Completed'];
 
 export const dashboard = {
     serviceName: 'First Service',
     date: '14-02-2021',
-    infoText:
-        'We received your payment. We have booked a date. We have sent your payments to receving instiutions',
+    infoText: `We received your payment.We've processed the payment. We have sent your payments to receiving institution.`,
     taskList,
     steps
 };

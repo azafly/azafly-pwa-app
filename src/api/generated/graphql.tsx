@@ -662,7 +662,6 @@ export type Mutation_RootDelete_UserArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_User_By_PkArgs = {
-  email: Scalars['String'];
   id: Scalars['String'];
 };
 
@@ -1189,7 +1188,6 @@ export type Query_RootUser_AggregateArgs = {
 
 
 export type Query_RootUser_By_PkArgs = {
-  email: Scalars['String'];
   id: Scalars['String'];
 };
 
@@ -2015,7 +2013,6 @@ export type Subscription_RootUser_AggregateArgs = {
 
 
 export type Subscription_RootUser_By_PkArgs = {
-  email: Scalars['String'];
   id: Scalars['String'];
 };
 
@@ -2639,6 +2636,7 @@ export type User = {
   readonly display_name?: Maybe<Scalars['String']>;
   readonly email: Scalars['String'];
   readonly email_verified?: Maybe<Scalars['Boolean']>;
+  readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id: Scalars['String'];
   readonly image_url?: Maybe<Scalars['String']>;
   readonly phone?: Maybe<Scalars['String']>;
@@ -2651,7 +2649,6 @@ export type User = {
   /** An aggregate relationship */
   readonly transactions_aggregate: Transaction_Aggregate;
   readonly updated_at: Scalars['timestamptz'];
-  readonly used_free_consultation: Scalars['Boolean'];
 };
 
 
@@ -2725,17 +2722,19 @@ export type User_Bool_Exp = {
   readonly display_name?: Maybe<String_Comparison_Exp>;
   readonly email?: Maybe<String_Comparison_Exp>;
   readonly email_verified?: Maybe<Boolean_Comparison_Exp>;
+  readonly firebase_id?: Maybe<String_Comparison_Exp>;
   readonly id?: Maybe<String_Comparison_Exp>;
   readonly image_url?: Maybe<String_Comparison_Exp>;
   readonly phone?: Maybe<String_Comparison_Exp>;
   readonly tasks?: Maybe<Task_Bool_Exp>;
   readonly transactions?: Maybe<Transaction_Bool_Exp>;
   readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
-  readonly used_free_consultation?: Maybe<Boolean_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "user" */
 export enum User_Constraint {
+  /** unique or primary key constraint */
+  UserFirebaseIdKey = 'user_firebase_id_key',
   /** unique or primary key constraint */
   UsersEmailKey = 'users_email_key',
   /** unique or primary key constraint */
@@ -2750,13 +2749,13 @@ export type User_Insert_Input = {
   readonly display_name?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
   readonly email_verified?: Maybe<Scalars['Boolean']>;
+  readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['String']>;
   readonly image_url?: Maybe<Scalars['String']>;
   readonly phone?: Maybe<Scalars['String']>;
   readonly tasks?: Maybe<Task_Arr_Rel_Insert_Input>;
   readonly transactions?: Maybe<Transaction_Arr_Rel_Insert_Input>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
-  readonly used_free_consultation?: Maybe<Scalars['Boolean']>;
 };
 
 /** aggregate max on columns */
@@ -2765,6 +2764,7 @@ export type User_Max_Fields = {
   readonly created_at?: Maybe<Scalars['timestamptz']>;
   readonly display_name?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
+  readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['String']>;
   readonly image_url?: Maybe<Scalars['String']>;
   readonly phone?: Maybe<Scalars['String']>;
@@ -2777,6 +2777,7 @@ export type User_Min_Fields = {
   readonly created_at?: Maybe<Scalars['timestamptz']>;
   readonly display_name?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
+  readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['String']>;
   readonly image_url?: Maybe<Scalars['String']>;
   readonly phone?: Maybe<Scalars['String']>;
@@ -2812,18 +2813,17 @@ export type User_Order_By = {
   readonly display_name?: Maybe<Order_By>;
   readonly email?: Maybe<Order_By>;
   readonly email_verified?: Maybe<Order_By>;
+  readonly firebase_id?: Maybe<Order_By>;
   readonly id?: Maybe<Order_By>;
   readonly image_url?: Maybe<Order_By>;
   readonly phone?: Maybe<Order_By>;
   readonly tasks_aggregate?: Maybe<Task_Aggregate_Order_By>;
   readonly transactions_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   readonly updated_at?: Maybe<Order_By>;
-  readonly used_free_consultation?: Maybe<Order_By>;
 };
 
 /** primary key columns input for table: user */
 export type User_Pk_Columns_Input = {
-  readonly email: Scalars['String'];
   readonly id: Scalars['String'];
 };
 
@@ -2838,15 +2838,15 @@ export enum User_Select_Column {
   /** column name */
   EmailVerified = 'email_verified',
   /** column name */
+  FirebaseId = 'firebase_id',
+  /** column name */
   Id = 'id',
   /** column name */
   ImageUrl = 'image_url',
   /** column name */
   Phone = 'phone',
   /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  UsedFreeConsultation = 'used_free_consultation'
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "user" */
@@ -2855,11 +2855,11 @@ export type User_Set_Input = {
   readonly display_name?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
   readonly email_verified?: Maybe<Scalars['Boolean']>;
+  readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['String']>;
   readonly image_url?: Maybe<Scalars['String']>;
   readonly phone?: Maybe<Scalars['String']>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
-  readonly used_free_consultation?: Maybe<Scalars['Boolean']>;
 };
 
 /** update columns of table "user" */
@@ -2873,15 +2873,15 @@ export enum User_Update_Column {
   /** column name */
   EmailVerified = 'email_verified',
   /** column name */
+  FirebaseId = 'firebase_id',
+  /** column name */
   Id = 'id',
   /** column name */
   ImageUrl = 'image_url',
   /** column name */
   Phone = 'phone',
   /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  UsedFreeConsultation = 'used_free_consultation'
+  UpdatedAt = 'updated_at'
 }
 
 
@@ -3074,20 +3074,36 @@ export type UpdateTaskMutation = (
   )> }
 );
 
-export type InsertNewFreeConsulationTransactionMutationVariables = Exact<{
-  user_id: Scalars['String'];
+export type InsertNewUserMutationVariables = Exact<{
+  id: Scalars['String'];
+  email: Scalars['String'];
+  email_verified?: Maybe<Scalars['Boolean']>;
+  image_url?: Maybe<Scalars['String']>;
+  display_name?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+  firebase_id: Scalars['String'];
+}>;
+
+
+export type InsertNewUserMutation = (
+  { readonly __typename?: 'mutation_root' }
+  & { readonly insert_user_one?: Maybe<(
+    { readonly __typename?: 'user' }
+    & Pick<User, 'created_at' | 'email' | 'email_verified' | 'id' | 'image_url' | 'phone' | 'firebase_id'>
+  )> }
+);
+
+export type UpdateUserOnSignUpMutationVariables = Exact<{
+  displayName: Scalars['String'];
   email: Scalars['String'];
 }>;
 
 
-export type InsertNewFreeConsulationTransactionMutation = (
+export type UpdateUserOnSignUpMutation = (
   { readonly __typename?: 'mutation_root' }
-  & { readonly insert_transaction_one?: Maybe<(
-    { readonly __typename?: 'transaction' }
-    & Pick<Transaction, 'id'>
-  )>, readonly update_user_by_pk?: Maybe<(
-    { readonly __typename?: 'user' }
-    & Pick<User, 'used_free_consultation'>
+  & { readonly update_user?: Maybe<(
+    { readonly __typename?: 'user_mutation_response' }
+    & Pick<User_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -3118,46 +3134,7 @@ export type GetCurrentUserQuery = (
   { readonly __typename?: 'query_root' }
   & { readonly user_by_pk?: Maybe<(
     { readonly __typename?: 'user' }
-    & Pick<User, 'display_name' | 'email' | 'email_verified' | 'id' | 'image_url' | 'phone' | 'used_free_consultation'>
-    & { readonly transactions: ReadonlyArray<(
-      { readonly __typename?: 'transaction' }
-      & Pick<Transaction, 'id' | 'amount' | 'is_success_done' | 'service_type'>
-      & { readonly tasks: ReadonlyArray<(
-        { readonly __typename?: 'task' }
-        & Pick<Task, 'created_at' | 'info_text' | 'isDone'>
-      )> }
-    )> }
-  )> }
-);
-
-export type GetUserEmailQueryVariables = Exact<{
-  email: Scalars['String'];
-  id: Scalars['String'];
-}>;
-
-
-export type GetUserEmailQuery = (
-  { readonly __typename?: 'query_root' }
-  & { readonly user_by_pk?: Maybe<(
-    { readonly __typename?: 'user' }
-    & Pick<User, 'email' | 'email_verified' | 'display_name' | 'image_url' | 'id' | 'phone'>
-  )> }
-);
-
-export type InsertNeUserMutationVariables = Exact<{
-  email: Scalars['String'];
-  email_verified?: Maybe<Scalars['Boolean']>;
-  image_url?: Maybe<Scalars['String']>;
-  display_name?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
-}>;
-
-
-export type InsertNeUserMutation = (
-  { readonly __typename?: 'mutation_root' }
-  & { readonly insert_user_one?: Maybe<(
-    { readonly __typename?: 'user' }
-    & Pick<User, 'created_at' | 'email' | 'email_verified' | 'id' | 'image_url' | 'phone'>
+    & Pick<User, 'display_name' | 'email' | 'email_verified' | 'id' | 'image_url' | 'phone'>
   )> }
 );
 
@@ -3205,46 +3182,88 @@ export function useUpdateTaskMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateTaskMutationHookResult = ReturnType<typeof useUpdateTaskMutation>;
 export type UpdateTaskMutationResult = Apollo.MutationResult<UpdateTaskMutation>;
 export type UpdateTaskMutationOptions = Apollo.BaseMutationOptions<UpdateTaskMutation, UpdateTaskMutationVariables>;
-export const InsertNewFreeConsulationTransactionDocument = gql`
-    mutation insertNewFreeConsulationTransaction($user_id: String!, $email: String!) {
-  insert_transaction_one(object: {user_id: $user_id}) {
-    id
-  }
-  update_user_by_pk(
-    _set: {used_free_consultation: true}
-    pk_columns: {email: $email, id: $user_id}
+export const InsertNewUserDocument = gql`
+    mutation insertNewUser($id: String!, $email: String!, $email_verified: Boolean, $image_url: String, $display_name: String, $phone: String, $firebase_id: String!) {
+  insert_user_one(
+    object: {id: $id, email: $email, email_verified: $email_verified, image_url: $image_url, display_name: $display_name, phone: $phone, firebase_id: $firebase_id}
+    on_conflict: {constraint: users_pkey}
   ) {
-    used_free_consultation
+    created_at
+    email
+    email_verified
+    id
+    image_url
+    phone
+    firebase_id
   }
 }
     `;
-export type InsertNewFreeConsulationTransactionMutationFn = Apollo.MutationFunction<InsertNewFreeConsulationTransactionMutation, InsertNewFreeConsulationTransactionMutationVariables>;
+export type InsertNewUserMutationFn = Apollo.MutationFunction<InsertNewUserMutation, InsertNewUserMutationVariables>;
 
 /**
- * __useInsertNewFreeConsulationTransactionMutation__
+ * __useInsertNewUserMutation__
  *
- * To run a mutation, you first call `useInsertNewFreeConsulationTransactionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertNewFreeConsulationTransactionMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInsertNewUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertNewUserMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [insertNewFreeConsulationTransactionMutation, { data, loading, error }] = useInsertNewFreeConsulationTransactionMutation({
+ * const [insertNewUserMutation, { data, loading, error }] = useInsertNewUserMutation({
  *   variables: {
- *      user_id: // value for 'user_id'
+ *      id: // value for 'id'
+ *      email: // value for 'email'
+ *      email_verified: // value for 'email_verified'
+ *      image_url: // value for 'image_url'
+ *      display_name: // value for 'display_name'
+ *      phone: // value for 'phone'
+ *      firebase_id: // value for 'firebase_id'
+ *   },
+ * });
+ */
+export function useInsertNewUserMutation(baseOptions?: Apollo.MutationHookOptions<InsertNewUserMutation, InsertNewUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertNewUserMutation, InsertNewUserMutationVariables>(InsertNewUserDocument, options);
+      }
+export type InsertNewUserMutationHookResult = ReturnType<typeof useInsertNewUserMutation>;
+export type InsertNewUserMutationResult = Apollo.MutationResult<InsertNewUserMutation>;
+export type InsertNewUserMutationOptions = Apollo.BaseMutationOptions<InsertNewUserMutation, InsertNewUserMutationVariables>;
+export const UpdateUserOnSignUpDocument = gql`
+    mutation updateUserOnSignUp($displayName: String!, $email: String!) {
+  update_user(_set: {display_name: $displayName}, where: {email: {_eq: $email}}) {
+    affected_rows
+  }
+}
+    `;
+export type UpdateUserOnSignUpMutationFn = Apollo.MutationFunction<UpdateUserOnSignUpMutation, UpdateUserOnSignUpMutationVariables>;
+
+/**
+ * __useUpdateUserOnSignUpMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserOnSignUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserOnSignUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserOnSignUpMutation, { data, loading, error }] = useUpdateUserOnSignUpMutation({
+ *   variables: {
+ *      displayName: // value for 'displayName'
  *      email: // value for 'email'
  *   },
  * });
  */
-export function useInsertNewFreeConsulationTransactionMutation(baseOptions?: Apollo.MutationHookOptions<InsertNewFreeConsulationTransactionMutation, InsertNewFreeConsulationTransactionMutationVariables>) {
+export function useUpdateUserOnSignUpMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserOnSignUpMutation, UpdateUserOnSignUpMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertNewFreeConsulationTransactionMutation, InsertNewFreeConsulationTransactionMutationVariables>(InsertNewFreeConsulationTransactionDocument, options);
+        return Apollo.useMutation<UpdateUserOnSignUpMutation, UpdateUserOnSignUpMutationVariables>(UpdateUserOnSignUpDocument, options);
       }
-export type InsertNewFreeConsulationTransactionMutationHookResult = ReturnType<typeof useInsertNewFreeConsulationTransactionMutation>;
-export type InsertNewFreeConsulationTransactionMutationResult = Apollo.MutationResult<InsertNewFreeConsulationTransactionMutation>;
-export type InsertNewFreeConsulationTransactionMutationOptions = Apollo.BaseMutationOptions<InsertNewFreeConsulationTransactionMutation, InsertNewFreeConsulationTransactionMutationVariables>;
+export type UpdateUserOnSignUpMutationHookResult = ReturnType<typeof useUpdateUserOnSignUpMutation>;
+export type UpdateUserOnSignUpMutationResult = Apollo.MutationResult<UpdateUserOnSignUpMutation>;
+export type UpdateUserOnSignUpMutationOptions = Apollo.BaseMutationOptions<UpdateUserOnSignUpMutation, UpdateUserOnSignUpMutationVariables>;
 export const GetUserTransactionsDocument = gql`
     query getUserTransactions($id: String!) {
   transaction(
@@ -3298,26 +3317,13 @@ export type GetUserTransactionsLazyQueryHookResult = ReturnType<typeof useGetUse
 export type GetUserTransactionsQueryResult = Apollo.QueryResult<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>;
 export const GetCurrentUserDocument = gql`
     query getCurrentUser($email: String!, $id: String!) {
-  user_by_pk(email: $email, id: $id) {
+  user_by_pk(id: $id) {
     display_name
     email
     email_verified
     id
     image_url
     phone
-    used_free_consultation
-    transactions {
-      id
-      amount
-      id
-      is_success_done
-      service_type
-      tasks(where: {user_id: {_eq: $id}}, order_by: {created_at: asc, isDone: asc}) {
-        created_at
-        info_text
-        isDone
-      }
-    }
   }
 }
     `;
@@ -3350,88 +3356,3 @@ export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
-export const GetUserEmailDocument = gql`
-    query getUserEmail($email: String!, $id: String!) {
-  user_by_pk(email: $email, id: $id) {
-    email
-    email_verified
-    display_name
-    image_url
-    id
-    phone
-  }
-}
-    `;
-
-/**
- * __useGetUserEmailQuery__
- *
- * To run a query within a React component, call `useGetUserEmailQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserEmailQuery({
- *   variables: {
- *      email: // value for 'email'
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetUserEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserEmailQuery, GetUserEmailQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserEmailQuery, GetUserEmailQueryVariables>(GetUserEmailDocument, options);
-      }
-export function useGetUserEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserEmailQuery, GetUserEmailQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserEmailQuery, GetUserEmailQueryVariables>(GetUserEmailDocument, options);
-        }
-export type GetUserEmailQueryHookResult = ReturnType<typeof useGetUserEmailQuery>;
-export type GetUserEmailLazyQueryHookResult = ReturnType<typeof useGetUserEmailLazyQuery>;
-export type GetUserEmailQueryResult = Apollo.QueryResult<GetUserEmailQuery, GetUserEmailQueryVariables>;
-export const InsertNeUserDocument = gql`
-    mutation insertNeUser($email: String!, $email_verified: Boolean, $image_url: String, $display_name: String, $phone: String) {
-  insert_user_one(
-    object: {email: $email, email_verified: $email_verified, image_url: $image_url, display_name: $display_name, phone: $phone}
-  ) {
-    created_at
-    email
-    email_verified
-    id
-    image_url
-    phone
-  }
-}
-    `;
-export type InsertNeUserMutationFn = Apollo.MutationFunction<InsertNeUserMutation, InsertNeUserMutationVariables>;
-
-/**
- * __useInsertNeUserMutation__
- *
- * To run a mutation, you first call `useInsertNeUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertNeUserMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertNeUserMutation, { data, loading, error }] = useInsertNeUserMutation({
- *   variables: {
- *      email: // value for 'email'
- *      email_verified: // value for 'email_verified'
- *      image_url: // value for 'image_url'
- *      display_name: // value for 'display_name'
- *      phone: // value for 'phone'
- *   },
- * });
- */
-export function useInsertNeUserMutation(baseOptions?: Apollo.MutationHookOptions<InsertNeUserMutation, InsertNeUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertNeUserMutation, InsertNeUserMutationVariables>(InsertNeUserDocument, options);
-      }
-export type InsertNeUserMutationHookResult = ReturnType<typeof useInsertNeUserMutation>;
-export type InsertNeUserMutationResult = Apollo.MutationResult<InsertNeUserMutation>;
-export type InsertNeUserMutationOptions = Apollo.BaseMutationOptions<InsertNeUserMutation, InsertNeUserMutationVariables>;

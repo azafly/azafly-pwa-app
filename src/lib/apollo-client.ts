@@ -1,7 +1,6 @@
 import { ApolloClient, InMemoryCache, ApolloLink, HttpLink, from, NormalizedCacheObject, gql } from '@apollo/client';
 
 import { onError } from '@apollo/client/link/error';
-import { typeDefs, CAN_MOVE_TO_NEXT_STEP } from 'api/grapqhl/queries/client';
 
 const HTTPS_URL = process.env.REACT_APP_HASURA_GRAPHQL_HTTPS_URL as string;
 
@@ -37,19 +36,10 @@ const httpLink = new HttpLink({
     }
 });
 
-cache.writeQuery({
-    query: CAN_MOVE_TO_NEXT_STEP,
-    data: {
-        canGoToNextStep: false
-    }
-});
-
 // Apollo
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     link: from([logErrors, authMiddleware, httpLink]),
-    cache,
-    typeDefs,
-    connectToDevTools: true
+    cache
 });
 
 export default client;

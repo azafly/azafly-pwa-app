@@ -4,10 +4,12 @@ import { Button, Checkbox, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
 import { useHistory, useLocation } from 'react-router-dom';
 
+import { DefaultSnackbar } from 'components';
 import { FacebookSvgComponent } from 'components/icons';
+import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
-
 import { useSignUpFormStyles } from './classes';
+import { useState } from 'react';
 
 const formFieldArray = [
     {
@@ -42,17 +44,16 @@ const validationSchema = yup.object().shape({
 enum SignUpMethod {
     FACEBOOK = 'FACEBOOK',
     GOOGLE = 'GOOGLE',
-    EMAIL_AND_PASSWORD = '  EMAIL_AND_PASSWORD '
+    EMAIL_AND_PASSWORD = 'EMAIL_AND_PASSWORD '
 }
 
 export const SignUpForm = () => {
     const classes = useSignUpFormStyles();
-    const {
-        authState: { isAuth },
-        signupWithEmailPassword,
-        signInWithFacebook,
-        signInWithGoogle
-    } = useFirebaseAuthContext();
+    const [isAuthStateLoading, setAuthLoadingState] = useState(false);
+    const [authError, setAuthError] = useState('');
+    const [openSnackBar, setOpenSnackBar] = useState(false);
+
+    const { signupWithEmailPassword, signInWithFacebook, signInWithGoogle } = useFirebaseAuthContext();
 
     const formik = useFormik({
         initialValues: {
@@ -65,7 +66,8 @@ export const SignUpForm = () => {
         },
         validationSchema: validationSchema,
         onSubmit: values => {
-            handleSignUp(SignUpMethod.EMAIL_AND_PASSWORD, values.email, values.password);
+            localStorage.setItem('user', JSON.stringify(values));
+            handleSignUp(SignUpMethod.EMAIL_AND_PASSWORD, values.email, values.password, `${values.firstName} ${values.lastName}`);
         }
     });
 
@@ -74,15 +76,44 @@ export const SignUpForm = () => {
     const history = useHistory();
     const location = useLocation();
 
-    const handleSignUp = (method: SignUpMethod, email?: string, password?: string) => {
+    const handleSignUp = (method: SignUpMethod, email?: string, password?: string, displayName?: string) => {
         const { from } = location.state || { from: { pathname: '/dashboard' } };
+        setAuthLoadingState(true);
         switch (method) {
             case SignUpMethod.FACEBOOK:
-                return;
+                return signInWithFacebook()
+                    .then(() => {
+                        setAuthLoadingState(false);
+                        history.replace(from);
+                    })
+                    .catch(({ message }: Record<string, string>): void => {
+                        setAuthLoadingState(false);
+                        setOpenSnackBar(true);
+                        setAuthError(message);
+                    });
             case SignUpMethod.GOOGLE:
-                return signInWithGoogle().then(() => history.replace(from));
+                return signInWithGoogle()
+                    .then(() => {
+                        setAuthLoadingState(false);
+                        history.replace(from);
+                    })
+                    .catch(({ message }: Record<string, string>): void => {
+                        setOpenSnackBar(true);
+                        setAuthError(message);
+                        setAuthLoadingState(false);
+                    });
             case SignUpMethod.EMAIL_AND_PASSWORD:
-                return signupWithEmailPassword(email, password);
+                if (!email || !password || !displayName) return;
+                return signupWithEmailPassword!({ email, password, displayName })
+                    .then(() => {
+                        setAuthLoadingState(false);
+                        history.replace('/dashboard');
+                    })
+                    .catch(({ message }: Record<string, string>): void => {
+                        setOpenSnackBar(true);
+                        setAuthLoadingState(false);
+                        setAuthError(message);
+                    });
             default:
                 return null;
         }
@@ -90,6 +121,7 @@ export const SignUpForm = () => {
 
     return (
         <div className={classes.signUpformRoot}>
+            <DefaultSnackbar open={openSnackBar} handleClose={() => setOpenSnackBar(false)} severity={'error'} title={'Error'} info={authError} />
             <div className={classes.form_container}>
                 <div className={`${classes.facebook}`} onClick={() => handleSignUp(SignUpMethod.FACEBOOK)}>
                     <FacebookSvgComponent />
@@ -160,7 +192,7 @@ export const SignUpForm = () => {
                         {formik.touched.terms && formik.errors.terms}
                     </p>
                     <Button color='primary' variant='contained' fullWidth type='submit'>
-                        Submit
+                        {isAuthStateLoading ? <ThreeDots /> : ' Submit'}
                     </Button>
                 </form>
             </div>

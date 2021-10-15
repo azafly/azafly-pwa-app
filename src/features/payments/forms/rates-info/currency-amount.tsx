@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
             marginBottom: 30,
             marginRight: 20,
             display: 'flex',
-            height: '4rem',
+            height: '4.5rem',
             alignItems: 'center',
             padding: '5px 20px',
             justifyContent: 'space-between',
@@ -23,22 +23,19 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 0 7px 0 #bac4cf',
             position: 'relative',
             [theme.breakpoints.only('xs')]: {
-                width: 270
+                width: '76vw'
             }
         },
         input: {
-            webkitAppearance: 'none',
-            border: 'none',
-            height: '100%',
-            borderBottom: 'none',
             color: theme.colors.textPrimary,
-            fontWeight: 750,
-            fontSize: '1rem',
+            fontWeight: 850,
+            fontSize: '1.1rem',
+            borderBottom: 'none',
             '& .MuiInput-underline::before': {
                 borderBottom: 'none'
             },
             [theme.breakpoints.only('xs')]: {
-                fontSize: '0.9rem'
+                fontSize: '1.1rem'
             }
         },
         listbox: {

@@ -1,9 +1,5 @@
 import { ReactElement } from 'react';
-import {
-    ActivitySvgComponent,
-    ProfileSvgComponent,
-    SignOutSvgComponent
-} from 'components/icons';
+import { ActivitySvgComponent, ProfileSvgComponent, SignOutSvgComponent } from 'components/icons';
 
 interface SideMenu {
     name: string;
@@ -85,3 +81,7 @@ export const deskTopNavItems = [
         route: '/services'
     }
 ];
+
+export function timeout(delay: number) {
+    return new Promise(res => setTimeout(res, delay));
+}

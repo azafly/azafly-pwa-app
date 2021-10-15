@@ -1,13 +1,18 @@
-import { Box, Button, Card, CardActions, CardMedia, Chip } from '@material-ui/core';
+import { Box, Button, Card, CardActions, CardMedia, Chip, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
+import { Dispatch, SetStateAction } from 'react';
 
 import { useEmptyCardStyles } from './classes';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { EmptyServiceSvgComponent } from 'components/illustrations';
 
 const services = ['WES', 'IELTS', 'School Fees', 'Medical Bills', 'Others'];
-export const EmptyCardContainer = () => {
+
+interface EmptyCardContainerProps {
+    setHighlightEmailVerify: Dispatch<SetStateAction<boolean>>;
+}
+export const EmptyCardContainer = ({ setHighlightEmailVerify }: EmptyCardContainerProps) => {
     const classes = useEmptyCardStyles();
     const {
         authState: { user }
@@ -15,10 +20,14 @@ export const EmptyCardContainer = () => {
 
     const emailVerified = user?.emailVerified;
 
+    const handleSetHighlight = () => !emailVerified && setHighlightEmailVerify(true);
+
     return (
         <>
             <Card className={classes.empty_card_root}>
-                <h1 className={classes.nothing}>{`You do not have any transactions yet`} </h1>
+                <Typography variant={'h5'} className={classes.nothing}>
+                    {`You do not have any transactions yet`}{' '}
+                </Typography>
                 <CardMedia>
                     <EmptyServiceSvgComponent />
                 </CardMedia>
@@ -28,6 +37,7 @@ export const EmptyCardContainer = () => {
                         className={clsx(classes.button, {
                             [classes.disabled]: !emailVerified
                         })}
+                        onClick={handleSetHighlight}
                         style={{ textDecoration: 'none' }}
                     >
                         <Button
@@ -43,6 +53,10 @@ export const EmptyCardContainer = () => {
                         </Button>
                     </Link>
                 </CardActions>
+                <Typography paragraph align='center'>
+                    {' '}
+                    Popular:{' '}
+                </Typography>{' '}
                 <Box
                     sx={{
                         display: 'flex',

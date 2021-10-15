@@ -1,30 +1,24 @@
-import { Box, Chip, Typography } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { useState } from 'react';
-import { styled } from '@mui/system';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { CardContainer } from './card-container';
 import { DashboardLoaderSkeleton } from './loader-skeleton';
 import { EmptyCardContainer } from './empty-service';
 import { NavBar } from './nav-bar';
-import { SpeedDialTooltip } from 'components/speed-dial';
+import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { useDashboardStyles } from './classes';
 import UserNavBar from './bottom-navbar';
-import { Alert, AlertTitle } from '@material-ui/lab';
-
-import Snackbar from '@mui/material/Snackbar';
 
 // queries and co
 import { useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
-
-const StyledAlert = styled(Alert)`
-        margin: 15;
-        overflowWrap: 'break-word;
-`;
+import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 
 export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
+    const [isSendingLink, setLoading] = useState(false);
+    const [highlightEmailVerify, setHighlightEmailVerify] = useState(false);
     const [hidden, setHidden] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -54,50 +48,59 @@ export default function Dashboard() {
 
     const classes = useDashboardStyles();
 
+    const handleSendVerificationEmail = () => {
+        if (localStorage.getItem('verification_email_sent')) {
+            setOpenSnackBar(true);
+            setSent('Verification Email already sent to your email. Kindly check your email to verify');
+            return;
+        }
+        setLoading(true);
+        user?.sendEmailVerification()
+            .then(() => {
+                setOpenSnackBar(true);
+                setSent('Verification Link sent successfully. Check your email to verify');
+                localStorage.setItem('verification_email_sent', 'true');
+                setLoading(false);
+            })
+            .catch(() => {
+                setOpenSnackBar(true);
+                setSent('Error sending Verification Link');
+                setLoading(false);
+            });
+    };
+
+    const emailLink = isSendingLink ? (
+        <ThreeDots />
+    ) : (
+        <>
+            <ErrorIcon />
+            {'You need to verify your email to make payments. Click here to get a new Verification Email'}
+        </>
+    );
+    const className = highlightEmailVerify ? classes.animate : '';
+    const alertSeverity = verificationEmailSent.includes('Error') ? 'error' : 'success';
+    const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
+
     if (loading) {
         return (
             <div>
                 <NavBar />
-                <Typography className={classes.heading}>Your Transactions</Typography>
+                <Typography className={classes.heading}>My Transactions</Typography>
                 <DashboardLoaderSkeleton />
             </div>
         );
     }
 
-    const handleSendVerificationEmail = () => {
-        if (localStorage.getItem('verification_email_sent')) {
-            setOpenSnackBar(true);
-            setSent('Verification Email already sent to your email');
-            return;
-        }
-        user?.sendEmailVerification()
-            .then(() => {
-                setOpenSnackBar(true);
-                setSent('Verification Link sent successful');
-                localStorage.setItem('verification_email_sent', 'true');
-            })
-            .catch(() => {
-                setOpenSnackBar(true);
-                setSent('Error sending Verification Link');
-            });
-    };
-
     return (
         <>
-            <Snackbar
+            <DefaultSnackbar
+                className={className}
+                severity={alertSeverity}
                 open={openSnackBar}
-                autoHideDuration={6000}
-                onClose={() => setOpenSnackBar(false)}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            >
-                <StyledAlert onClose={() => setOpenSnackBar(false)} severity={verificationEmailSent.includes('Error') ? 'error' : 'success'}>
-                    <AlertTitle>
-                        {' '}
-                        <strong>{verificationEmailSent.includes('Error') ? 'Error' : 'Success'}</strong>{' '}
-                    </AlertTitle>
-                    {verificationEmailSent}
-                </StyledAlert>
-            </Snackbar>
+                handleClose={() => setOpenSnackBar(false)}
+                title={alertTitle}
+                info={verificationEmailSent}
+            />
             <NavBar />
             <Box sx={{ mt: 15 }}>
                 {!transactions?.length ? (
@@ -118,16 +121,13 @@ export default function Dashboard() {
                                     cursor: 'pointer',
                                     background: '#FFEBE9'
                                 }}
+                                className={className}
                                 onClick={handleSendVerificationEmail}
                             >
-                                <Box fontWeight={500}>
-                                    {' '}
-                                    <ErrorIcon />
-                                    {'You need to verify your email to make payments. Click here to get a new Verification Email'}
-                                </Box>
+                                <Box fontWeight={500}>{emailLink}</Box>
                             </Box>
                         )}
-                        <EmptyCardContainer />
+                        <EmptyCardContainer setHighlightEmailVerify={setHighlightEmailVerify} />
                         <UserNavBar />
                     </>
                 ) : (

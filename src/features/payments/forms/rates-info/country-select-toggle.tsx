@@ -12,18 +12,19 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'space-between',
             alignContent: 'center',
             cursor: 'pointer',
+            marginBottom: -10,
             '& .flag': {
                 margin: 'auto',
                 marginRight: 5,
                 marginLeft: 5,
-                fontSize: '0.9rem'
+                fontSize: '1.1rem'
             },
             '& .currency': {
                 marginRight: 5,
                 marginLeft: 5,
                 color: theme.colors.textPrimary,
                 fontWeight: 750,
-                fontSize: '0.8rem',
+                fontSize: '1.1rem',
                 margin: 'auto',
                 [theme.breakpoints.only('xs')]: {
                     marginRight: 1

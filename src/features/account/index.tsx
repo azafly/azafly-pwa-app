@@ -99,14 +99,15 @@ const UserAccount = () => {
                     <div className={classes.picture} style={style}>
                         {!user?.photoURL && <CameraAltIcon color={'action'} sx={{ fontSize: '4.5rem', color: 'white' }} />}
                     </div>
-                    {makeEditable && (
+                    {/* {makeEditable && (
+                    PICTURE IS NOT CHANGEABLE AT THE MOMENT
                         <>
                             <Typography color={'primary'} style={{ fontSize: '1.8rem', fontWeight: 600, marginTop: 10 }}>
                                 Change Picture
                             </Typography>
                             <span>Max 2MB</span>
                         </>
-                    )}
+                    )} */}
                     <Box onClick={() => setEditable(!makeEditable)} className={classes.edit} mt={1}>
                         <img src={EditIcon} alt={'edit'} />
                     </Box>

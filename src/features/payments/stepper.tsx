@@ -1,43 +1,31 @@
-import { useState } from 'react'
-import { motion, Variants } from 'framer-motion'
-import { Button, Stepper, Step, StepContent, StepLabel, Paper, Typography } from '@material-ui/core';
+import { useState } from 'react';
+import { Button, Stepper, Step, StepContent, StepLabel, Paper, Typography, Slide } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
-
-import { useStepperStyles } from './classes'
+import { PaymentInfo } from './forms/payment-info/payment-info';
+import { PriceInfo } from './forms/price-info';
 import { RatesInfo } from './forms/rates-info';
-import { FadeInWhenVisible } from 'components/animate-in-view'
-import { PayerInfo } from './forms/payer-info';
+import { usePaymentContext } from './context';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ReviewModal from './forms/review/review';
 
-function getSteps() {
-    return ['Payment Info', 'Payment method', 'Info for the receiver', 'Review & Confirm', 'Make payment']
-}
+import { useStepperStyles } from './classes';
 
-
-const containerVariants: Variants = {
-    enter: {
-        x: 0,
-        opacity: 1,
-        decelerate: 5
-    },
-    exit: { x: -100, opacity: 0 },
-};
-
+const getSteps = ['Payment Info', 'Payment method', 'Payment Information', 'Review & Confirm', 'Make payment'];
+export type Steps = typeof getSteps[number];
 
 function getStepContent(step: number) {
     switch (step) {
         case 0:
-            return <RatesInfo />
+            return <RatesInfo />;
         case 1:
-            return <PayerInfo />
+            return <PriceInfo />;
         case 2:
-            return <RatesInfo />
+            return <PaymentInfo />;
         case 3:
-            return <RatesInfo />
+            return <ReviewModal />;
         case 4:
-            return <RatesInfo />
-        case 5:
-            return <RatesInfo />
-
+            return <RatesInfo />;
         default:
             return <div> Unknown step</div>;
     }
@@ -46,66 +34,52 @@ function getStepContent(step: number) {
 export function VerticalPaymentStepper() {
     const classes = useStepperStyles();
     const [activeStep, setActiveStep] = useState(0);
-    const steps = getSteps();
+    const steps = getSteps;
+    const {
+        isErrorState,
+        rateInfoProps: { amount }
+    } = usePaymentContext();
 
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        !!amount && setActiveStep(prevActiveStep => prevActiveStep + 1);
     };
 
     const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const startAllOver = () => {
-        setActiveStep(0);
+        setActiveStep(prevActiveStep => prevActiveStep - 1);
     };
 
     return (
-        <FadeInWhenVisible>
-            <motion.div
-                variants={containerVariants}
-                initial="exit"
-                animate="enter"
-                exit="exit"
-                className={classes.root}>
-                <Stepper activeStep={activeStep} orientation="vertical">
+        <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+            <div className={classes.root}>
+                <Stepper activeStep={activeStep} orientation='vertical'>
                     {steps.map((label, index) => (
-                        <Step key={label} >
-                            <StepLabel className={classes.stepperLabel} onClick={() => setActiveStep(index)}>{label}</StepLabel>
+                        <Step key={label}>
+                            <StepLabel className={classes.stepperLabel} onClick={() => !!amount && setActiveStep(index)}>
+                                {label}
+                            </StepLabel>
                             <StepContent>
                                 {getStepContent(index)}
                                 <div className={classes.actionsContainer}>
-                                    <div>
-                                        <Button
-                                            disabled={activeStep === 0}
-                                            onClick={handleBack}
-                                            className={classes.button}
-                                        >
-                                            Back
-                  </Button>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={handleNext}
-                                            className={classes.button}
-                                        >
-                                            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                        </Button>
-                                    </div>
+                                    <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                                        Back
+                                    </Button>
+                                    <button className={classes.next} onClick={handleNext} disabled={isErrorState}>
+                                        <span>{activeStep === steps.length - 1 ? 'Finish' : 'Next'}</span> <NavigateNextIcon />
+                                    </button>
                                 </div>
                             </StepContent>
                         </Step>
                     ))}
                 </Stepper>
                 {activeStep === steps.length && (
-                    <Paper square elevation={0} className={classes.resetContainer}>
+                    <Paper square elevation={2} className={classes.resetContainer}>
                         <Typography>All steps completed - you&apos;re finished</Typography>
-                        <Button onClick={startAllOver} className={classes.button}>
-                            Reset
-          </Button>
+                        <Link to={'/dashboard'} className={classes.dashboard_link}>
+                            Go To Dashboard
+                        </Link>
                     </Paper>
                 )}
-            </motion.div>
-        </FadeInWhenVisible>
+            </div>
+        </Slide>
     );
 }

@@ -1,21 +1,17 @@
-import * as yup from 'yup';
-import {
-    Button,
-    Checkbox,
-    TextField,
-    IconButton,
-    InputAdornment
-} from '@material-ui/core';
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import { Button, Checkbox, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useHistory, useLocation } from 'react-router-dom';
-
-import { FacebookSvgComponent } from 'components/icons';
-import { useSignUpFormStyles } from './classes';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-// import { useFormStyles } from './classes';
+import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
+import * as yup from 'yup';
+
+import { addUser } from 'providers/auth/firebase/firebase';
+import { DefaultSnackbar } from 'components';
+import { FacebookSvgComponent } from 'components/icons';
+import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { useSignUpFormStyles } from './classes';
+import Logo from 'assets/google.svg';
 
 const formFieldArray = [
     {
@@ -36,10 +32,7 @@ const formFieldArray = [
 ];
 
 const validationSchema = yup.object().shape({
-    email: yup
-        .string()
-        .email('Enter a valid email')
-        .required('Email is required'),
+    email: yup.string().email('Enter a valid email').required('Email is required'),
     password: yup.string().required('Password is required'),
     confirmPassword: yup
         .string()
@@ -47,29 +40,27 @@ const validationSchema = yup.object().shape({
         .required('Required and Needs to match password'),
     firstName: yup.string().required('First Name is required'),
     lastName: yup.string().required('Last Name is required'),
-    terms: yup
-        .bool()
-        .oneOf([true], 'Accept Terms & Conditions is required')
-        .required('Accept Terms & Conditions is required')
+    terms: yup.bool().oneOf([true], 'Accept Terms & Conditions is required').required('Accept Terms & Conditions is required')
 });
 
 enum SignUpMethod {
     FACEBOOK = 'FACEBOOK',
     GOOGLE = 'GOOGLE',
-    EMAIL_AND_PASSWORD = '  EMAIL_AND_PASSWORD '
+    EMAIL_AND_PASSWORD = 'EMAIL_AND_PASSWORD '
 }
 
 export const SignUpForm = () => {
     const classes = useSignUpFormStyles();
+    const [isAuthStateLoading, setAuthLoadingState] = useState(false);
+    const [authError, setAuthError] = useState('');
+    const [openSnackBar, setOpenSnackBar] = useState(false);
+
     const {
-        authState: { isAuth },
         signupWithEmailPassword,
         signInWithFacebook,
-        signInWithGoogle
+        signInWithGoogle,
+        authState: { user }
     } = useFirebaseAuthContext();
-    const [showPassword, setShowPassword] = useState('password');
-    const handleClickShowPassword = () => setShowPassword('password');
-    const handleMouseDownPassword = () => setShowPassword('text');
 
     const formik = useFormik({
         initialValues: {
@@ -82,34 +73,62 @@ export const SignUpForm = () => {
         },
         validationSchema: validationSchema,
         onSubmit: values => {
-            handleSignUp(
-                SignUpMethod.EMAIL_AND_PASSWORD,
-                values.email,
-                values.password
-            );
+            localStorage.setItem('user', JSON.stringify(values));
+            handleSignUp(SignUpMethod.EMAIL_AND_PASSWORD, values.email, values.password, `${values.firstName} ${values.lastName}`);
         }
     });
 
     type FormValue = keyof typeof formik.initialValues;
 
     const history = useHistory();
-    const location = useLocation();
 
-    const handleSignUp = (
-        method: SignUpMethod,
-        email?: string,
-        password?: string
-    ) => {
-        const { from } = location.state || { from: { pathname: '/dashboard' } };
+    const handleSignUp = (method: SignUpMethod, email?: string, password?: string, displayName?: string) => {
+        const DASHBOARD = '/dashboard';
+        setAuthLoadingState(true);
         switch (method) {
             case SignUpMethod.FACEBOOK:
-                return;
+                return signInWithFacebook()
+                    .then(() => {
+                        setAuthLoadingState(false);
+                        history.replace(DASHBOARD);
+                    })
+                    .catch(({ message }: Record<string, string>): void => {
+                        setAuthLoadingState(false);
+                        setOpenSnackBar(true);
+                        setAuthError(message);
+                    });
             case SignUpMethod.GOOGLE:
-                return signInWithGoogle().then(() => history.replace(from));
+                return signInWithGoogle()
+                    .then(() => {
+                        setAuthLoadingState(false);
+                        history.replace(DASHBOARD);
+                    })
+                    .catch(({ message }: Record<string, string>): void => {
+                        setOpenSnackBar(true);
+                        setAuthError(message);
+                        setAuthLoadingState(false);
+                    });
             case SignUpMethod.EMAIL_AND_PASSWORD:
-                return signupWithEmailPassword(email, password).then(() =>
-                    history.replace(from)
-                );
+                if (!email || !password || !displayName || !user) return;
+                return signupWithEmailPassword({ email, password, displayName })
+                    .then(() => {
+                        setAuthLoadingState(false);
+                        history.replace(DASHBOARD);
+                        addUser({
+                            email,
+                            displayName,
+                            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                            firebaseId: user.uid,
+                            phone: null,
+                            emailVerified: false,
+                            photoURL: null
+                        });
+                    })
+                    .catch(({ message }: Record<string, string>): void => {
+                        setOpenSnackBar(true);
+                        setAuthLoadingState(false);
+                        setAuthError(message);
+                    });
             default:
                 return null;
         }
@@ -117,22 +136,14 @@ export const SignUpForm = () => {
 
     return (
         <div className={classes.signUpformRoot}>
+            <DefaultSnackbar open={openSnackBar} handleClose={() => setOpenSnackBar(false)} severity={'error'} title={'Error'} info={authError} />
             <div className={classes.form_container}>
-                <div
-                    className={`${classes.facebook}`}
-                    onClick={() => handleSignUp(SignUpMethod.FACEBOOK)}
-                >
+                <div className={`${classes.facebook}`} onClick={() => handleSignUp(SignUpMethod.FACEBOOK)}>
                     <FacebookSvgComponent />
                     <div className={'text'}>Facebook</div>
                 </div>
-                <div
-                    className={` ${classes.google}`}
-                    onClick={() => handleSignUp(SignUpMethod.GOOGLE)}
-                >
-                    <img
-                        className='google-icon-svg'
-                        src='https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg'
-                    />
+                <div className={` ${classes.google}`} onClick={() => handleSignUp(SignUpMethod.GOOGLE)}>
+                    <img className='google-icon-svg' src={Logo} alt={'goggle-logo'} />
                     <div className={'text'}>Google</div>
                 </div>
                 <div className={`${classes.divider}`}>
@@ -151,14 +162,8 @@ export const SignUpForm = () => {
                             type='text'
                             value={formik.values.firstName}
                             onChange={formik.handleChange}
-                            error={
-                                formik.touched.firstName &&
-                                Boolean(formik.errors.firstName)
-                            }
-                            helperText={
-                                formik.touched.firstName &&
-                                formik.errors.firstName
-                            }
+                            error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                            helperText={formik.touched.firstName && formik.errors.firstName}
                         />
                         <TextField
                             fullWidth
@@ -170,14 +175,8 @@ export const SignUpForm = () => {
                             className={`lastname`}
                             value={formik.values.lastName}
                             onChange={formik.handleChange}
-                            error={
-                                formik.touched.lastName &&
-                                Boolean(formik.errors.lastName)
-                            }
-                            helperText={
-                                formik.touched.lastName &&
-                                formik.errors.lastName
-                            }
+                            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                            helperText={formik.touched.lastName && formik.errors.lastName}
                         />
                     </div>
                     <div className={` ${classes.others}`}>
@@ -187,75 +186,28 @@ export const SignUpForm = () => {
                                     fullWidth
                                     id={name}
                                     name={name}
-                                    InputProps={{
-                                        endAdornment: name !== 'email' && (
-                                            <InputAdornment position='end'>
-                                                <IconButton
-                                                    aria-label='toggle password visibility'
-                                                    onClick={
-                                                        handleClickShowPassword
-                                                    }
-                                                    onMouseDown={
-                                                        handleMouseDownPassword
-                                                    }
-                                                >
-                                                    {showPassword === 'text' ? (
-                                                        <VisibilityIcon />
-                                                    ) : (
-                                                        <VisibilityOffIcon />
-                                                    )}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        )
-                                    }}
                                     label={placeholder}
-                                    type={
-                                        name === 'email' ? type : showPassword
-                                    }
+                                    type={type}
                                     key={name}
                                     value={formik.values[name as FormValue]}
                                     onChange={formik.handleChange}
-                                    error={
-                                        formik.touched[name as FormValue] &&
-                                        Boolean(
-                                            formik.errors[name as FormValue]
-                                        )
-                                    }
-                                    helperText={
-                                        formik.touched[name as FormValue] &&
-                                        formik.errors[name as FormValue]
-                                    }
+                                    error={formik.touched[name as FormValue] && Boolean(formik.errors[name as FormValue])}
+                                    helperText={formik.touched[name as FormValue] && formik.errors[name as FormValue]}
                                 />
                             );
                         })}
                     </div>
                     <div className={classes.terms}>
-                        <Checkbox
-                            id='terms'
-                            name='terms'
-                            onChange={formik.handleChange}
-                        />
+                        <Checkbox id='terms' name='terms' onChange={formik.handleChange} />
                         <p>
-                            I agree to the{' '}
-                            <span className={classes.termsLink}>terms</span> and{' '}
-                            <span className={classes.termsLink}>
-                                conditions
-                            </span>{' '}
+                            I agree to the <span className={classes.termsLink}>terms</span> and <span className={classes.termsLink}>conditions</span>{' '}
                         </p>
                     </div>
-                    <p
-                        className={classes.termsLink}
-                        style={{ color: 'red', fontSize: '0.7rem' }}
-                    >
+                    <p className={classes.termsLink} style={{ color: 'red', fontSize: '0.7rem' }}>
                         {formik.touched.terms && formik.errors.terms}
                     </p>
-                    <Button
-                        color='primary'
-                        variant='contained'
-                        fullWidth
-                        type='submit'
-                    >
-                        Submit
+                    <Button color='primary' variant='contained' fullWidth type='submit'>
+                        {isAuthStateLoading ? <ThreeDots /> : ' Submit'}
                     </Button>
                 </form>
             </div>

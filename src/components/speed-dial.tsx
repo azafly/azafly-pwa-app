@@ -1,4 +1,8 @@
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import {
+    makeStyles,
+    createStyles,
+    Theme
+} from '@material-ui/core/styles';
 import { Hidden } from '@material-ui/core';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
@@ -7,35 +11,41 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ShareIcon from '@material-ui/icons/Share';
 import { ChatSvgComponent as Chat } from './icons/chat';
 
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         speedDial: {
             position: 'fixed',
-            bottom: 170,
-            right: -30,
-            '& .MuiSpeedDialAction-tooltipPlacementLeft .MuiSpeedDialAction-staticTooltipLabel': {
-                minWidth: 220,
-                paddingLeft: 20,
-                paddingRight: 20,
-                fontWeight: 600,
-                color: 'white',
-                marginBottom: 10,
-                borderRadius: 80,
-                background: theme.colors.mainGreen
-            }
-        },
-
-    }),
+            bottom: 120,
+            right: -15,
+            '& .MuiSpeedDialAction-tooltipPlacementLeft .MuiSpeedDialAction-staticTooltipLabel':
+                {
+                    width: 250,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    fontWeight: 600,
+                    color: 'white',
+                    marginBottom: 10,
+                    borderRadius: 80,
+                    background: theme.colors.base
+                }
+        }
+    })
 );
 
 const defaultActions = [
-    { icon: <Chat color="primary" />, name: 'Chat with us' },
-    { icon: <AttachMoneyIcon color="primary" />, name: 'Make a new Payment' },
-    { icon: <ShareIcon color="primary" />, name: 'Share with a friend' },
+    { icon: <Chat color='primary' />, name: 'Chat with us' },
+    {
+        icon: <AttachMoneyIcon color='primary' />,
+        name: 'Make a new Payment'
+    },
+    {
+        icon: <ShareIcon color='primary' />,
+        name: 'Share with a friend'
+    }
 ];
 
-type ToolTipActionPlacement = 'bottom-end'
+type ToolTipActionPlacement =
+    | 'bottom-end'
     | 'bottom-start'
     | 'bottom'
     | 'left-end'
@@ -46,25 +56,31 @@ type ToolTipActionPlacement = 'bottom-end'
     | 'right'
     | 'top-end'
     | 'top-start'
-    | 'top'
+    | 'top';
 interface SpeedDialTooltipProps {
-    actions?: typeof defaultActions
-    handleSpeedDialVisibility: () => void
-    handleSpeedDialClose: () => void
-    hidden: boolean
-    openSpeedDial: boolean
-    handleOpenSpeedDial: () => void
-    direction?: ToolTipActionPlacement
+    actions?: typeof defaultActions;
+    handleSpeedDialVisibility: () => void;
+    handleSpeedDialClose: () => void;
+    hidden: boolean;
+    openSpeedDial: boolean;
+    handleOpenSpeedDial: () => void;
+    direction?: ToolTipActionPlacement;
 }
 
-export function SpeedDialTooltip({ actions = defaultActions, direction = 'right', handleSpeedDialClose, hidden, openSpeedDial, handleOpenSpeedDial }: SpeedDialTooltipProps) {
+export function SpeedDialTooltip({
+    actions = defaultActions,
+    direction = 'right',
+    handleSpeedDialClose,
+    hidden,
+    openSpeedDial,
+    handleOpenSpeedDial
+}: SpeedDialTooltipProps) {
     const classes = useStyles();
-
 
     return (
         <Hidden smDown>
             <SpeedDial
-                ariaLabel="open speed dial"
+                ariaLabel='open speed dial'
                 className={classes.speedDial}
                 hidden={hidden}
                 icon={<SpeedDialIcon />}
@@ -72,7 +88,7 @@ export function SpeedDialTooltip({ actions = defaultActions, direction = 'right'
                 onOpen={handleOpenSpeedDial}
                 open={openSpeedDial}
             >
-                {actions.map((action) => (
+                {actions.map(action => (
                     <SpeedDialAction
                         key={action.name}
                         icon={action.icon}
@@ -84,6 +100,5 @@ export function SpeedDialTooltip({ actions = defaultActions, direction = 'right'
                 ))}
             </SpeedDial>
         </Hidden>
-
     );
 }

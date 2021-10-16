@@ -1,12 +1,15 @@
-import Dashboard from 'features/user-dasboard/dashboard'
+import { lazy, Suspense } from 'react';
 
-import { useLocation } from 'react-router-dom';
+import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+
+const LazyDashBoard = lazy(() => import('features/user-dashboard/dashboard'));
 
 const UserDashboard = () => {
-    const location = useLocation()
-    return <>
-        <Dashboard key={location.key} />
-    </>
-}
+    return (
+        <Suspense fallback={<ThreeDots />}>
+            <LazyDashBoard />
+        </Suspense>
+    );
+};
 
-export default UserDashboard
+export default UserDashboard;

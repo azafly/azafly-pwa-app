@@ -1,8 +1,21 @@
-import Dexie from 'dexie';
+import Dexie, { Table } from 'dexie';
 
-const db = new Dexie('myDb');
-db.version(1).stores({
-   user: `name, age`
-});
+interface User {
+    isAuth: boolean;
+    id: string;
+}
 
-export default db;
+class UserDB extends Dexie {
+    user!: Table<User>;
+
+    constructor() {
+        super('userDB');
+        this.version(2).stores({
+            user: `
+        id,
+        isAuth`
+        });
+    }
+}
+
+export const db = new UserDB();

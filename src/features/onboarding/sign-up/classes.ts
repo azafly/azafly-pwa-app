@@ -1,16 +1,14 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
 
 export const useSignUpFormStyles = makeStyles((theme: Theme) =>
     createStyles({
-        signUpformRoot: {
-
-        },
+        signUpformRoot: {},
         heading: {
             fontSize: 25,
             fontWeight: 900,
             textAlign: 'center',
             '& span': {
-                borderBottom: '2px solid green',
+                borderBottom: '2px solid green'
             },
             '& a': {
                 cursor: 'pointer',
@@ -20,12 +18,11 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
         form_container: {
             display: 'flex',
             maxWidth: 600,
-            margin: 50,
             marginTop: 10,
             flexDirection: 'column',
             justifyContent: 'center',
             [theme.breakpoints.down('md')]: {
-                margin: 0,
+                margin: 0
             }
         },
         name: {
@@ -34,7 +31,7 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
             justifyContent: 'space-between',
             background: 'none !important',
             '& .MuiInput-formControl::before': {
-                opacity: 0.7,
+                opacity: 0.7
             },
             '& .MuiFormLabel-root': {
                 opacity: 0.7,
@@ -42,17 +39,17 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
                 fontSize: '0.8rem',
                 [theme.breakpoints.down('md')]: {
                     marginLeft: 5,
-                    fontSize: '0.7rem',
+                    fontSize: '0.7rem'
                 }
             },
-            [theme.breakpoints.down("sm")]: {
-                flexDirection: 'column',
+            [theme.breakpoints.down('sm')]: {
+                flexDirection: 'column'
             },
             '& .lastname': {
-                [theme.breakpoints.up("md")]: {
+                [theme.breakpoints.up('md')]: {
                     marginLeft: 10,
-                    width: 'calc(50% -5px)',
-                },
+                    width: 'calc(50% -5px)'
+                }
             }
         },
         others: {
@@ -69,9 +66,9 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
                 fontSize: '0.8rem',
                 [theme.breakpoints.down('md')]: {
                     marginLeft: 5,
-                    fontSize: '0.7rem',
+                    fontSize: '0.7rem'
                 }
-            },
+            }
         },
         input: {
             borderRadius: 4,
@@ -79,13 +76,13 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)',
             background: '#fff !important',
             border: 'none',
-            margin: '10px 0px',
+            margin: '10px 0px'
         },
         terms: {
             display: 'flex',
             fontSize: 12,
             fontWeight: 450,
-            color: '#77838F',
+            color: '#77838F'
         },
         checkBox: {
             width: 20,
@@ -104,12 +101,11 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
                 backgroundColor: 'rgb(212, 227, 235)',
                 border: 'medium none',
                 height: 1
-
             },
             '& .or': {
                 color: 'rgb(175, 199, 209)',
                 fontWeight: 400,
-                margin: '0px 10px',
+                margin: '0px 10px'
             }
         },
         facebook: {
@@ -135,8 +131,7 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
             },
             '& .text': {
                 margin: 'auto',
-                textAlign: 'right',
-
+                textAlign: 'right'
             }
         },
         google: {
@@ -161,17 +156,15 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
             },
             '& .text': {
                 margin: 'auto'
-
             }
         },
         termsLink: {
             color: theme.palette.primary.main,
             fontWeight: 600,
             cursor: 'pointer'
-
         },
         submit: {
-            background: theme.colors.mainGreen,
+            background: theme.colors.base,
             borderRadius: 6,
             textAlign: 'center',
             cursor: 'pointer',
@@ -182,7 +175,7 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
             '& button': {
                 color: 'white',
                 fontWeight: 500,
-                textTransform: 'none',
+                textTransform: 'none'
             }
         },
         '& .lastname': {
@@ -193,28 +186,24 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
         },
         '& label': {
             paddingLeft: 10
-        },
-    }),
-
+        }
+    })
 );
 
 export const useOnboardingMainStyles = makeStyles((theme: Theme) =>
     createStyles({
-        onboarding: {
-
-        },
+        onboarding: {},
         signup_container: {
             overflowX: 'hidden',
             position: 'relative',
             display: 'flex',
             width: '100vw',
             height: '100vh',
-            background: theme.palette.background.default,
-
+            background: theme.palette.background.default
         },
         alert: {
             margin: 15,
-            overflowWrap: 'break-word',
+            overflowWrap: 'break-word'
         },
         signupBGIllustration1: {
             position: 'absolute',
@@ -228,11 +217,10 @@ export const useOnboardingMainStyles = makeStyles((theme: Theme) =>
             right: -90,
             opacity: 0.4,
             pointerEvents: 'none',
-            [theme.breakpoints.down("sm")]: {
+            [theme.breakpoints.down('sm')]: {
                 top: -64,
-                left: 0,
-            },
+                left: 0
+            }
         }
-    }),
-
+    })
 );

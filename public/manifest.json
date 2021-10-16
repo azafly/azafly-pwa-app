@@ -3,10 +3,10 @@
   "background_color": "#4990A4",
   "display": "standalone",
   "scope": "/",
-  "start_url": "/dashboard",
-  "name": "Azafly",
-  "short_name": "Azafly",
-  "description": "Emmigrate and pay international fees",
+  "start_url": "/",
+  "name": "Lucqax",
+  "short_name": "Lucqax",
+  "description": "Pay your most important bills Abroad from Africa",
   "icons": [
     {
       "src": "manifest/icon-192x192.png",
@@ -27,6 +27,12 @@
       "src": "manifest/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "manifest/maskable_icon.png",
+      "sizes": "1494x1494",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

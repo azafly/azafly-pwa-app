@@ -1,7 +1,7 @@
 {
     "files.autoSave": "onFocusChange",
     "editor.formatOnSave": true,
-    "eslint.options": {
-        "configFile": "/Users/temporaryadmin/Documents/Personal/pick-safe/pick-safe-app/frontend/.eslintrc.js"
-    }
+    "cSpell.words": [
+        "signin"
+    ],
 }

@@ -12,6 +12,10 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  bpchar: any;
+  json: any;
+  numeric: any;
+  timestamp: any;
   timestamptz: any;
   uuid: any;
 };
@@ -298,11 +302,709 @@ export enum Accounts_Update_Column {
   UserId = 'user_id'
 }
 
+
+/** Boolean expression to compare columns of type "bpchar". All fields are combined with logical 'AND'. */
+export type Bpchar_Comparison_Exp = {
+  readonly _eq?: Maybe<Scalars['bpchar']>;
+  readonly _gt?: Maybe<Scalars['bpchar']>;
+  readonly _gte?: Maybe<Scalars['bpchar']>;
+  /** does the column match the given case-insensitive pattern */
+  readonly _ilike?: Maybe<Scalars['bpchar']>;
+  readonly _in?: Maybe<ReadonlyArray<Scalars['bpchar']>>;
+  /** does the column match the given POSIX regular expression, case insensitive */
+  readonly _iregex?: Maybe<Scalars['bpchar']>;
+  readonly _is_null?: Maybe<Scalars['Boolean']>;
+  /** does the column match the given pattern */
+  readonly _like?: Maybe<Scalars['bpchar']>;
+  readonly _lt?: Maybe<Scalars['bpchar']>;
+  readonly _lte?: Maybe<Scalars['bpchar']>;
+  readonly _neq?: Maybe<Scalars['bpchar']>;
+  /** does the column NOT match the given case-insensitive pattern */
+  readonly _nilike?: Maybe<Scalars['bpchar']>;
+  readonly _nin?: Maybe<ReadonlyArray<Scalars['bpchar']>>;
+  /** does the column NOT match the given POSIX regular expression, case insensitive */
+  readonly _niregex?: Maybe<Scalars['bpchar']>;
+  /** does the column NOT match the given pattern */
+  readonly _nlike?: Maybe<Scalars['bpchar']>;
+  /** does the column NOT match the given POSIX regular expression, case sensitive */
+  readonly _nregex?: Maybe<Scalars['bpchar']>;
+  /** does the column NOT match the given SQL regular expression */
+  readonly _nsimilar?: Maybe<Scalars['bpchar']>;
+  /** does the column match the given POSIX regular expression, case sensitive */
+  readonly _regex?: Maybe<Scalars['bpchar']>;
+  /** does the column match the given SQL regular expression */
+  readonly _similar?: Maybe<Scalars['bpchar']>;
+};
+
+/** columns and relationships of "cities" */
+export type Cities = {
+  readonly __typename?: 'cities';
+  readonly active: Scalars['Boolean'];
+  readonly city_id: Scalars['Int'];
+  readonly country_id?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id: Scalars['uuid'];
+  readonly name?: Maybe<Scalars['String']>;
+  readonly state_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregated selection of "cities" */
+export type Cities_Aggregate = {
+  readonly __typename?: 'cities_aggregate';
+  readonly aggregate?: Maybe<Cities_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<Cities>;
+};
+
+/** aggregate fields of "cities" */
+export type Cities_Aggregate_Fields = {
+  readonly __typename?: 'cities_aggregate_fields';
+  readonly avg?: Maybe<Cities_Avg_Fields>;
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<Cities_Max_Fields>;
+  readonly min?: Maybe<Cities_Min_Fields>;
+  readonly stddev?: Maybe<Cities_Stddev_Fields>;
+  readonly stddev_pop?: Maybe<Cities_Stddev_Pop_Fields>;
+  readonly stddev_samp?: Maybe<Cities_Stddev_Samp_Fields>;
+  readonly sum?: Maybe<Cities_Sum_Fields>;
+  readonly var_pop?: Maybe<Cities_Var_Pop_Fields>;
+  readonly var_samp?: Maybe<Cities_Var_Samp_Fields>;
+  readonly variance?: Maybe<Cities_Variance_Fields>;
+};
+
+
+/** aggregate fields of "cities" */
+export type Cities_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<Cities_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Cities_Avg_Fields = {
+  readonly __typename?: 'cities_avg_fields';
+  readonly city_id?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "cities". All fields are combined with a logical 'AND'. */
+export type Cities_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<Cities_Bool_Exp>>;
+  readonly _not?: Maybe<Cities_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<Cities_Bool_Exp>>;
+  readonly active?: Maybe<Boolean_Comparison_Exp>;
+  readonly city_id?: Maybe<Int_Comparison_Exp>;
+  readonly country_id?: Maybe<Uuid_Comparison_Exp>;
+  readonly created_at?: Maybe<Timestamp_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly name?: Maybe<String_Comparison_Exp>;
+  readonly state_id?: Maybe<Uuid_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamp_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "cities" */
+export enum Cities_Constraint {
+  /** unique or primary key constraint */
+  CitiesPkey = 'cities_pkey'
+}
+
+/** input type for incrementing numeric columns in table "cities" */
+export type Cities_Inc_Input = {
+  readonly city_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "cities" */
+export type Cities_Insert_Input = {
+  readonly active?: Maybe<Scalars['Boolean']>;
+  readonly city_id?: Maybe<Scalars['Int']>;
+  readonly country_id?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly state_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate max on columns */
+export type Cities_Max_Fields = {
+  readonly __typename?: 'cities_max_fields';
+  readonly city_id?: Maybe<Scalars['Int']>;
+  readonly country_id?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly state_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate min on columns */
+export type Cities_Min_Fields = {
+  readonly __typename?: 'cities_min_fields';
+  readonly city_id?: Maybe<Scalars['Int']>;
+  readonly country_id?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly state_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** response of any mutation on the table "cities" */
+export type Cities_Mutation_Response = {
+  readonly __typename?: 'cities_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<Cities>;
+};
+
+/** on conflict condition type for table "cities" */
+export type Cities_On_Conflict = {
+  readonly constraint: Cities_Constraint;
+  readonly update_columns?: ReadonlyArray<Cities_Update_Column>;
+  readonly where?: Maybe<Cities_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "cities". */
+export type Cities_Order_By = {
+  readonly active?: Maybe<Order_By>;
+  readonly city_id?: Maybe<Order_By>;
+  readonly country_id?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly name?: Maybe<Order_By>;
+  readonly state_id?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: cities */
+export type Cities_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "cities" */
+export enum Cities_Select_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  CityId = 'city_id',
+  /** column name */
+  CountryId = 'country_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  StateId = 'state_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "cities" */
+export type Cities_Set_Input = {
+  readonly active?: Maybe<Scalars['Boolean']>;
+  readonly city_id?: Maybe<Scalars['Int']>;
+  readonly country_id?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly state_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate stddev on columns */
+export type Cities_Stddev_Fields = {
+  readonly __typename?: 'cities_stddev_fields';
+  readonly city_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Cities_Stddev_Pop_Fields = {
+  readonly __typename?: 'cities_stddev_pop_fields';
+  readonly city_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Cities_Stddev_Samp_Fields = {
+  readonly __typename?: 'cities_stddev_samp_fields';
+  readonly city_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Cities_Sum_Fields = {
+  readonly __typename?: 'cities_sum_fields';
+  readonly city_id?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "cities" */
+export enum Cities_Update_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  CityId = 'city_id',
+  /** column name */
+  CountryId = 'country_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  StateId = 'state_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Cities_Var_Pop_Fields = {
+  readonly __typename?: 'cities_var_pop_fields';
+  readonly city_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Cities_Var_Samp_Fields = {
+  readonly __typename?: 'cities_var_samp_fields';
+  readonly city_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Cities_Variance_Fields = {
+  readonly __typename?: 'cities_variance_fields';
+  readonly city_id?: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "countries" */
+export type Countries = {
+  readonly __typename?: 'countries';
+  readonly active: Scalars['Boolean'];
+  readonly code: Scalars['bpchar'];
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id: Scalars['uuid'];
+  readonly latitude?: Maybe<Scalars['numeric']>;
+  readonly longitude?: Maybe<Scalars['numeric']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly phone_code?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregated selection of "countries" */
+export type Countries_Aggregate = {
+  readonly __typename?: 'countries_aggregate';
+  readonly aggregate?: Maybe<Countries_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<Countries>;
+};
+
+/** aggregate fields of "countries" */
+export type Countries_Aggregate_Fields = {
+  readonly __typename?: 'countries_aggregate_fields';
+  readonly avg?: Maybe<Countries_Avg_Fields>;
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<Countries_Max_Fields>;
+  readonly min?: Maybe<Countries_Min_Fields>;
+  readonly stddev?: Maybe<Countries_Stddev_Fields>;
+  readonly stddev_pop?: Maybe<Countries_Stddev_Pop_Fields>;
+  readonly stddev_samp?: Maybe<Countries_Stddev_Samp_Fields>;
+  readonly sum?: Maybe<Countries_Sum_Fields>;
+  readonly var_pop?: Maybe<Countries_Var_Pop_Fields>;
+  readonly var_samp?: Maybe<Countries_Var_Samp_Fields>;
+  readonly variance?: Maybe<Countries_Variance_Fields>;
+};
+
+
+/** aggregate fields of "countries" */
+export type Countries_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<Countries_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Countries_Avg_Fields = {
+  readonly __typename?: 'countries_avg_fields';
+  readonly latitude?: Maybe<Scalars['Float']>;
+  readonly longitude?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "countries". All fields are combined with a logical 'AND'. */
+export type Countries_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<Countries_Bool_Exp>>;
+  readonly _not?: Maybe<Countries_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<Countries_Bool_Exp>>;
+  readonly active?: Maybe<Boolean_Comparison_Exp>;
+  readonly code?: Maybe<Bpchar_Comparison_Exp>;
+  readonly created_at?: Maybe<Timestamp_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly latitude?: Maybe<Numeric_Comparison_Exp>;
+  readonly longitude?: Maybe<Numeric_Comparison_Exp>;
+  readonly name?: Maybe<String_Comparison_Exp>;
+  readonly phone_code?: Maybe<String_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamp_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "countries" */
+export enum Countries_Constraint {
+  /** unique or primary key constraint */
+  CountriesPkey = 'countries_pkey',
+  /** unique or primary key constraint */
+  UidxCountriesCode = 'uidx_countries_code'
+}
+
+/** input type for incrementing numeric columns in table "countries" */
+export type Countries_Inc_Input = {
+  readonly latitude?: Maybe<Scalars['numeric']>;
+  readonly longitude?: Maybe<Scalars['numeric']>;
+};
+
+/** input type for inserting data into table "countries" */
+export type Countries_Insert_Input = {
+  readonly active?: Maybe<Scalars['Boolean']>;
+  readonly code?: Maybe<Scalars['bpchar']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly latitude?: Maybe<Scalars['numeric']>;
+  readonly longitude?: Maybe<Scalars['numeric']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly phone_code?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate max on columns */
+export type Countries_Max_Fields = {
+  readonly __typename?: 'countries_max_fields';
+  readonly code?: Maybe<Scalars['bpchar']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly latitude?: Maybe<Scalars['numeric']>;
+  readonly longitude?: Maybe<Scalars['numeric']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly phone_code?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate min on columns */
+export type Countries_Min_Fields = {
+  readonly __typename?: 'countries_min_fields';
+  readonly code?: Maybe<Scalars['bpchar']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly latitude?: Maybe<Scalars['numeric']>;
+  readonly longitude?: Maybe<Scalars['numeric']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly phone_code?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** response of any mutation on the table "countries" */
+export type Countries_Mutation_Response = {
+  readonly __typename?: 'countries_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<Countries>;
+};
+
+/** on conflict condition type for table "countries" */
+export type Countries_On_Conflict = {
+  readonly constraint: Countries_Constraint;
+  readonly update_columns?: ReadonlyArray<Countries_Update_Column>;
+  readonly where?: Maybe<Countries_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "countries". */
+export type Countries_Order_By = {
+  readonly active?: Maybe<Order_By>;
+  readonly code?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly latitude?: Maybe<Order_By>;
+  readonly longitude?: Maybe<Order_By>;
+  readonly name?: Maybe<Order_By>;
+  readonly phone_code?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: countries */
+export type Countries_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "countries" */
+export enum Countries_Select_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Latitude = 'latitude',
+  /** column name */
+  Longitude = 'longitude',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  PhoneCode = 'phone_code',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "countries" */
+export type Countries_Set_Input = {
+  readonly active?: Maybe<Scalars['Boolean']>;
+  readonly code?: Maybe<Scalars['bpchar']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly latitude?: Maybe<Scalars['numeric']>;
+  readonly longitude?: Maybe<Scalars['numeric']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly phone_code?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate stddev on columns */
+export type Countries_Stddev_Fields = {
+  readonly __typename?: 'countries_stddev_fields';
+  readonly latitude?: Maybe<Scalars['Float']>;
+  readonly longitude?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Countries_Stddev_Pop_Fields = {
+  readonly __typename?: 'countries_stddev_pop_fields';
+  readonly latitude?: Maybe<Scalars['Float']>;
+  readonly longitude?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Countries_Stddev_Samp_Fields = {
+  readonly __typename?: 'countries_stddev_samp_fields';
+  readonly latitude?: Maybe<Scalars['Float']>;
+  readonly longitude?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Countries_Sum_Fields = {
+  readonly __typename?: 'countries_sum_fields';
+  readonly latitude?: Maybe<Scalars['numeric']>;
+  readonly longitude?: Maybe<Scalars['numeric']>;
+};
+
+/** update columns of table "countries" */
+export enum Countries_Update_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Latitude = 'latitude',
+  /** column name */
+  Longitude = 'longitude',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  PhoneCode = 'phone_code',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Countries_Var_Pop_Fields = {
+  readonly __typename?: 'countries_var_pop_fields';
+  readonly latitude?: Maybe<Scalars['Float']>;
+  readonly longitude?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Countries_Var_Samp_Fields = {
+  readonly __typename?: 'countries_var_samp_fields';
+  readonly latitude?: Maybe<Scalars['Float']>;
+  readonly longitude?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Countries_Variance_Fields = {
+  readonly __typename?: 'countries_variance_fields';
+  readonly latitude?: Maybe<Scalars['Float']>;
+  readonly longitude?: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "currencies" */
+export type Currencies = {
+  readonly __typename?: 'currencies';
+  readonly active: Scalars['Boolean'];
+  readonly code: Scalars['String'];
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id: Scalars['uuid'];
+  readonly name: Scalars['String'];
+  readonly symbol: Scalars['String'];
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregated selection of "currencies" */
+export type Currencies_Aggregate = {
+  readonly __typename?: 'currencies_aggregate';
+  readonly aggregate?: Maybe<Currencies_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<Currencies>;
+};
+
+/** aggregate fields of "currencies" */
+export type Currencies_Aggregate_Fields = {
+  readonly __typename?: 'currencies_aggregate_fields';
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<Currencies_Max_Fields>;
+  readonly min?: Maybe<Currencies_Min_Fields>;
+};
+
+
+/** aggregate fields of "currencies" */
+export type Currencies_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<Currencies_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "currencies". All fields are combined with a logical 'AND'. */
+export type Currencies_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<Currencies_Bool_Exp>>;
+  readonly _not?: Maybe<Currencies_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<Currencies_Bool_Exp>>;
+  readonly active?: Maybe<Boolean_Comparison_Exp>;
+  readonly code?: Maybe<String_Comparison_Exp>;
+  readonly created_at?: Maybe<Timestamp_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly name?: Maybe<String_Comparison_Exp>;
+  readonly symbol?: Maybe<String_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamp_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "currencies" */
+export enum Currencies_Constraint {
+  /** unique or primary key constraint */
+  CurrenciesPkey = 'currencies_pkey',
+  /** unique or primary key constraint */
+  UidxCurrenciesCode = 'uidx_currencies_code'
+}
+
+/** input type for inserting data into table "currencies" */
+export type Currencies_Insert_Input = {
+  readonly active?: Maybe<Scalars['Boolean']>;
+  readonly code?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly symbol?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate max on columns */
+export type Currencies_Max_Fields = {
+  readonly __typename?: 'currencies_max_fields';
+  readonly code?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly symbol?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate min on columns */
+export type Currencies_Min_Fields = {
+  readonly __typename?: 'currencies_min_fields';
+  readonly code?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly symbol?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** response of any mutation on the table "currencies" */
+export type Currencies_Mutation_Response = {
+  readonly __typename?: 'currencies_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<Currencies>;
+};
+
+/** on conflict condition type for table "currencies" */
+export type Currencies_On_Conflict = {
+  readonly constraint: Currencies_Constraint;
+  readonly update_columns?: ReadonlyArray<Currencies_Update_Column>;
+  readonly where?: Maybe<Currencies_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "currencies". */
+export type Currencies_Order_By = {
+  readonly active?: Maybe<Order_By>;
+  readonly code?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly name?: Maybe<Order_By>;
+  readonly symbol?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: currencies */
+export type Currencies_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "currencies" */
+export enum Currencies_Select_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Symbol = 'symbol',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "currencies" */
+export type Currencies_Set_Input = {
+  readonly active?: Maybe<Scalars['Boolean']>;
+  readonly code?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly symbol?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** update columns of table "currencies" */
+export enum Currencies_Update_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Symbol = 'symbol',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
 /** columns and relationships of "feeds" */
 export type Feeds = {
   readonly __typename?: 'feeds';
-  /** An object relationship */
-  readonly author?: Maybe<User>;
   readonly author_id: Scalars['uuid'];
   readonly body: Scalars['String'];
   readonly created_at: Scalars['timestamptz'];
@@ -337,7 +1039,6 @@ export type Feeds_Bool_Exp = {
   readonly _and?: Maybe<ReadonlyArray<Feeds_Bool_Exp>>;
   readonly _not?: Maybe<Feeds_Bool_Exp>;
   readonly _or?: Maybe<ReadonlyArray<Feeds_Bool_Exp>>;
-  readonly author?: Maybe<User_Bool_Exp>;
   readonly author_id?: Maybe<Uuid_Comparison_Exp>;
   readonly body?: Maybe<String_Comparison_Exp>;
   readonly created_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -353,7 +1054,6 @@ export enum Feeds_Constraint {
 
 /** input type for inserting data into table "feeds" */
 export type Feeds_Insert_Input = {
-  readonly author?: Maybe<User_Obj_Rel_Insert_Input>;
   readonly author_id?: Maybe<Scalars['uuid']>;
   readonly body?: Maybe<Scalars['String']>;
   readonly created_at?: Maybe<Scalars['timestamptz']>;
@@ -399,7 +1099,6 @@ export type Feeds_On_Conflict = {
 
 /** Ordering options when selecting data from "feeds". */
 export type Feeds_Order_By = {
-  readonly author?: Maybe<User_Order_By>;
   readonly author_id?: Maybe<Order_By>;
   readonly body?: Maybe<Order_By>;
   readonly created_at?: Maybe<Order_By>;
@@ -449,6 +1148,20 @@ export enum Feeds_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+
+/** Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'. */
+export type Json_Comparison_Exp = {
+  readonly _eq?: Maybe<Scalars['json']>;
+  readonly _gt?: Maybe<Scalars['json']>;
+  readonly _gte?: Maybe<Scalars['json']>;
+  readonly _in?: Maybe<ReadonlyArray<Scalars['json']>>;
+  readonly _is_null?: Maybe<Scalars['Boolean']>;
+  readonly _lt?: Maybe<Scalars['json']>;
+  readonly _lte?: Maybe<Scalars['json']>;
+  readonly _neq?: Maybe<Scalars['json']>;
+  readonly _nin?: Maybe<ReadonlyArray<Scalars['json']>>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   readonly __typename?: 'mutation_root';
@@ -457,10 +1170,26 @@ export type Mutation_Root = {
   readonly delete_accounts?: Maybe<Accounts_Mutation_Response>;
   /** delete single row from the table: "accounts" */
   readonly delete_accounts_by_pk?: Maybe<Accounts>;
+  /** delete data from the table: "cities" */
+  readonly delete_cities?: Maybe<Cities_Mutation_Response>;
+  /** delete single row from the table: "cities" */
+  readonly delete_cities_by_pk?: Maybe<Cities>;
+  /** delete data from the table: "countries" */
+  readonly delete_countries?: Maybe<Countries_Mutation_Response>;
+  /** delete single row from the table: "countries" */
+  readonly delete_countries_by_pk?: Maybe<Countries>;
+  /** delete data from the table: "currencies" */
+  readonly delete_currencies?: Maybe<Currencies_Mutation_Response>;
+  /** delete single row from the table: "currencies" */
+  readonly delete_currencies_by_pk?: Maybe<Currencies>;
   /** delete data from the table: "feeds" */
   readonly delete_feeds?: Maybe<Feeds_Mutation_Response>;
   /** delete single row from the table: "feeds" */
   readonly delete_feeds_by_pk?: Maybe<Feeds>;
+  /** delete data from the table: "payment_offer" */
+  readonly delete_payment_offer?: Maybe<Payment_Offer_Mutation_Response>;
+  /** delete single row from the table: "payment_offer" */
+  readonly delete_payment_offer_by_pk?: Maybe<Payment_Offer>;
   /** delete data from the table: "service" */
   readonly delete_service?: Maybe<Service_Mutation_Response>;
   /** delete single row from the table: "service" */
@@ -473,6 +1202,10 @@ export type Mutation_Root = {
   readonly delete_sessions?: Maybe<Sessions_Mutation_Response>;
   /** delete single row from the table: "sessions" */
   readonly delete_sessions_by_pk?: Maybe<Sessions>;
+  /** delete data from the table: "states" */
+  readonly delete_states?: Maybe<States_Mutation_Response>;
+  /** delete single row from the table: "states" */
+  readonly delete_states_by_pk?: Maybe<States>;
   /** delete data from the table: "task" */
   readonly delete_task?: Maybe<Task_Mutation_Response>;
   /** delete single row from the table: "task" */
@@ -485,6 +1218,18 @@ export type Mutation_Root = {
   readonly delete_user?: Maybe<User_Mutation_Response>;
   /** delete single row from the table: "user" */
   readonly delete_user_by_pk?: Maybe<User>;
+  /** delete data from the table: "user_email_verification" */
+  readonly delete_user_email_verification?: Maybe<User_Email_Verification_Mutation_Response>;
+  /** delete single row from the table: "user_email_verification" */
+  readonly delete_user_email_verification_by_pk?: Maybe<User_Email_Verification>;
+  /** delete data from the table: "user_meta" */
+  readonly delete_user_meta?: Maybe<User_Meta_Mutation_Response>;
+  /** delete single row from the table: "user_meta" */
+  readonly delete_user_meta_by_pk?: Maybe<User_Meta>;
+  /** delete data from the table: "user_phones" */
+  readonly delete_user_phones?: Maybe<User_Phones_Mutation_Response>;
+  /** delete single row from the table: "user_phones" */
+  readonly delete_user_phones_by_pk?: Maybe<User_Phones>;
   /** delete data from the table: "verification_requests" */
   readonly delete_verification_requests?: Maybe<Verification_Requests_Mutation_Response>;
   /** delete single row from the table: "verification_requests" */
@@ -493,10 +1238,26 @@ export type Mutation_Root = {
   readonly insert_accounts?: Maybe<Accounts_Mutation_Response>;
   /** insert a single row into the table: "accounts" */
   readonly insert_accounts_one?: Maybe<Accounts>;
+  /** insert data into the table: "cities" */
+  readonly insert_cities?: Maybe<Cities_Mutation_Response>;
+  /** insert a single row into the table: "cities" */
+  readonly insert_cities_one?: Maybe<Cities>;
+  /** insert data into the table: "countries" */
+  readonly insert_countries?: Maybe<Countries_Mutation_Response>;
+  /** insert a single row into the table: "countries" */
+  readonly insert_countries_one?: Maybe<Countries>;
+  /** insert data into the table: "currencies" */
+  readonly insert_currencies?: Maybe<Currencies_Mutation_Response>;
+  /** insert a single row into the table: "currencies" */
+  readonly insert_currencies_one?: Maybe<Currencies>;
   /** insert data into the table: "feeds" */
   readonly insert_feeds?: Maybe<Feeds_Mutation_Response>;
   /** insert a single row into the table: "feeds" */
   readonly insert_feeds_one?: Maybe<Feeds>;
+  /** insert data into the table: "payment_offer" */
+  readonly insert_payment_offer?: Maybe<Payment_Offer_Mutation_Response>;
+  /** insert a single row into the table: "payment_offer" */
+  readonly insert_payment_offer_one?: Maybe<Payment_Offer>;
   /** insert data into the table: "service" */
   readonly insert_service?: Maybe<Service_Mutation_Response>;
   /** insert a single row into the table: "service" */
@@ -509,6 +1270,10 @@ export type Mutation_Root = {
   readonly insert_sessions?: Maybe<Sessions_Mutation_Response>;
   /** insert a single row into the table: "sessions" */
   readonly insert_sessions_one?: Maybe<Sessions>;
+  /** insert data into the table: "states" */
+  readonly insert_states?: Maybe<States_Mutation_Response>;
+  /** insert a single row into the table: "states" */
+  readonly insert_states_one?: Maybe<States>;
   /** insert data into the table: "task" */
   readonly insert_task?: Maybe<Task_Mutation_Response>;
   /** insert a single row into the table: "task" */
@@ -519,8 +1284,20 @@ export type Mutation_Root = {
   readonly insert_transaction_one?: Maybe<Transaction>;
   /** insert data into the table: "user" */
   readonly insert_user?: Maybe<User_Mutation_Response>;
+  /** insert data into the table: "user_email_verification" */
+  readonly insert_user_email_verification?: Maybe<User_Email_Verification_Mutation_Response>;
+  /** insert a single row into the table: "user_email_verification" */
+  readonly insert_user_email_verification_one?: Maybe<User_Email_Verification>;
+  /** insert data into the table: "user_meta" */
+  readonly insert_user_meta?: Maybe<User_Meta_Mutation_Response>;
+  /** insert a single row into the table: "user_meta" */
+  readonly insert_user_meta_one?: Maybe<User_Meta>;
   /** insert a single row into the table: "user" */
   readonly insert_user_one?: Maybe<User>;
+  /** insert data into the table: "user_phones" */
+  readonly insert_user_phones?: Maybe<User_Phones_Mutation_Response>;
+  /** insert a single row into the table: "user_phones" */
+  readonly insert_user_phones_one?: Maybe<User_Phones>;
   /** insert data into the table: "verification_requests" */
   readonly insert_verification_requests?: Maybe<Verification_Requests_Mutation_Response>;
   /** insert a single row into the table: "verification_requests" */
@@ -529,10 +1306,26 @@ export type Mutation_Root = {
   readonly update_accounts?: Maybe<Accounts_Mutation_Response>;
   /** update single row of the table: "accounts" */
   readonly update_accounts_by_pk?: Maybe<Accounts>;
+  /** update data of the table: "cities" */
+  readonly update_cities?: Maybe<Cities_Mutation_Response>;
+  /** update single row of the table: "cities" */
+  readonly update_cities_by_pk?: Maybe<Cities>;
+  /** update data of the table: "countries" */
+  readonly update_countries?: Maybe<Countries_Mutation_Response>;
+  /** update single row of the table: "countries" */
+  readonly update_countries_by_pk?: Maybe<Countries>;
+  /** update data of the table: "currencies" */
+  readonly update_currencies?: Maybe<Currencies_Mutation_Response>;
+  /** update single row of the table: "currencies" */
+  readonly update_currencies_by_pk?: Maybe<Currencies>;
   /** update data of the table: "feeds" */
   readonly update_feeds?: Maybe<Feeds_Mutation_Response>;
   /** update single row of the table: "feeds" */
   readonly update_feeds_by_pk?: Maybe<Feeds>;
+  /** update data of the table: "payment_offer" */
+  readonly update_payment_offer?: Maybe<Payment_Offer_Mutation_Response>;
+  /** update single row of the table: "payment_offer" */
+  readonly update_payment_offer_by_pk?: Maybe<Payment_Offer>;
   /** update data of the table: "service" */
   readonly update_service?: Maybe<Service_Mutation_Response>;
   /** update single row of the table: "service" */
@@ -545,6 +1338,10 @@ export type Mutation_Root = {
   readonly update_sessions?: Maybe<Sessions_Mutation_Response>;
   /** update single row of the table: "sessions" */
   readonly update_sessions_by_pk?: Maybe<Sessions>;
+  /** update data of the table: "states" */
+  readonly update_states?: Maybe<States_Mutation_Response>;
+  /** update single row of the table: "states" */
+  readonly update_states_by_pk?: Maybe<States>;
   /** update data of the table: "task" */
   readonly update_task?: Maybe<Task_Mutation_Response>;
   /** update single row of the table: "task" */
@@ -557,6 +1354,18 @@ export type Mutation_Root = {
   readonly update_user?: Maybe<User_Mutation_Response>;
   /** update single row of the table: "user" */
   readonly update_user_by_pk?: Maybe<User>;
+  /** update data of the table: "user_email_verification" */
+  readonly update_user_email_verification?: Maybe<User_Email_Verification_Mutation_Response>;
+  /** update single row of the table: "user_email_verification" */
+  readonly update_user_email_verification_by_pk?: Maybe<User_Email_Verification>;
+  /** update data of the table: "user_meta" */
+  readonly update_user_meta?: Maybe<User_Meta_Mutation_Response>;
+  /** update single row of the table: "user_meta" */
+  readonly update_user_meta_by_pk?: Maybe<User_Meta>;
+  /** update data of the table: "user_phones" */
+  readonly update_user_phones?: Maybe<User_Phones_Mutation_Response>;
+  /** update single row of the table: "user_phones" */
+  readonly update_user_phones_by_pk?: Maybe<User_Phones>;
   /** update data of the table: "verification_requests" */
   readonly update_verification_requests?: Maybe<Verification_Requests_Mutation_Response>;
   /** update single row of the table: "verification_requests" */
@@ -583,6 +1392,42 @@ export type Mutation_RootDelete_Accounts_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_CitiesArgs = {
+  where: Cities_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Cities_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_CountriesArgs = {
+  where: Countries_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Countries_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_CurrenciesArgs = {
+  where: Currencies_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Currencies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_FeedsArgs = {
   where: Feeds_Bool_Exp;
 };
@@ -590,6 +1435,18 @@ export type Mutation_RootDelete_FeedsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Feeds_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Payment_OfferArgs = {
+  where: Payment_Offer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Payment_Offer_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -631,6 +1488,18 @@ export type Mutation_RootDelete_Sessions_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_StatesArgs = {
+  where: States_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_States_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_TaskArgs = {
   where: Task_Bool_Exp;
 };
@@ -662,8 +1531,43 @@ export type Mutation_RootDelete_UserArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_User_By_PkArgs = {
-  email: Scalars['String'];
   id: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_User_Email_VerificationArgs = {
+  where: User_Email_Verification_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_User_Email_Verification_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_User_MetaArgs = {
+  where: User_Meta_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_User_Meta_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_User_PhonesArgs = {
+  where: User_Phones_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_User_Phones_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -694,6 +1598,48 @@ export type Mutation_RootInsert_Accounts_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_CitiesArgs = {
+  objects: ReadonlyArray<Cities_Insert_Input>;
+  on_conflict?: Maybe<Cities_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Cities_OneArgs = {
+  object: Cities_Insert_Input;
+  on_conflict?: Maybe<Cities_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_CountriesArgs = {
+  objects: ReadonlyArray<Countries_Insert_Input>;
+  on_conflict?: Maybe<Countries_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Countries_OneArgs = {
+  object: Countries_Insert_Input;
+  on_conflict?: Maybe<Countries_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_CurrenciesArgs = {
+  objects: ReadonlyArray<Currencies_Insert_Input>;
+  on_conflict?: Maybe<Currencies_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Currencies_OneArgs = {
+  object: Currencies_Insert_Input;
+  on_conflict?: Maybe<Currencies_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_FeedsArgs = {
   objects: ReadonlyArray<Feeds_Insert_Input>;
   on_conflict?: Maybe<Feeds_On_Conflict>;
@@ -704,6 +1650,20 @@ export type Mutation_RootInsert_FeedsArgs = {
 export type Mutation_RootInsert_Feeds_OneArgs = {
   object: Feeds_Insert_Input;
   on_conflict?: Maybe<Feeds_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Payment_OfferArgs = {
+  objects: ReadonlyArray<Payment_Offer_Insert_Input>;
+  on_conflict?: Maybe<Payment_Offer_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Payment_Offer_OneArgs = {
+  object: Payment_Offer_Insert_Input;
+  on_conflict?: Maybe<Payment_Offer_On_Conflict>;
 };
 
 
@@ -750,6 +1710,20 @@ export type Mutation_RootInsert_Sessions_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_StatesArgs = {
+  objects: ReadonlyArray<States_Insert_Input>;
+  on_conflict?: Maybe<States_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_States_OneArgs = {
+  object: States_Insert_Input;
+  on_conflict?: Maybe<States_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_TaskArgs = {
   objects: ReadonlyArray<Task_Insert_Input>;
   on_conflict?: Maybe<Task_On_Conflict>;
@@ -785,9 +1759,51 @@ export type Mutation_RootInsert_UserArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_User_Email_VerificationArgs = {
+  objects: ReadonlyArray<User_Email_Verification_Insert_Input>;
+  on_conflict?: Maybe<User_Email_Verification_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_User_Email_Verification_OneArgs = {
+  object: User_Email_Verification_Insert_Input;
+  on_conflict?: Maybe<User_Email_Verification_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_User_MetaArgs = {
+  objects: ReadonlyArray<User_Meta_Insert_Input>;
+  on_conflict?: Maybe<User_Meta_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_User_Meta_OneArgs = {
+  object: User_Meta_Insert_Input;
+  on_conflict?: Maybe<User_Meta_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_User_OneArgs = {
   object: User_Insert_Input;
   on_conflict?: Maybe<User_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_User_PhonesArgs = {
+  objects: ReadonlyArray<User_Phones_Insert_Input>;
+  on_conflict?: Maybe<User_Phones_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_User_Phones_OneArgs = {
+  object: User_Phones_Insert_Input;
+  on_conflict?: Maybe<User_Phones_On_Conflict>;
 };
 
 
@@ -820,6 +1836,52 @@ export type Mutation_RootUpdate_Accounts_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_CitiesArgs = {
+  _inc?: Maybe<Cities_Inc_Input>;
+  _set?: Maybe<Cities_Set_Input>;
+  where: Cities_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Cities_By_PkArgs = {
+  _inc?: Maybe<Cities_Inc_Input>;
+  _set?: Maybe<Cities_Set_Input>;
+  pk_columns: Cities_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_CountriesArgs = {
+  _inc?: Maybe<Countries_Inc_Input>;
+  _set?: Maybe<Countries_Set_Input>;
+  where: Countries_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Countries_By_PkArgs = {
+  _inc?: Maybe<Countries_Inc_Input>;
+  _set?: Maybe<Countries_Set_Input>;
+  pk_columns: Countries_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_CurrenciesArgs = {
+  _set?: Maybe<Currencies_Set_Input>;
+  where: Currencies_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Currencies_By_PkArgs = {
+  _set?: Maybe<Currencies_Set_Input>;
+  pk_columns: Currencies_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_FeedsArgs = {
   _set?: Maybe<Feeds_Set_Input>;
   where: Feeds_Bool_Exp;
@@ -830,6 +1892,22 @@ export type Mutation_RootUpdate_FeedsArgs = {
 export type Mutation_RootUpdate_Feeds_By_PkArgs = {
   _set?: Maybe<Feeds_Set_Input>;
   pk_columns: Feeds_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Payment_OfferArgs = {
+  _inc?: Maybe<Payment_Offer_Inc_Input>;
+  _set?: Maybe<Payment_Offer_Set_Input>;
+  where: Payment_Offer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Payment_Offer_By_PkArgs = {
+  _inc?: Maybe<Payment_Offer_Inc_Input>;
+  _set?: Maybe<Payment_Offer_Set_Input>;
+  pk_columns: Payment_Offer_Pk_Columns_Input;
 };
 
 
@@ -878,6 +1956,20 @@ export type Mutation_RootUpdate_Sessions_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_StatesArgs = {
+  _set?: Maybe<States_Set_Input>;
+  where: States_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_States_By_PkArgs = {
+  _set?: Maybe<States_Set_Input>;
+  pk_columns: States_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_TaskArgs = {
   _set?: Maybe<Task_Set_Input>;
   where: Task_Bool_Exp;
@@ -922,6 +2014,50 @@ export type Mutation_RootUpdate_User_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_User_Email_VerificationArgs = {
+  _set?: Maybe<User_Email_Verification_Set_Input>;
+  where: User_Email_Verification_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_User_Email_Verification_By_PkArgs = {
+  _set?: Maybe<User_Email_Verification_Set_Input>;
+  pk_columns: User_Email_Verification_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_User_MetaArgs = {
+  _set?: Maybe<User_Meta_Set_Input>;
+  where: User_Meta_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_User_Meta_By_PkArgs = {
+  _set?: Maybe<User_Meta_Set_Input>;
+  pk_columns: User_Meta_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_User_PhonesArgs = {
+  _inc?: Maybe<User_Phones_Inc_Input>;
+  _set?: Maybe<User_Phones_Set_Input>;
+  where: User_Phones_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_User_Phones_By_PkArgs = {
+  _inc?: Maybe<User_Phones_Inc_Input>;
+  _set?: Maybe<User_Phones_Set_Input>;
+  pk_columns: User_Phones_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Verification_RequestsArgs = {
   _set?: Maybe<Verification_Requests_Set_Input>;
   where: Verification_Requests_Bool_Exp;
@@ -932,6 +2068,20 @@ export type Mutation_RootUpdate_Verification_RequestsArgs = {
 export type Mutation_RootUpdate_Verification_Requests_By_PkArgs = {
   _set?: Maybe<Verification_Requests_Set_Input>;
   pk_columns: Verification_Requests_Pk_Columns_Input;
+};
+
+
+/** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
+export type Numeric_Comparison_Exp = {
+  readonly _eq?: Maybe<Scalars['numeric']>;
+  readonly _gt?: Maybe<Scalars['numeric']>;
+  readonly _gte?: Maybe<Scalars['numeric']>;
+  readonly _in?: Maybe<ReadonlyArray<Scalars['numeric']>>;
+  readonly _is_null?: Maybe<Scalars['Boolean']>;
+  readonly _lt?: Maybe<Scalars['numeric']>;
+  readonly _lte?: Maybe<Scalars['numeric']>;
+  readonly _neq?: Maybe<Scalars['numeric']>;
+  readonly _nin?: Maybe<ReadonlyArray<Scalars['numeric']>>;
 };
 
 /** column ordering options */
@@ -950,6 +2100,403 @@ export enum Order_By {
   DescNullsLast = 'desc_nulls_last'
 }
 
+/** columns and relationships of "payment_offer" */
+export type Payment_Offer = {
+  readonly __typename?: 'payment_offer';
+  readonly base_rate: Scalars['numeric'];
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly fees_with_promo: Scalars['numeric'];
+  readonly id: Scalars['uuid'];
+  readonly metadata?: Maybe<Scalars['json']>;
+  readonly our_fee: Scalars['numeric'];
+  readonly payment_mode?: Maybe<Scalars['String']>;
+  readonly payment_status?: Maybe<Scalars['String']>;
+  readonly rate_adjustment: Scalars['numeric'];
+  readonly source_amount: Scalars['numeric'];
+  readonly source_currency?: Maybe<Scalars['String']>;
+  readonly status?: Maybe<Scalars['String']>;
+  readonly target_currency?: Maybe<Scalars['String']>;
+  readonly total_in_target_with_charges: Scalars['numeric'];
+  readonly total_to_pay_in_source_currency: Scalars['numeric'];
+  readonly transaction_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+
+/** columns and relationships of "payment_offer" */
+export type Payment_OfferMetadataArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "payment_offer" */
+export type Payment_Offer_Aggregate = {
+  readonly __typename?: 'payment_offer_aggregate';
+  readonly aggregate?: Maybe<Payment_Offer_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<Payment_Offer>;
+};
+
+/** aggregate fields of "payment_offer" */
+export type Payment_Offer_Aggregate_Fields = {
+  readonly __typename?: 'payment_offer_aggregate_fields';
+  readonly avg?: Maybe<Payment_Offer_Avg_Fields>;
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<Payment_Offer_Max_Fields>;
+  readonly min?: Maybe<Payment_Offer_Min_Fields>;
+  readonly stddev?: Maybe<Payment_Offer_Stddev_Fields>;
+  readonly stddev_pop?: Maybe<Payment_Offer_Stddev_Pop_Fields>;
+  readonly stddev_samp?: Maybe<Payment_Offer_Stddev_Samp_Fields>;
+  readonly sum?: Maybe<Payment_Offer_Sum_Fields>;
+  readonly var_pop?: Maybe<Payment_Offer_Var_Pop_Fields>;
+  readonly var_samp?: Maybe<Payment_Offer_Var_Samp_Fields>;
+  readonly variance?: Maybe<Payment_Offer_Variance_Fields>;
+};
+
+
+/** aggregate fields of "payment_offer" */
+export type Payment_Offer_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<Payment_Offer_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Payment_Offer_Avg_Fields = {
+  readonly __typename?: 'payment_offer_avg_fields';
+  readonly base_rate?: Maybe<Scalars['Float']>;
+  readonly fees_with_promo?: Maybe<Scalars['Float']>;
+  readonly our_fee?: Maybe<Scalars['Float']>;
+  readonly rate_adjustment?: Maybe<Scalars['Float']>;
+  readonly source_amount?: Maybe<Scalars['Float']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['Float']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "payment_offer". All fields are combined with a logical 'AND'. */
+export type Payment_Offer_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<Payment_Offer_Bool_Exp>>;
+  readonly _not?: Maybe<Payment_Offer_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<Payment_Offer_Bool_Exp>>;
+  readonly base_rate?: Maybe<Numeric_Comparison_Exp>;
+  readonly created_at?: Maybe<Timestamp_Comparison_Exp>;
+  readonly fees_with_promo?: Maybe<Numeric_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly metadata?: Maybe<Json_Comparison_Exp>;
+  readonly our_fee?: Maybe<Numeric_Comparison_Exp>;
+  readonly payment_mode?: Maybe<String_Comparison_Exp>;
+  readonly payment_status?: Maybe<String_Comparison_Exp>;
+  readonly rate_adjustment?: Maybe<Numeric_Comparison_Exp>;
+  readonly source_amount?: Maybe<Numeric_Comparison_Exp>;
+  readonly source_currency?: Maybe<String_Comparison_Exp>;
+  readonly status?: Maybe<String_Comparison_Exp>;
+  readonly target_currency?: Maybe<String_Comparison_Exp>;
+  readonly total_in_target_with_charges?: Maybe<Numeric_Comparison_Exp>;
+  readonly total_to_pay_in_source_currency?: Maybe<Numeric_Comparison_Exp>;
+  readonly transaction_id?: Maybe<Uuid_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamp_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "payment_offer" */
+export enum Payment_Offer_Constraint {
+  /** unique or primary key constraint */
+  PaymentOfferPkey = 'payment_offer_pkey'
+}
+
+/** input type for incrementing numeric columns in table "payment_offer" */
+export type Payment_Offer_Inc_Input = {
+  readonly base_rate?: Maybe<Scalars['numeric']>;
+  readonly fees_with_promo?: Maybe<Scalars['numeric']>;
+  readonly our_fee?: Maybe<Scalars['numeric']>;
+  readonly rate_adjustment?: Maybe<Scalars['numeric']>;
+  readonly source_amount?: Maybe<Scalars['numeric']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['numeric']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['numeric']>;
+};
+
+/** input type for inserting data into table "payment_offer" */
+export type Payment_Offer_Insert_Input = {
+  readonly base_rate?: Maybe<Scalars['numeric']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly fees_with_promo?: Maybe<Scalars['numeric']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly metadata?: Maybe<Scalars['json']>;
+  readonly our_fee?: Maybe<Scalars['numeric']>;
+  readonly payment_mode?: Maybe<Scalars['String']>;
+  readonly payment_status?: Maybe<Scalars['String']>;
+  readonly rate_adjustment?: Maybe<Scalars['numeric']>;
+  readonly source_amount?: Maybe<Scalars['numeric']>;
+  readonly source_currency?: Maybe<Scalars['String']>;
+  readonly status?: Maybe<Scalars['String']>;
+  readonly target_currency?: Maybe<Scalars['String']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['numeric']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['numeric']>;
+  readonly transaction_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate max on columns */
+export type Payment_Offer_Max_Fields = {
+  readonly __typename?: 'payment_offer_max_fields';
+  readonly base_rate?: Maybe<Scalars['numeric']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly fees_with_promo?: Maybe<Scalars['numeric']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly our_fee?: Maybe<Scalars['numeric']>;
+  readonly payment_mode?: Maybe<Scalars['String']>;
+  readonly payment_status?: Maybe<Scalars['String']>;
+  readonly rate_adjustment?: Maybe<Scalars['numeric']>;
+  readonly source_amount?: Maybe<Scalars['numeric']>;
+  readonly source_currency?: Maybe<Scalars['String']>;
+  readonly status?: Maybe<Scalars['String']>;
+  readonly target_currency?: Maybe<Scalars['String']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['numeric']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['numeric']>;
+  readonly transaction_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate min on columns */
+export type Payment_Offer_Min_Fields = {
+  readonly __typename?: 'payment_offer_min_fields';
+  readonly base_rate?: Maybe<Scalars['numeric']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly fees_with_promo?: Maybe<Scalars['numeric']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly our_fee?: Maybe<Scalars['numeric']>;
+  readonly payment_mode?: Maybe<Scalars['String']>;
+  readonly payment_status?: Maybe<Scalars['String']>;
+  readonly rate_adjustment?: Maybe<Scalars['numeric']>;
+  readonly source_amount?: Maybe<Scalars['numeric']>;
+  readonly source_currency?: Maybe<Scalars['String']>;
+  readonly status?: Maybe<Scalars['String']>;
+  readonly target_currency?: Maybe<Scalars['String']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['numeric']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['numeric']>;
+  readonly transaction_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** response of any mutation on the table "payment_offer" */
+export type Payment_Offer_Mutation_Response = {
+  readonly __typename?: 'payment_offer_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<Payment_Offer>;
+};
+
+/** on conflict condition type for table "payment_offer" */
+export type Payment_Offer_On_Conflict = {
+  readonly constraint: Payment_Offer_Constraint;
+  readonly update_columns?: ReadonlyArray<Payment_Offer_Update_Column>;
+  readonly where?: Maybe<Payment_Offer_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "payment_offer". */
+export type Payment_Offer_Order_By = {
+  readonly base_rate?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly fees_with_promo?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly metadata?: Maybe<Order_By>;
+  readonly our_fee?: Maybe<Order_By>;
+  readonly payment_mode?: Maybe<Order_By>;
+  readonly payment_status?: Maybe<Order_By>;
+  readonly rate_adjustment?: Maybe<Order_By>;
+  readonly source_amount?: Maybe<Order_By>;
+  readonly source_currency?: Maybe<Order_By>;
+  readonly status?: Maybe<Order_By>;
+  readonly target_currency?: Maybe<Order_By>;
+  readonly total_in_target_with_charges?: Maybe<Order_By>;
+  readonly total_to_pay_in_source_currency?: Maybe<Order_By>;
+  readonly transaction_id?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: payment_offer */
+export type Payment_Offer_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "payment_offer" */
+export enum Payment_Offer_Select_Column {
+  /** column name */
+  BaseRate = 'base_rate',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  FeesWithPromo = 'fees_with_promo',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  OurFee = 'our_fee',
+  /** column name */
+  PaymentMode = 'payment_mode',
+  /** column name */
+  PaymentStatus = 'payment_status',
+  /** column name */
+  RateAdjustment = 'rate_adjustment',
+  /** column name */
+  SourceAmount = 'source_amount',
+  /** column name */
+  SourceCurrency = 'source_currency',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  TargetCurrency = 'target_currency',
+  /** column name */
+  TotalInTargetWithCharges = 'total_in_target_with_charges',
+  /** column name */
+  TotalToPayInSourceCurrency = 'total_to_pay_in_source_currency',
+  /** column name */
+  TransactionId = 'transaction_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "payment_offer" */
+export type Payment_Offer_Set_Input = {
+  readonly base_rate?: Maybe<Scalars['numeric']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly fees_with_promo?: Maybe<Scalars['numeric']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly metadata?: Maybe<Scalars['json']>;
+  readonly our_fee?: Maybe<Scalars['numeric']>;
+  readonly payment_mode?: Maybe<Scalars['String']>;
+  readonly payment_status?: Maybe<Scalars['String']>;
+  readonly rate_adjustment?: Maybe<Scalars['numeric']>;
+  readonly source_amount?: Maybe<Scalars['numeric']>;
+  readonly source_currency?: Maybe<Scalars['String']>;
+  readonly status?: Maybe<Scalars['String']>;
+  readonly target_currency?: Maybe<Scalars['String']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['numeric']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['numeric']>;
+  readonly transaction_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate stddev on columns */
+export type Payment_Offer_Stddev_Fields = {
+  readonly __typename?: 'payment_offer_stddev_fields';
+  readonly base_rate?: Maybe<Scalars['Float']>;
+  readonly fees_with_promo?: Maybe<Scalars['Float']>;
+  readonly our_fee?: Maybe<Scalars['Float']>;
+  readonly rate_adjustment?: Maybe<Scalars['Float']>;
+  readonly source_amount?: Maybe<Scalars['Float']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['Float']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Payment_Offer_Stddev_Pop_Fields = {
+  readonly __typename?: 'payment_offer_stddev_pop_fields';
+  readonly base_rate?: Maybe<Scalars['Float']>;
+  readonly fees_with_promo?: Maybe<Scalars['Float']>;
+  readonly our_fee?: Maybe<Scalars['Float']>;
+  readonly rate_adjustment?: Maybe<Scalars['Float']>;
+  readonly source_amount?: Maybe<Scalars['Float']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['Float']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Payment_Offer_Stddev_Samp_Fields = {
+  readonly __typename?: 'payment_offer_stddev_samp_fields';
+  readonly base_rate?: Maybe<Scalars['Float']>;
+  readonly fees_with_promo?: Maybe<Scalars['Float']>;
+  readonly our_fee?: Maybe<Scalars['Float']>;
+  readonly rate_adjustment?: Maybe<Scalars['Float']>;
+  readonly source_amount?: Maybe<Scalars['Float']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['Float']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Payment_Offer_Sum_Fields = {
+  readonly __typename?: 'payment_offer_sum_fields';
+  readonly base_rate?: Maybe<Scalars['numeric']>;
+  readonly fees_with_promo?: Maybe<Scalars['numeric']>;
+  readonly our_fee?: Maybe<Scalars['numeric']>;
+  readonly rate_adjustment?: Maybe<Scalars['numeric']>;
+  readonly source_amount?: Maybe<Scalars['numeric']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['numeric']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['numeric']>;
+};
+
+/** update columns of table "payment_offer" */
+export enum Payment_Offer_Update_Column {
+  /** column name */
+  BaseRate = 'base_rate',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  FeesWithPromo = 'fees_with_promo',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  OurFee = 'our_fee',
+  /** column name */
+  PaymentMode = 'payment_mode',
+  /** column name */
+  PaymentStatus = 'payment_status',
+  /** column name */
+  RateAdjustment = 'rate_adjustment',
+  /** column name */
+  SourceAmount = 'source_amount',
+  /** column name */
+  SourceCurrency = 'source_currency',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  TargetCurrency = 'target_currency',
+  /** column name */
+  TotalInTargetWithCharges = 'total_in_target_with_charges',
+  /** column name */
+  TotalToPayInSourceCurrency = 'total_to_pay_in_source_currency',
+  /** column name */
+  TransactionId = 'transaction_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Payment_Offer_Var_Pop_Fields = {
+  readonly __typename?: 'payment_offer_var_pop_fields';
+  readonly base_rate?: Maybe<Scalars['Float']>;
+  readonly fees_with_promo?: Maybe<Scalars['Float']>;
+  readonly our_fee?: Maybe<Scalars['Float']>;
+  readonly rate_adjustment?: Maybe<Scalars['Float']>;
+  readonly source_amount?: Maybe<Scalars['Float']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['Float']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Payment_Offer_Var_Samp_Fields = {
+  readonly __typename?: 'payment_offer_var_samp_fields';
+  readonly base_rate?: Maybe<Scalars['Float']>;
+  readonly fees_with_promo?: Maybe<Scalars['Float']>;
+  readonly our_fee?: Maybe<Scalars['Float']>;
+  readonly rate_adjustment?: Maybe<Scalars['Float']>;
+  readonly source_amount?: Maybe<Scalars['Float']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['Float']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Payment_Offer_Variance_Fields = {
+  readonly __typename?: 'payment_offer_variance_fields';
+  readonly base_rate?: Maybe<Scalars['Float']>;
+  readonly fees_with_promo?: Maybe<Scalars['Float']>;
+  readonly our_fee?: Maybe<Scalars['Float']>;
+  readonly rate_adjustment?: Maybe<Scalars['Float']>;
+  readonly source_amount?: Maybe<Scalars['Float']>;
+  readonly total_in_target_with_charges?: Maybe<Scalars['Float']>;
+  readonly total_to_pay_in_source_currency?: Maybe<Scalars['Float']>;
+};
+
 export type Query_Root = {
   readonly __typename?: 'query_root';
   /** fetch data from the table: "accounts" */
@@ -958,12 +2505,36 @@ export type Query_Root = {
   readonly accounts_aggregate: Accounts_Aggregate;
   /** fetch data from the table: "accounts" using primary key columns */
   readonly accounts_by_pk?: Maybe<Accounts>;
+  /** fetch data from the table: "cities" */
+  readonly cities: ReadonlyArray<Cities>;
+  /** fetch aggregated fields from the table: "cities" */
+  readonly cities_aggregate: Cities_Aggregate;
+  /** fetch data from the table: "cities" using primary key columns */
+  readonly cities_by_pk?: Maybe<Cities>;
+  /** fetch data from the table: "countries" */
+  readonly countries: ReadonlyArray<Countries>;
+  /** fetch aggregated fields from the table: "countries" */
+  readonly countries_aggregate: Countries_Aggregate;
+  /** fetch data from the table: "countries" using primary key columns */
+  readonly countries_by_pk?: Maybe<Countries>;
+  /** fetch data from the table: "currencies" */
+  readonly currencies: ReadonlyArray<Currencies>;
+  /** fetch aggregated fields from the table: "currencies" */
+  readonly currencies_aggregate: Currencies_Aggregate;
+  /** fetch data from the table: "currencies" using primary key columns */
+  readonly currencies_by_pk?: Maybe<Currencies>;
   /** fetch data from the table: "feeds" */
   readonly feeds: ReadonlyArray<Feeds>;
   /** fetch aggregated fields from the table: "feeds" */
   readonly feeds_aggregate: Feeds_Aggregate;
   /** fetch data from the table: "feeds" using primary key columns */
   readonly feeds_by_pk?: Maybe<Feeds>;
+  /** fetch data from the table: "payment_offer" */
+  readonly payment_offer: ReadonlyArray<Payment_Offer>;
+  /** fetch aggregated fields from the table: "payment_offer" */
+  readonly payment_offer_aggregate: Payment_Offer_Aggregate;
+  /** fetch data from the table: "payment_offer" using primary key columns */
+  readonly payment_offer_by_pk?: Maybe<Payment_Offer>;
   /** fetch data from the table: "service" */
   readonly service: ReadonlyArray<Service>;
   /** fetch aggregated fields from the table: "service" */
@@ -982,6 +2553,12 @@ export type Query_Root = {
   readonly sessions_aggregate: Sessions_Aggregate;
   /** fetch data from the table: "sessions" using primary key columns */
   readonly sessions_by_pk?: Maybe<Sessions>;
+  /** fetch data from the table: "states" */
+  readonly states: ReadonlyArray<States>;
+  /** fetch aggregated fields from the table: "states" */
+  readonly states_aggregate: States_Aggregate;
+  /** fetch data from the table: "states" using primary key columns */
+  readonly states_by_pk?: Maybe<States>;
   /** fetch data from the table: "task" */
   readonly task: ReadonlyArray<Task>;
   /** fetch aggregated fields from the table: "task" */
@@ -1000,6 +2577,24 @@ export type Query_Root = {
   readonly user_aggregate: User_Aggregate;
   /** fetch data from the table: "user" using primary key columns */
   readonly user_by_pk?: Maybe<User>;
+  /** fetch data from the table: "user_email_verification" */
+  readonly user_email_verification: ReadonlyArray<User_Email_Verification>;
+  /** fetch aggregated fields from the table: "user_email_verification" */
+  readonly user_email_verification_aggregate: User_Email_Verification_Aggregate;
+  /** fetch data from the table: "user_email_verification" using primary key columns */
+  readonly user_email_verification_by_pk?: Maybe<User_Email_Verification>;
+  /** fetch data from the table: "user_meta" */
+  readonly user_meta: ReadonlyArray<User_Meta>;
+  /** fetch aggregated fields from the table: "user_meta" */
+  readonly user_meta_aggregate: User_Meta_Aggregate;
+  /** fetch data from the table: "user_meta" using primary key columns */
+  readonly user_meta_by_pk?: Maybe<User_Meta>;
+  /** fetch data from the table: "user_phones" */
+  readonly user_phones: ReadonlyArray<User_Phones>;
+  /** fetch aggregated fields from the table: "user_phones" */
+  readonly user_phones_aggregate: User_Phones_Aggregate;
+  /** fetch data from the table: "user_phones" using primary key columns */
+  readonly user_phones_by_pk?: Maybe<User_Phones>;
   /** fetch data from the table: "verification_requests" */
   readonly verification_requests: ReadonlyArray<Verification_Requests>;
   /** fetch aggregated fields from the table: "verification_requests" */
@@ -1032,6 +2627,75 @@ export type Query_RootAccounts_By_PkArgs = {
 };
 
 
+export type Query_RootCitiesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Cities_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Cities_Order_By>>;
+  where?: Maybe<Cities_Bool_Exp>;
+};
+
+
+export type Query_RootCities_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Cities_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Cities_Order_By>>;
+  where?: Maybe<Cities_Bool_Exp>;
+};
+
+
+export type Query_RootCities_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootCountriesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Countries_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Countries_Order_By>>;
+  where?: Maybe<Countries_Bool_Exp>;
+};
+
+
+export type Query_RootCountries_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Countries_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Countries_Order_By>>;
+  where?: Maybe<Countries_Bool_Exp>;
+};
+
+
+export type Query_RootCountries_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootCurrenciesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Currencies_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Currencies_Order_By>>;
+  where?: Maybe<Currencies_Bool_Exp>;
+};
+
+
+export type Query_RootCurrencies_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Currencies_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Currencies_Order_By>>;
+  where?: Maybe<Currencies_Bool_Exp>;
+};
+
+
+export type Query_RootCurrencies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Query_RootFeedsArgs = {
   distinct_on?: Maybe<ReadonlyArray<Feeds_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -1051,6 +2715,29 @@ export type Query_RootFeeds_AggregateArgs = {
 
 
 export type Query_RootFeeds_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootPayment_OfferArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Offer_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Offer_Order_By>>;
+  where?: Maybe<Payment_Offer_Bool_Exp>;
+};
+
+
+export type Query_RootPayment_Offer_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Offer_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Offer_Order_By>>;
+  where?: Maybe<Payment_Offer_Bool_Exp>;
+};
+
+
+export type Query_RootPayment_Offer_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1124,6 +2811,29 @@ export type Query_RootSessions_By_PkArgs = {
 };
 
 
+export type Query_RootStatesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<States_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<States_Order_By>>;
+  where?: Maybe<States_Bool_Exp>;
+};
+
+
+export type Query_RootStates_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<States_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<States_Order_By>>;
+  where?: Maybe<States_Bool_Exp>;
+};
+
+
+export type Query_RootStates_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Query_RootTaskArgs = {
   distinct_on?: Maybe<ReadonlyArray<Task_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -1189,8 +2899,76 @@ export type Query_RootUser_AggregateArgs = {
 
 
 export type Query_RootUser_By_PkArgs = {
-  email: Scalars['String'];
   id: Scalars['String'];
+};
+
+
+export type Query_RootUser_Email_VerificationArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Email_Verification_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Email_Verification_Order_By>>;
+  where?: Maybe<User_Email_Verification_Bool_Exp>;
+};
+
+
+export type Query_RootUser_Email_Verification_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Email_Verification_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Email_Verification_Order_By>>;
+  where?: Maybe<User_Email_Verification_Bool_Exp>;
+};
+
+
+export type Query_RootUser_Email_Verification_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootUser_MetaArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Meta_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Meta_Order_By>>;
+  where?: Maybe<User_Meta_Bool_Exp>;
+};
+
+
+export type Query_RootUser_Meta_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Meta_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Meta_Order_By>>;
+  where?: Maybe<User_Meta_Bool_Exp>;
+};
+
+
+export type Query_RootUser_Meta_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootUser_PhonesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Phones_Order_By>>;
+  where?: Maybe<User_Phones_Bool_Exp>;
+};
+
+
+export type Query_RootUser_Phones_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Phones_Order_By>>;
+  where?: Maybe<User_Phones_Bool_Exp>;
+};
+
+
+export type Query_RootUser_Phones_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -1776,6 +3554,185 @@ export type Sessions_Variance_Fields = {
   readonly user_id?: Maybe<Scalars['Float']>;
 };
 
+/** columns and relationships of "states" */
+export type States = {
+  readonly __typename?: 'states';
+  readonly active: Scalars['Boolean'];
+  readonly code: Scalars['bpchar'];
+  readonly country_code?: Maybe<Scalars['bpchar']>;
+  readonly country_id?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id: Scalars['uuid'];
+  readonly name?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregated selection of "states" */
+export type States_Aggregate = {
+  readonly __typename?: 'states_aggregate';
+  readonly aggregate?: Maybe<States_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<States>;
+};
+
+/** aggregate fields of "states" */
+export type States_Aggregate_Fields = {
+  readonly __typename?: 'states_aggregate_fields';
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<States_Max_Fields>;
+  readonly min?: Maybe<States_Min_Fields>;
+};
+
+
+/** aggregate fields of "states" */
+export type States_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<States_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "states". All fields are combined with a logical 'AND'. */
+export type States_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<States_Bool_Exp>>;
+  readonly _not?: Maybe<States_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<States_Bool_Exp>>;
+  readonly active?: Maybe<Boolean_Comparison_Exp>;
+  readonly code?: Maybe<Bpchar_Comparison_Exp>;
+  readonly country_code?: Maybe<Bpchar_Comparison_Exp>;
+  readonly country_id?: Maybe<Uuid_Comparison_Exp>;
+  readonly created_at?: Maybe<Timestamp_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly name?: Maybe<String_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamp_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "states" */
+export enum States_Constraint {
+  /** unique or primary key constraint */
+  StatesPkey = 'states_pkey',
+  /** unique or primary key constraint */
+  UidxStatesCountryCode = 'uidx_states_country_code'
+}
+
+/** input type for inserting data into table "states" */
+export type States_Insert_Input = {
+  readonly active?: Maybe<Scalars['Boolean']>;
+  readonly code?: Maybe<Scalars['bpchar']>;
+  readonly country_code?: Maybe<Scalars['bpchar']>;
+  readonly country_id?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate max on columns */
+export type States_Max_Fields = {
+  readonly __typename?: 'states_max_fields';
+  readonly code?: Maybe<Scalars['bpchar']>;
+  readonly country_code?: Maybe<Scalars['bpchar']>;
+  readonly country_id?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate min on columns */
+export type States_Min_Fields = {
+  readonly __typename?: 'states_min_fields';
+  readonly code?: Maybe<Scalars['bpchar']>;
+  readonly country_code?: Maybe<Scalars['bpchar']>;
+  readonly country_id?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** response of any mutation on the table "states" */
+export type States_Mutation_Response = {
+  readonly __typename?: 'states_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<States>;
+};
+
+/** on conflict condition type for table "states" */
+export type States_On_Conflict = {
+  readonly constraint: States_Constraint;
+  readonly update_columns?: ReadonlyArray<States_Update_Column>;
+  readonly where?: Maybe<States_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "states". */
+export type States_Order_By = {
+  readonly active?: Maybe<Order_By>;
+  readonly code?: Maybe<Order_By>;
+  readonly country_code?: Maybe<Order_By>;
+  readonly country_id?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly name?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: states */
+export type States_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "states" */
+export enum States_Select_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CountryCode = 'country_code',
+  /** column name */
+  CountryId = 'country_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "states" */
+export type States_Set_Input = {
+  readonly active?: Maybe<Scalars['Boolean']>;
+  readonly code?: Maybe<Scalars['bpchar']>;
+  readonly country_code?: Maybe<Scalars['bpchar']>;
+  readonly country_id?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+};
+
+/** update columns of table "states" */
+export enum States_Update_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CountryCode = 'country_code',
+  /** column name */
+  CountryId = 'country_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
 export type Subscription_Root = {
   readonly __typename?: 'subscription_root';
   /** fetch data from the table: "accounts" */
@@ -1784,12 +3741,36 @@ export type Subscription_Root = {
   readonly accounts_aggregate: Accounts_Aggregate;
   /** fetch data from the table: "accounts" using primary key columns */
   readonly accounts_by_pk?: Maybe<Accounts>;
+  /** fetch data from the table: "cities" */
+  readonly cities: ReadonlyArray<Cities>;
+  /** fetch aggregated fields from the table: "cities" */
+  readonly cities_aggregate: Cities_Aggregate;
+  /** fetch data from the table: "cities" using primary key columns */
+  readonly cities_by_pk?: Maybe<Cities>;
+  /** fetch data from the table: "countries" */
+  readonly countries: ReadonlyArray<Countries>;
+  /** fetch aggregated fields from the table: "countries" */
+  readonly countries_aggregate: Countries_Aggregate;
+  /** fetch data from the table: "countries" using primary key columns */
+  readonly countries_by_pk?: Maybe<Countries>;
+  /** fetch data from the table: "currencies" */
+  readonly currencies: ReadonlyArray<Currencies>;
+  /** fetch aggregated fields from the table: "currencies" */
+  readonly currencies_aggregate: Currencies_Aggregate;
+  /** fetch data from the table: "currencies" using primary key columns */
+  readonly currencies_by_pk?: Maybe<Currencies>;
   /** fetch data from the table: "feeds" */
   readonly feeds: ReadonlyArray<Feeds>;
   /** fetch aggregated fields from the table: "feeds" */
   readonly feeds_aggregate: Feeds_Aggregate;
   /** fetch data from the table: "feeds" using primary key columns */
   readonly feeds_by_pk?: Maybe<Feeds>;
+  /** fetch data from the table: "payment_offer" */
+  readonly payment_offer: ReadonlyArray<Payment_Offer>;
+  /** fetch aggregated fields from the table: "payment_offer" */
+  readonly payment_offer_aggregate: Payment_Offer_Aggregate;
+  /** fetch data from the table: "payment_offer" using primary key columns */
+  readonly payment_offer_by_pk?: Maybe<Payment_Offer>;
   /** fetch data from the table: "service" */
   readonly service: ReadonlyArray<Service>;
   /** fetch aggregated fields from the table: "service" */
@@ -1808,6 +3789,12 @@ export type Subscription_Root = {
   readonly sessions_aggregate: Sessions_Aggregate;
   /** fetch data from the table: "sessions" using primary key columns */
   readonly sessions_by_pk?: Maybe<Sessions>;
+  /** fetch data from the table: "states" */
+  readonly states: ReadonlyArray<States>;
+  /** fetch aggregated fields from the table: "states" */
+  readonly states_aggregate: States_Aggregate;
+  /** fetch data from the table: "states" using primary key columns */
+  readonly states_by_pk?: Maybe<States>;
   /** fetch data from the table: "task" */
   readonly task: ReadonlyArray<Task>;
   /** fetch aggregated fields from the table: "task" */
@@ -1826,6 +3813,24 @@ export type Subscription_Root = {
   readonly user_aggregate: User_Aggregate;
   /** fetch data from the table: "user" using primary key columns */
   readonly user_by_pk?: Maybe<User>;
+  /** fetch data from the table: "user_email_verification" */
+  readonly user_email_verification: ReadonlyArray<User_Email_Verification>;
+  /** fetch aggregated fields from the table: "user_email_verification" */
+  readonly user_email_verification_aggregate: User_Email_Verification_Aggregate;
+  /** fetch data from the table: "user_email_verification" using primary key columns */
+  readonly user_email_verification_by_pk?: Maybe<User_Email_Verification>;
+  /** fetch data from the table: "user_meta" */
+  readonly user_meta: ReadonlyArray<User_Meta>;
+  /** fetch aggregated fields from the table: "user_meta" */
+  readonly user_meta_aggregate: User_Meta_Aggregate;
+  /** fetch data from the table: "user_meta" using primary key columns */
+  readonly user_meta_by_pk?: Maybe<User_Meta>;
+  /** fetch data from the table: "user_phones" */
+  readonly user_phones: ReadonlyArray<User_Phones>;
+  /** fetch aggregated fields from the table: "user_phones" */
+  readonly user_phones_aggregate: User_Phones_Aggregate;
+  /** fetch data from the table: "user_phones" using primary key columns */
+  readonly user_phones_by_pk?: Maybe<User_Phones>;
   /** fetch data from the table: "verification_requests" */
   readonly verification_requests: ReadonlyArray<Verification_Requests>;
   /** fetch aggregated fields from the table: "verification_requests" */
@@ -1858,6 +3863,75 @@ export type Subscription_RootAccounts_By_PkArgs = {
 };
 
 
+export type Subscription_RootCitiesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Cities_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Cities_Order_By>>;
+  where?: Maybe<Cities_Bool_Exp>;
+};
+
+
+export type Subscription_RootCities_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Cities_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Cities_Order_By>>;
+  where?: Maybe<Cities_Bool_Exp>;
+};
+
+
+export type Subscription_RootCities_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootCountriesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Countries_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Countries_Order_By>>;
+  where?: Maybe<Countries_Bool_Exp>;
+};
+
+
+export type Subscription_RootCountries_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Countries_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Countries_Order_By>>;
+  where?: Maybe<Countries_Bool_Exp>;
+};
+
+
+export type Subscription_RootCountries_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootCurrenciesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Currencies_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Currencies_Order_By>>;
+  where?: Maybe<Currencies_Bool_Exp>;
+};
+
+
+export type Subscription_RootCurrencies_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Currencies_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Currencies_Order_By>>;
+  where?: Maybe<Currencies_Bool_Exp>;
+};
+
+
+export type Subscription_RootCurrencies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Subscription_RootFeedsArgs = {
   distinct_on?: Maybe<ReadonlyArray<Feeds_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -1877,6 +3951,29 @@ export type Subscription_RootFeeds_AggregateArgs = {
 
 
 export type Subscription_RootFeeds_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootPayment_OfferArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Offer_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Offer_Order_By>>;
+  where?: Maybe<Payment_Offer_Bool_Exp>;
+};
+
+
+export type Subscription_RootPayment_Offer_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Offer_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Offer_Order_By>>;
+  where?: Maybe<Payment_Offer_Bool_Exp>;
+};
+
+
+export type Subscription_RootPayment_Offer_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1950,6 +4047,29 @@ export type Subscription_RootSessions_By_PkArgs = {
 };
 
 
+export type Subscription_RootStatesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<States_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<States_Order_By>>;
+  where?: Maybe<States_Bool_Exp>;
+};
+
+
+export type Subscription_RootStates_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<States_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<States_Order_By>>;
+  where?: Maybe<States_Bool_Exp>;
+};
+
+
+export type Subscription_RootStates_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Subscription_RootTaskArgs = {
   distinct_on?: Maybe<ReadonlyArray<Task_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2015,8 +4135,76 @@ export type Subscription_RootUser_AggregateArgs = {
 
 
 export type Subscription_RootUser_By_PkArgs = {
-  email: Scalars['String'];
   id: Scalars['String'];
+};
+
+
+export type Subscription_RootUser_Email_VerificationArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Email_Verification_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Email_Verification_Order_By>>;
+  where?: Maybe<User_Email_Verification_Bool_Exp>;
+};
+
+
+export type Subscription_RootUser_Email_Verification_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Email_Verification_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Email_Verification_Order_By>>;
+  where?: Maybe<User_Email_Verification_Bool_Exp>;
+};
+
+
+export type Subscription_RootUser_Email_Verification_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootUser_MetaArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Meta_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Meta_Order_By>>;
+  where?: Maybe<User_Meta_Bool_Exp>;
+};
+
+
+export type Subscription_RootUser_Meta_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Meta_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Meta_Order_By>>;
+  where?: Maybe<User_Meta_Bool_Exp>;
+};
+
+
+export type Subscription_RootUser_Meta_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootUser_PhonesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Phones_Order_By>>;
+  where?: Maybe<User_Phones_Bool_Exp>;
+};
+
+
+export type Subscription_RootUser_Phones_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<User_Phones_Order_By>>;
+  where?: Maybe<User_Phones_Bool_Exp>;
+};
+
+
+export type Subscription_RootUser_Phones_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -2053,8 +4241,6 @@ export type Task = {
   readonly transaction: Transaction;
   readonly transaction_id: Scalars['uuid'];
   readonly updated_at: Scalars['timestamptz'];
-  /** An object relationship */
-  readonly user: User;
   readonly user_id: Scalars['String'];
 };
 
@@ -2106,7 +4292,6 @@ export type Task_Bool_Exp = {
   readonly transaction?: Maybe<Transaction_Bool_Exp>;
   readonly transaction_id?: Maybe<Uuid_Comparison_Exp>;
   readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
-  readonly user?: Maybe<User_Bool_Exp>;
   readonly user_id?: Maybe<String_Comparison_Exp>;
 };
 
@@ -2125,7 +4310,6 @@ export type Task_Insert_Input = {
   readonly transaction?: Maybe<Transaction_Obj_Rel_Insert_Input>;
   readonly transaction_id?: Maybe<Scalars['uuid']>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
-  readonly user?: Maybe<User_Obj_Rel_Insert_Input>;
   readonly user_id?: Maybe<Scalars['String']>;
 };
 
@@ -2196,7 +4380,6 @@ export type Task_Order_By = {
   readonly transaction?: Maybe<Transaction_Order_By>;
   readonly transaction_id?: Maybe<Order_By>;
   readonly updated_at?: Maybe<Order_By>;
-  readonly user?: Maybe<User_Order_By>;
   readonly user_id?: Maybe<Order_By>;
 };
 
@@ -2253,6 +4436,20 @@ export enum Task_Update_Column {
 }
 
 
+/** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
+export type Timestamp_Comparison_Exp = {
+  readonly _eq?: Maybe<Scalars['timestamp']>;
+  readonly _gt?: Maybe<Scalars['timestamp']>;
+  readonly _gte?: Maybe<Scalars['timestamp']>;
+  readonly _in?: Maybe<ReadonlyArray<Scalars['timestamp']>>;
+  readonly _is_null?: Maybe<Scalars['Boolean']>;
+  readonly _lt?: Maybe<Scalars['timestamp']>;
+  readonly _lte?: Maybe<Scalars['timestamp']>;
+  readonly _neq?: Maybe<Scalars['timestamp']>;
+  readonly _nin?: Maybe<ReadonlyArray<Scalars['timestamp']>>;
+};
+
+
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
   readonly _eq?: Maybe<Scalars['timestamptz']>;
@@ -2282,8 +4479,6 @@ export type Transaction = {
   /** An aggregate relationship */
   readonly tasks_aggregate: Task_Aggregate;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
-  /** An object relationship */
-  readonly user: User;
   readonly user_id: Scalars['String'];
 };
 
@@ -2337,37 +4532,10 @@ export type Transaction_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "transaction" */
-export type Transaction_Aggregate_Order_By = {
-  readonly avg?: Maybe<Transaction_Avg_Order_By>;
-  readonly count?: Maybe<Order_By>;
-  readonly max?: Maybe<Transaction_Max_Order_By>;
-  readonly min?: Maybe<Transaction_Min_Order_By>;
-  readonly stddev?: Maybe<Transaction_Stddev_Order_By>;
-  readonly stddev_pop?: Maybe<Transaction_Stddev_Pop_Order_By>;
-  readonly stddev_samp?: Maybe<Transaction_Stddev_Samp_Order_By>;
-  readonly sum?: Maybe<Transaction_Sum_Order_By>;
-  readonly var_pop?: Maybe<Transaction_Var_Pop_Order_By>;
-  readonly var_samp?: Maybe<Transaction_Var_Samp_Order_By>;
-  readonly variance?: Maybe<Transaction_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "transaction" */
-export type Transaction_Arr_Rel_Insert_Input = {
-  readonly data: ReadonlyArray<Transaction_Insert_Input>;
-  /** on conflict condition */
-  readonly on_conflict?: Maybe<Transaction_On_Conflict>;
-};
-
 /** aggregate avg on columns */
 export type Transaction_Avg_Fields = {
   readonly __typename?: 'transaction_avg_fields';
   readonly amount?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "transaction" */
-export type Transaction_Avg_Order_By = {
-  readonly amount?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "transaction". All fields are combined with a logical 'AND'. */
@@ -2384,7 +4552,6 @@ export type Transaction_Bool_Exp = {
   readonly service_type?: Maybe<String_Comparison_Exp>;
   readonly tasks?: Maybe<Task_Bool_Exp>;
   readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
-  readonly user?: Maybe<User_Bool_Exp>;
   readonly user_id?: Maybe<String_Comparison_Exp>;
 };
 
@@ -2410,7 +4577,6 @@ export type Transaction_Insert_Input = {
   readonly service_type?: Maybe<Scalars['String']>;
   readonly tasks?: Maybe<Task_Arr_Rel_Insert_Input>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
-  readonly user?: Maybe<User_Obj_Rel_Insert_Input>;
   readonly user_id?: Maybe<Scalars['String']>;
 };
 
@@ -2426,17 +4592,6 @@ export type Transaction_Max_Fields = {
   readonly user_id?: Maybe<Scalars['String']>;
 };
 
-/** order by max() on columns of table "transaction" */
-export type Transaction_Max_Order_By = {
-  readonly amount?: Maybe<Order_By>;
-  readonly created_at?: Maybe<Order_By>;
-  readonly id?: Maybe<Order_By>;
-  readonly name?: Maybe<Order_By>;
-  readonly service_type?: Maybe<Order_By>;
-  readonly updated_at?: Maybe<Order_By>;
-  readonly user_id?: Maybe<Order_By>;
-};
-
 /** aggregate min on columns */
 export type Transaction_Min_Fields = {
   readonly __typename?: 'transaction_min_fields';
@@ -2447,17 +4602,6 @@ export type Transaction_Min_Fields = {
   readonly service_type?: Maybe<Scalars['String']>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
   readonly user_id?: Maybe<Scalars['String']>;
-};
-
-/** order by min() on columns of table "transaction" */
-export type Transaction_Min_Order_By = {
-  readonly amount?: Maybe<Order_By>;
-  readonly created_at?: Maybe<Order_By>;
-  readonly id?: Maybe<Order_By>;
-  readonly name?: Maybe<Order_By>;
-  readonly service_type?: Maybe<Order_By>;
-  readonly updated_at?: Maybe<Order_By>;
-  readonly user_id?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "transaction" */
@@ -2494,7 +4638,6 @@ export type Transaction_Order_By = {
   readonly service_type?: Maybe<Order_By>;
   readonly tasks_aggregate?: Maybe<Task_Aggregate_Order_By>;
   readonly updated_at?: Maybe<Order_By>;
-  readonly user?: Maybe<User_Order_By>;
   readonly user_id?: Maybe<Order_By>;
 };
 
@@ -2541,20 +4684,10 @@ export type Transaction_Stddev_Fields = {
   readonly amount?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev() on columns of table "transaction" */
-export type Transaction_Stddev_Order_By = {
-  readonly amount?: Maybe<Order_By>;
-};
-
 /** aggregate stddev_pop on columns */
 export type Transaction_Stddev_Pop_Fields = {
   readonly __typename?: 'transaction_stddev_pop_fields';
   readonly amount?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "transaction" */
-export type Transaction_Stddev_Pop_Order_By = {
-  readonly amount?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -2563,20 +4696,10 @@ export type Transaction_Stddev_Samp_Fields = {
   readonly amount?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_samp() on columns of table "transaction" */
-export type Transaction_Stddev_Samp_Order_By = {
-  readonly amount?: Maybe<Order_By>;
-};
-
 /** aggregate sum on columns */
 export type Transaction_Sum_Fields = {
   readonly __typename?: 'transaction_sum_fields';
   readonly amount?: Maybe<Scalars['Int']>;
-};
-
-/** order by sum() on columns of table "transaction" */
-export type Transaction_Sum_Order_By = {
-  readonly amount?: Maybe<Order_By>;
 };
 
 /** update columns of table "transaction" */
@@ -2605,31 +4728,16 @@ export type Transaction_Var_Pop_Fields = {
   readonly amount?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_pop() on columns of table "transaction" */
-export type Transaction_Var_Pop_Order_By = {
-  readonly amount?: Maybe<Order_By>;
-};
-
 /** aggregate var_samp on columns */
 export type Transaction_Var_Samp_Fields = {
   readonly __typename?: 'transaction_var_samp_fields';
   readonly amount?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_samp() on columns of table "transaction" */
-export type Transaction_Var_Samp_Order_By = {
-  readonly amount?: Maybe<Order_By>;
-};
-
 /** aggregate variance on columns */
 export type Transaction_Variance_Fields = {
   readonly __typename?: 'transaction_variance_fields';
   readonly amount?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "transaction" */
-export type Transaction_Variance_Order_By = {
-  readonly amount?: Maybe<Order_By>;
 };
 
 /** columns and relationships of "user" */
@@ -2639,59 +4747,11 @@ export type User = {
   readonly display_name?: Maybe<Scalars['String']>;
   readonly email: Scalars['String'];
   readonly email_verified?: Maybe<Scalars['Boolean']>;
+  readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id: Scalars['String'];
   readonly image_url?: Maybe<Scalars['String']>;
   readonly phone?: Maybe<Scalars['String']>;
-  /** An array relationship */
-  readonly tasks: ReadonlyArray<Task>;
-  /** An aggregate relationship */
-  readonly tasks_aggregate: Task_Aggregate;
-  /** An array relationship */
-  readonly transactions: ReadonlyArray<Transaction>;
-  /** An aggregate relationship */
-  readonly transactions_aggregate: Transaction_Aggregate;
   readonly updated_at: Scalars['timestamptz'];
-  readonly used_free_consultation: Scalars['Boolean'];
-};
-
-
-/** columns and relationships of "user" */
-export type UserTasksArgs = {
-  distinct_on?: Maybe<ReadonlyArray<Task_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<ReadonlyArray<Task_Order_By>>;
-  where?: Maybe<Task_Bool_Exp>;
-};
-
-
-/** columns and relationships of "user" */
-export type UserTasks_AggregateArgs = {
-  distinct_on?: Maybe<ReadonlyArray<Task_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<ReadonlyArray<Task_Order_By>>;
-  where?: Maybe<Task_Bool_Exp>;
-};
-
-
-/** columns and relationships of "user" */
-export type UserTransactionsArgs = {
-  distinct_on?: Maybe<ReadonlyArray<Transaction_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<ReadonlyArray<Transaction_Order_By>>;
-  where?: Maybe<Transaction_Bool_Exp>;
-};
-
-
-/** columns and relationships of "user" */
-export type UserTransactions_AggregateArgs = {
-  distinct_on?: Maybe<ReadonlyArray<Transaction_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<ReadonlyArray<Transaction_Order_By>>;
-  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 /** aggregated selection of "user" */
@@ -2725,17 +4785,17 @@ export type User_Bool_Exp = {
   readonly display_name?: Maybe<String_Comparison_Exp>;
   readonly email?: Maybe<String_Comparison_Exp>;
   readonly email_verified?: Maybe<Boolean_Comparison_Exp>;
+  readonly firebase_id?: Maybe<String_Comparison_Exp>;
   readonly id?: Maybe<String_Comparison_Exp>;
   readonly image_url?: Maybe<String_Comparison_Exp>;
   readonly phone?: Maybe<String_Comparison_Exp>;
-  readonly tasks?: Maybe<Task_Bool_Exp>;
-  readonly transactions?: Maybe<Transaction_Bool_Exp>;
   readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
-  readonly used_free_consultation?: Maybe<Boolean_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "user" */
 export enum User_Constraint {
+  /** unique or primary key constraint */
+  UserFirebaseIdKey = 'user_firebase_id_key',
   /** unique or primary key constraint */
   UsersEmailKey = 'users_email_key',
   /** unique or primary key constraint */
@@ -2744,19 +4804,176 @@ export enum User_Constraint {
   UsersPkey = 'users_pkey'
 }
 
+/** columns and relationships of "user_email_verification" */
+export type User_Email_Verification = {
+  readonly __typename?: 'user_email_verification';
+  readonly code: Scalars['String'];
+  readonly code_use_date?: Maybe<Scalars['timestamp']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id: Scalars['uuid'];
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id: Scalars['String'];
+};
+
+/** aggregated selection of "user_email_verification" */
+export type User_Email_Verification_Aggregate = {
+  readonly __typename?: 'user_email_verification_aggregate';
+  readonly aggregate?: Maybe<User_Email_Verification_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<User_Email_Verification>;
+};
+
+/** aggregate fields of "user_email_verification" */
+export type User_Email_Verification_Aggregate_Fields = {
+  readonly __typename?: 'user_email_verification_aggregate_fields';
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<User_Email_Verification_Max_Fields>;
+  readonly min?: Maybe<User_Email_Verification_Min_Fields>;
+};
+
+
+/** aggregate fields of "user_email_verification" */
+export type User_Email_Verification_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<User_Email_Verification_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "user_email_verification". All fields are combined with a logical 'AND'. */
+export type User_Email_Verification_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<User_Email_Verification_Bool_Exp>>;
+  readonly _not?: Maybe<User_Email_Verification_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<User_Email_Verification_Bool_Exp>>;
+  readonly code?: Maybe<String_Comparison_Exp>;
+  readonly code_use_date?: Maybe<Timestamp_Comparison_Exp>;
+  readonly created_at?: Maybe<Timestamp_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamp_Comparison_Exp>;
+  readonly user_id?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "user_email_verification" */
+export enum User_Email_Verification_Constraint {
+  /** unique or primary key constraint */
+  PkUserEmailVerification = 'pk_user_email_verification',
+  /** unique or primary key constraint */
+  UidxUserEmailVerificationCode = 'uidx_user_email_verification_code'
+}
+
+/** input type for inserting data into table "user_email_verification" */
+export type User_Email_Verification_Insert_Input = {
+  readonly code?: Maybe<Scalars['String']>;
+  readonly code_use_date?: Maybe<Scalars['timestamp']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type User_Email_Verification_Max_Fields = {
+  readonly __typename?: 'user_email_verification_max_fields';
+  readonly code?: Maybe<Scalars['String']>;
+  readonly code_use_date?: Maybe<Scalars['timestamp']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type User_Email_Verification_Min_Fields = {
+  readonly __typename?: 'user_email_verification_min_fields';
+  readonly code?: Maybe<Scalars['String']>;
+  readonly code_use_date?: Maybe<Scalars['timestamp']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "user_email_verification" */
+export type User_Email_Verification_Mutation_Response = {
+  readonly __typename?: 'user_email_verification_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<User_Email_Verification>;
+};
+
+/** on conflict condition type for table "user_email_verification" */
+export type User_Email_Verification_On_Conflict = {
+  readonly constraint: User_Email_Verification_Constraint;
+  readonly update_columns?: ReadonlyArray<User_Email_Verification_Update_Column>;
+  readonly where?: Maybe<User_Email_Verification_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "user_email_verification". */
+export type User_Email_Verification_Order_By = {
+  readonly code?: Maybe<Order_By>;
+  readonly code_use_date?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+  readonly user_id?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: user_email_verification */
+export type User_Email_Verification_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "user_email_verification" */
+export enum User_Email_Verification_Select_Column {
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CodeUseDate = 'code_use_date',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "user_email_verification" */
+export type User_Email_Verification_Set_Input = {
+  readonly code?: Maybe<Scalars['String']>;
+  readonly code_use_date?: Maybe<Scalars['timestamp']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "user_email_verification" */
+export enum User_Email_Verification_Update_Column {
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CodeUseDate = 'code_use_date',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
 /** input type for inserting data into table "user" */
 export type User_Insert_Input = {
   readonly created_at?: Maybe<Scalars['timestamptz']>;
   readonly display_name?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
   readonly email_verified?: Maybe<Scalars['Boolean']>;
+  readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['String']>;
   readonly image_url?: Maybe<Scalars['String']>;
   readonly phone?: Maybe<Scalars['String']>;
-  readonly tasks?: Maybe<Task_Arr_Rel_Insert_Input>;
-  readonly transactions?: Maybe<Transaction_Arr_Rel_Insert_Input>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
-  readonly used_free_consultation?: Maybe<Scalars['Boolean']>;
 };
 
 /** aggregate max on columns */
@@ -2765,11 +4982,180 @@ export type User_Max_Fields = {
   readonly created_at?: Maybe<Scalars['timestamptz']>;
   readonly display_name?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
+  readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['String']>;
   readonly image_url?: Maybe<Scalars['String']>;
   readonly phone?: Maybe<Scalars['String']>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
 };
+
+/** columns and relationships of "user_meta" */
+export type User_Meta = {
+  readonly __typename?: 'user_meta';
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly first_name: Scalars['String'];
+  readonly id: Scalars['uuid'];
+  readonly last_name?: Maybe<Scalars['String']>;
+  readonly title?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id: Scalars['String'];
+};
+
+/** aggregated selection of "user_meta" */
+export type User_Meta_Aggregate = {
+  readonly __typename?: 'user_meta_aggregate';
+  readonly aggregate?: Maybe<User_Meta_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<User_Meta>;
+};
+
+/** aggregate fields of "user_meta" */
+export type User_Meta_Aggregate_Fields = {
+  readonly __typename?: 'user_meta_aggregate_fields';
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<User_Meta_Max_Fields>;
+  readonly min?: Maybe<User_Meta_Min_Fields>;
+};
+
+
+/** aggregate fields of "user_meta" */
+export type User_Meta_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<User_Meta_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "user_meta". All fields are combined with a logical 'AND'. */
+export type User_Meta_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<User_Meta_Bool_Exp>>;
+  readonly _not?: Maybe<User_Meta_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<User_Meta_Bool_Exp>>;
+  readonly created_at?: Maybe<Timestamp_Comparison_Exp>;
+  readonly first_name?: Maybe<String_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly last_name?: Maybe<String_Comparison_Exp>;
+  readonly title?: Maybe<String_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamp_Comparison_Exp>;
+  readonly user_id?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "user_meta" */
+export enum User_Meta_Constraint {
+  /** unique or primary key constraint */
+  PkUserMeta = 'pk_user_meta'
+}
+
+/** input type for inserting data into table "user_meta" */
+export type User_Meta_Insert_Input = {
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly first_name?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly last_name?: Maybe<Scalars['String']>;
+  readonly title?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type User_Meta_Max_Fields = {
+  readonly __typename?: 'user_meta_max_fields';
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly first_name?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly last_name?: Maybe<Scalars['String']>;
+  readonly title?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type User_Meta_Min_Fields = {
+  readonly __typename?: 'user_meta_min_fields';
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly first_name?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly last_name?: Maybe<Scalars['String']>;
+  readonly title?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "user_meta" */
+export type User_Meta_Mutation_Response = {
+  readonly __typename?: 'user_meta_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<User_Meta>;
+};
+
+/** on conflict condition type for table "user_meta" */
+export type User_Meta_On_Conflict = {
+  readonly constraint: User_Meta_Constraint;
+  readonly update_columns?: ReadonlyArray<User_Meta_Update_Column>;
+  readonly where?: Maybe<User_Meta_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "user_meta". */
+export type User_Meta_Order_By = {
+  readonly created_at?: Maybe<Order_By>;
+  readonly first_name?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly last_name?: Maybe<Order_By>;
+  readonly title?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+  readonly user_id?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: user_meta */
+export type User_Meta_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "user_meta" */
+export enum User_Meta_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  FirstName = 'first_name',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LastName = 'last_name',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "user_meta" */
+export type User_Meta_Set_Input = {
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly first_name?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly last_name?: Maybe<Scalars['String']>;
+  readonly title?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "user_meta" */
+export enum User_Meta_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  FirstName = 'first_name',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LastName = 'last_name',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
 
 /** aggregate min on columns */
 export type User_Min_Fields = {
@@ -2777,6 +5163,7 @@ export type User_Min_Fields = {
   readonly created_at?: Maybe<Scalars['timestamptz']>;
   readonly display_name?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
+  readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['String']>;
   readonly image_url?: Maybe<Scalars['String']>;
   readonly phone?: Maybe<Scalars['String']>;
@@ -2792,13 +5179,6 @@ export type User_Mutation_Response = {
   readonly returning: ReadonlyArray<User>;
 };
 
-/** input type for inserting object relation for remote table "user" */
-export type User_Obj_Rel_Insert_Input = {
-  readonly data: User_Insert_Input;
-  /** on conflict condition */
-  readonly on_conflict?: Maybe<User_On_Conflict>;
-};
-
 /** on conflict condition type for table "user" */
 export type User_On_Conflict = {
   readonly constraint: User_Constraint;
@@ -2812,18 +5192,267 @@ export type User_Order_By = {
   readonly display_name?: Maybe<Order_By>;
   readonly email?: Maybe<Order_By>;
   readonly email_verified?: Maybe<Order_By>;
+  readonly firebase_id?: Maybe<Order_By>;
   readonly id?: Maybe<Order_By>;
   readonly image_url?: Maybe<Order_By>;
   readonly phone?: Maybe<Order_By>;
-  readonly tasks_aggregate?: Maybe<Task_Aggregate_Order_By>;
-  readonly transactions_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   readonly updated_at?: Maybe<Order_By>;
-  readonly used_free_consultation?: Maybe<Order_By>;
+};
+
+/** columns and relationships of "user_phones" */
+export type User_Phones = {
+  readonly __typename?: 'user_phones';
+  /** This shows if the phone number is still an active one */
+  readonly active: Scalars['Boolean'];
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id: Scalars['uuid'];
+  readonly phone_number: Scalars['String'];
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id: Scalars['String'];
+  readonly verification_code: Scalars['Int'];
+  readonly verification_code_use_date?: Maybe<Scalars['timestamp']>;
+  readonly verification_code_validity?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregated selection of "user_phones" */
+export type User_Phones_Aggregate = {
+  readonly __typename?: 'user_phones_aggregate';
+  readonly aggregate?: Maybe<User_Phones_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<User_Phones>;
+};
+
+/** aggregate fields of "user_phones" */
+export type User_Phones_Aggregate_Fields = {
+  readonly __typename?: 'user_phones_aggregate_fields';
+  readonly avg?: Maybe<User_Phones_Avg_Fields>;
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<User_Phones_Max_Fields>;
+  readonly min?: Maybe<User_Phones_Min_Fields>;
+  readonly stddev?: Maybe<User_Phones_Stddev_Fields>;
+  readonly stddev_pop?: Maybe<User_Phones_Stddev_Pop_Fields>;
+  readonly stddev_samp?: Maybe<User_Phones_Stddev_Samp_Fields>;
+  readonly sum?: Maybe<User_Phones_Sum_Fields>;
+  readonly var_pop?: Maybe<User_Phones_Var_Pop_Fields>;
+  readonly var_samp?: Maybe<User_Phones_Var_Samp_Fields>;
+  readonly variance?: Maybe<User_Phones_Variance_Fields>;
+};
+
+
+/** aggregate fields of "user_phones" */
+export type User_Phones_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type User_Phones_Avg_Fields = {
+  readonly __typename?: 'user_phones_avg_fields';
+  readonly verification_code?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "user_phones". All fields are combined with a logical 'AND'. */
+export type User_Phones_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<User_Phones_Bool_Exp>>;
+  readonly _not?: Maybe<User_Phones_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<User_Phones_Bool_Exp>>;
+  readonly active?: Maybe<Boolean_Comparison_Exp>;
+  readonly created_at?: Maybe<Timestamp_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly phone_number?: Maybe<String_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamp_Comparison_Exp>;
+  readonly user_id?: Maybe<String_Comparison_Exp>;
+  readonly verification_code?: Maybe<Int_Comparison_Exp>;
+  readonly verification_code_use_date?: Maybe<Timestamp_Comparison_Exp>;
+  readonly verification_code_validity?: Maybe<Timestamp_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "user_phones" */
+export enum User_Phones_Constraint {
+  /** unique or primary key constraint */
+  UserPhonesPkey = 'user_phones_pkey'
+}
+
+/** input type for incrementing numeric columns in table "user_phones" */
+export type User_Phones_Inc_Input = {
+  readonly verification_code?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "user_phones" */
+export type User_Phones_Insert_Input = {
+  /** This shows if the phone number is still an active one */
+  readonly active?: Maybe<Scalars['Boolean']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly phone_number?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+  readonly verification_code?: Maybe<Scalars['Int']>;
+  readonly verification_code_use_date?: Maybe<Scalars['timestamp']>;
+  readonly verification_code_validity?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate max on columns */
+export type User_Phones_Max_Fields = {
+  readonly __typename?: 'user_phones_max_fields';
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly phone_number?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+  readonly verification_code?: Maybe<Scalars['Int']>;
+  readonly verification_code_use_date?: Maybe<Scalars['timestamp']>;
+  readonly verification_code_validity?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate min on columns */
+export type User_Phones_Min_Fields = {
+  readonly __typename?: 'user_phones_min_fields';
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly phone_number?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+  readonly verification_code?: Maybe<Scalars['Int']>;
+  readonly verification_code_use_date?: Maybe<Scalars['timestamp']>;
+  readonly verification_code_validity?: Maybe<Scalars['timestamp']>;
+};
+
+/** response of any mutation on the table "user_phones" */
+export type User_Phones_Mutation_Response = {
+  readonly __typename?: 'user_phones_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<User_Phones>;
+};
+
+/** on conflict condition type for table "user_phones" */
+export type User_Phones_On_Conflict = {
+  readonly constraint: User_Phones_Constraint;
+  readonly update_columns?: ReadonlyArray<User_Phones_Update_Column>;
+  readonly where?: Maybe<User_Phones_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "user_phones". */
+export type User_Phones_Order_By = {
+  readonly active?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly phone_number?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+  readonly user_id?: Maybe<Order_By>;
+  readonly verification_code?: Maybe<Order_By>;
+  readonly verification_code_use_date?: Maybe<Order_By>;
+  readonly verification_code_validity?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: user_phones */
+export type User_Phones_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "user_phones" */
+export enum User_Phones_Select_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PhoneNumber = 'phone_number',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id',
+  /** column name */
+  VerificationCode = 'verification_code',
+  /** column name */
+  VerificationCodeUseDate = 'verification_code_use_date',
+  /** column name */
+  VerificationCodeValidity = 'verification_code_validity'
+}
+
+/** input type for updating data in table "user_phones" */
+export type User_Phones_Set_Input = {
+  /** This shows if the phone number is still an active one */
+  readonly active?: Maybe<Scalars['Boolean']>;
+  readonly created_at?: Maybe<Scalars['timestamp']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly phone_number?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamp']>;
+  readonly user_id?: Maybe<Scalars['String']>;
+  readonly verification_code?: Maybe<Scalars['Int']>;
+  readonly verification_code_use_date?: Maybe<Scalars['timestamp']>;
+  readonly verification_code_validity?: Maybe<Scalars['timestamp']>;
+};
+
+/** aggregate stddev on columns */
+export type User_Phones_Stddev_Fields = {
+  readonly __typename?: 'user_phones_stddev_fields';
+  readonly verification_code?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type User_Phones_Stddev_Pop_Fields = {
+  readonly __typename?: 'user_phones_stddev_pop_fields';
+  readonly verification_code?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type User_Phones_Stddev_Samp_Fields = {
+  readonly __typename?: 'user_phones_stddev_samp_fields';
+  readonly verification_code?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type User_Phones_Sum_Fields = {
+  readonly __typename?: 'user_phones_sum_fields';
+  readonly verification_code?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "user_phones" */
+export enum User_Phones_Update_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PhoneNumber = 'phone_number',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id',
+  /** column name */
+  VerificationCode = 'verification_code',
+  /** column name */
+  VerificationCodeUseDate = 'verification_code_use_date',
+  /** column name */
+  VerificationCodeValidity = 'verification_code_validity'
+}
+
+/** aggregate var_pop on columns */
+export type User_Phones_Var_Pop_Fields = {
+  readonly __typename?: 'user_phones_var_pop_fields';
+  readonly verification_code?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type User_Phones_Var_Samp_Fields = {
+  readonly __typename?: 'user_phones_var_samp_fields';
+  readonly verification_code?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type User_Phones_Variance_Fields = {
+  readonly __typename?: 'user_phones_variance_fields';
+  readonly verification_code?: Maybe<Scalars['Float']>;
 };
 
 /** primary key columns input for table: user */
 export type User_Pk_Columns_Input = {
-  readonly email: Scalars['String'];
   readonly id: Scalars['String'];
 };
 
@@ -2838,15 +5467,15 @@ export enum User_Select_Column {
   /** column name */
   EmailVerified = 'email_verified',
   /** column name */
+  FirebaseId = 'firebase_id',
+  /** column name */
   Id = 'id',
   /** column name */
   ImageUrl = 'image_url',
   /** column name */
   Phone = 'phone',
   /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  UsedFreeConsultation = 'used_free_consultation'
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "user" */
@@ -2855,11 +5484,11 @@ export type User_Set_Input = {
   readonly display_name?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
   readonly email_verified?: Maybe<Scalars['Boolean']>;
+  readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['String']>;
   readonly image_url?: Maybe<Scalars['String']>;
   readonly phone?: Maybe<Scalars['String']>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
-  readonly used_free_consultation?: Maybe<Scalars['Boolean']>;
 };
 
 /** update columns of table "user" */
@@ -2873,15 +5502,15 @@ export enum User_Update_Column {
   /** column name */
   EmailVerified = 'email_verified',
   /** column name */
+  FirebaseId = 'firebase_id',
+  /** column name */
   Id = 'id',
   /** column name */
   ImageUrl = 'image_url',
   /** column name */
   Phone = 'phone',
   /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  UsedFreeConsultation = 'used_free_consultation'
+  UpdatedAt = 'updated_at'
 }
 
 
@@ -3074,20 +5703,38 @@ export type UpdateTaskMutation = (
   )> }
 );
 
-export type InsertNewFreeConsulationTransactionMutationVariables = Exact<{
-  user_id: Scalars['String'];
+export type InsertNewUserMutationVariables = Exact<{
+  id: Scalars['String'];
   email: Scalars['String'];
+  email_verified?: Maybe<Scalars['Boolean']>;
+  image_url?: Maybe<Scalars['String']>;
+  display_name?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+  firebase_id: Scalars['String'];
 }>;
 
 
-export type InsertNewFreeConsulationTransactionMutation = (
+export type InsertNewUserMutation = (
   { readonly __typename?: 'mutation_root' }
-  & { readonly insert_transaction_one?: Maybe<(
-    { readonly __typename?: 'transaction' }
-    & Pick<Transaction, 'id'>
-  )>, readonly update_user_by_pk?: Maybe<(
+  & { readonly insert_user_one?: Maybe<(
     { readonly __typename?: 'user' }
-    & Pick<User, 'used_free_consultation'>
+    & Pick<User, 'created_at' | 'email' | 'email_verified' | 'id' | 'image_url' | 'phone' | 'firebase_id'>
+  )> }
+);
+
+export type UpdateUserMutationVariables = Exact<{
+  email: Scalars['String'];
+  displayName: Scalars['String'];
+  photoURL?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateUserMutation = (
+  { readonly __typename?: 'mutation_root' }
+  & { readonly update_user?: Maybe<(
+    { readonly __typename?: 'user_mutation_response' }
+    & Pick<User_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -3118,46 +5765,20 @@ export type GetCurrentUserQuery = (
   { readonly __typename?: 'query_root' }
   & { readonly user_by_pk?: Maybe<(
     { readonly __typename?: 'user' }
-    & Pick<User, 'display_name' | 'email' | 'email_verified' | 'id' | 'image_url' | 'phone' | 'used_free_consultation'>
-    & { readonly transactions: ReadonlyArray<(
-      { readonly __typename?: 'transaction' }
-      & Pick<Transaction, 'id' | 'amount' | 'is_success_done' | 'service_type'>
-      & { readonly tasks: ReadonlyArray<(
-        { readonly __typename?: 'task' }
-        & Pick<Task, 'created_at' | 'info_text' | 'isDone'>
-      )> }
-    )> }
+    & Pick<User, 'display_name' | 'email' | 'email_verified' | 'id' | 'image_url' | 'phone'>
   )> }
 );
 
-export type GetUserEmailQueryVariables = Exact<{
+export type GetCurrentUserByEmailQueryVariables = Exact<{
   email: Scalars['String'];
-  id: Scalars['String'];
 }>;
 
 
-export type GetUserEmailQuery = (
+export type GetCurrentUserByEmailQuery = (
   { readonly __typename?: 'query_root' }
-  & { readonly user_by_pk?: Maybe<(
+  & { readonly user: ReadonlyArray<(
     { readonly __typename?: 'user' }
-    & Pick<User, 'email' | 'email_verified' | 'display_name' | 'image_url' | 'id' | 'phone'>
-  )> }
-);
-
-export type InsertNeUserMutationVariables = Exact<{
-  email: Scalars['String'];
-  email_verified?: Maybe<Scalars['Boolean']>;
-  image_url?: Maybe<Scalars['String']>;
-  display_name?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
-}>;
-
-
-export type InsertNeUserMutation = (
-  { readonly __typename?: 'mutation_root' }
-  & { readonly insert_user_one?: Maybe<(
-    { readonly __typename?: 'user' }
-    & Pick<User, 'created_at' | 'email' | 'email_verified' | 'id' | 'image_url' | 'phone'>
+    & Pick<User, 'display_name' | 'email' | 'email_verified' | 'firebase_id' | 'id' | 'image_url' | 'phone'>
   )> }
 );
 
@@ -3205,46 +5826,93 @@ export function useUpdateTaskMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateTaskMutationHookResult = ReturnType<typeof useUpdateTaskMutation>;
 export type UpdateTaskMutationResult = Apollo.MutationResult<UpdateTaskMutation>;
 export type UpdateTaskMutationOptions = Apollo.BaseMutationOptions<UpdateTaskMutation, UpdateTaskMutationVariables>;
-export const InsertNewFreeConsulationTransactionDocument = gql`
-    mutation insertNewFreeConsulationTransaction($user_id: String!, $email: String!) {
-  insert_transaction_one(object: {user_id: $user_id}) {
-    id
-  }
-  update_user_by_pk(
-    _set: {used_free_consultation: true}
-    pk_columns: {email: $email, id: $user_id}
+export const InsertNewUserDocument = gql`
+    mutation insertNewUser($id: String!, $email: String!, $email_verified: Boolean, $image_url: String, $display_name: String, $phone: String, $firebase_id: String!) {
+  insert_user_one(
+    object: {id: $id, email: $email, email_verified: $email_verified, image_url: $image_url, display_name: $display_name, phone: $phone, firebase_id: $firebase_id}
+    on_conflict: {constraint: users_pkey}
   ) {
-    used_free_consultation
+    created_at
+    email
+    email_verified
+    id
+    image_url
+    phone
+    firebase_id
   }
 }
     `;
-export type InsertNewFreeConsulationTransactionMutationFn = Apollo.MutationFunction<InsertNewFreeConsulationTransactionMutation, InsertNewFreeConsulationTransactionMutationVariables>;
+export type InsertNewUserMutationFn = Apollo.MutationFunction<InsertNewUserMutation, InsertNewUserMutationVariables>;
 
 /**
- * __useInsertNewFreeConsulationTransactionMutation__
+ * __useInsertNewUserMutation__
  *
- * To run a mutation, you first call `useInsertNewFreeConsulationTransactionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertNewFreeConsulationTransactionMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInsertNewUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertNewUserMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [insertNewFreeConsulationTransactionMutation, { data, loading, error }] = useInsertNewFreeConsulationTransactionMutation({
+ * const [insertNewUserMutation, { data, loading, error }] = useInsertNewUserMutation({
  *   variables: {
- *      user_id: // value for 'user_id'
+ *      id: // value for 'id'
  *      email: // value for 'email'
+ *      email_verified: // value for 'email_verified'
+ *      image_url: // value for 'image_url'
+ *      display_name: // value for 'display_name'
+ *      phone: // value for 'phone'
+ *      firebase_id: // value for 'firebase_id'
  *   },
  * });
  */
-export function useInsertNewFreeConsulationTransactionMutation(baseOptions?: Apollo.MutationHookOptions<InsertNewFreeConsulationTransactionMutation, InsertNewFreeConsulationTransactionMutationVariables>) {
+export function useInsertNewUserMutation(baseOptions?: Apollo.MutationHookOptions<InsertNewUserMutation, InsertNewUserMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertNewFreeConsulationTransactionMutation, InsertNewFreeConsulationTransactionMutationVariables>(InsertNewFreeConsulationTransactionDocument, options);
+        return Apollo.useMutation<InsertNewUserMutation, InsertNewUserMutationVariables>(InsertNewUserDocument, options);
       }
-export type InsertNewFreeConsulationTransactionMutationHookResult = ReturnType<typeof useInsertNewFreeConsulationTransactionMutation>;
-export type InsertNewFreeConsulationTransactionMutationResult = Apollo.MutationResult<InsertNewFreeConsulationTransactionMutation>;
-export type InsertNewFreeConsulationTransactionMutationOptions = Apollo.BaseMutationOptions<InsertNewFreeConsulationTransactionMutation, InsertNewFreeConsulationTransactionMutationVariables>;
+export type InsertNewUserMutationHookResult = ReturnType<typeof useInsertNewUserMutation>;
+export type InsertNewUserMutationResult = Apollo.MutationResult<InsertNewUserMutation>;
+export type InsertNewUserMutationOptions = Apollo.BaseMutationOptions<InsertNewUserMutation, InsertNewUserMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation updateUser($email: String!, $displayName: String!, $photoURL: String, $phone: String) {
+  update_user(
+    where: {email: {_eq: $email}}
+    _set: {display_name: $displayName, image_url: $photoURL, phone: $phone}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      displayName: // value for 'displayName'
+ *      photoURL: // value for 'photoURL'
+ *      phone: // value for 'phone'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const GetUserTransactionsDocument = gql`
     query getUserTransactions($id: String!) {
   transaction(
@@ -3298,26 +5966,13 @@ export type GetUserTransactionsLazyQueryHookResult = ReturnType<typeof useGetUse
 export type GetUserTransactionsQueryResult = Apollo.QueryResult<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>;
 export const GetCurrentUserDocument = gql`
     query getCurrentUser($email: String!, $id: String!) {
-  user_by_pk(email: $email, id: $id) {
+  user_by_pk(id: $id) {
     display_name
     email
     email_verified
     id
     image_url
     phone
-    used_free_consultation
-    transactions {
-      id
-      amount
-      id
-      is_success_done
-      service_type
-      tasks(where: {user_id: {_eq: $id}}, order_by: {created_at: asc, isDone: asc}) {
-        created_at
-        info_text
-        isDone
-      }
-    }
   }
 }
     `;
@@ -3350,88 +6005,45 @@ export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
-export const GetUserEmailDocument = gql`
-    query getUserEmail($email: String!, $id: String!) {
-  user_by_pk(email: $email, id: $id) {
+export const GetCurrentUserByEmailDocument = gql`
+    query getCurrentUserByEmail($email: String!) {
+  user(where: {email: {_eq: $email}}) {
+    display_name
     email
     email_verified
-    display_name
-    image_url
+    firebase_id
     id
+    image_url
     phone
+    image_url
   }
 }
     `;
 
 /**
- * __useGetUserEmailQuery__
+ * __useGetCurrentUserByEmailQuery__
  *
- * To run a query within a React component, call `useGetUserEmailQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetCurrentUserByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetUserEmailQuery({
+ * const { data, loading, error } = useGetCurrentUserByEmailQuery({
  *   variables: {
  *      email: // value for 'email'
- *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetUserEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserEmailQuery, GetUserEmailQueryVariables>) {
+export function useGetCurrentUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserEmailQuery, GetUserEmailQueryVariables>(GetUserEmailDocument, options);
+        return Apollo.useQuery<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>(GetCurrentUserByEmailDocument, options);
       }
-export function useGetUserEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserEmailQuery, GetUserEmailQueryVariables>) {
+export function useGetCurrentUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserEmailQuery, GetUserEmailQueryVariables>(GetUserEmailDocument, options);
+          return Apollo.useLazyQuery<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>(GetCurrentUserByEmailDocument, options);
         }
-export type GetUserEmailQueryHookResult = ReturnType<typeof useGetUserEmailQuery>;
-export type GetUserEmailLazyQueryHookResult = ReturnType<typeof useGetUserEmailLazyQuery>;
-export type GetUserEmailQueryResult = Apollo.QueryResult<GetUserEmailQuery, GetUserEmailQueryVariables>;
-export const InsertNeUserDocument = gql`
-    mutation insertNeUser($email: String!, $email_verified: Boolean, $image_url: String, $display_name: String, $phone: String) {
-  insert_user_one(
-    object: {email: $email, email_verified: $email_verified, image_url: $image_url, display_name: $display_name, phone: $phone}
-  ) {
-    created_at
-    email
-    email_verified
-    id
-    image_url
-    phone
-  }
-}
-    `;
-export type InsertNeUserMutationFn = Apollo.MutationFunction<InsertNeUserMutation, InsertNeUserMutationVariables>;
-
-/**
- * __useInsertNeUserMutation__
- *
- * To run a mutation, you first call `useInsertNeUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertNeUserMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertNeUserMutation, { data, loading, error }] = useInsertNeUserMutation({
- *   variables: {
- *      email: // value for 'email'
- *      email_verified: // value for 'email_verified'
- *      image_url: // value for 'image_url'
- *      display_name: // value for 'display_name'
- *      phone: // value for 'phone'
- *   },
- * });
- */
-export function useInsertNeUserMutation(baseOptions?: Apollo.MutationHookOptions<InsertNeUserMutation, InsertNeUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertNeUserMutation, InsertNeUserMutationVariables>(InsertNeUserDocument, options);
-      }
-export type InsertNeUserMutationHookResult = ReturnType<typeof useInsertNeUserMutation>;
-export type InsertNeUserMutationResult = Apollo.MutationResult<InsertNeUserMutation>;
-export type InsertNeUserMutationOptions = Apollo.BaseMutationOptions<InsertNeUserMutation, InsertNeUserMutationVariables>;
+export type GetCurrentUserByEmailQueryHookResult = ReturnType<typeof useGetCurrentUserByEmailQuery>;
+export type GetCurrentUserByEmailLazyQueryHookResult = ReturnType<typeof useGetCurrentUserByEmailLazyQuery>;
+export type GetCurrentUserByEmailQueryResult = Apollo.QueryResult<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>;

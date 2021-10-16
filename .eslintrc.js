@@ -1,11 +1,10 @@
 module.exports = {
     root: true,
     ignorePatterns: ['node_modules/**', 'build/**'],
-    parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint', 'react-hooks', "prettier"],
+    plugins: ['@typescript-eslint', 'react-hooks'],
     extends: [
         'plugin:@typescript-eslint/recommended',
-        'plugin:react/recommended',
+        'plugin:react/recommended'
     ],
     settings: {
         react: {
@@ -15,6 +14,7 @@ module.exports = {
     rules: {
         '@typescript-eslint/ban-ts-comment': 'warn',
         '@typescript-eslint/ban-types': 'warn',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/explicit-function-return-type': 0,
         '@typescript-eslint/naming-convention': 0,
         '@typescript-eslint/no-explicit-any': 'warn',
@@ -39,8 +39,17 @@ module.exports = {
         'react/jsx-key': 'warn',
         'react/no-children-prop': 'error',
         'react/no-render-return-value': 0,
-        'react/prop-types': 0,
-        '@typescript-eslint/no-use-before-define': 0,
-        '@typescript-eslint/no-non-null-assertion': 0,
-    }
+        'react/prop-types': 0
+    },
+    overrides: [
+        {
+            // enable the rule specifically for TypeScript files
+            files: ['*.ts', '*.tsx'],
+            rules: {
+                '@typescript-eslint/explicit-module-boundary-types': [
+                    'off'
+                ]
+            }
+        }
+    ]
 };

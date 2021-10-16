@@ -1,11 +1,10 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 interface RouteConfig {
-    name: string
-    path: string
-    isPrivate?: boolean
+    name: string;
+    path: string;
+    isPrivate?: boolean;
 }
 
-export const routes: RouteConfig [] = [
+export const routes: RouteConfig[] = [
     {
         name: 'Home',
         path: '/'
@@ -21,19 +20,17 @@ export const routes: RouteConfig [] = [
     },
     {
         name: 'login',
-        path: '/login',
+        path: '/login'
     },
     {
         name: 'profile',
-        path: '/profile',
-    },
-]
+        path: '/account'
+    }
+];
 
-export const routePaths = routes.map(route => route.path)
+export const routePaths = routes.map(route => route.path);
 
 export const getRoutePathIndex = (path: string) => {
-    const index = routePaths.indexOf(path)
-    return index > -1 ? index : 0
-}
-
-
+    const index = routePaths.indexOf(path);
+    return index > -1 ? index : 0;
+};

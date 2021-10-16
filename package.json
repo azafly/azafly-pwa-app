@@ -38,19 +38,18 @@
     "dexie-react-hooks": "^1.0.7",
     "faker": "^5.5.3",
     "firebase": "^8.7.0",
-    "flutterwave-react-v3": "^1.0.10",
     "formik": "^2.2.9",
     "framer-motion": "^4.1.17",
     "graphql": "^15.5.1",
     "history": "^5.0.0",
     "install": "^0.13.0",
     "isomorphic-unfetch": "^3.1.0",
+    "json-schema-yup-transformer": "^1.6.0",
     "moment": "^2.29.1",
     "prerender-node": "^3.2.5",
-    "prettier": "^2.3.2",
+    "prettier": "^2.4.1",
     "react": "^17.0.2",
     "react-app-rewired": "^2.1.8",
-    "react-calendly": "^2.2.2",
     "react-content-loader": "^6.0.3",
     "react-dom": "^17.0.2",
     "react-intersection-observer": "^8.32.0",
@@ -58,10 +57,12 @@
     "react-router-dom": "^5.2.0",
     "react-router-transition": "^2.1.0",
     "react-scripts": "4.0.3",
+    "react-swipeable-views": "^0.14.0",
     "react-transition-group": "^4.4.2",
+    "react-window": "^1.8.6",
+    "source-map-explorer": "^2.5.2",
     "subscriptions-transport-ws": "^0.9.19",
     "typescript": "~4.1.5",
-    "use-countries": "^0.1.3",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.0",
     "yarn": "^1.22.11",
@@ -71,10 +72,12 @@
     "start": "PORT=3006 react-app-rewired start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "generate": "graphql-codegen --config codegen.js",
     "prettier": "prettier src/**/*.{ts,tsx,js,json,d.ts}",
     "build:staging": "env-cmd -f .env.staging react-app-rewired build && firebase deploy -P staging",
-    "build:prod": "env-cmd -f .env.production react-app-rewired build && firebase deploy -P prod"
+    "build:prod": "env-cmd -f .env.production react-app-rewired build && firebase deploy -P prod",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -91,10 +94,27 @@
       "last 1 safari version"
     ]
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint -c .eslintrc-next.js --fix --quiet",
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,scss,md,json,yml}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "@types/faker": "^5.5.8",
+    "@types/react-swipeable-views-utils": "^0.13.3",
+    "@types/react-window": "^1.8.5",
     "env-cmd": "^10.1.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0"
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^7.0.2",
+    "lint-staged": "^11.1.2",
+    "openapi-typescript": "^4.3.0",
+    "openapi-typescript-codegen": "^0.9.3"
   }
 }

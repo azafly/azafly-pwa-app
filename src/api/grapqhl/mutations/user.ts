@@ -33,9 +33,17 @@ export const INSERT_NEW_USER = gql`
     }
 `;
 
-export const USER_ON_SIGN_UP = gql`
-    mutation updateUserOnSignUp($displayName: String!, $email: String!) {
-        update_user(_set: { display_name: $displayName }, where: { email: { _eq: $email } }) {
+// export const USER_ON_SIGN_UP = gql`
+//     mutation updateUser($email: String!) {
+//         update_user(where: { email: { _eq: $email } }, _set: { display_name: "", email: "", email_verified: false, image_url: "", phone: "" }) {
+//             affected_rows
+//         }
+//     }
+// `;
+
+export const UPDATE_USER = gql`
+    mutation updateUser($email: String!, $displayName: String!, $photoURL: String, $phone: String) {
+        update_user(where: { email: { _eq: $email } }, _set: { display_name: $displayName, image_url: $photoURL, phone: $phone }) {
             affected_rows
         }
     }

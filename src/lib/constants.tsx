@@ -53,7 +53,7 @@ export const privateMenu: SideMenu[] = [
         name: 'Profile',
         isOpened: false,
         icon: <ProfileSvgComponent />,
-        route: '/profile'
+        route: '/account'
     },
     {
         name: 'Logout',

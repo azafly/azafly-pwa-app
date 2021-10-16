@@ -8,6 +8,7 @@ export interface User {
     photoURL: string | null;
     uid: string;
     emailVerified: boolean;
+    phone?: string | null;
     sendEmailVerification: Function;
 }
 
@@ -15,7 +16,7 @@ export interface FirebaseUser {
     displayName: string;
     firebaseId: string;
     email: string;
-    phone: string | null;
+    phone?: string | null;
     emailVerified: boolean;
     photoURL: string | null;
 }
@@ -42,7 +43,8 @@ export const defaultUser: User = {
     photoURL: '',
     uid: '',
     emailVerified: false,
-    sendEmailVerification: () => {}
+    sendEmailVerification: () => {},
+    phone: null
 };
 
 export const defaultAuthState: AuthState = {

@@ -6,9 +6,9 @@ import ForgotPassword from 'features/onboarding/forgot-password';
 import VerifyUser from 'features/onboarding/auth-verify';
 import Onboarding from 'views/onboarding';
 import Page404 from 'views/404';
-import Profile from 'views/profile';
 import UserDashboard from 'views/user-dashboard';
 import Payments from 'views/payments';
+import { UserAccount } from 'views/user-account';
 
 export const Routes = () => {
     return (
@@ -17,15 +17,12 @@ export const Routes = () => {
                 <Route exact path='/'>
                     <Onboarding />
                 </Route>
-                <Route exact path='/profile'>
-                    <Profile />
-                </Route>
                 <Route exact path='/signup'>
                     <Onboarding />
                 </Route>
-                <Route exact path='/payment'>
+                <PrivateRoute exact path='/payment'>
                     <Payments />
-                </Route>
+                </PrivateRoute>
                 <Route exact path='/signin'>
                     <Onboarding />
                 </Route>
@@ -37,6 +34,9 @@ export const Routes = () => {
                 </Route>
                 <PrivateRoute path='/dashboard'>
                     <UserDashboard />
+                </PrivateRoute>
+                <PrivateRoute path='/account'>
+                    <UserAccount />
                 </PrivateRoute>
                 <Route exact path='*'>
                     <Page404 />

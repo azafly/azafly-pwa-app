@@ -12,13 +12,12 @@ export const useSPaymentsStyles = makeStyles(() =>
 export const useStepperStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            width: 'calc(100vw - 5vw)',
-            maxWidth: 1020,
             margin: 'auto',
             marginBottom: 100,
+            maxWidth: 1920,
             marginTop: '15vh',
             [theme.breakpoints.up('md')]: {
-                width: 'calc(100vw - 20vw)',
+                width: 'calc(100vw - 10vw)',
                 marginTop: '20vh'
             },
             [theme.breakpoints.down('sm')]: {
@@ -43,13 +42,17 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
             width: '18ch'
         },
         next: {
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignItems: 'center',
             marginTop: theme.spacing(1),
             marginRight: theme.spacing(3),
+            textTransform: 'none',
             background: theme.colors.base,
             padding: '14px 20px',
             width: '20ch',
-            textDecoration: 'none',
             color: 'white',
+            textDecoration: 'none',
             cursor: 'pointer',
             borderRadius: 6,
             border: 'none',
@@ -59,7 +62,10 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
             }
         },
         actionsContainer: {
-            marginBottom: theme.spacing(2)
+            marginBottom: theme.spacing(2),
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-around'
         },
         resetContainer: {
             padding: theme.spacing(3)

@@ -1,10 +1,10 @@
 module.exports = {
     schema: [
         {
-            'https://azafly-staging.hasura.app/v1/graphql': {
+            'https://pick-safe.hasura.app/v1/graphql': {
                 headers: {
-                    'x-hasura-admin-secret': 'hZzl7Bg6sHb87i6r4HQlMUT8ScBy37UjF9w1ojlfvmWBEcGuNkj4SjTW7TUiAth6',
-                    Authorization: `Bearer hZzl7Bg6sHb87i6r4HQlMUT8ScBy37UjF9w1ojlfvmWBEcGuNkj4SjTW7TUiAth6`
+                    'x-hasura-admin-secret': 'ajqk0EEQmMz1e7NOIAERaPIi7KoJw3VwEx2KhOfXMsVzug521TXuE2tDXMn66DVM',
+                    Authorization: `Bearer ajqk0EEQmMz1e7NOIAERaPIi7KoJw3VwEx2KhOfXMsVzug521TXuE2tDXMn66DVM`
                 }
             }
         }

@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Slide, TextField, Typography } from '@material-ui/core';
+import { Box, Button, Grid, Slide, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
 import { useState, useMemo } from 'react';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
@@ -42,7 +42,7 @@ const UserAccount = () => {
         })
             .then(() => {
                 setAuthLoadingState(false);
-                setSuccess('Great job 🎉,Profile updated successfully');
+                setSuccess('Great job 🎉!! Profile updated successfully');
             })
             .catch(() => setError('Error updating your profile. Try again later'))
             .finally(async () => {

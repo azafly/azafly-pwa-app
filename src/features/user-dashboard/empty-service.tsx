@@ -1,18 +1,18 @@
 import { Box, Button, Card, CardActions, CardMedia, Chip, Typography } from '@material-ui/core';
+import { Dispatch, SetStateAction, memo } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import { Dispatch, SetStateAction } from 'react';
 
+import { EmptyServiceSvgComponent } from 'components/illustrations';
 import { useEmptyCardStyles } from './classes';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
-import { EmptyServiceSvgComponent } from 'components/illustrations';
 
 const services = ['WES', 'IELTS', 'School Fees', 'Medical Bills', 'Others'];
 
 interface EmptyCardContainerProps {
     setHighlightEmailVerify: Dispatch<SetStateAction<boolean>>;
 }
-export const EmptyCardContainer = ({ setHighlightEmailVerify }: EmptyCardContainerProps) => {
+export const EmptyCardContainer = memo(function EmptyCardContainer({ setHighlightEmailVerify }: EmptyCardContainerProps) {
     const classes = useEmptyCardStyles();
     const {
         authState: { user }
@@ -84,4 +84,4 @@ export const EmptyCardContainer = ({ setHighlightEmailVerify }: EmptyCardContain
             </Card>
         </>
     );
-};
+});

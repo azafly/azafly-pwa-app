@@ -1,7 +1,7 @@
 import { Card, CardContent, Chip, Collapse, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
 import { useCardStyles } from './classes';
-import React from 'react';
+import React, { memo } from 'react';
 
 import { dashboard as data } from 'mocks/dashboard';
 import { formatCurrency } from 'utils';
@@ -13,7 +13,7 @@ interface CardProps {
     transactionData: any;
 }
 
-export const CardContainer = ({ transactionData }: CardProps) => {
+export const CardContainer = memo(function CardContainer({ transactionData }: CardProps) {
     const [expanded, setExpanded] = React.useState(!transactionData.is_success_done);
 
     const handleExpandClick = () => {
@@ -25,7 +25,7 @@ export const CardContainer = ({ transactionData }: CardProps) => {
     const classes = useCardStyles();
     const formattedAmount = formatCurrency({ currency: 'EUR', amount, countryCode: 'DE' });
     return (
-        <Card className={classes.dashboardCardroot} onClick={handleExpandClick}>
+        <Card className={classes.dashboardCard__root} onClick={handleExpandClick}>
             <CardContent>
                 <div className={classes.starter}>
                     <div className={classes.serviceName}>
@@ -48,4 +48,4 @@ export const CardContainer = ({ transactionData }: CardProps) => {
             </CardContent>
         </Card>
     );
-};
+});

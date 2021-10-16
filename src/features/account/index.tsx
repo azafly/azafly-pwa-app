@@ -6,7 +6,7 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { DefaultSnackbar } from 'components';
 import { NavBar } from 'features/user-dashboard/nav-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { timeout } from 'lib/constants';
+import { timeout } from 'utils';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetCurrentUserByEmailQuery, useUpdateUserMutation } from 'api/generated/graphql';
 import { USER_ACCOUNT_FORM_FIELDS } from './utils';

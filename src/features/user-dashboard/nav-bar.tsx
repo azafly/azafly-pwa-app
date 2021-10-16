@@ -120,6 +120,12 @@ export const NavBar = memo(function NavBar() {
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Help</Typography>
             </MenuItem>
+            <MenuItem component={Link} to={'/dashboard'}>
+                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
+                    <DashboardSvgComponent />
+                </IconButton>
+                <Typography className={classes.menuItem_text}>Dashboard</Typography>
+            </MenuItem>
             <MenuItem />
             <MenuItem /> <MenuItem /> <MenuItem /> <MenuItem />
             <MenuItem />

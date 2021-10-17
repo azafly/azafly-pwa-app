@@ -6,9 +6,11 @@ import { AuthContext, AuthState, defaultAuthState, defaultAuhContext, FirebaseUs
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 firebaseApp.initializeApp(firebaseConfig);
 const fireStore = firebaseApp.firestore();
+export const storage = firebaseApp.storage();
 
 const HASURA_CLAIMS_URL = 'https://hasura.io/jwt/claims';
 
@@ -40,7 +42,7 @@ export const updateUserVerification = (userId: string) => {
     return fireStore.collection('user').doc(userId).set({ emailVerified: true }, { merge: true });
 };
 
-export const updateFirebaseUser = (userId: string, user: any) => {
+export const updateFirebaseUser = (userId: string, user: Partial<FirebaseUser>) => {
     return fireStore.collection('user').doc(userId).set(user, { merge: true });
 };
 
@@ -50,6 +52,14 @@ function useFirebaseProviderAuth() {
 
     const signinWithEmailPassword = async (email: string, password: string) => {
         return firebaseApp.auth().signInWithEmailAndPassword(email, password);
+    };
+
+    const handleUpdateFirebaseProfile = (user: any, profile: Partial<FirebaseUser>) => {
+        user.updateProfile(profile)
+            .then(() => {
+                setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
+            })
+            .catch((error: any) => console.log(error));
     };
 
     const signupWithEmailPassword = async ({ email, password, displayName }: EmailAndPasswordSignUp) => {
@@ -142,18 +152,19 @@ function useFirebaseProviderAuth() {
     }, []);
 
     return {
-        confirmPasswordReset,
-        sendPasswordResetEmail,
-        signout,
-        signinWithEmailPassword,
-        signupWithEmailPassword,
-        signInWithGoogle,
-        signInWithFacebook,
-        verifyPasswordCode,
-        verifyEmail,
-        authState,
         authError,
-        setAuthError
+        authState,
+        confirmPasswordReset,
+        handleUpdateFirebaseProfile,
+        sendPasswordResetEmail,
+        setAuthError,
+        signinWithEmailPassword,
+        signInWithFacebook,
+        signInWithGoogle,
+        signout,
+        signupWithEmailPassword,
+        verifyEmail,
+        verifyPasswordCode
     };
 }
 

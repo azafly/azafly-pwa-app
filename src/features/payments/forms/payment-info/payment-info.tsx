@@ -48,8 +48,6 @@ export function PaymentInfo() {
         }
     });
 
-    console.log(data);
-
     return (
         <form className={classes.root} noValidate autoComplete='off' onSubmit={formik.handleSubmit}>
             <div>

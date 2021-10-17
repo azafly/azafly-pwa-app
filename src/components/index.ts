@@ -4,3 +4,4 @@ export { MenuListItem } from './menuListItem';
 export { MobileBackButton } from './mobile-back-button';
 export { NavBar } from './nav-bar';
 export { SpeedDialTooltip } from './speed-dial';
+export { UploadButton } from './upload-button';

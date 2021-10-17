@@ -109,7 +109,7 @@ export const SignUpForm = () => {
                         setAuthLoadingState(false);
                     });
             case SignUpMethod.EMAIL_AND_PASSWORD:
-                if (!email || !password || !displayName || !user) return;
+                if (!email || !password || !displayName) return;
                 return signupWithEmailPassword({ email, password, displayName })
                     .then(() => {
                         setAuthLoadingState(false);
@@ -118,7 +118,7 @@ export const SignUpForm = () => {
                             email,
                             displayName,
                             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                            firebaseId: user.uid,
+                            firebaseId: user?.uid ?? '',
                             phone: null,
                             emailVerified: false,
                             photoURL: null

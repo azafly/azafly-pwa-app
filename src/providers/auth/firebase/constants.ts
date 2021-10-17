@@ -66,6 +66,7 @@ export interface AuthContext {
     verifyEmail: any;
     setAuthError: Dispatch<SetStateAction<string>>;
     authError: string;
+    handleUpdateFirebaseProfile: any;
 }
 
 export const defaultAuhContext: AuthContext = {
@@ -80,5 +81,6 @@ export const defaultAuhContext: AuthContext = {
     verifyPasswordCode: () => new Promise(() => {}),
     verifyEmail: () => new Promise(() => {}),
     setAuthError: () => {},
-    authError: ''
+    authError: '',
+    handleUpdateFirebaseProfile: () => {}
 };

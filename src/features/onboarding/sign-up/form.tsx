@@ -206,7 +206,7 @@ export const SignUpForm = () => {
                     <p className={classes.termsLink} style={{ color: 'red', fontSize: '0.7rem' }}>
                         {formik.touched.terms && formik.errors.terms}
                     </p>
-                    <Button color='primary' variant='contained' fullWidth type='submit'>
+                    <Button color='primary' variant='contained' fullWidth type='submit' style={{ height: '40px' }}>
                         {isAuthStateLoading ? <ThreeDots /> : ' Submit'}
                     </Button>
                 </form>

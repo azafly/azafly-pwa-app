@@ -104,6 +104,9 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             flexDirection: 'column',
             position: 'relative'
         },
+        loader: {
+            backgroundColor: `${theme.colors.base} !important`
+        },
         heading: {
             marginBottom: 30,
             fontSize: '2rem',

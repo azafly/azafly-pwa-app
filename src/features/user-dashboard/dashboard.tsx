@@ -3,7 +3,6 @@ import { useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { CardContainer } from './card-container';
-import { DashboardLoaderSkeleton } from './loader-skeleton';
 import { EmptyCardContainer } from './empty-service';
 import { NavBar } from './nav-bar';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
@@ -84,11 +83,11 @@ export default function Dashboard() {
 
     if (loading) {
         return (
-            <div>
+            <Box sx={{ width: '100vw', height: '100vh' }}>
                 <NavBar />
                 <Typography className={classes.heading}>My Transactions</Typography>
-                <DashboardLoaderSkeleton />
-            </div>
+                <ThreeDots className={classes.loader} />
+            </Box>
         );
     }
 

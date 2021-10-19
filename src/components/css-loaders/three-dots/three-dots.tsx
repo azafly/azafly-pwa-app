@@ -1,15 +1,28 @@
 import './styles.css';
 import { CSSProperties } from '@material-ui/styles';
+import { Box } from '@material-ui/core';
 interface Props {
-    style?: CSSProperties;
+    styles?: CSSProperties;
+    className?: string;
 }
-export const ThreeDots = ({ style }: Props) => {
+export const ThreeDots = ({ styles, className }: Props) => {
+    console.log(styles);
     return (
-        <div className='lds-ellipsis'>
-            <div style={style}></div>
-            <div style={style}></div>
-            <div style={style}></div>
-            <div style={style}></div>
-        </div>
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+                width: '100%'
+            }}
+        >
+            <div className='lds-ellipsis'>
+                <div className={className} style={{ ...styles }}></div>
+                <div className={className} style={{ ...styles }}></div>
+                <div className={className} style={{ ...styles }}></div>
+                <div className={className} style={{ ...styles }}></div>
+            </div>
+        </Box>
     );
 };

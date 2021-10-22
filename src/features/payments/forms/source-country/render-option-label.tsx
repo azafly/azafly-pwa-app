@@ -1,5 +1,5 @@
 import { Avatar, Box, Chip } from '@mui/material';
-import { Country } from '../../hooks';
+import { Country } from '../../hooks/use-country-list';
 
 export interface IRenderOptions {
     option?: Country;

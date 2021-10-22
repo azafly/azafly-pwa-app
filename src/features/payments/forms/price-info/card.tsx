@@ -1,10 +1,12 @@
-import { Box, Button, Chip, Collapse, Typography } from '@mui/material';
+import { Box, Chip, Collapse, Typography } from '@mui/material';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 
+import { formatCurrency } from 'utils';
 import { GuaranteeTag } from './guarantee-tag';
+import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import { usePaymentContext } from '../../context';
 import InfoIcon from '@mui/icons-material/Info';
-import PaymentIcon from '@mui/icons-material/Payment';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -35,8 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.colors.textPrimary,
             fontWeight: 900,
             fontSize: '1.5rem',
-            borderBottom: 'none',
-            flexGrow: 1
+            borderBottom: 'none'
         },
         title: {
             marginTop: 10,
@@ -61,10 +62,21 @@ const useStyles = makeStyles((theme: Theme) =>
 export function PriceCard() {
     const classes = useStyles();
     const [showMoreInfo, setShowInfo] = useState(false);
+    const {
+        initialOffer,
+        rateInfoProps: { sourceCountry },
+        isLoading
+    } = usePaymentContext();
 
     const toggleShowMoreInfo = () => {
         setShowInfo(!showMoreInfo);
     };
+
+    const formattedOffer = formatCurrency({
+        currency: sourceCountry.currency.code,
+        amount: initialOffer?.total_in_target_with_charges ?? 0,
+        countryCode: sourceCountry.code
+    });
 
     return (
         <div className={classes.root}>
@@ -79,16 +91,13 @@ export function PriceCard() {
                         marginTop: '10'
                     }}
                 >
-                    <h5 className={classes.price}>₦ 5000000</h5>
-                    <Button size='large' variant={'contained'} color={'primary'} disableElevation startIcon={<PaymentIcon />}>
-                        Pay Now
-                    </Button>
+                    {isLoading && <ThreeDots styles={{ backgroundColor: '#4990A4' }} />}
+                    {!isLoading && initialOffer && <h5 className={classes.price}> {formattedOffer}</h5>}
                 </Box>
 
                 <Chip
                     icon={<InfoIcon />}
                     color={'info'}
-                    variant={'outlined'}
                     size={'medium'}
                     sx={{ marginBottom: '20px' }}
                     onClick={toggleShowMoreInfo}

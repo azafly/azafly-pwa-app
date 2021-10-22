@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useState, useContext, useEffect } from 'react';
 
-import { firebaseApp, firebaseConfig } from './firebase-config';
 import { AuthContext, AuthState, defaultAuthState, defaultAuhContext, FirebaseUser } from './constants';
+import { firebaseApp, firebaseConfig } from './firebase-config';
 
 import 'firebase/auth';
 import 'firebase/database';
@@ -115,7 +115,6 @@ function useFirebaseProviderAuth() {
     useEffect(() => {
         const unsubscribe = firebaseApp.auth().onAuthStateChanged(async user => {
             if (user) {
-                user.updateProfile;
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];

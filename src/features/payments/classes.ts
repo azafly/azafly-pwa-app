@@ -61,6 +61,13 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
                 pointerEvents: 'none'
             }
         },
+        price: {
+            color: theme.colors.textPrimary,
+            fontWeight: 900,
+            fontSize: '1.5rem',
+            borderBottom: 'none',
+            flexGrow: 1
+        },
         actionsContainer: {
             marginBottom: theme.spacing(2),
             width: '100%',

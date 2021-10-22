@@ -4,6 +4,10 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 import ModalUnstyled from '@mui/core/ModalUnstyled';
 import Snackbar from '@mui/material/Snackbar';
 
+import { PaymentInfo, GetOffersResponseData } from 'services/rest-api/user-payment';
+import { usePaymentContext } from 'features/payments/context';
+import { useHistory } from 'react-router-dom';
+
 const StyledModal = styled(ModalUnstyled)`
     position: fixed;
     z-index: 1300;
@@ -48,6 +52,22 @@ export default function ReviewModal() {
     const handleClose = () => setOpen(false);
     const handleCloseSnackBar = () => setOpenSnackBar(false);
 
+    const { handleCreatePaymentIntent } = usePaymentContext();
+
+    const goToPayment = async () => {
+        const { fullname, references, purpose } = JSON.parse(localStorage.getItem('payment_info') as string) as PaymentInfo;
+        const { payment_offer_id, source_currency } = JSON.parse(localStorage.getItem('initialOffer') as string) as GetOffersResponseData;
+        handleCreatePaymentIntent({
+            payment_offer_id,
+            payment_title: purpose,
+            description: references,
+            email: 'user@email.com',
+            name: fullname,
+            currency: source_currency ?? 'NGN'
+        });
+        handleClose();
+    };
+
     return (
         <div>
             <Snackbar
@@ -65,7 +85,7 @@ export default function ReviewModal() {
                 </StyledAlert>
             </Snackbar>
             <button type='button' onClick={handleOpen}>
-                Open modal
+                Review your payment Data
             </button>
 
             <StyledModal
@@ -78,7 +98,7 @@ export default function ReviewModal() {
                 <Box sx={style}>
                     <h2 id='review-modal'>Text in a modal</h2>
                     <p id='payment-review'>Aliquid amet deserunt earum!</p>
-                    <button onClick={() => setOpenSnackBar(true)}>Open</button>
+                    <button onClick={goToPayment}>Complete Payment</button>
                     <button onClick={handleClose}>Close</button>
                 </Box>
             </StyledModal>

@@ -1,0 +1,334 @@
+openapi: 3.0.0
+servers:
+  - description: API
+    url: https://api.lucqax.com/
+info:
+  description: Transaction payment Intent
+  version: 1.0.0
+  title: Transaction API
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: admins
+    description: Secured Admin-only calls
+  - name: users-transactions
+    description: Operations available to regular users
+paths:
+   /api/v1/payments/offers:
+    post:
+      parameters:
+      - $ref: '#/components/parameters/ClientApiToken'
+      tags:
+      - users-transactions
+      summary: Fetches estimate of payment based on currency and rate
+      description: >
+        user passes target and source currency as well as amount to be paid and
+        expects estimates and fees breakdown based on current rates and payment
+        methods
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source_currency:
+                    description: sources currency | restricted to certain currencies e.g NGN
+                    type: string
+                target_currency:
+                    description: target currency
+                    type: string
+                target_amount:
+                    description: amount that needs to be sent
+                    type: integer
+                transaction_id:
+                    type: string
+                    example: sdfe-sfs-ss
+      responses:
+        '200':
+          description: Total extimation breakdown in both target and source currencies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    payment_offer_id:
+                        type: string
+                        minLength: 1
+                    source_currency:
+                        type: string
+                        minLength: 1
+                    destination_currency:
+                        type: string
+                        minLength: 1
+                    amount:
+                        type: number
+                    estimated_rate:
+                        type: number
+                    total_in_target_with_charges:
+                        type: number
+                    total_to_pay_in_source_currency:
+                        type: number
+                    fees_with_promo:
+                        type: number
+                    fees_info:
+                      type: object
+                      properties:
+                        our_charges:
+                            type: number
+                        processing_fee:
+                            type: number
+                        total:
+                            type: number
+                    exchange_rate_info:
+                      type: object
+                      properties:
+                        base_rate:
+                            type: number
+                        buffer:
+                            type: number
+                        promotional_rate:
+                            type: number
+        '400':
+          description: bad input parameter
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/error_response'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+    get:
+      parameters:
+      - $ref: '#/components/parameters/ClientApiToken'
+      tags:
+      - users
+      description: ''
+      responses:
+        '200':
+          description: get payment offer successfully
+          content:
+              application/json:
+                  schema:
+                      type: object
+                      $ref: '#/components/schemas/PaymentEstimateResponse'
+        '404':
+            description: resource not found
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        $ref: '#/components/schemas/error_response'
+  
+   /api/v1/payments/offers/{paymentOfferId}:
+      parameters:
+      - $ref: '#/components/parameters/paymentOfferId'
+      get:
+        tags:
+        - users
+        parameters:
+        - $ref: '#/components/parameters/ClientApiToken'
+        responses:
+            '200':
+                description: offer response
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            $ref: '#/components/schemas/PaymentEstimateResponse'
+ 
+   /api/v1/payments/verify:
+      parameters:
+      - in: query
+        name: tx_ref
+        description: Backend generated transaction reference
+        required: true
+        schema:
+            type: string
+            example: sdsds-sdsds-sdsd
+      - in: query
+        name: transaction_id
+        description: Payment provider transaction id
+        required: true
+        schema:
+            type: string
+            example: "3232424242"
+      - in: query
+        name: status
+        description: Payment status success or failure
+        required: true
+        schema:
+            type: string
+            example: success
+      get:
+        tags:
+        - users
+        parameters:
+        - $ref: '#/components/parameters/ClientApiToken'
+        responses:
+            '200':
+                description: offer response
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            $ref: '#/components/schemas/PaymentEstimateResponse'
+
+   /api/v1/payments/create-intent:
+        post:
+            parameters:
+            - $ref: '#/components/parameters/ClientApiToken'            
+            tags:
+            - users
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                payment_offer_id:
+                                    type: string
+                                    example: "b7cf8303-edc2-42e2-ac7c-f02d0d86eea1"
+                                email:
+                                    type: string
+                                    example: jd@example.com
+                                payment_title:
+                                    type: string
+                                    example: "School Fees"
+                                currency:
+                                    type: string
+                                    example: "NGN"
+                                description:
+                                    type: string
+                                    example: "Payment to Jesuit American college"
+                                telephone:
+                                    type: string
+                                    example: 5555555
+                                name:
+                                    type: string
+                                    example: "Ola John"
+                                payment_options:
+                                    type: string
+                                    example: card
+                                logo:
+                                    type: string
+                                    example: https://image.gif
+                                
+            responses:
+                '200':
+                    description: payment intent response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        example: success
+                                    data:
+                                        type: object
+                                        properties:
+                                            payment_link:
+                                                type: string
+                                                example: "https://flutterwave"
+
+components:
+    securitySchemes:
+        BearerToken: # arbitrary name for the security scheme
+            type: http
+            scheme: bearer
+            bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+    schemas:    
+        PaymentEstimateResponse:
+            type: object
+            properties:
+                payment_offer_id:
+                    type: string
+                    format: uuid
+                    example: d290f1ee-6c54-4b01-90e6-d701748f0851
+                source_currency:
+                    type: string
+                    example: NGN
+                destination_currency:
+                    type: string
+                    example: NGN
+                amount:
+                    type: number
+                    example: 10000
+                estimated_rate:
+                    type: number
+                    example: 559
+                total_in_target_with_charges:
+                    type: number
+                    example: 10025
+                total_to_pay_in_source_currency:
+                    type: number
+                    example: 5590250
+                fees_with_promo:
+                    type: number
+                fees_info:
+                    $ref: '#/components/schemas/FeesBreakDown'
+                exchange_rate_info:
+                    $ref: '#/components/schemas/ExchangeRateInfo'
+        FeesBreakDown:
+            type: object
+            properties:
+                our_charges:
+                    type: number
+                    example: 25
+                processing_fee:
+                    type: number
+                    example: 14
+                total:
+                    type: number
+                    example: 39
+        ExchangeRateInfo:
+            type: object
+            properties:
+                base_rate:
+                    type: number
+                    example: 559
+                buffer:
+                    type: number
+                    example: 4.5
+                promotional_rate:
+                    type: number
+        error_response:
+            type: object
+            properties:
+                status:
+                    type: string
+                    description: Error name
+                    example: Not found
+                status_code:
+                    type: integer
+                    example: 400
+                message:
+                    type: string
+                    example: Missing required field
+                details:
+                    type: integer
+                    example: "ID token has expired at: 1634267538"
+    parameters:
+        paymentOfferId:
+            in: path
+            name: paymentOfferId
+            description: This is the organization id which the logged in user is a part of.
+            required: true
+            schema:
+                type: string
+                example: hiffg-hfhj-vhgcc
+        ClientApiToken:
+            name: client-api-token
+            in: header
+            schema:
+                type: string
+                default: "{{client-api-token}}"
+                nullable: false
+security:
+    - BearerToken: []

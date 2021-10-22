@@ -13,6 +13,7 @@ import UserNavBar from './bottom-navbar';
 import { useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import Splash from 'components/css-loaders/splash';
 
 export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
@@ -86,7 +87,7 @@ export default function Dashboard() {
             <Box sx={{ width: '100vw', height: '100vh' }}>
                 <NavBar />
                 <Typography className={classes.heading}>My Transactions</Typography>
-                <ThreeDots className={classes.loader} />
+                <Splash />
             </Box>
         );
     }

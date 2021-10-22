@@ -1,6 +1,6 @@
-import { Avatar, Box, List, ClickAwayListener, IconButton, ListItemAvatar, ListItem, ListItemText, Paper, styled } from '@mui/material';
+import { Avatar, Box, List, IconButton, ListItemAvatar, ListItem, ListItemText, Paper, styled } from '@mui/material';
 
-import { Country } from '../../hooks';
+import { Country } from '../../hooks/use-country-list';
 
 const ListContainer = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,

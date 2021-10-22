@@ -1,4 +1,5 @@
-import { Country, NIGERIA } from '../hooks';
+import { CreatePaymentIntentBody, GetOffersResponse } from 'services/rest-api/user-payment';
+import { Country, NIGERIA } from '../hooks/use-country-list';
 
 export interface IRateInfo {
     targetCountry: Country;
@@ -9,10 +10,31 @@ export interface IRateInfo {
     handleSetAmount: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+export const UK = {
+    name: 'United Kingdom of Great Britain and Northern Ireland',
+    currency: {
+        code: 'GBP',
+        name: 'British pound',
+        symbol: '£'
+    },
+    flag: 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GB.svg',
+    code: 'GB',
+    region: 'EU',
+    isPopular: true,
+    isNotSupported: false,
+    isComingSoon: false
+};
+
 export interface IPaymentContext {
     rateInfoProps: IRateInfo;
     isErrorState: boolean;
     setErrorState: (c: boolean) => void;
+    paymentLink: string;
+    handleGetInitialOffer: () => Promise<void>;
+    handleCreatePaymentIntent: (params: CreatePaymentIntentBody) => void;
+    paymentError: string;
+    initialOffer: GetOffersResponse['data'] | null;
+    isLoading: boolean;
 }
 
 export const PaymentContext: IPaymentContext = {
@@ -25,5 +47,11 @@ export const PaymentContext: IPaymentContext = {
         handleSetAmount: () => null
     },
     isErrorState: false,
-    setErrorState: () => null
+    setErrorState: () => null,
+    paymentLink: '',
+    handleGetInitialOffer: () => new Promise(() => {}),
+    handleCreatePaymentIntent: () => new Promise(() => {}),
+    paymentError: '',
+    initialOffer: null,
+    isLoading: false
 };

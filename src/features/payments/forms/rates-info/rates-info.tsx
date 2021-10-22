@@ -1,9 +1,9 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
-import { CountrySelect } from './country-select';
-import { CurrencyAmount } from './currency-amount';
-import { Country, NIGERIA, useCountryList } from '../../hooks';
+import { CountrySelect } from '../target-country/country-select';
+import { CurrencyAmount } from '../target-country/currency-amount';
+import { Country, NIGERIA, useCountryList } from '../../hooks/use-country-list';
 import { usePaymentContext } from '../../context';
 
 const useStyles = makeStyles((theme: Theme) =>

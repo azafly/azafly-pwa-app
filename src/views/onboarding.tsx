@@ -1,13 +1,11 @@
-import { SyntheticEvent, useEffect, useState } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { Grid, Snackbar, SnackbarCloseReason, SnackbarOrigin } from '@material-ui/core';
+import { SyntheticEvent, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { OnboardingIllustration } from 'features/onboarding/illustration';
-
-import { useOnboardingMainStyles } from 'features/onboarding/sign-up/classes';
 import { OnboardingTab } from 'features/onboarding/tab';
+import { useOnboardingMainStyles } from 'features/onboarding/sign-up/classes';
 
 interface SnackBarAlertState {
     open: boolean;
@@ -26,11 +24,7 @@ const Onboarding = () => {
     });
 
     const { vertical, horizontal, open } = alertState;
-    // const { data: userAuth } = useQuery<{ isLoggedIn: boolean }>(IS_LOGGED_IN);
 
-    const {
-        authState: { isAuth }
-    } = useFirebaseAuthContext();
     const handleClose = (_: SyntheticEvent<Element, Event>, reason?: SnackbarCloseReason) => {
         if (reason === 'clickaway') {
             return;
@@ -46,15 +40,6 @@ const Onboarding = () => {
     const token = localStorage.getItem('token');
 
     if (token) history.replace(from);
-
-    // const message = resetLinkSuccess ? 'Link was sent Successfully' : authError;
-
-    // useEffect(() => {
-    //     setAlertState({
-    //         ...alertState,
-    //         open: resetLinkSuccess || Boolean(authError)
-    //     });
-    // }, [authError, resetLinkSuccess]);
 
     return (
         <div className={classes.onboarding}>

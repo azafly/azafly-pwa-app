@@ -1,6 +1,6 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 
-import './splash.css'
+import './splash.css';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -12,22 +12,21 @@ const useStyles = makeStyles((theme: Theme) =>
             overflowX: 'hidden',
             height: '100vh',
             width: '100vw',
-            background: '#4990A4',
+            background: 'white'
         }
-    }),
-
+    })
 );
 
-
-
-
 const Splash = () => {
-    const classes = useStyles()
+    const classes = useStyles();
     return (
         <div className={classes.splash_container}>
-            <div className="lds-ripple"><div></div><div></div></div>
+            <div className='lds-ripple'>
+                <div></div>
+                <div></div>
+            </div>
         </div>
-    )
-}
+    );
+};
 
-export default Splash
+export default Splash;

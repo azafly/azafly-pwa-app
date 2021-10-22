@@ -1,7 +1,8 @@
 import { Button, TextField } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { SetStateAction, useState } from 'react';
 import * as yup from 'yup';
 
 import { DefaultSnackbar } from 'components';
@@ -10,17 +11,71 @@ import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useFormStyles } from '../classes';
 import Logo from 'assets/google.svg';
+import { string } from 'yup/lib/locale';
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Enter a valid email').required('Email is required'),
     password: yup.string().required('Password is required')
 });
 
+enum SignInMethod {
+    FACEBOOK = 'FACEBOOK',
+    GOOGLE = 'GOOGLE',
+    EMAIL_AND_PASSWORD = 'EMAIL_AND_PASSWORD '
+}
+
 export const SignInForm = () => {
     const { signInWithFacebook, signInWithGoogle, signinWithEmailPassword } = useFirebaseAuthContext();
     const [isAuthStateIsLoading, setAuthLoadingState] = useState(false);
     const [authError, setAuthError] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
+
+    const history = useHistory();
+
+    const handleSignin = (method: SignInMethod, email?: string, password?: string) => {
+        const DASHBOARD = '/dashboard';
+        setAuthLoadingState(true);
+        switch (method) {
+            case SignInMethod.FACEBOOK:
+                signInWithFacebook()
+                    .then(() => {
+                        setAuthLoadingState(false);
+                        history.replace(DASHBOARD);
+                    })
+                    .catch(({ message }: Record<string, string>): void => {
+                        setAuthLoadingState(false);
+                        setOpenSnackBar(true);
+                        setAuthError(message);
+                    });
+                break;
+            case SignInMethod.GOOGLE:
+                signInWithGoogle()
+                    .then(() => {
+                        setAuthLoadingState(false);
+                        history.replace(DASHBOARD);
+                    })
+                    .catch(({ message }: Record<string, string>): void => {
+                        setAuthLoadingState(false);
+                        setOpenSnackBar(true);
+                        setAuthError(message);
+                    });
+                break;
+            case SignInMethod.EMAIL_AND_PASSWORD:
+                signinWithEmailPassword(email, password)
+                    .then(() => {
+                        setAuthLoadingState(false);
+                        history.replace(DASHBOARD);
+                    })
+                    .catch(({ message }: Record<string, string>): void => {
+                        setAuthLoadingState(false);
+                        setOpenSnackBar(true);
+                        setAuthError(message);
+                    });
+                break;
+            default:
+                return null;
+        }
+    };
 
     const formik = useFormik({
         initialValues: {
@@ -30,13 +85,7 @@ export const SignInForm = () => {
         validationSchema,
         onSubmit: values => {
             setAuthLoadingState(true);
-            signinWithEmailPassword(values.email, values.password)
-                .then(() => setAuthLoadingState(false))
-                .catch(({ message }: Record<string, string>): void => {
-                    setAuthLoadingState(false);
-                    setOpenSnackBar(true);
-                    setAuthError(message);
-                });
+            handleSignin(SignInMethod.EMAIL_AND_PASSWORD, values.email, values.password);
         }
     });
 
@@ -45,11 +94,11 @@ export const SignInForm = () => {
         <div className={classes.signInformRoot}>
             <DefaultSnackbar open={openSnackBar} handleClose={() => setOpenSnackBar(false)} severity={'error'} title={'Error'} info={authError} />
             <div className={classes.form_container}>
-                <div className={classes.facebook} onClick={signInWithFacebook}>
+                <div className={classes.facebook} onClick={() => handleSignin(SignInMethod.FACEBOOK)}>
                     <FacebookSvgComponent />
                     <div className='text'>Facebook</div>
                 </div>
-                <div className={classes.google} onClick={signInWithGoogle}>
+                <div className={classes.google} onClick={() => handleSignin(SignInMethod.GOOGLE)}>
                     <img className='google-icon-svg' src={Logo} />
                     <div className='text'>Google</div>
                 </div>
@@ -87,7 +136,7 @@ export const SignInForm = () => {
                         {' '}
                         Forgot Password?
                     </Link>
-                    <Button color='primary' variant='contained' fullWidth type='submit'>
+                    <Button color='primary' variant='contained' fullWidth type='submit' style={{ height: '40px' }}>
                         {isAuthStateIsLoading ? <ThreeDots /> : 'Submit'}
                     </Button>
                 </form>

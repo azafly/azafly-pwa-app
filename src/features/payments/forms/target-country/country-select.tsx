@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import { ReactElement } from 'react';
 import { TextField } from '@material-ui/core';
 import Autocomplete, { AutocompleteClassKey } from '@material-ui/lab/Autocomplete';
-import { ReactElement } from 'react';
 
-import { RenderOptions } from '../country-form-elements/render-option-label';
-import { Country } from '../../hooks';
+import { Country } from '../../hooks/use-country-list';
+import { RenderOptions } from '../source-country/render-option-label';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {

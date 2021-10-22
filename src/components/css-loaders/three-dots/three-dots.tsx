@@ -6,7 +6,6 @@ interface Props {
     className?: string;
 }
 export const ThreeDots = ({ styles, className }: Props) => {
-    console.log(styles);
     return (
         <Box
             sx={{
@@ -18,10 +17,10 @@ export const ThreeDots = ({ styles, className }: Props) => {
             }}
         >
             <div className='lds-ellipsis'>
-                <div className={className} style={{ ...styles }}></div>
-                <div className={className} style={{ ...styles }}></div>
-                <div className={className} style={{ ...styles }}></div>
-                <div className={className} style={{ ...styles }}></div>
+                <div className={className} style={styles}></div>
+                <div className={className} style={styles}></div>
+                <div className={className} style={styles}></div>
+                <div className={className} style={styles}></div>
             </div>
         </Box>
     );

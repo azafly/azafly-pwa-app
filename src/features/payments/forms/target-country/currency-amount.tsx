@@ -1,9 +1,9 @@
 import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { Box, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 
-import { Country, useCountryList } from '../../hooks';
-import { CountryList } from '../country-form-elements/country-list';
+import { Country, useCountryList } from '../../hooks/use-country-list';
+import { CountryList } from '../source-country/country-list';
 import { CountrySelectToggle } from './country-select-toggle';
 import { usePaymentContext } from '../../context';
 
@@ -73,7 +73,7 @@ export function CurrencyAmount({ country }: CurrencyAmountProps) {
             <TextField
                 id='amount'
                 value={amount}
-                type='number'
+                type='text'
                 label={'Amount'}
                 className={classes.input}
                 onChange={handleSetAmount}

@@ -32,19 +32,23 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export function PaymentInfo() {
+interface PaymentInfoProps {
+    gotToNextStep: () => void;
+}
+export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
     const classes = useStyles();
     const {
         authState: { user }
     } = useFirebaseAuthContext();
 
-    const { data } = useGetCurrentUserQuery({ variables: { id: user?.uid ?? '', email: user?.email ?? '' } });
+    // TODO - prefill form
 
     const formik = useFormik({
         initialValues: initialValues(),
         validationSchema,
         onSubmit: values => {
             localStorage.setItem('payment_info', JSON.stringify(values));
+            gotToNextStep();
         }
     });
 

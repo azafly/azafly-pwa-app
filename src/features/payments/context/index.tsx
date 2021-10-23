@@ -1,7 +1,13 @@
 import React, { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { Country, NIGERIA } from './../hooks/use-country-list';
-import { createPaymentIntent, getInitialOffer, CreatePaymentIntentBody as CreateIntentParams } from 'services/rest-api/user-payment';
-import { IPaymentContext, PaymentContext, IRateInfo, UK } from './constants';
+import {
+    createPaymentIntent,
+    getInitialOffer,
+    CreatePaymentIntentBody as CreateIntentParams,
+    GetOffersResponseData,
+    LocalStorageInitialOffer
+} from 'services/rest-api/user-payment';
+import { IPaymentContext, PaymentContext, IRateInfo, UK, LOCAL_STORAGE_KEY } from './constants';
 
 const paymentContext = createContext<IPaymentContext>(PaymentContext);
 
@@ -39,11 +45,22 @@ function usePaymentProvider() {
 
     const handleGetInitialOffer = async () => {
         if (!targetCountry || !sourceCountry || !amount) return;
+        // const paymentOffer = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string) as LocalStorageInitialOffer;
+
+        // const userInputIsSame =
+        //     paymentOffer?.source_amount === amount &&
+        //     paymentOffer?.source_currency === targetCountry.currency.code &&
+        //     paymentOffer?.target_currency === sourceCountry.currency.code;
+
+        // // don't refetch offer if nothing has changed from user's input
+        // if (userInputIsSame) {
+        //     return;
+        //}
         setIsLoading(true);
         getInitialOffer({ source_currency: targetCountry?.currency?.code, source_amount: amount, target_currency: sourceCountry?.currency?.code })
             .then(({ data }) => {
                 setInitialOffer(data.data);
-                localStorage.setItem('initialOffer', JSON.stringify(data.data));
+                localStorage.setItem(LOCAL_STORAGE_KEY.INITIAL_OFFER, JSON.stringify(data.data));
             })
             .catch(() => setPaymentError('Error getting the best offers for you. Try again'))
             .finally(() => setIsLoading(false));

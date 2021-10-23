@@ -55,3 +55,8 @@ export const PaymentContext: IPaymentContext = {
     initialOffer: null,
     isLoading: false
 };
+
+export enum LOCAL_STORAGE_KEY {
+    INITIAL_OFFER = 'initialOffer',
+    PAYMENT_INFO = 'payment_info'
+}

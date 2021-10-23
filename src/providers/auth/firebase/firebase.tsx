@@ -119,6 +119,7 @@ function useFirebaseProviderAuth() {
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
                 if (user.emailVerified) {
+                    localStorage.setItem('token', token);
                     setAuthState(prevState => {
                         const newUser = { ...user, emailVerified: true };
                         return {

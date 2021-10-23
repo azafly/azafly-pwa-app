@@ -7,10 +7,11 @@ import { PriceInfo } from './forms/price-info';
 import { RatesInfo } from './forms/rates-info';
 import { usePaymentContext } from './context';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import PaymentIcon from '@mui/icons-material/Payment';
 import ReviewModal from './review/review';
 
+// classes
 import { useStepperStyles } from './classes';
+import { ThreeDots } from '../user-dashboard/loader-skeleton';
 
 const getSteps = ['Payment Info', 'Payment method', 'Payment Information', 'Review & Confirm', 'Make payment'];
 export type Steps = typeof getSteps[number];
@@ -26,7 +27,7 @@ function getStepContent(step: number, handleNext: () => void) {
         case 3:
             return <ReviewModal />;
         case 4:
-            return <RatesInfo />;
+            return null;
         default:
             return <div> Unknown step</div>;
     }
@@ -40,11 +41,13 @@ export function VerticalPaymentStepper() {
         isErrorState,
         rateInfoProps: { amount },
         paymentLink,
-        handleGetInitialOffer
+        paymentError,
+        handleGetInitialOffer,
+        isLoading
     } = usePaymentContext();
 
     const handleNext = () => {
-        !!amount && setActiveStep(prevActiveStep => prevActiveStep + 1);
+        setActiveStep(prevActiveStep => prevActiveStep + 1);
     };
 
     const handleBack = () => {
@@ -57,9 +60,10 @@ export function VerticalPaymentStepper() {
                 return (
                     <button
                         className={classes.next}
-                        onClick={() => {
-                            handleGetInitialOffer();
-                            handleNext();
+                        onClick={async () => {
+                            await handleGetInitialOffer();
+                            console.log(paymentError);
+                            !paymentError && handleNext();
                         }}
                         disabled={isErrorState}
                     >
@@ -69,30 +73,32 @@ export function VerticalPaymentStepper() {
             case 1:
                 return (
                     <Button
-                        size='large'
+                        size='small'
                         className={classes.next}
                         variant={'contained'}
                         color={'primary'}
                         disabled={isErrorState}
-                        onClick={() => {
-                            handleNext();
-                        }}
+                        onClick={handleNext}
                         disableElevation
-                        startIcon={<PaymentIcon />}
                     >
-                        Pay Now
+                        Continue
                     </Button>
                 );
             case 2:
                 return null;
             case 3:
                 return (
-                    <Button className={classes.price} href={paymentLink} disabled={isErrorState}>
-                        <span>{'Pay'}</span> <NavigateNextIcon />
+                    <Button className={classes.next} href={paymentLink} disabled={isErrorState || !paymentLink}>
+                        {isLoading ? <ThreeDots /> : 'Pay'}
+                        <NavigateNextIcon />
                     </Button>
                 );
             case 4:
-                return <RatesInfo />;
+                return (
+                    <Button className={classes.next} onClick={handleNext}>
+                        <NavigateNextIcon />
+                    </Button>
+                );
             default:
                 return <div> Unknown step</div>;
         }
@@ -110,7 +116,13 @@ export function VerticalPaymentStepper() {
                             <StepContent>
                                 {getStepContent(index, handleNext)}
                                 <div className={classes.actionsContainer}>
-                                    <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                                    <Button
+                                        disabled={activeStep === 0}
+                                        onClick={handleBack}
+                                        className={classes.button}
+                                        color={'default'}
+                                        variant={'outlined'}
+                                    >
                                         Back
                                     </Button>
                                     {handleStepper(index)}
@@ -120,13 +132,12 @@ export function VerticalPaymentStepper() {
                     ))}
                 </Stepper>
                 {activeStep === steps.length && (
-                    <Paper square elevation={2} className={classes.resetContainer}>
-                        <Typography>All steps completed - you&apos;re finished</Typography>
-                        <Button href={paymentLink}> Got to payments</Button>
+                    <div className={classes.resetContainer}>
+                        <Typography> All steps completed 🎉 </Typography>
                         <Link to={'/dashboard'} className={classes.dashboard_link}>
-                            Go To Dashboard
+                            Track my payment
                         </Link>
-                    </Paper>
+                    </div>
                 )}
             </div>
         </Slide>

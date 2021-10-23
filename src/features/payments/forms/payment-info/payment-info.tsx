@@ -3,14 +3,20 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useFormik } from 'formik';
 
 import { PAYMENT_INFO, validationSchema, initialValues, generateInputType } from './form-fields';
-import { useGetCurrentUserQuery } from 'api/generated/graphql';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { LOCAL_STORAGE_KEY } from '../../context/constants';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
-            margin: 50
+            boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important',
+            padding: '80px 50px',
+            borderRadius: 4,
+            backgroundColor: '#fff',
+            margin: 50,
+            [theme.breakpoints.down('sm')]: {
+                margin: '50px 5px'
+            }
         },
         formControl: {
             marginBottom: 20,
@@ -37,9 +43,6 @@ interface PaymentInfoProps {
 }
 export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
     const classes = useStyles();
-    const {
-        authState: { user }
-    } = useFirebaseAuthContext();
 
     // TODO - prefill form
 
@@ -47,7 +50,7 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
         initialValues: initialValues(),
         validationSchema,
         onSubmit: values => {
-            localStorage.setItem('payment_info', JSON.stringify(values));
+            localStorage.setItem(LOCAL_STORAGE_KEY.PAYMENT_INFO, JSON.stringify(values));
             gotToNextStep();
         }
     });
@@ -59,7 +62,7 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
                     {PAYMENT_INFO.map(option => {
                         const { label, name } = option;
                         return (
-                            <Grid item xs={12} sm={6} md={4} className={classes.formControl} key={label}>
+                            <Grid item xs={12} md={6} lg={4} className={classes.formControl} key={label}>
                                 {generateInputType(
                                     {
                                         onChange: formik.handleChange,
@@ -71,7 +74,7 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
                             </Grid>
                         );
                     })}
-                    <Button color='primary' variant='contained' fullWidth type='submit'>
+                    <Button color='primary' variant='contained' fullWidth type='submit' style={{ marginTop: 10 }}>
                         Submit
                     </Button>
                 </Grid>

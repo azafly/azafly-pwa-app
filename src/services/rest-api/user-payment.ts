@@ -6,7 +6,7 @@ export type ApiRequestMethods = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS' | 
 export interface GetOffersRequestBody {
     source_currency: string;
     target_currency: string;
-    source_amount: number;
+    source_amount?: number;
 }
 
 export interface GetOffersResponseData {
@@ -118,3 +118,21 @@ export const createPaymentIntent = async ({
         logo: 'https://image.gif'
     });
 };
+
+export interface LocalStorageInitialOffer {
+    source_currency: string;
+    source_amount: number;
+    target_currency: string;
+    total_in_target_with_charges: number;
+    total_to_pay_in_source_currency: number;
+    fees_with_promo: number;
+    fees_info: {
+        our_charges: number;
+        total: number;
+    };
+    exchange_rate_info: {
+        base_rate: number;
+        promotional_rate: number;
+    };
+    payment_offer_id: string;
+}

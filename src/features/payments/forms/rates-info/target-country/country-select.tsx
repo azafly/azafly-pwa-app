@@ -4,7 +4,7 @@ import { ReactElement } from 'react';
 import { TextField } from '@material-ui/core';
 import Autocomplete, { AutocompleteClassKey } from '@material-ui/lab/Autocomplete';
 
-import { Country } from '../../hooks/use-country-list';
+import { Country } from '../../../hooks/use-country-list';
 import { RenderOptions } from '../source-country/render-option-label';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -18,10 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         backgroundColor: theme.palette.background.paper,
         boxShadow: '0 0 7px 0 #bac4cf',
         [theme.breakpoints.only('xs')]: {
-            width: '76vw'
-        },
-        [theme.breakpoints.up('md')]: {
-            width: 400
+            width: '80vw'
         },
         '& .MuiInput-underline::before': {
             borderBottom: 'none'
@@ -101,7 +98,7 @@ export const CountrySelect = ({
                 return (
                     <TextField
                         {...params}
-                        label='From'
+                        label='Send From'
                         inputProps={{
                             ...params.inputProps,
                             className: classes.input

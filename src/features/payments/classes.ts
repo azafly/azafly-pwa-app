@@ -4,7 +4,8 @@ export const useSPaymentsStyles = makeStyles(() =>
     createStyles({
         root: {
             width: '100vw',
-            overflowX: 'hidden'
+            overflowX: 'hidden',
+            backgroundColor: '#f7f7f7'
         }
     })
 );
@@ -49,7 +50,7 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
             marginRight: theme.spacing(3),
             textTransform: 'none',
             background: theme.colors.base,
-            padding: '14px 20px',
+            padding: '5px 20px',
             width: '20ch',
             color: 'white',
             textDecoration: 'none',
@@ -70,7 +71,7 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
         },
         actionsContainer: {
             marginBottom: theme.spacing(2),
-            width: '100%',
+            maxWidth: 1920,
             display: 'flex',
             justifyContent: 'space-around'
         },

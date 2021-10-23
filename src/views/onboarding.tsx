@@ -1,6 +1,6 @@
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { Grid, Snackbar, SnackbarCloseReason, SnackbarOrigin } from '@material-ui/core';
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { OnboardingIllustration } from 'features/onboarding/illustration';
@@ -38,8 +38,10 @@ const Onboarding = () => {
     };
 
     const token = localStorage.getItem('token');
-
-    if (token) history.replace(from);
+    if (token) {
+        history.replace(from);
+        history.go(0);
+    }
 
     return (
         <div className={classes.onboarding}>

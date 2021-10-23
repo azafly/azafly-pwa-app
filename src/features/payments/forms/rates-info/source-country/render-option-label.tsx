@@ -1,5 +1,5 @@
 import { Avatar, Box, Chip } from '@mui/material';
-import { Country } from '../../hooks/use-country-list';
+import { Country } from '../../../hooks/use-country-list';
 
 export interface IRenderOptions {
     option?: Country;
@@ -10,19 +10,23 @@ export const RenderOptions = ({ option }: IRenderOptions) => {
         <Box
             sx={{
                 display: 'flex',
+                overflowX: 'hidden',
                 '& .flag': {
                     margin: 'auto',
                     marginRight: 2,
                     borderRadius: '50%'
                 },
                 '& .name': {
-                    margin: 'auto'
+                    margin: 'auto',
+                    fontSize: '0.8rem'
                 },
                 '& .currency': {
-                    margin: 'auto'
+                    margin: 'auto',
+                    fontSize: '0.8rem'
                 },
                 '& .coming_soon': {
-                    background: 'grey'
+                    background: 'grey',
+                    fontSize: '0.65rem'
                 }
             }}
         >

@@ -11,13 +11,19 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
-            boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important',
             padding: 50,
-
             borderRadius: 8,
             margin: 50,
             maxWidth: 675,
-            backgroundColor: '#fff'
+            [theme.breakpoints.up('sm')]: {
+                boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important'
+            },
+            [theme.breakpoints.only('xs')]: {
+                width: '100%',
+                margin: '40px 0px 10px',
+                backgroundColor: 'transparent',
+                padding: 0
+            }
         },
         option: {
             fontSize: '1rem',
@@ -61,8 +67,8 @@ export function RatesInfo() {
         <form className={classes.root} noValidate autoComplete='on'>
             <div>
                 <Grid container>
-                    {paymentError && <Chip color={'error'} label={'paymentError'} sx={{ marginBottom: 3 }} />}
-                    <Grid xs={12}>
+                    {paymentError && <Chip color={'error'} label={paymentError} size={'medium'} sx={{ marginBottom: 3 }} variant={'outlined'} />}
+                    <Grid item xs={12}>
                         <CountrySelect
                             handleCountryChange={handleSourceCountryChange}
                             classKeys={{ option: classes.option }}
@@ -72,7 +78,7 @@ export function RatesInfo() {
                             getOptionDisabled={getOptionDisabled}
                         />
                     </Grid>
-                    <Grid xs={12}>
+                    <Grid item xs={12}>
                         <CurrencyAmount country={targetCountry} />
                     </Grid>
                 </Grid>

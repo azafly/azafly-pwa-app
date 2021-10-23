@@ -9,13 +9,22 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
-            boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important',
             padding: '80px 50px',
             borderRadius: 4,
-            backgroundColor: '#fff',
+            backgroundColor: 'rgb(254,254,250)',
             margin: 50,
-            [theme.breakpoints.down('sm')]: {
+            width: '100%',
+            [theme.breakpoints.up('sm')]: {
+                boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important'
+            },
+            [theme.breakpoints.only('sm')]: {
                 margin: '50px 5px'
+            },
+            [theme.breakpoints.only('xs')]: {
+                margin: '50px 0px',
+                width: '100%',
+                padding: 15,
+                backgroundColor: '#f7f7f7'
             }
         },
         formControl: {
@@ -23,7 +32,8 @@ const useStyles = makeStyles((theme: Theme) =>
             borderRadius: 4,
             WebkitAppearance: 'none',
             '& .MuiInput-formControl::before': {
-                opacity: 0.8
+                opacity: 0.8,
+                margin: 'auto'
             },
             '& .MuiFormLabel-root': {
                 opacity: 0.8,
@@ -62,7 +72,7 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
                     {PAYMENT_INFO.map(option => {
                         const { label, name } = option;
                         return (
-                            <Grid item xs={12} md={6} lg={4} className={classes.formControl} key={label}>
+                            <Grid item xs={12} sm={6} className={classes.formControl} key={label}>
                                 {generateInputType(
                                     {
                                         onChange: formik.handleChange,

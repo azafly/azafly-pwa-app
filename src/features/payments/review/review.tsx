@@ -36,6 +36,7 @@ const style = {
     width: 400,
     bgcolor: 'white',
     borderRadius: 2,
+    margin: '10px',
     p: 2,
     px: 4,
     pb: 3

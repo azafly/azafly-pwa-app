@@ -6,7 +6,7 @@ const SuspenseComponent = () => <ThreeDots />;
 
 const Payments = () => {
     return (
-        <Suspense fallback={SuspenseComponent}>
+        <Suspense fallback={<SuspenseComponent />}>
             <LazyPayments />
         </Suspense>
     );

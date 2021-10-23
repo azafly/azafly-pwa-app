@@ -13,7 +13,7 @@ import ReviewModal from './review/review';
 import { useStepperStyles } from './classes';
 import { ThreeDots } from '../user-dashboard/loader-skeleton';
 
-const getSteps = ['Payment Info', 'Payment method', 'Payment Information', 'Review & Confirm', 'Make payment'];
+const getSteps = ['Payment Info', 'Payment method', 'Payment Information', 'Review & Confirm'];
 export type Steps = typeof getSteps[number];
 
 function getStepContent(step: number, handleNext: () => void) {
@@ -26,8 +26,6 @@ function getStepContent(step: number, handleNext: () => void) {
             return <PaymentInfo gotToNextStep={handleNext} />;
         case 3:
             return <ReviewModal />;
-        case 4:
-            return null;
         default:
             return <div> Unknown step</div>;
     }
@@ -36,15 +34,9 @@ function getStepContent(step: number, handleNext: () => void) {
 export function VerticalPaymentStepper() {
     const classes = useStepperStyles();
     const [activeStep, setActiveStep] = useState(0);
+
     const steps = getSteps;
-    const {
-        isErrorState,
-        rateInfoProps: { amount },
-        paymentLink,
-        paymentError,
-        handleGetInitialOffer,
-        isLoading
-    } = usePaymentContext();
+    const { canGoNext, isErrorState, paymentLink, handleGetInitialOffer, isLoading } = usePaymentContext();
 
     const handleNext = () => {
         setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -53,22 +45,29 @@ export function VerticalPaymentStepper() {
     const handleBack = () => {
         setActiveStep(prevActiveStep => prevActiveStep - 1);
     };
+    const handleInitialOfferStep = async () => {
+        await handleGetInitialOffer();
+        canGoNext && setActiveStep(1);
+        // if (initialOffer && !paymentError) {
+        //
+        // }
+    };
 
     const handleStepper = (step: number) => {
         switch (step) {
             case 0:
                 return (
-                    <button
+                    <Button
+                        endIcon={<NavigateNextIcon />}
                         className={classes.next}
-                        onClick={async () => {
-                            await handleGetInitialOffer();
-                            console.log(paymentError);
-                            !paymentError && handleNext();
+                        onClick={e => {
+                            e.persist();
+                            handleInitialOfferStep();
                         }}
                         disabled={isErrorState}
                     >
-                        <span>{'Get offer'}</span> <NavigateNextIcon />
-                    </button>
+                        {'Get offer'}
+                    </Button>
                 );
             case 1:
                 return (
@@ -80,6 +79,7 @@ export function VerticalPaymentStepper() {
                         disabled={isErrorState}
                         onClick={handleNext}
                         disableElevation
+                        endIcon={<NavigateNextIcon />}
                     >
                         Continue
                     </Button>
@@ -89,13 +89,7 @@ export function VerticalPaymentStepper() {
             case 3:
                 return (
                     <Button className={classes.next} href={paymentLink} disabled={isErrorState || !paymentLink}>
-                        {isLoading ? <ThreeDots /> : 'Pay'}
-                        <NavigateNextIcon />
-                    </Button>
-                );
-            case 4:
-                return (
-                    <Button className={classes.next} onClick={handleNext}>
+                        {isLoading ? '...' : 'Pay'}
                         <NavigateNextIcon />
                     </Button>
                 );
@@ -110,7 +104,7 @@ export function VerticalPaymentStepper() {
                 <Stepper activeStep={activeStep} orientation='vertical'>
                     {steps.map((label, index) => (
                         <Step key={label}>
-                            <StepLabel className={classes.stepperLabel} onClick={() => !!amount && setActiveStep(index)}>
+                            <StepLabel className={classes.stepperLabel} onClick={() => canGoNext && setActiveStep(index)}>
                                 {label}
                             </StepLabel>
                             <StepContent>

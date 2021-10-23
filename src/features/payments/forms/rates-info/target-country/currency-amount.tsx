@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 0 7px 0 #bac4cf',
             position: 'relative',
             [theme.breakpoints.only('xs')]: {
-                width: '80vw'
+                width: '100%'
             }
         },
         input: {

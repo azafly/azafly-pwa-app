@@ -35,6 +35,7 @@ export interface IPaymentContext {
     paymentError: string;
     initialOffer: GetOffersResponse['data'] | null;
     isLoading: boolean;
+    canGoNext: boolean;
 }
 
 export const PaymentContext: IPaymentContext = {
@@ -53,7 +54,8 @@ export const PaymentContext: IPaymentContext = {
     handleCreatePaymentIntent: () => new Promise(() => {}),
     paymentError: '',
     initialOffer: null,
-    isLoading: false
+    isLoading: false,
+    canGoNext: false
 };
 
 export enum LOCAL_STORAGE_KEY {

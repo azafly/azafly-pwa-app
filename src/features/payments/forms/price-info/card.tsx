@@ -14,8 +14,13 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important',
             padding: 50,
             borderRadius: 4,
-            backgroundColor: '#fff',
             margin: 50,
+            [theme.breakpoints.only('xs')]: {
+                width: '100%',
+                margin: '10px 0px',
+                backgroundColor: 'transparent',
+                padding: 0
+            },
             '& .MuiButton-containedPrimary': {
                 backgroundColor: theme.colors.base,
                 textTransform: 'capitalize',
@@ -35,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
             marginBottom: 20,
             marginTop: 10,
             [theme.breakpoints.only('xs')]: {
-                marginLeft: '1rem'
+                marginTop: 20
             }
         },
         price: {

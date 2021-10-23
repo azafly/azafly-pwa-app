@@ -14,6 +14,7 @@ const paymentContext = createContext<IPaymentContext>(PaymentContext);
 function usePaymentProvider() {
     const [isErrorState, setErrorState] = React.useState<boolean>(false);
     const [amount, setAmount] = React.useState(100);
+    const [canGoNext, setCanGoNext] = useState(false);
     const [paymentLink, setPaymentLink] = useState('');
     const [paymentError, setPaymentError] = useState('');
     const [initialOffer, setInitialOffer] = useState<IPaymentContext['initialOffer']>(null);
@@ -56,13 +57,19 @@ function usePaymentProvider() {
         // if (userInputIsSame) {
         //     return;
         //}
+        // source_amount: amount,
         setIsLoading(true);
         getInitialOffer({ source_currency: targetCountry?.currency?.code, source_amount: amount, target_currency: sourceCountry?.currency?.code })
             .then(({ data }) => {
                 setInitialOffer(data.data);
                 localStorage.setItem(LOCAL_STORAGE_KEY.INITIAL_OFFER, JSON.stringify(data.data));
+                setPaymentError('');
+                setCanGoNext(true);
             })
-            .catch(() => setPaymentError('Error getting the best offers for you. Try again'))
+            .catch(() => {
+                setCanGoNext(false);
+                setPaymentError('Error getting the best offers for you. Try again');
+            })
             .finally(() => setIsLoading(false));
     };
 
@@ -93,6 +100,7 @@ function usePaymentProvider() {
     };
 
     return {
+        canGoNext,
         handleCreatePaymentIntent,
         handleGetInitialOffer,
         initialOffer,

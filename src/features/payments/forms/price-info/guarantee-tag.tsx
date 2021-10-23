@@ -11,7 +11,13 @@ const useStyles = makeStyles((theme: Theme) =>
             border: `1px solid ${theme.colors.base}`,
             height: 40,
             margin: '2rem 0 2rem 0rem',
-            borderRadius: 4
+            borderRadius: 4,
+            minWidth: 270,
+            [theme.breakpoints.only('xs')]: {
+                margin: 0,
+                width: '100%',
+                marginTop: 40
+            }
         },
         statement: {
             justifySelf: 'flex-start',

@@ -3,7 +3,6 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { formatCurrency } from 'utils';
 import { GuaranteeTag } from './guarantee-tag';
-import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { usePaymentContext } from '../../context';
 import InfoIcon from '@mui/icons-material/Info';
 
@@ -74,10 +73,7 @@ export function PriceCard() {
         <div className={classes.root}>
             <GuaranteeTag isLoading={isLoading} />
             <div className={classes.card}>
-                <div>
-                    {isLoading && <ThreeDots styles={{ backgroundColor: '#4990A4' }} />}
-                    {!isLoading && initialOffer && <h5 className={classes.price}> {formattedOffer}</h5>}
-                </div>
+                <div>{initialOffer && <h5 className={classes.price}> {formattedOffer}</h5>}</div>
                 <Box sx={{ display: 'flex' }}>
                     <InfoIcon color={'info'} />
                     <Typography paragraph className={'paragraph'} sx={{ fontSize: '0.7rem', padding: '0px 10px' }} align={'justify'}>

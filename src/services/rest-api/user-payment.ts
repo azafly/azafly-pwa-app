@@ -64,8 +64,8 @@ export interface PaymentInfo {
     terms: boolean;
     purpose: any;
 }
-const BASE_URL = ` https://staging-api.lucqax.com/api/v1/payments`;
-const CLIENT_API_TOKEN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDbGllbnQiOnsibmFtZSI6ImF6YWZseS1jbGllbnQtdG9rZW4ifX0.dJ0KN-RjLB_LXxNfHewGjdpaLZg3tkgxawiJzkxqLps`;
+const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/payments`;
+const CLIENT_API_TOKEN = process.env.REACT_APP_CLIENT_API_TOKEN;
 const OFFERS_ENDPOINT = '/offers';
 const CREATE_INTENT_ENDPOINT = '/create-intent';
 

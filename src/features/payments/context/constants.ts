@@ -1,5 +1,7 @@
 import { CreatePaymentIntentBody, GetOffersResponse } from 'services/rest-api/user-payment';
 import { Country, NIGERIA } from '../hooks/use-country-list';
+import { Dispatch } from 'react';
+import { SetStateAction } from 'hoist-non-react-statics/node_modules/@types/react';
 
 export interface IRateInfo {
     targetCountry: Country;
@@ -36,6 +38,8 @@ export interface IPaymentContext {
     initialOffer: GetOffersResponse['data'] | null;
     isLoading: boolean;
     canGoNext: boolean;
+    activeStep: number;
+    setActiveStep: Dispatch<SetStateAction<number>>;
 }
 
 export const PaymentContext: IPaymentContext = {
@@ -55,7 +59,9 @@ export const PaymentContext: IPaymentContext = {
     paymentError: '',
     initialOffer: null,
     isLoading: false,
-    canGoNext: false
+    canGoNext: false,
+    activeStep: 0,
+    setActiveStep: () => {}
 };
 
 export enum LOCAL_STORAGE_KEY {

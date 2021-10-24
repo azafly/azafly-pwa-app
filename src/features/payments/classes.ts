@@ -44,6 +44,10 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
             zIndex: 1,
             width: '18ch'
         },
+        disabled: {
+            opacity: 0.7,
+            background: theme.colors.base
+        },
         next: {
             display: 'flex',
             justifyContent: 'space-around',

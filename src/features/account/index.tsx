@@ -6,7 +6,7 @@ import { DefaultSnackbar } from 'components';
 import { NavBar } from 'features/user-dashboard/nav-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { timeout } from 'utils';
-import { useFirebaseAuthContext, updateFirebaseUser, storage } from 'providers/auth/firebase';
+import { useFirebaseAuthContext, storage } from 'providers/auth/firebase';
 import { useGetCurrentUserByEmailQuery, useUpdateUserMutation } from 'api/generated/graphql';
 import { USER_ACCOUNT_FORM_FIELDS } from './utils';
 
@@ -47,7 +47,7 @@ const UserAccount = () => {
         })
             .then(() => {
                 setAuthLoadingState(false);
-                setSuccess('Great job 🎉!! Profile updated successfully');
+                setSuccess('Great job!! Profile updated successfully 🙌');
             })
             .catch(() => setError('Error updating your profile. Try again later'))
             .finally(async () => {

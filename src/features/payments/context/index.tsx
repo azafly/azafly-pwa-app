@@ -19,6 +19,7 @@ function usePaymentProvider() {
     const [paymentError, setPaymentError] = useState('');
     const [initialOffer, setInitialOffer] = useState<IPaymentContext['initialOffer']>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [activeStep, setActiveStep] = useState<IPaymentContext['activeStep']>(0);
 
     const [targetCountry, setTargetCountry] = React.useState<Country>(UK);
     const [sourceCountry, setSourceCountry] = React.useState<Country>(NIGERIA);
@@ -46,29 +47,32 @@ function usePaymentProvider() {
 
     const handleGetInitialOffer = async () => {
         if (!targetCountry || !sourceCountry || !amount) return;
-        // const paymentOffer = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string) as LocalStorageInitialOffer;
+        const paymentOffer = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string) as LocalStorageInitialOffer;
 
-        // const userInputIsSame =
-        //     paymentOffer?.source_amount === amount &&
-        //     paymentOffer?.source_currency === targetCountry.currency.code &&
-        //     paymentOffer?.target_currency === sourceCountry.currency.code;
+        const userInputIsSame =
+            paymentOffer?.source_amount === amount &&
+            paymentOffer?.source_currency === targetCountry.currency.code &&
+            paymentOffer?.target_currency === sourceCountry.currency.code;
 
-        // // don't refetch offer if nothing has changed from user's input
-        // if (userInputIsSame) {
-        //     return;
-        //}
-        // source_amount: amount,
+        // don't refetch offer if nothing has changed from user's input
+        // just go to the next step
+        if (userInputIsSame) {
+            setInitialOffer(paymentOffer);
+            setActiveStep(1);
+            return;
+        }
+
         setIsLoading(true);
         getInitialOffer({ source_currency: targetCountry?.currency?.code, source_amount: amount, target_currency: sourceCountry?.currency?.code })
             .then(({ data }) => {
                 setInitialOffer(data.data);
                 localStorage.setItem(LOCAL_STORAGE_KEY.INITIAL_OFFER, JSON.stringify(data.data));
                 setPaymentError('');
-                setCanGoNext(true);
+                setActiveStep(1);
             })
             .catch(() => {
                 setCanGoNext(false);
-                setPaymentError('Error getting the best offers for you. Try again');
+                setPaymentError('😩 Error getting you the best offers. Try again');
             })
             .finally(() => setIsLoading(false));
     };
@@ -100,16 +104,18 @@ function usePaymentProvider() {
     };
 
     return {
+        activeStep,
         canGoNext,
         handleCreatePaymentIntent,
         handleGetInitialOffer,
         initialOffer,
         isErrorState,
+        isLoading,
         paymentError,
         paymentLink,
         rateInfoProps,
-        setErrorState,
-        isLoading
+        setActiveStep,
+        setErrorState
     };
 }
 

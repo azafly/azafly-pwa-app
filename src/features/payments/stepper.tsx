@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Button, Stepper, Step, StepContent, StepLabel, Paper, Typography, Slide } from '@material-ui/core';
+import { Button, Stepper, Step, StepContent, StepLabel, Typography, Slide } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 import { PaymentInfo } from './forms/payment-info/payment-info';
@@ -33,10 +32,9 @@ function getStepContent(step: number, handleNext: () => void) {
 
 export function VerticalPaymentStepper() {
     const classes = useStepperStyles();
-    const [activeStep, setActiveStep] = useState(0);
 
     const steps = getSteps;
-    const { canGoNext, isErrorState, paymentLink, handleGetInitialOffer, isLoading } = usePaymentContext();
+    const { activeStep, canGoNext, isErrorState, paymentLink, handleGetInitialOffer, isLoading, setActiveStep } = usePaymentContext();
 
     const handleNext = () => {
         setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -45,29 +43,29 @@ export function VerticalPaymentStepper() {
     const handleBack = () => {
         setActiveStep(prevActiveStep => prevActiveStep - 1);
     };
-    const handleInitialOfferStep = async () => {
-        await handleGetInitialOffer();
-        canGoNext && setActiveStep(1);
-        // if (initialOffer && !paymentError) {
-        //
-        // }
-    };
+    // const handleInitialOfferStep = async () => {
+    //     await handleGetInitialOffer();
+    //     canGoNext && setActiveStep(1);
+    //     // if (initialOffer && !paymentError) {
+    //     //
+    //     // }
+    // };
 
     const handleStepper = (step: number) => {
         switch (step) {
             case 0:
                 return (
-                    <Button
-                        endIcon={<NavigateNextIcon />}
+                    <button
                         className={classes.next}
                         onClick={e => {
                             e.persist();
-                            handleInitialOfferStep();
+                            handleGetInitialOffer();
                         }}
                         disabled={isErrorState}
                     >
-                        {'Get offer'}
-                    </Button>
+                        {isLoading ? <ThreeDots style={{ height: 30 }} /> : 'Get offer'}
+                        <NavigateNextIcon />
+                    </button>
                 );
             case 1:
                 return (
@@ -77,6 +75,9 @@ export function VerticalPaymentStepper() {
                         variant={'contained'}
                         color={'primary'}
                         disabled={isErrorState}
+                        classes={{
+                            disabled: classes.disabled
+                        }}
                         onClick={handleNext}
                         disableElevation
                         endIcon={<NavigateNextIcon />}
@@ -88,8 +89,15 @@ export function VerticalPaymentStepper() {
                 return null;
             case 3:
                 return (
-                    <Button className={classes.next} href={paymentLink} disabled={isErrorState || !paymentLink}>
-                        {isLoading ? '...' : 'Pay'}
+                    <Button
+                        className={classes.next}
+                        href={paymentLink}
+                        classes={{
+                            disabled: classes.disabled
+                        }}
+                        disabled={isErrorState || !paymentLink}
+                    >
+                        {isLoading ? <ThreeDots style={{ height: 30 }} /> : 'Pay'}
                         <NavigateNextIcon />
                     </Button>
                 );

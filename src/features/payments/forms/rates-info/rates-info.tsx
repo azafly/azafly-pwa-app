@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { Box, Grid } from '@material-ui/core';
 import Chip from '@mui/material/Chip';
 
 import { CountrySelect } from './target-country/country-select';
@@ -67,7 +67,9 @@ export function RatesInfo() {
         <form className={classes.root} noValidate autoComplete='on'>
             <div>
                 <Grid container>
-                    {paymentError && <Chip color={'error'} label={paymentError} size={'medium'} sx={{ marginBottom: 3 }} variant={'outlined'} />}
+                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                        {paymentError && <Chip color={'error'} label={paymentError} size={'medium'} sx={{ marginBottom: 3 }} variant={'outlined'} />}
+                    </Box>
                     <Grid item xs={12}>
                         <CountrySelect
                             handleCountryChange={handleSourceCountryChange}

@@ -7,7 +7,7 @@ import { dashboard as data } from 'mocks/dashboard';
 import { formatCurrency } from 'utils';
 import { InfoText } from './info-text';
 import { ProgressStatusSteppers } from './status-stepper';
-import TaskList from './task-list';
+// import TaskList from './task-list';
 
 interface CardProps {
     transactionData: any;
@@ -43,7 +43,7 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
                         Your progress summary
                     </Typography>
                     <ProgressStatusSteppers />
-                    <TaskList taskList={tasks} />
+                    {/* <TaskList taskList={tasks} /> */}
                 </Collapse>
             </CardContent>
         </Card>

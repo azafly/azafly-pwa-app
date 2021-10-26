@@ -11,7 +11,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PaymentIcon from '@mui/icons-material/Payment';
 
-import { DashboardSvgComponent } from '../../components/icons/dashboard';
+import { DashboardSvgComponent } from 'components/icons/dashboard';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

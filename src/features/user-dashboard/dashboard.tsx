@@ -1,5 +1,5 @@
-import { Box, Typography } from '@material-ui/core';
-import { useState, useEffect } from 'react';
+import { Box, Typography, Hidden } from '@material-ui/core';
+import { useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { CardContainer } from './card-container';
@@ -7,11 +7,13 @@ import { EmptyCardContainer } from './empty-service';
 import { NavBar } from './nav-bar';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { useDashboardStyles, StyledBadge } from './classes';
+import { Grid } from '@mui/material';
 import UserNavBar from './bottom-navbar';
 
 // queries and co
-import { useGetUserTransactionsQuery } from 'api/generated/graphql';
+import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { SideBar } from './side-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 
 export default function Dashboard() {
@@ -26,10 +28,14 @@ export default function Dashboard() {
         authState: { user }
     } = useFirebaseAuthContext();
 
-    const id = user?.uid ?? '';
-
     const emailVerified = user?.emailVerified;
+    const { data: userData } = useGetCurrentUserByEmailQuery({
+        variables: {
+            email: user?.email ?? ''
+        }
+    });
 
+    const id = userData?.users[0]?.id;
     const { data: transactionData, error, loading } = useGetUserTransactionsQuery({ variables: { id } });
     const transactions = transactionData?.transaction;
 
@@ -102,52 +108,64 @@ export default function Dashboard() {
                 info={verificationEmailSent}
             />
             <NavBar />
-            <Box sx={{ mt: 15 }}>
-                {!transactions?.length ? (
-                    <>
-                        {!emailVerified && (
-                            <Box
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    marginRight: 10,
-                                    marginLeft: 10,
-                                    maxWidth: 900,
-                                    margin: 'auto',
-                                    borderRadius: 3,
-                                    flexWrap: 'wrap',
-                                    padding: 10,
-                                    border: '1px solid ',
-                                    cursor: 'pointer',
-                                    background: '#FFEBE9'
-                                }}
-                                onClick={handleSendVerificationEmail}
-                            >
-                                <Box fontWeight={500}>{emailLink}</Box>
-                            </Box>
+            <Grid container>
+                <Hidden smDown>
+                    <Grid item md={2}>
+                        <SideBar />
+                    </Grid>
+                </Hidden>
+
+                <Grid item xs={12} md={10} sx={{ mb: 10, margin: 'auto', mt: 10 }}>
+                    <Box>
+                        {!transactions?.length ? (
+                            <>
+                                {!emailVerified && (
+                                    <Box
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            marginRight: 10,
+                                            marginLeft: 10,
+                                            maxWidth: 900,
+                                            margin: 'auto',
+                                            borderRadius: 3,
+                                            flexWrap: 'wrap',
+                                            padding: 10,
+                                            border: '1px solid ',
+                                            cursor: 'pointer',
+                                            width: '90vw',
+                                            marginTop: '2vh',
+                                            background: '#FFEBE9'
+                                        }}
+                                        onClick={handleSendVerificationEmail}
+                                    >
+                                        <Box fontWeight={500}>{emailLink}</Box>
+                                    </Box>
+                                )}
+                                <EmptyCardContainer setHighlightEmailVerify={setHighlightEmailVerify} />
+                                <UserNavBar />
+                            </>
+                        ) : (
+                            <div>
+                                <Typography className={classes.heading}>Your Transactions</Typography>
+                                <div className={classes.dashboard_container}>
+                                    {!error &&
+                                        transactions?.length &&
+                                        transactions?.map((transaction: any) => <CardContainer transactionData={transaction} key={transaction.id} />)}
+                                    <SpeedDialTooltip
+                                        handleOpenSpeedDial={handleOpenSpeedDial}
+                                        handleSpeedDialClose={handleSpeedDialClose}
+                                        openSpeedDial={openSpeedDial}
+                                        hidden={hidden}
+                                        handleSpeedDialVisibility={handleSpeedDialVisibility}
+                                    />
+                                </div>
+                                <UserNavBar />
+                            </div>
                         )}
-                        <EmptyCardContainer setHighlightEmailVerify={setHighlightEmailVerify} />
-                        <UserNavBar />
-                    </>
-                ) : (
-                    <div>
-                        <Typography className={classes.heading}>Your Transactions</Typography>
-                        <div className={classes.dashboard_container}>
-                            {!error &&
-                                transactions?.length &&
-                                transactions?.map((transaction: any) => <CardContainer transactionData={transaction} key={transaction.id} />)}
-                            <SpeedDialTooltip
-                                handleOpenSpeedDial={handleOpenSpeedDial}
-                                handleSpeedDialClose={handleSpeedDialClose}
-                                openSpeedDial={openSpeedDial}
-                                hidden={hidden}
-                                handleSpeedDialVisibility={handleSpeedDialVisibility}
-                            />
-                        </div>
-                        <UserNavBar />
-                    </div>
-                )}
-            </Box>
+                    </Box>
+                </Grid>
+            </Grid>
         </>
     );
 }

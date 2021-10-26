@@ -59,11 +59,11 @@ const UserAccount = () => {
 
     const formik = useFormik({
         initialValues: {
-            fullname: userData?.user[0]?.display_name,
+            fullname: userData?.users[0]?.display_name,
             address: '',
-            phone: userData?.user[0]?.phone,
+            phone: userData?.users[0]?.phone,
             dob: '2017-05-24',
-            photoURL: userData?.user[0]?.image_url
+            photoURL: userData?.users[0]?.image_url
         },
         enableReinitialize: true,
         onSubmit: values => {

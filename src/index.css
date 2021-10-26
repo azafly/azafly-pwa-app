@@ -22,3 +22,8 @@ section {
         margin-bottom: 2em !important;
     }
 }
+
+.text {
+    margin-left: 1rem;
+    text-transform: capitalize;
+}

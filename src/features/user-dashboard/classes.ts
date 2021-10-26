@@ -95,6 +95,25 @@ export const StyledBadge = makeStyles(() =>
     })
 );
 
+export const useSidebarStyles = makeStyles(() =>
+    createStyles({
+        button: {
+            textDecoration: 'none',
+            fontWeight: 600,
+            fontSize: '0.9em',
+            '& a': {
+                textTransform: 'capitalize',
+                fontFamily: 'Nunito',
+                color: '#333'
+            }
+        },
+        item: {
+            width: '20ch',
+            margin: 'auto'
+        }
+    })
+);
+
 export const useDashboardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboard_container: {
@@ -135,7 +154,7 @@ export const useEmptyCardStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             borderRadius: 12,
             margin: 'auto',
-            marginTop: '5vh',
+            marginTop: '3vh',
             marginBottom: 20,
             [theme.breakpoints.up('md')]: {
                 width: '74vw',

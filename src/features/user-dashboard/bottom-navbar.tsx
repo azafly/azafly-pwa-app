@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
             position: 'fixed',
             boxShadow: '0 2px 16px 0 rgb(0 0 0 / 8%)',
             zIndex: 9999,
+            left: 0,
             bottom: -0,
             [theme.breakpoints.up('sm')]: {
                 display: 'none'

@@ -36,7 +36,7 @@ export const useVerifyPaymentSuccess = () => {
                     status: 'success',
                     heading: 'Payment was processed successfully',
                     text: 'You can now track your payment',
-                    cta: 'Go to Dashboard'
+                    cta: 'Track Payment'
                 })
             )
             .catch(() =>

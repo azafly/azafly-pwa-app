@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useFormik } from 'formik';
 
 import { PAYMENT_INFO, validationSchema, initialValues, generateInputType } from './form-fields';
-import { LOCAL_STORAGE_KEY } from '../../context/constants';
+import { LOCAL_STORAGE_KEY } from 'utils/local-storage-keys';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

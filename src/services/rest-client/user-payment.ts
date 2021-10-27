@@ -2,6 +2,7 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 export type ApiRequestMethods = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
+import { PURPOSE } from 'features/payments/forms/payment-info/form-fields';
 
 export interface GetOffersRequestBody {
     source_currency: string;
@@ -34,7 +35,7 @@ export interface GetOffersResponse {
     data: GetOffersResponseData;
     status: string;
 }
-const paymentOptions = 'account,card,banktransfer,mpesa,paga,barter';
+const payment_options = 'account,card,banktransfer,mpesa,paga,barter';
 
 export interface CreatePaymentIntentBody {
     payment_offer_id: string;
@@ -62,7 +63,7 @@ export interface PaymentInfo {
     references: string;
     by: string;
     terms: boolean;
-    purpose: any;
+    purpose: PURPOSE;
 }
 const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/payments`;
 const CLIENT_API_TOKEN = process.env.REACT_APP_CLIENT_API_TOKEN;
@@ -114,7 +115,7 @@ export const createPaymentIntent = async ({
         description,
         telephone,
         name,
-        paymentOptions,
+        payment_options,
         logo: 'https://image.gif'
     });
 };

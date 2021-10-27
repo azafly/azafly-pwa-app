@@ -64,7 +64,8 @@ export const useInfoTextStyles = makeStyles((theme: Theme) =>
     createStyles({
         infoText_root: {
             display: 'flex',
-            alignContent: 'center'
+            alignContent: 'center',
+            maxWidth: 800
         },
         text: {
             padding: 10,
@@ -99,16 +100,16 @@ export const useSidebarStyles = makeStyles(() =>
     createStyles({
         button: {
             textDecoration: 'none',
-            fontWeight: 600,
-            fontSize: '0.9em',
             '& a': {
                 textTransform: 'capitalize',
                 fontFamily: 'Nunito',
-                color: '#333'
+                color: '#0D324D',
+                fontWeight: 650,
+                fontSize: '1.1em'
             }
         },
         item: {
-            width: '20ch',
+            width: '25ch',
             margin: 'auto'
         }
     })
@@ -133,13 +134,15 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             fontWeight: 900,
             color: theme.colors.textPrimary,
             [theme.breakpoints.up('md')]: {
-                marginLeft: '13vw'
+                marginLeft: '13vw',
+                marginTop: '8vh'
             },
             [theme.breakpoints.only('sm')]: {
                 marginLeft: '8vw'
             },
             [theme.breakpoints.only('xs')]: {
-                textAlign: 'center'
+                textAlign: 'center',
+                marginTop: '4vh'
             }
         },
         name: {

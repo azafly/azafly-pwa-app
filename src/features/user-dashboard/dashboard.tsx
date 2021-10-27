@@ -7,7 +7,7 @@ import { EmptyCardContainer } from './empty-service';
 import { NavBar } from './nav-bar';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { useDashboardStyles, StyledBadge } from './classes';
-import { Grid } from '@mui/material';
+import { Stack } from '@mui/material';
 import UserNavBar from './bottom-navbar';
 
 // queries and co
@@ -91,7 +91,6 @@ export default function Dashboard() {
         return (
             <Box sx={{ width: '100vw', height: '100vh' }}>
                 <NavBar />
-                <Typography className={classes.heading}>My Transactions</Typography>
                 <ThreeDots styles={{ backgroundColor: '#4990a4' }} />
             </Box>
         );
@@ -108,14 +107,14 @@ export default function Dashboard() {
                 info={verificationEmailSent}
             />
             <NavBar />
-            <Grid container>
+            <Stack direction={'row'}>
                 <Hidden smDown>
-                    <Grid item md={2}>
+                    <Box>
                         <SideBar />
-                    </Grid>
+                    </Box>
                 </Hidden>
 
-                <Grid item xs={12} md={10} sx={{ mb: 10, margin: 'auto', mt: 10 }}>
+                <Box sx={{ mb: 10, margin: 'auto', mt: 10 }}>
                     <Box>
                         {!transactions?.length ? (
                             <>
@@ -164,8 +163,8 @@ export default function Dashboard() {
                             </div>
                         )}
                     </Box>
-                </Grid>
-            </Grid>
+                </Box>
+            </Stack>
         </>
     );
 }

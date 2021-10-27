@@ -4,10 +4,10 @@ import {
     createPaymentIntent,
     getInitialOffer,
     CreatePaymentIntentBody as CreateIntentParams,
-    GetOffersResponseData,
     LocalStorageInitialOffer
-} from 'services/rest-api/user-payment';
-import { IPaymentContext, PaymentContext, IRateInfo, UK, LOCAL_STORAGE_KEY } from './constants';
+} from 'services/rest-client/user-payment';
+import { IPaymentContext, PaymentContext, IRateInfo, UK } from './constants';
+import { LOCAL_STORAGE_KEY } from 'utils/local-storage-keys';
 
 const paymentContext = createContext<IPaymentContext>(PaymentContext);
 

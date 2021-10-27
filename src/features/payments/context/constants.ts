@@ -1,4 +1,4 @@
-import { CreatePaymentIntentBody, GetOffersResponse } from 'services/rest-api/user-payment';
+import { CreatePaymentIntentBody, GetOffersResponse } from 'services/rest-client/user-payment';
 import { Country, NIGERIA } from '../hooks/use-country-list';
 import { Dispatch } from 'react';
 import { SetStateAction } from 'hoist-non-react-statics/node_modules/@types/react';
@@ -63,8 +63,3 @@ export const PaymentContext: IPaymentContext = {
     activeStep: 0,
     setActiveStep: () => {}
 };
-
-export enum LOCAL_STORAGE_KEY {
-    INITIAL_OFFER = 'initialOffer',
-    PAYMENT_INFO = 'payment_info'
-}

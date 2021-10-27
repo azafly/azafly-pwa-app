@@ -5,9 +5,10 @@ import ModalUnstyled from '@mui/core/ModalUnstyled';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 
-import { PaymentInfo, GetOffersResponseData } from 'services/rest-api/user-payment';
+import { PaymentInfo, GetOffersResponseData } from 'services/rest-client/user-payment';
 import { usePaymentContext } from 'features/payments/context';
-import { LOCAL_STORAGE_KEY } from '../context/constants';
+import { LOCAL_STORAGE_KEY } from 'utils/local-storage-keys';
+import { User } from '../../../providers/auth/firebase/constants';
 
 const StyledModal = styled(ModalUnstyled)`
     position: fixed;
@@ -61,11 +62,13 @@ export default function ReviewModal() {
         const { payment_offer_id, source_currency } = JSON.parse(
             localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string
         ) as GetOffersResponseData;
+        const { email } = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.USER) as string) as User;
+
         handleCreatePaymentIntent({
             payment_offer_id,
             payment_title: purpose,
             description: references,
-            email: 'user@email.com',
+            email: email ?? '',
             name: fullname,
             currency: source_currency ?? 'NGN'
         });

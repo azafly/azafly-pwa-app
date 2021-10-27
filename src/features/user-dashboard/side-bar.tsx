@@ -1,14 +1,14 @@
 import { Box } from '@mui/system';
 import { Button } from '@mui/material';
-
-import { DashboardSvgComponent } from '../../components/icons/dashboard';
 import { Link } from 'react-router-dom';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import PaymentIcon from '@mui/icons-material/Payment';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import Stack from '@mui/material/Stack';
+
+import { TransactionSvgComponent } from 'components/icons';
 
 import { useSidebarStyles } from './classes';
 
@@ -16,27 +16,27 @@ const sideMenu = [
     {
         label: 'Dashboard',
         route: '/dashboard',
-        icon: <DashboardSvgComponent />
+        icon: <DashboardIcon sx={{ fontSize: '1.1em' }} style={{ marginRight: '16px' }} />
     },
     {
         label: 'New Payment',
         route: '/payment',
-        icon: <PaymentIcon sx={{ fill: '#333' }} />
+        icon: <PaymentIcon sx={{ fill: '#0D324D' }} style={{ marginRight: '16px' }} />
     },
     {
         label: 'Cards',
         route: '/cards',
-        icon: <PaymentsIcon sx={{ fill: '#333' }} />
+        icon: <PaymentsIcon sx={{ fill: '#0D324D' }} style={{ marginRight: '16px' }} />
     },
     {
         label: 'Transactions',
         route: '/dashboard',
-        icon: <AccountBalanceWalletIcon sx={{ fill: '#333' }} />
+        icon: <TransactionSvgComponent stroke={'#0D324D'} style={{ marginRight: '16px' }} />
     },
     {
         label: 'Account',
         route: '/account',
-        icon: <AccountCircle sx={{ fill: '#333' }} />
+        icon: <AccountCircle sx={{ fill: '#0D324D' }} style={{ marginRight: '16px' }} />
     }
 ];
 
@@ -45,18 +45,18 @@ export const SideBar = () => {
     return (
         <Box
             sx={{
-                height: '120vh',
-                boxShadow: '0 2px 16px 0 rgb(0 0 0 / 8%)',
-                background: 'white',
-                mt: -10,
-                overflowY: 'clip'
+                height: '80vh',
+                overflowY: 'clip',
+                borderRadius: 4,
+                marginTop: '10vh',
+                marginLeft: '2vw'
             }}
         >
-            <Stack sx={{ pt: 30 }} spacing={2} className={classes.item}>
+            <Stack sx={{ pt: 20, m: 2 }} spacing={2} className={classes.item}>
                 {sideMenu.map(({ icon, label, route }) => {
                     return (
-                        <Stack key={label + route} direction='row' className={classes.button} spacing={4}>
-                            <Button startIcon={icon} component={Link} to={route} classes={{ root: classes.button }}>
+                        <Stack key={label + route} direction='row' className={classes.button} spacing={2}>
+                            <Button startIcon={icon} component={Link} to={route} classes={{ root: classes.button }} size={'large'}>
                                 {label}{' '}
                             </Button>
                         </Stack>

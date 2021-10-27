@@ -19,7 +19,7 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-    const { amount, created_at, is_success_done, tasks } = transactionData;
+    const { amount, created_at, is_success_done, name } = transactionData;
 
     const date = `${format(new Date(created_at), 'dd, MMMM yyyy')}`;
     const classes = useCardStyles();
@@ -30,6 +30,9 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
                 <div className={classes.starter}>
                     <div className={classes.serviceName}>
                         <h1 className='name'>{formattedAmount} </h1>
+                        <Typography className='date' paragraph color='secondary' style={{ fontWeight: 800 }}>
+                            Reference: {name}
+                        </Typography>
                         <Typography className='date' paragraph color='secondary'>
                             {date}
                         </Typography>

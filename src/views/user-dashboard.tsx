@@ -1,12 +1,12 @@
 import { lazy, Suspense } from 'react';
 
-import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import { DashboardSvgComponent } from 'components/icons';
 
 const LazyDashBoard = lazy(() => import('features/user-dashboard/dashboard'));
 
 const UserDashboard = () => {
     return (
-        <Suspense fallback={<ThreeDots />}>
+        <Suspense fallback={<DashboardSvgComponent />}>
             <LazyDashBoard />
         </Suspense>
     );

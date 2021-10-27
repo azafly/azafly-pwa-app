@@ -1,6 +1,6 @@
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { Grid, Snackbar, SnackbarCloseReason, SnackbarOrigin } from '@material-ui/core';
-import { SyntheticEvent, useState, useEffect } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { OnboardingIllustration } from 'features/onboarding/illustration';

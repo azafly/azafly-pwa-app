@@ -31,24 +31,25 @@ export const useVerifyPaymentSuccess = () => {
     useEffect(() => {
         axiosClient()
             .get(path)
-            .then(() =>
+            .then(() => {
                 setStatus({
                     status: 'success',
                     heading: 'Payment was processed successfully',
                     text: 'You can now track your payment',
                     cta: 'Track Payment'
-                })
-            )
-            .catch(() =>
+                });
+                setLoading(false);
+            })
+            .catch(() => {
                 setStatus({
                     status: 'error',
                     heading: `Oh no 😩 , we couldn't verify your payment`,
                     text: `If you are sure your payment went through,
                     Contact Support through the chat bubble below or email`,
                     cta: `Start Payment again`
-                })
-            )
-            .finally(() => setLoading(false));
+                });
+                setLoading(false);
+            });
     }, [path]);
 
     return {

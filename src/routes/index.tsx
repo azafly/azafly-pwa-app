@@ -15,6 +15,9 @@ export const Routes = () => {
     return (
         <Router>
             <Switch>
+                <Route exact path='/signin'>
+                    <Onboarding />
+                </Route>
                 <Route exact path='/'>
                     <Onboarding />
                 </Route>
@@ -27,9 +30,6 @@ export const Routes = () => {
                 <PrivateRoute exact path='/payments-callback'>
                     <PaymentsCallback />
                 </PrivateRoute>
-                <Route exact path='/signin'>
-                    <Onboarding />
-                </Route>
                 <Route exact path='/forgot-password'>
                     <ForgotPassword />
                 </Route>

@@ -8,6 +8,10 @@ export const GetUserTransactions = gql`
             id
             is_success_done
             name
+            created_at
+            updated_at
+            description
+            status
         }
     }
 `;

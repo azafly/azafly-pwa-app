@@ -4,7 +4,6 @@ import ErrorIcon from '@mui/icons-material/Error';
 
 import { CardContainer } from './card-container';
 import { EmptyCardContainer } from './empty-service';
-import { NavBar } from './nav-bar';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { useDashboardStyles, StyledBadge } from './classes';
 import { Stack } from '@mui/material';
@@ -87,15 +86,6 @@ export default function Dashboard() {
     const alertSeverity = verificationEmailSent.includes('Error') ? 'error' : 'success';
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
 
-    if (loading) {
-        return (
-            <Box sx={{ width: '100vw', height: '100vh' }}>
-                <NavBar />
-                <ThreeDots styles={{ backgroundColor: '#4990a4' }} />
-            </Box>
-        );
-    }
-
     return (
         <>
             <DefaultSnackbar
@@ -106,7 +96,6 @@ export default function Dashboard() {
                 title={alertTitle}
                 info={verificationEmailSent}
             />
-            <NavBar />
             <Stack direction={'row'}>
                 <Hidden smDown>
                     <Box>
@@ -118,7 +107,7 @@ export default function Dashboard() {
                     <Box>
                         {!transactions?.length ? (
                             <>
-                                {!emailVerified && (
+                                {!loading && !emailVerified && (
                                     <Box
                                         style={{
                                             display: 'flex',

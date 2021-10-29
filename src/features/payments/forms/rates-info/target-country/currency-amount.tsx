@@ -1,16 +1,16 @@
 import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { Box, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 
-import { Country, useCountryList } from '../../hooks';
-import { CountryList } from '../country-form-elements/country-list';
+import { Country, useCountryList } from '../../../hooks/use-country-list';
+import { CountryList } from '../source-country/country-list';
 import { CountrySelectToggle } from './country-select-toggle';
-import { usePaymentContext } from '../../context';
+import { usePaymentContext } from '../../../context';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            maxWidth: 500,
+            maxWidth: 700,
             marginBottom: 30,
             marginRight: 20,
             display: 'flex',
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 0 7px 0 #bac4cf',
             position: 'relative',
             [theme.breakpoints.only('xs')]: {
-                width: '76vw'
+                width: '100%'
             }
         },
         input: {
@@ -73,7 +73,7 @@ export function CurrencyAmount({ country }: CurrencyAmountProps) {
             <TextField
                 id='amount'
                 value={amount}
-                type='number'
+                type='text'
                 label={'Amount'}
                 className={classes.input}
                 onChange={handleSetAmount}

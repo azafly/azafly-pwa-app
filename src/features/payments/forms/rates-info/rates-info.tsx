@@ -1,17 +1,29 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { Box, Grid } from '@material-ui/core';
+import Chip from '@mui/material/Chip';
 
-import { CountrySelect } from './country-select';
-import { CurrencyAmount } from './currency-amount';
-import { Country, NIGERIA, useCountryList } from '../../hooks';
+import { CountrySelect } from './target-country/country-select';
+import { CurrencyAmount } from './target-country/currency-amount';
+import { Country, NIGERIA, useCountryList } from '../../hooks/use-country-list';
 import { usePaymentContext } from '../../context';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
-            marginTop: 50,
-            '& .MuiTextField-root': {}
+            padding: 50,
+            borderRadius: 8,
+            margin: 50,
+            maxWidth: 675,
+            [theme.breakpoints.up('sm')]: {
+                boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important'
+            },
+            [theme.breakpoints.only('xs')]: {
+                width: '100%',
+                margin: '40px 0px 10px',
+                backgroundColor: 'transparent',
+                padding: 0
+            }
         },
         option: {
             fontSize: '1rem',
@@ -26,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 marginRight: 5,
                 color: theme.colors.textPrimary,
                 fontWeight: 650,
-                fontSize: '1rem'
+                fontSize: '0.75rem'
             },
             '& .coming-soon': {
                 background: 'grey',
@@ -44,7 +56,8 @@ export function RatesInfo() {
     const { popularSourceCountries } = useCountryList();
 
     const {
-        rateInfoProps: { sourceCountry, targetCountry, handleSourceCountryChange }
+        rateInfoProps: { sourceCountry, targetCountry, handleSourceCountryChange },
+        paymentError
     } = usePaymentContext();
 
     const getOptionLabel = (option: Country) => `${option.currency.symbol} ${option.name}(${option.currency.code})`;
@@ -54,7 +67,10 @@ export function RatesInfo() {
         <form className={classes.root} noValidate autoComplete='on'>
             <div>
                 <Grid container>
-                    <Grid xs={12} md={6}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                        {paymentError && <Chip color={'error'} label={paymentError} size={'medium'} sx={{ marginBottom: 3 }} variant={'outlined'} />}
+                    </Box>
+                    <Grid item xs={12}>
                         <CountrySelect
                             handleCountryChange={handleSourceCountryChange}
                             classKeys={{ option: classes.option }}
@@ -64,7 +80,7 @@ export function RatesInfo() {
                             getOptionDisabled={getOptionDisabled}
                         />
                     </Grid>
-                    <Grid xs={12} md={6}>
+                    <Grid item xs={12}>
                         <CurrencyAmount country={targetCountry} />
                     </Grid>
                 </Grid>

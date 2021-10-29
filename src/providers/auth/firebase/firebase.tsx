@@ -1,14 +1,17 @@
 import { createContext, PropsWithChildren, useState, useContext, useEffect } from 'react';
 
-import { firebaseApp, firebaseConfig } from './firebase-config';
 import { AuthContext, AuthState, defaultAuthState, defaultAuhContext, FirebaseUser } from './constants';
+import { firebaseApp, firebaseConfig } from './firebase-config';
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-keys';
 
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 firebaseApp.initializeApp(firebaseConfig);
 const fireStore = firebaseApp.firestore();
+export const storage = firebaseApp.storage();
 
 const HASURA_CLAIMS_URL = 'https://hasura.io/jwt/claims';
 
@@ -22,7 +25,7 @@ const authContext = createContext<AuthContext>(defaultAuhContext);
 
 export const getUserById = async (firebaseId: string) => {
     return new Promise((resolve, reject) => {
-        fireStore.collection('user').onSnapshot(snapshot => {
+        fireStore.collection(LOCAL_STORAGE_KEY.USER).onSnapshot(snapshot => {
             const updatedData = snapshot.docs.map(doc => doc.data());
             const updatedUser = updatedData.filter(({ user }) => user.firebaseId === firebaseId);
             resolve(updatedUser);
@@ -31,13 +34,17 @@ export const getUserById = async (firebaseId: string) => {
 };
 
 export const addUser = (user: FirebaseUser) => {
-    return fireStore.collection('user').add({
+    return fireStore.collection(LOCAL_STORAGE_KEY.USER).add({
         user
     });
 };
 
 export const updateUserVerification = (userId: string) => {
-    return fireStore.collection('user').doc(userId).set({ emailVerified: true }, { merge: true });
+    return fireStore.collection(LOCAL_STORAGE_KEY.USER).doc(userId).set({ emailVerified: true }, { merge: true });
+};
+
+export const updateFirebaseUser = (userId: string, user: Partial<FirebaseUser>) => {
+    return fireStore.collection(LOCAL_STORAGE_KEY.USER).doc(userId).set(user, { merge: true });
 };
 
 export const updateFirebaseUser = (userId: string, user: any) => {
@@ -52,11 +59,19 @@ function useFirebaseProviderAuth() {
         return firebaseApp.auth().signInWithEmailAndPassword(email, password);
     };
 
+    const handleUpdateFirebaseProfile = (user: any, profile: Partial<FirebaseUser>) => {
+        user.updateProfile(profile)
+            .then(() => {
+                setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
+            })
+            .catch((error: any) => console.log(error));
+    };
+
     const signupWithEmailPassword = async ({ email, password, displayName }: EmailAndPasswordSignUp) => {
         const { user } = await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
         if (user) {
             const profile = { displayName };
-            localStorage.setItem('is_email_signup', 'true');
+            localStorage.setItem(LOCAL_STORAGE_KEY.IS_EMAIL_SIGNUP_SENT, 'true');
             user.updateProfile(profile)
                 .then(() => {
                     setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
@@ -70,7 +85,7 @@ function useFirebaseProviderAuth() {
             .auth()
             .signOut()
             .then(() => {
-                localStorage.removeItem('token');
+                localStorage.removeItem(LOCAL_STORAGE_KEY.TOKEN);
                 location.replace('/signin');
             })
             .catch(error => console.log(error));
@@ -109,6 +124,9 @@ function useFirebaseProviderAuth() {
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
+                localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
+                localStorage.setItem(LOCAL_STORAGE_KEY.USER, JSON.stringify(user));
+
                 if (user.emailVerified) {
                     setAuthState(prevState => {
                         const newUser = { ...user, emailVerified: true };
@@ -119,7 +137,6 @@ function useFirebaseProviderAuth() {
                     });
                 }
                 if (hasuraClaim) {
-                    localStorage.setItem('token', token);
                     setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
                 } else {
                     // Check if refresh is required.
@@ -130,11 +147,11 @@ function useFirebaseProviderAuth() {
                         // Force refresh to pick up the latest custom claims changes.
                         const newToken = await user.getIdToken(true);
                         setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
-                        localStorage.setItem('token', newToken);
+                        localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, newToken);
                     });
                 }
             } else {
-                localStorage.removeItem('token');
+                localStorage.removeItem(LOCAL_STORAGE_KEY.TOKEN);
                 setAuthState(prevState => ({ ...prevState, isAuth: false, user: null }));
             }
         });
@@ -142,18 +159,19 @@ function useFirebaseProviderAuth() {
     }, []);
 
     return {
-        confirmPasswordReset,
-        sendPasswordResetEmail,
-        signout,
-        signinWithEmailPassword,
-        signupWithEmailPassword,
-        signInWithGoogle,
-        signInWithFacebook,
-        verifyPasswordCode,
-        verifyEmail,
-        authState,
         authError,
-        setAuthError
+        authState,
+        confirmPasswordReset,
+        handleUpdateFirebaseProfile,
+        sendPasswordResetEmail,
+        setAuthError,
+        signinWithEmailPassword,
+        signInWithFacebook,
+        signInWithGoogle,
+        signout,
+        signupWithEmailPassword,
+        verifyEmail,
+        verifyPasswordCode
     };
 }
 

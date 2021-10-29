@@ -2,7 +2,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Avatar } from '@mui/material';
 
-import { Country } from '../../hooks';
+import { Country } from '../../../hooks/use-country-list';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 
 const useStyles = makeStyles((theme: Theme) =>

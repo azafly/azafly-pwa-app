@@ -4,7 +4,8 @@ import { Box, Grid, Tabs, Tab, Typography } from '@material-ui/core';
 
 import { SignUpForm } from './sign-up/form';
 import { SignInForm } from './sign-in/form';
-import Logo from 'assets/logo-vector.svg';
+
+import { Logo1SvgComponent } from 'components/icons/logo-1';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -70,13 +71,15 @@ export function OnboardingTab() {
 
     useEffect(() => {
         if (location.includes('signin')) setValue(1);
-        setValue(0);
+        else {
+            setValue(0);
+        }
     }, [location]);
 
     return (
         <Grid item xs={12} sm={6} className={classes.onboardingTabRoot} alignItems={'center'}>
             <Typography variant={'h4'} gutterBottom style={{ fontWeight: 700, marginTop: 30 }} align={'center'}>
-                luc<span style={{ color: '#4990A4' }}>qax</span>
+                <Logo1SvgComponent />
             </Typography>
             <Tabs value={value} onChange={handleChange} aria-label='onboarding tab'>
                 <Tab label='Create Account' {...a11yProps(0)} />

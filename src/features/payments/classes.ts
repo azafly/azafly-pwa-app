@@ -4,7 +4,8 @@ export const useSPaymentsStyles = makeStyles(() =>
     createStyles({
         root: {
             width: '100vw',
-            overflowX: 'hidden'
+            overflowX: 'hidden',
+            backgroundColor: '#f7f7f7'
         }
     })
 );
@@ -12,9 +13,11 @@ export const useSPaymentsStyles = makeStyles(() =>
 export const useStepperStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            margin: 'auto',
             marginBottom: 100,
-            maxWidth: 1920,
+            display: 'flex',
+            justifyContent: 'center',
+            margin: 'auto',
+            maxWidth: 1200,
             marginTop: '15vh',
             [theme.breakpoints.up('md')]: {
                 width: 'calc(100vw - 10vw)',
@@ -41,15 +44,17 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
             zIndex: 1,
             width: '18ch'
         },
+        disabled: {
+            opacity: 0.7,
+            background: theme.colors.base
+        },
         next: {
             display: 'flex',
             justifyContent: 'space-around',
             alignItems: 'center',
             marginTop: theme.spacing(1),
-            marginRight: theme.spacing(3),
             textTransform: 'none',
             background: theme.colors.base,
-            padding: '14px 20px',
             width: '20ch',
             color: 'white',
             textDecoration: 'none',
@@ -61,9 +66,16 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
                 pointerEvents: 'none'
             }
         },
+        price: {
+            color: theme.colors.textPrimary,
+            fontWeight: 900,
+            fontSize: '1.5rem',
+            borderBottom: 'none',
+            flexGrow: 1
+        },
         actionsContainer: {
             marginBottom: theme.spacing(2),
-            width: '100%',
+            maxWidth: 800,
             display: 'flex',
             justifyContent: 'space-around'
         },

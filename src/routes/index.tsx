@@ -9,11 +9,15 @@ import Page404 from 'views/404';
 import UserDashboard from 'views/user-dashboard';
 import Payments from 'views/payments';
 import { UserAccount } from 'views/user-account';
+import { PaymentsCallback } from 'views/payments-callback';
 
 export const Routes = () => {
     return (
         <Router>
             <Switch>
+                <Route exact path='/signin'>
+                    <Onboarding />
+                </Route>
                 <Route exact path='/'>
                     <Onboarding />
                 </Route>
@@ -23,9 +27,9 @@ export const Routes = () => {
                 <PrivateRoute exact path='/payment'>
                     <Payments />
                 </PrivateRoute>
-                <Route exact path='/signin'>
-                    <Onboarding />
-                </Route>
+                <PrivateRoute exact path='/payments-callback'>
+                    <PaymentsCallback />
+                </PrivateRoute>
                 <Route exact path='/forgot-password'>
                     <ForgotPassword />
                 </Route>

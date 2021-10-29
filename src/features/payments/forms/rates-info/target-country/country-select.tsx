@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import { ReactElement } from 'react';
 import { TextField } from '@material-ui/core';
 import Autocomplete, { AutocompleteClassKey } from '@material-ui/lab/Autocomplete';
-import { ReactElement } from 'react';
 
-import { RenderOptions } from '../country-form-elements/render-option-label';
-import { Country } from '../../hooks';
+import { Country } from '../../../hooks/use-country-list';
+import { RenderOptions } from '../source-country/render-option-label';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -18,10 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         backgroundColor: theme.palette.background.paper,
         boxShadow: '0 0 7px 0 #bac4cf',
         [theme.breakpoints.only('xs')]: {
-            width: '76vw'
-        },
-        [theme.breakpoints.up('md')]: {
-            width: 400
+            width: '100%'
         },
         '& .MuiInput-underline::before': {
             borderBottom: 'none'
@@ -78,37 +75,37 @@ export const CountrySelect = ({
     const classes = useStyles();
     const classOverrides: typeof classKeys = {
         option: classes.option,
-        root: classes.root,
         ...classKeys
     };
 
     const optionRenderer = (optionData: Country) => (renderOption ? renderOption : <RenderOptions option={optionData} />);
 
     return (
-        <Autocomplete
-            id='country-select'
-            className={`${classKeys?.root}`}
-            options={options}
-            loading={true}
-            classes={classOverrides}
-            onChange={() => handleCountryChange}
-            defaultValue={defaultOption}
-            autoComplete
-            getOptionDisabled={option => getOptionDisabled(option)}
-            getOptionLabel={option => getOptionLabel(option)}
-            renderOption={optionData => optionRenderer(optionData)}
-            renderInput={params => {
-                return (
-                    <TextField
-                        {...params}
-                        label='From'
-                        inputProps={{
-                            ...params.inputProps,
-                            className: classes.input
-                        }}
-                    />
-                );
-            }}
-        />
+        <div className={classes.root}>
+            <Autocomplete
+                id='country-select'
+                options={options}
+                loading={true}
+                classes={classOverrides}
+                onChange={() => handleCountryChange}
+                defaultValue={defaultOption}
+                autoComplete
+                getOptionDisabled={option => getOptionDisabled(option)}
+                getOptionLabel={option => getOptionLabel(option)}
+                renderOption={optionData => optionRenderer(optionData)}
+                renderInput={params => {
+                    return (
+                        <TextField
+                            {...params}
+                            label='Send From'
+                            inputProps={{
+                                ...params.inputProps,
+                                className: classes.input
+                            }}
+                        />
+                    );
+                }}
+            />
+        </div>
     );
 };

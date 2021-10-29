@@ -17,3 +17,4 @@ export { MessageSvgComponent } from './message';
 export { ProfileSvgComponent } from './profile';
 export { SettingsSvgComponent } from './settings';
 export { SignOutSvgComponent } from './signOut';
+export { TransactionSvgComponent } from './transaction';

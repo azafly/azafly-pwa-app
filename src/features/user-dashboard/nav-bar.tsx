@@ -8,6 +8,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import PaymentsIcon from '@mui/icons-material/Payments';
 import React, { memo } from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -114,7 +115,7 @@ export const NavBar = memo(function NavBar() {
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Profile</Typography>
             </MenuItem>
-            <MenuItem component={Link} to={'/faq'}>
+            <MenuItem component={Link} to={'https://www.lucqax.com/faq'}>
                 <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <HelpSvgComponent />
                 </IconButton>
@@ -154,12 +155,6 @@ export const NavBar = memo(function NavBar() {
                     <ProfileSvgComponent />
                 </IconButton>
                 <Typography>Profile</Typography>
-            </MenuItem>
-            <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
-                <IconButton aria-label='account of current user' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
-                    <DashboardSvgComponent />
-                </IconButton>
-                <Typography className={classes.menuItem_text}>Dashboard</Typography>
             </MenuItem>
             <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
                 <IconButton aria-label='account of current user' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
@@ -227,7 +222,7 @@ export const NavBar = memo(function NavBar() {
                         >
                             <Link to='/payment' className='link'>
                                 {' '}
-                                <Button variant='contained' className='payment_button'>
+                                <Button variant='contained' className='payment_button' endIcon={<PaymentsIcon />}>
                                     New Payment
                                 </Button>
                             </Link>

@@ -1,24 +1,22 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box, Hidden } from '@material-ui/core';
+import { Stack } from '@mui/material';
 import { useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
-import { CardContainer } from './card-container';
-import { DashboardLoaderSkeleton } from './loader-skeleton';
-import { EmptyCardContainer } from './empty-service';
-import { NavBar } from './nav-bar';
-import { DefaultSnackbar, SpeedDialTooltip } from 'components';
-import { useDashboardStyles, StyledBadge } from './classes';
-import UserNavBar from './bottom-navbar';
-
 // queries and co
-import { useGetUserTransactionsQuery } from 'api/generated/graphql';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { DefaultSnackbar, SpeedDialTooltip } from 'components';
+import { EmptyCardContainer } from './empty-service';
+import { SideBar } from './side-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import { TransactionListContainer } from './transaction-list-container';
+import { Typography } from '@material-ui/core';
+import { useDashboardStyles, StyledBadge } from './classes';
+import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
 
 export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
     const [isSendingLink, setLoading] = useState(false);
-    const [highlightEmailVerify, setHighlightEmailVerify] = useState(false);
     const [hidden, setHidden] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -27,11 +25,14 @@ export default function Dashboard() {
         authState: { user }
     } = useFirebaseAuthContext();
 
-    const id = user?.uid ?? '';
+    const { data: userData } = useGetCurrentUserByEmailQuery({
+        variables: {
+            email: user?.email ?? ''
+        }
+    });
 
-    const emailVerified = user?.emailVerified;
-
-    const { data: transactionData, error, loading } = useGetUserTransactionsQuery({ variables: { id } });
+    const id = userData?.users[0]?.id;
+    const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id } });
     const transactions = transactionData?.transaction;
 
     const handleSpeedDialVisibility = () => {
@@ -78,65 +79,39 @@ export default function Dashboard() {
             {' You need to verify your email to make payments. Click here to get a new Verification Email'}
         </>
     );
-    const className = highlightEmailVerify ? ripples.badge : '';
+
     const alertSeverity = verificationEmailSent.includes('Error') ? 'error' : 'success';
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
-
-    if (loading) {
-        return (
-            <div>
-                <NavBar />
-                <Typography className={classes.heading}>My Transactions</Typography>
-                <DashboardLoaderSkeleton />
-            </div>
-        );
-    }
 
     return (
         <>
             <DefaultSnackbar
-                className={className}
                 severity={alertSeverity}
                 open={openSnackBar}
                 handleClose={() => setOpenSnackBar(false)}
                 title={alertTitle}
                 info={verificationEmailSent}
             />
-            <NavBar />
-            <Box sx={{ mt: 15 }}>
-                {!transactions?.length ? (
-                    <>
-                        {!emailVerified && (
-                            <Box
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    marginRight: 10,
-                                    marginLeft: 10,
-                                    maxWidth: 900,
-                                    margin: 'auto',
-                                    borderRadius: 3,
-                                    flexWrap: 'wrap',
-                                    padding: 10,
-                                    border: '1px solid ',
-                                    cursor: 'pointer',
-                                    background: '#FFEBE9'
-                                }}
-                                onClick={handleSendVerificationEmail}
-                            >
-                                <Box fontWeight={500}>{emailLink}</Box>
-                            </Box>
+            <Stack direction={'row'}>
+                <Hidden smDown>
+                    <SideBar />
+                </Hidden>
+
+                <Box sx={{ mb: 10, margin: 'auto', mt: 10 }}>
+                    <Box>
+                        {transactionData && !transactions?.length && !loading && (
+                            <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
                         )}
-                        <EmptyCardContainer setHighlightEmailVerify={setHighlightEmailVerify} />
-                        <UserNavBar />
-                    </>
-                ) : (
-                    <div>
-                        <Typography className={classes.heading}>Your Transactions</Typography>
                         <div className={classes.dashboard_container}>
-                            {!error &&
-                                transactions?.length &&
-                                transactions?.map((transaction: any) => <CardContainer transactionData={transaction} key={transaction.id} />)}
+                            <Typography className={classes.heading}>Your Transactions</Typography>
+                            {loading || !transactionData ? (
+                                <Box sx={{ width: 'calc(98vw - 25ch)', height: 'calc(100vh - 100px)' }}>
+                                    {' '}
+                                    <ThreeDots styles={{ backgroundColor: '#4990a4' }} />{' '}
+                                </Box>
+                            ) : (
+                                <TransactionListContainer transactions={transactions ?? []} />
+                            )}
                             <SpeedDialTooltip
                                 handleOpenSpeedDial={handleOpenSpeedDial}
                                 handleSpeedDialClose={handleSpeedDialClose}
@@ -145,10 +120,9 @@ export default function Dashboard() {
                                 handleSpeedDialVisibility={handleSpeedDialVisibility}
                             />
                         </div>
-                        <UserNavBar />
-                    </div>
-                )}
-            </Box>
+                    </Box>
+                </Box>
+            </Stack>
         </>
     );
 }

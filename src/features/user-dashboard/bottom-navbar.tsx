@@ -2,15 +2,15 @@ import React from 'react';
 import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { useMediaQuery } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import HomeSharp from '@material-ui/icons/HomeSharp';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import PaymentIcon from '@mui/icons-material/Payment';
 
-import { DashboardSvgComponent } from '../../components/icons/dashboard';
+import { DashboardSvgComponent } from 'components/icons/dashboard';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -18,6 +18,8 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100vw',
             position: 'fixed',
             boxShadow: '0 2px 16px 0 rgb(0 0 0 / 8%)',
+            zIndex: 9999,
+            left: 0,
             bottom: -0,
             [theme.breakpoints.up('sm')]: {
                 display: 'none'
@@ -76,23 +78,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function UserAppBar() {
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-    const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
     };
 
-    const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setMobileMoreAnchorEl(event.currentTarget);
-    };
-
-    const menuId = 'primary-search-account-menu';
     const [value, setValue] = React.useState(0);
     const mobileMenuId = 'primary-search-account-menu-mobile';
     const renderMobileMenu = (
@@ -142,7 +134,7 @@ export default function UserAppBar() {
             >
                 <BottomNavigationAction label='Home' icon={<HomeSharp />} />
                 <BottomNavigationAction label='Dashboard' icon={<DashboardSvgComponent />} />
-                <BottomNavigationAction label='Notifications' icon={<NotificationsIcon />} />
+                <BottomNavigationAction onClick={() => location.replace('/payment')} label='New Payment' icon={<PaymentIcon />} />
                 <BottomNavigationAction onClick={() => location.replace('/account')} label='Profile' icon={<AccountCircle />} />
             </BottomNavigation>
             {renderMobileMenu}

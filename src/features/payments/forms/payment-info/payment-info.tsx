@@ -3,21 +3,37 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useFormik } from 'formik';
 
 import { PAYMENT_INFO, validationSchema, initialValues, generateInputType } from './form-fields';
-import { useGetCurrentUserQuery } from 'api/generated/graphql';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-keys';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
-            margin: 50
+            padding: '80px 50px',
+            borderRadius: 4,
+            backgroundColor: 'rgb(254,254,250)',
+            margin: 50,
+            width: '100%',
+            [theme.breakpoints.up('sm')]: {
+                boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important'
+            },
+            [theme.breakpoints.only('sm')]: {
+                margin: '50px 5px'
+            },
+            [theme.breakpoints.only('xs')]: {
+                margin: '50px 0px',
+                width: '100%',
+                padding: 15,
+                backgroundColor: '#f7f7f7'
+            }
         },
         formControl: {
             marginBottom: 20,
             borderRadius: 4,
             WebkitAppearance: 'none',
             '& .MuiInput-formControl::before': {
-                opacity: 0.8
+                opacity: 0.8,
+                margin: 'auto'
             },
             '& .MuiFormLabel-root': {
                 opacity: 0.8,
@@ -32,7 +48,10 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export function PaymentInfo() {
+interface PaymentInfoProps {
+    gotToNextStep: () => void;
+}
+export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
     const classes = useStyles();
     const {
         authState: { user }
@@ -40,11 +59,14 @@ export function PaymentInfo() {
 
     const { data } = useGetCurrentUserQuery({ variables: { id: user?.uid ?? '', email: user?.email ?? '' } });
 
+    // TODO - prefill form
+
     const formik = useFormik({
         initialValues: initialValues(),
         validationSchema,
         onSubmit: values => {
-            localStorage.setItem('payment_info', JSON.stringify(values));
+            localStorage.setItem(LOCAL_STORAGE_KEY.PAYMENT_INFO, JSON.stringify(values));
+            gotToNextStep();
         }
     });
 
@@ -57,7 +79,7 @@ export function PaymentInfo() {
                     {PAYMENT_INFO.map(option => {
                         const { label, name } = option;
                         return (
-                            <Grid item xs={12} sm={6} md={4} className={classes.formControl} key={label}>
+                            <Grid item xs={12} sm={6} className={classes.formControl} key={label}>
                                 {generateInputType(
                                     {
                                         onChange: formik.handleChange,
@@ -69,7 +91,7 @@ export function PaymentInfo() {
                             </Grid>
                         );
                     })}
-                    <Button color='primary' variant='contained' fullWidth type='submit'>
+                    <Button color='primary' variant='contained' fullWidth type='submit' style={{ marginTop: 10 }}>
                         Submit
                     </Button>
                 </Grid>

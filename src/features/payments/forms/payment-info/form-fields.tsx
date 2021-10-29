@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import { NativeSelect } from '@mui/material';
 import { TextField, InputLabel } from '@material-ui/core';
 
-import { transformCase } from 'utils';
+import { transformCase } from 'libs';
 interface PaymentInfo {
     label: string;
     name: string;
@@ -80,13 +80,6 @@ export const PAYMENT_INFO: PaymentInfo[] = [
         items: Object.values(byWhom)
     },
     {
-        label: 'Terms and Condition',
-        name: 'terms',
-        type: 'checkbox',
-        yupType: 'bool',
-        isOptional: false
-    },
-    {
         label: 'Purpose',
         name: 'purpose',
         type: 'select',
@@ -104,15 +97,13 @@ export const initialValues = () => {
 };
 
 export const validationSchema = yup.object().shape({
-    first_name: yup.string().required('Enter a your first name'),
-    family_name: yup.string().required('Enter a your family name'),
+    fullname: yup.string().required('Enter a your family name'),
     address: yup.string().required('Enter your Address '),
     city: yup.string().required('Enter your city. This is for data compliance purpose only.'),
     state: yup.string().required('Enter your State This is for data compliance purpose only.'),
     phone: yup.string().required('Enter a valid phone number.'),
     references: yup.string().required('This is where you enter details about the payment'),
-    terms: yup.bool().oneOf([true], 'Accept Terms & Conditions is required').required('Accept Terms & Conditions is required'),
-    by: yup.string().required('This is where you enter details about the payment'),
+    by: yup.string().oneOf(['self', 'others'], 'Please select one'),
     purpose: yup
         .string()
         .oneOf(['medical', 'education', 'software', 'mortgage', 'family_and_friends', 'school_fees', 'others'], 'Please select one')
@@ -127,6 +118,9 @@ export const generateInputType = (props: any, option: PaymentInfo) => {
             <>
                 <InputLabel id={label}>{label}</InputLabel>
                 <NativeSelect label={label} labelId='' id={label} {...props} name={option?.name} style={{ width: '100%' }}>
+                    <option key={''} value={'Select one'} defaultValue={'Select one'}>
+                        {''}
+                    </option>
                     {option?.items?.map(item => (
                         <option key={item} value={item} defaultValue={defaultValue}>
                             {transformCase(item)}

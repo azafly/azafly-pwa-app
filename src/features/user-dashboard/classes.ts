@@ -64,7 +64,8 @@ export const useInfoTextStyles = makeStyles((theme: Theme) =>
     createStyles({
         infoText_root: {
             display: 'flex',
-            alignContent: 'center'
+            alignContent: 'center',
+            maxWidth: 800
         },
         text: {
             padding: 10,
@@ -95,6 +96,25 @@ export const StyledBadge = makeStyles(() =>
     })
 );
 
+export const useSidebarStyles = makeStyles(() =>
+    createStyles({
+        button: {
+            textDecoration: 'none',
+            '& a': {
+                textTransform: 'capitalize',
+                fontFamily: 'Nunito',
+                color: '#0D324D',
+                fontWeight: 650,
+                fontSize: '1.1em'
+            }
+        },
+        item: {
+            width: '25ch',
+            margin: 'auto'
+        }
+    })
+);
+
 export const useDashboardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboard_container: {
@@ -108,16 +128,18 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             marginBottom: 30,
             fontSize: '2rem',
             fontFamily: 'Nunito',
-            fontWeight: 900,
+            fontWeight: 800,
             color: theme.colors.textPrimary,
             [theme.breakpoints.up('md')]: {
-                marginLeft: '13vw'
+                marginLeft: '13vw',
+                marginTop: '8vh'
             },
             [theme.breakpoints.only('sm')]: {
                 marginLeft: '8vw'
             },
             [theme.breakpoints.only('xs')]: {
-                textAlign: 'center'
+                textAlign: 'center',
+                marginTop: '4vh'
             }
         },
         name: {
@@ -132,7 +154,7 @@ export const useEmptyCardStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             borderRadius: 12,
             margin: 'auto',
-            marginTop: '5vh',
+            marginTop: '3vh',
             marginBottom: 20,
             [theme.breakpoints.up('md')]: {
                 width: '74vw',

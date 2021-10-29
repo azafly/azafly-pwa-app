@@ -1,18 +1,22 @@
 import { Box, Button, Card, CardActions, CardMedia, Chip, Typography } from '@material-ui/core';
-import { Dispatch, SetStateAction, memo } from 'react';
+import { Dispatch, ReactNode, memo, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
 import { EmptyServiceSvgComponent } from 'components/illustrations';
-import { useEmptyCardStyles } from './classes';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { VerificationRequestBox } from './verification-request-box';
+
+import { useEmptyCardStyles } from './classes';
 
 const services = ['WES', 'IELTS', 'School Fees', 'Medical Bills', 'Others'];
 
 interface EmptyCardContainerProps {
-    setHighlightEmailVerify: Dispatch<SetStateAction<boolean>>;
+    handleSendVerificationEmail: () => void;
+    emailLink: ReactNode;
+    loading?: boolean;
 }
-export const EmptyCardContainer = memo(function EmptyCardContainer({ setHighlightEmailVerify }: EmptyCardContainerProps) {
+export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, handleSendVerificationEmail }: EmptyCardContainerProps) {
     const classes = useEmptyCardStyles();
     const {
         authState: { user }
@@ -20,10 +24,9 @@ export const EmptyCardContainer = memo(function EmptyCardContainer({ setHighligh
 
     const emailVerified = user?.emailVerified;
 
-    const handleSetHighlight = () => !emailVerified && setHighlightEmailVerify(true);
-
     return (
         <>
+            {!emailVerified && <VerificationRequestBox emailLink={emailLink} handleSendVerificationEmail={handleSendVerificationEmail} />}
             <Card className={classes.empty_card_root}>
                 <Typography variant={'h5'} className={classes.nothing}>
                     {`You do not have any transactions yet`}{' '}
@@ -37,7 +40,6 @@ export const EmptyCardContainer = memo(function EmptyCardContainer({ setHighligh
                         className={clsx(classes.button, {
                             [classes.disabled]: !emailVerified
                         })}
-                        onClick={handleSetHighlight}
                         style={{ textDecoration: 'none' }}
                     >
                         <Button

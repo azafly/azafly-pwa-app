@@ -1,20 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
 
-
 body {
-  margin: 0;
-  font-family: 'Circular','Poppins','Nunito',sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizelegibility;
+    margin: 0;
+    font-family: 'Circular', 'Poppins', 'Nunito', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizelegibility;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 section {
-  overflow: hidden;
+    overflow: hidden;
 }
 
+@media only screen and (max-width: 599px) {
+    #tidio-chat iframe {
+        margin-bottom: 2em !important;
+    }
+}
+
+.text {
+    margin-left: 1rem;
+    text-transform: capitalize;
+}

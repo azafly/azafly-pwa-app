@@ -1,21 +1,30 @@
-import { Box, Button, Chip, Collapse, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { useState } from 'react';
 
+import { formatCurrency } from 'libs';
 import { GuaranteeTag } from './guarantee-tag';
+import { usePaymentContext } from '../../context';
 import InfoIcon from '@mui/icons-material/Info';
-import PaymentIcon from '@mui/icons-material/Payment';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             maxWidth: 675,
+            boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important',
+            padding: 50,
+            borderRadius: 4,
+            margin: 50,
+            [theme.breakpoints.only('xs')]: {
+                width: '100%',
+                margin: '10px 0px',
+                backgroundColor: 'transparent',
+                padding: 0
+            },
             '& .MuiButton-containedPrimary': {
                 backgroundColor: theme.colors.base,
                 textTransform: 'capitalize',
                 fontWeight: 900,
                 fontFamily: `Nunito`,
-                height: 40,
                 margin: 'auto',
                 '&:hover': {
                     opacity: 0.8,
@@ -24,84 +33,56 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         card: {
-            marginLeft: '2rem',
             boxShadow: '0 0 7px 0 #bac4cf',
-            padding: '0px 50px',
             borderRadius: 7,
+            padding: 10,
             marginBottom: 20,
-            marginTop: 10
+            marginTop: 10,
+            [theme.breakpoints.only('xs')]: {
+                marginTop: 20
+            }
         },
         price: {
             color: theme.colors.textPrimary,
             fontWeight: 900,
             fontSize: '1.5rem',
-            borderBottom: 'none',
-            flexGrow: 1
-        },
-        title: {
-            marginTop: 10,
-            fontSize: '0.9rem',
-            fontWeight: 400,
-            textAlign: 'center',
-            padding: '40px 30px'
-        },
-        moreInfo__button: {
-            marginTop: -10,
-            textTransform: 'none'
-        },
-        moreInfo: {
-            margin: 10,
-            '& .paragraph': {
-                fontSize: '0.7rem'
-            }
+            margin: '1rem',
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'center',
+            marginTop: 10
         }
     })
 );
 
 export function PriceCard() {
     const classes = useStyles();
-    const [showMoreInfo, setShowInfo] = useState(false);
+    const {
+        initialOffer,
+        rateInfoProps: { sourceCountry },
+        isLoading
+    } = usePaymentContext();
 
-    const toggleShowMoreInfo = () => {
-        setShowInfo(!showMoreInfo);
-    };
+    const formattedOffer = formatCurrency({
+        currency: sourceCountry.currency.code,
+        amount: initialOffer?.total_in_target_with_charges ?? 0,
+        countryCode: sourceCountry.code
+    });
 
     return (
         <div className={classes.root}>
-            <GuaranteeTag />
+            <GuaranteeTag isLoading={isLoading} />
             <div className={classes.card}>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        width: '100%',
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                        marginTop: '10'
-                    }}
-                >
-                    <h5 className={classes.price}>₦ 5000000</h5>
-                    <Button size='large' variant={'contained'} color={'primary'} disableElevation startIcon={<PaymentIcon />}>
-                        Pay Now
-                    </Button>
-                </Box>
-
-                <Chip
-                    icon={<InfoIcon />}
-                    color={'info'}
-                    variant={'outlined'}
-                    size={'medium'}
-                    sx={{ marginBottom: '20px' }}
-                    onClick={toggleShowMoreInfo}
-                    label={showMoreInfo ? 'show less' : ' show more info'}
-                />
-                <Collapse in={showMoreInfo} timeout='auto' unmountOnExit className={classes.moreInfo}>
-                    <Typography paragraph className={'paragraph'}>
+                <div>{initialOffer && <h5 className={classes.price}> {formattedOffer}</h5>}</div>
+                <Box sx={{ display: 'flex' }}>
+                    <InfoIcon color={'info'} />
+                    <Typography paragraph className={'paragraph'} sx={{ fontSize: '0.7rem', padding: '0px 10px' }} align={'justify'}>
+                        {' '}
                         {`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-                                book
+                                dummy text ever since the 1500s.
                                 `}
                     </Typography>
-                </Collapse>
+                </Box>
             </div>
         </div>
     );

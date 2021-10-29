@@ -53,11 +53,6 @@ interface PaymentInfoProps {
 }
 export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
     const classes = useStyles();
-    const {
-        authState: { user }
-    } = useFirebaseAuthContext();
-
-    const { data } = useGetCurrentUserQuery({ variables: { id: user?.uid ?? '', email: user?.email ?? '' } });
 
     // TODO - prefill form
 
@@ -69,8 +64,6 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
             gotToNextStep();
         }
     });
-
-    console.log(data);
 
     return (
         <form className={classes.root} noValidate autoComplete='off' onSubmit={formik.handleSubmit}>

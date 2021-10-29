@@ -47,10 +47,6 @@ export const updateFirebaseUser = (userId: string, user: Partial<FirebaseUser>) 
     return fireStore.collection(LOCAL_STORAGE_KEY.USER).doc(userId).set(user, { merge: true });
 };
 
-export const updateFirebaseUser = (userId: string, user: any) => {
-    return fireStore.collection('user').doc(userId).set(user, { merge: true });
-};
-
 function useFirebaseProviderAuth() {
     const [authState, setAuthState] = useState<AuthState>(defaultAuthState);
     const [authError, setAuthError] = useState('');
@@ -120,7 +116,6 @@ function useFirebaseProviderAuth() {
     useEffect(() => {
         const unsubscribe = firebaseApp.auth().onAuthStateChanged(async user => {
             if (user) {
-                user.updateProfile;
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];

@@ -22,6 +22,15 @@ export const useStyles = makeStyles((theme: Theme) =>
                 zIndex: 100000
             }
         },
+        files: {
+            margin: 'auto',
+            '& img': {
+                width: '90%',
+                margin: 'auto',
+                height: 300,
+                borderRadius: 8
+            }
+        },
         form_container: {
             display: 'flex',
             flexDirection: 'column',
@@ -30,7 +39,8 @@ export const useStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.down('md')]: {}
         },
         edit: {
-            cursor: 'pointer'
+            cursor: 'pointer',
+            textAlign: 'center'
         },
         title: {
             alignSelf: 'flex-start',
@@ -50,12 +60,15 @@ export const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
             justifyContent: 'center',
             background: theme.colors.base,
-            width: 150,
-            height: 150,
-            opacity: '0.5',
+            padding: '4rem',
             borderRadius: '50%',
             marginBottom: 10,
+            opacity: 0.5,
             cursor: 'pointer'
+        },
+        kyc_title: {
+            fontWeight: 800,
+            marginBottom: 20
         },
         terms: {
             display: 'flex',
@@ -71,7 +84,19 @@ export const useStyles = makeStyles((theme: Theme) =>
             cursor: 'pointer'
         },
         submit: {
-            marginTop: 25
+            margin: 25
+        },
+        disable: {
+            pointerEvents: 'none'
+        },
+
+        upload: {
+            '& label': {
+                cursor: 'pointer'
+            },
+            '& span': {
+                fonWeight: 900
+            }
         }
     })
 );

@@ -24,7 +24,7 @@ export const routes: RouteConfig[] = [
     },
     {
         name: 'profile',
-        path: '/profile'
+        path: '/account'
     }
 ];
 

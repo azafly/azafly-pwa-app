@@ -2,7 +2,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core';
 
 export const useCardStyles = makeStyles((theme: Theme) =>
     createStyles({
-        dashboardCardroot: {
+        dashboardCard__root: {
             cursor: 'pointer',
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             borderRadius: 12,

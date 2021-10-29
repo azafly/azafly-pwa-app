@@ -34,21 +34,10 @@ export const purpose: Record<string, PURPOSE> = {
 
 export const PAYMENT_INFO: PaymentInfo[] = [
     {
-        label: 'First name',
-        name: 'first_name',
-        errorMessage: 'Please Enter your First name',
+        label: 'Full Name',
+        name: 'fullname',
+        errorMessage: 'Enter your full name',
         isOptional: false
-    },
-    {
-        label: 'Family Name',
-        name: 'family_name',
-        errorMessage: 'Please Enter your Last Name',
-        isOptional: false
-    },
-    {
-        label: 'Middle name',
-        name: 'middle_name',
-        isOptional: true
     },
     {
         label: 'Address',

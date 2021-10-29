@@ -1,14 +1,16 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Grid } from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useFormik } from 'formik';
 
 import { PAYMENT_INFO, validationSchema, initialValues, generateInputType } from './form-fields';
+import { useGetCurrentUserQuery } from 'api/generated/graphql';
+import { useFirebaseAuthContext } from 'providers/auth/firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
-            marginTop: 50
+            margin: 50
         },
         formControl: {
             marginBottom: 20,
@@ -30,16 +32,23 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export function PayerInfo() {
+export function PaymentInfo() {
     const classes = useStyles();
+    const {
+        authState: { user }
+    } = useFirebaseAuthContext();
+
+    const { data } = useGetCurrentUserQuery({ variables: { id: user?.uid ?? '', email: user?.email ?? '' } });
 
     const formik = useFormik({
         initialValues: initialValues(),
         validationSchema,
         onSubmit: values => {
-            console.log(values);
+            localStorage.setItem('payment_info', JSON.stringify(values));
         }
     });
+
+    console.log(data);
 
     return (
         <form className={classes.root} noValidate autoComplete='off' onSubmit={formik.handleSubmit}>

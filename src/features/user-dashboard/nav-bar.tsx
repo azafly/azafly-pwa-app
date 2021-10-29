@@ -1,23 +1,21 @@
-import React, { useEffect } from 'react';
+import { Avatar, Box, Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { Avatar, Box, Button } from '@material-ui/core';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
-import { Link } from 'react-router-dom';
-import { SignOutSvgComponent, ProfileSvgComponent, SettingsSvgComponent, HelpSvgComponent } from 'components/icons';
+import React, { memo } from 'react';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 import { Logo2SvgComponent } from 'components/icons/logo-style-2';
 import { MobileBackButton } from '../../components';
-import { DashboardSvgComponent } from '../../components/icons/dashboard';
-import { getUserById } from 'providers/auth/firebase/firebase';
+import { DashboardSvgComponent, SignOutSvgComponent, ProfileSvgComponent, HelpSvgComponent } from 'components/icons';
+import { useFirebaseAuthContext } from 'providers/auth/firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -66,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export function NavBar() {
+export const NavBar = memo(function NavBar() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -96,7 +94,7 @@ export function NavBar() {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
-    const profileSrc = user?.photoURL ?? '';
+    const profileSrc = user?.photoURL;
     const displayName = user?.displayName;
 
     const menuId = 'primary-account-menu';
@@ -110,23 +108,23 @@ export function NavBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem>
+            <MenuItem component={Link} to={'/account'}>
                 <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <ProfileSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Profile</Typography>
             </MenuItem>
-            <MenuItem style={{ margin: 2 }}>
-                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
-                    <SettingsSvgComponent />
-                </IconButton>
-                <Typography className={classes.menuItem_text}>Settings</Typography>
-            </MenuItem>
-            <MenuItem>
+            <MenuItem component={Link} to={'/faq'}>
                 <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <HelpSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Help</Typography>
+            </MenuItem>
+            <MenuItem component={Link} to={'/dashboard'}>
+                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
+                    <DashboardSvgComponent />
+                </IconButton>
+                <Typography className={classes.menuItem_text}>Dashboard</Typography>
             </MenuItem>
             <MenuItem />
             <MenuItem /> <MenuItem /> <MenuItem /> <MenuItem />
@@ -151,23 +149,17 @@ export function NavBar() {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem>
+            <MenuItem component={Link} to={'account'}>
                 <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
                     <ProfileSvgComponent />
                 </IconButton>
                 <Typography>Profile</Typography>
             </MenuItem>
-            <MenuItem style={{ margin: 2 }}>
-                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
-                    <SettingsSvgComponent />
+            <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
+                <IconButton aria-label='account of current user' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
+                    <DashboardSvgComponent />
                 </IconButton>
-                <Typography className={classes.menuItem_text}>Settings</Typography>
-            </MenuItem>
-            <MenuItem>
-                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
-                    <HelpSvgComponent />
-                </IconButton>
-                <Typography className={classes.menuItem_text}>Help</Typography>
+                <Typography className={classes.menuItem_text}>Dashboard</Typography>
             </MenuItem>
             <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
                 <IconButton aria-label='account of current user' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
@@ -206,7 +198,7 @@ export function NavBar() {
                             onClick={handleProfileMenuOpen}
                             color='inherit'
                         >
-                            {profileSrc && <Avatar src={profileSrc} />}
+                            <Avatar src={profileSrc ?? ''} />
                         </IconButton>
                         <IconButton
                             edge='end'
@@ -258,4 +250,4 @@ export function NavBar() {
             {renderMenu}
         </div>
     );
-}
+});

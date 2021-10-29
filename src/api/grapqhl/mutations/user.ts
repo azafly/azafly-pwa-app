@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const INSERT_NEW_USER = gql`
     mutation insertNewUser(
-        $id: String!
+        $id: uuid!
         $email: String!
         $email_verified: Boolean
         $image_url: String
@@ -10,7 +10,7 @@ export const INSERT_NEW_USER = gql`
         $phone: String
         $firebase_id: String!
     ) {
-        insert_user_one(
+        insert_users_one(
             object: {
                 id: $id
                 email: $email
@@ -20,7 +20,7 @@ export const INSERT_NEW_USER = gql`
                 phone: $phone
                 firebase_id: $firebase_id
             }
-            on_conflict: { constraint: users_pkey }
+            on_conflict: { constraint: users_email_key }
         ) {
             created_at
             email
@@ -33,9 +33,9 @@ export const INSERT_NEW_USER = gql`
     }
 `;
 
-export const USER_ON_SIGN_UP = gql`
-    mutation updateUserOnSignUp($displayName: String!, $email: String!) {
-        update_user(_set: { display_name: $displayName }, where: { email: { _eq: $email } }) {
+export const UPDATE_USER = gql`
+    mutation updateUser($email: String!, $displayName: String!, $photoURL: String, $phone: String) {
+        update_users(where: { email: { _eq: $email } }, _set: { display_name: $displayName, image_url: $photoURL, phone: $phone }) {
             affected_rows
         }
     }

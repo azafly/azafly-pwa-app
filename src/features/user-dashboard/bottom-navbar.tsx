@@ -1,15 +1,15 @@
 import React from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { Badge, IconButton, Menu, MenuItem, Typography, Toolbar } from '@material-ui/core';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import HomeSharp from '@material-ui/icons/HomeSharp'
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { useMediaQuery } from '@material-ui/core'
+import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { useMediaQuery } from '@material-ui/core';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import RestoreIcon from '@material-ui/icons/Restore';
+import HomeSharp from '@material-ui/icons/HomeSharp';
+import MailIcon from '@material-ui/icons/Mail';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+
 import { DashboardSvgComponent } from '../../components/icons/dashboard';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -20,13 +20,13 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 2px 16px 0 rgb(0 0 0 / 8%)',
             bottom: -0,
             [theme.breakpoints.up('sm')]: {
-                display: 'none',
+                display: 'none'
             }
         },
         grow: {
             flexGrow: 1,
             [theme.breakpoints.only('xs')]: {
-                flexGrow: 0,
+                flexGrow: 0
             }
         },
         appBar: {
@@ -35,17 +35,17 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 2px 16px 0 rgb(0 0 0 / 8%)',
             [theme.breakpoints.only('xs')]: {
                 top: 'auto',
-                bottom: 0,
+                bottom: 0
             }
         },
         menuButton: {
-            marginRight: theme.spacing(2),
+            marginRight: theme.spacing(2)
         },
         title: {
             display: 'none',
             [theme.breakpoints.up('sm')]: {
-                display: 'block',
-            },
+                display: 'block'
+            }
         },
         inputInput: {
             padding: theme.spacing(1, 1, 1, 0),
@@ -54,36 +54,31 @@ const useStyles = makeStyles((theme: Theme) =>
             transition: theme.transitions.create('width'),
             width: '100%',
             [theme.breakpoints.up('md')]: {
-                width: '20ch',
-            },
+                width: '20ch'
+            }
         },
         sectionDesktop: {
             display: 'none',
             [theme.breakpoints.up('md')]: {
-                display: 'flex',
-            },
+                display: 'flex'
+            }
         },
         sectionMobile: {
             display: 'flex',
             justifyContent: 'space-between',
             width: '100vw',
             [theme.breakpoints.up('sm')]: {
-                display: 'none',
-            },
-        },
-    }),
+                display: 'none'
+            }
+        }
+    })
 );
 
-
-
 export default function UserAppBar() {
-    const classes = useStyles()
+    const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
-    const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-    const isMobileScreen = useMediaQuery('(max-width:450px)');
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -91,11 +86,6 @@ export default function UserAppBar() {
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        handleMobileMenuClose();
     };
 
     const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -116,28 +106,23 @@ export default function UserAppBar() {
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton aria-label="show 4 new mails" color="primary">
-                    <Badge badgeContent={4} color="secondary">
+                <IconButton aria-label='show 4 new mails' color='primary'>
+                    <Badge badgeContent={4} color='secondary'>
                         <MailIcon />
                     </Badge>
                 </IconButton>
                 <p>Messages</p>
             </MenuItem>
             <MenuItem>
-                <IconButton aria-label="show 11 new notifications" color="primary">
-                    <Badge badgeContent={11} color="primary">
+                <IconButton aria-label='show 11 new notifications' color='primary'>
+                    <Badge badgeContent={11} color='primary'>
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
                 <p>Notifications</p>
             </MenuItem>
-            <MenuItem onClick={handleProfileMenuOpen}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="primary"
-                >
+            <MenuItem component={Link} to={'/profile'}>
+                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='primary'>
                     <AccountCircle />
                 </IconButton>
                 <p>Profile</p>
@@ -154,12 +139,11 @@ export default function UserAppBar() {
                 }}
                 className={classes.bottomNavRoot}
                 showLabels
-
             >
-                <BottomNavigationAction label="Home" icon={<HomeSharp />} />
-                <BottomNavigationAction label="Dashboard" icon={<DashboardSvgComponent />} />
-                <BottomNavigationAction label="Notifications" icon={<NotificationsIcon />} />
-                <BottomNavigationAction label="Profile" icon={<AccountCircle />} />
+                <BottomNavigationAction label='Home' icon={<HomeSharp />} />
+                <BottomNavigationAction label='Dashboard' icon={<DashboardSvgComponent />} />
+                <BottomNavigationAction label='Notifications' icon={<NotificationsIcon />} />
+                <BottomNavigationAction onClick={() => location.replace('/account')} label='Profile' icon={<AccountCircle />} />
             </BottomNavigation>
             {renderMobileMenu}
         </>

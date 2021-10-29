@@ -53,7 +53,7 @@ export const privateMenu: SideMenu[] = [
         name: 'Profile',
         isOpened: false,
         icon: <ProfileSvgComponent />,
-        route: '/profile'
+        route: '/account'
     },
     {
         name: 'Logout',
@@ -81,7 +81,3 @@ export const deskTopNavItems = [
         route: '/services'
     }
 ];
-
-export function timeout(delay: number) {
-    return new Promise(res => setTimeout(res, delay));
-}

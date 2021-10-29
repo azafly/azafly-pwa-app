@@ -12,3 +12,18 @@ export const GET_CURRENT_USER = gql`
         }
     }
 `;
+
+export const GET_CURRENT_USER_BY_EMAIL = gql`
+    query getCurrentUserByEmail($email: String!) {
+        user(where: { email: { _eq: $email } }) {
+            display_name
+            email
+            email_verified
+            firebase_id
+            id
+            image_url
+            phone
+            image_url
+        }
+    }
+`;

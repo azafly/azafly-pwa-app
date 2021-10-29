@@ -2,14 +2,12 @@ import { lazy, Suspense } from 'react';
 
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 
-const LazyDashBoard = lazy(() => import('features/user-dashboard/dashboard'));
+const LazyUserAccount = lazy(() => import('features/account'));
 
-const UserDashboard = () => {
+export const UserAccount = () => {
     return (
         <Suspense fallback={<ThreeDots />}>
-            <LazyDashBoard />
+            <LazyUserAccount />
         </Suspense>
     );
 };
-
-export default UserDashboard;

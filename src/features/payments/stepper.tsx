@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Button, Stepper, Step, StepContent, StepLabel, Paper, Typography, Slide } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-import { RatesInfo } from './forms/rates-info';
-import { PayerInfo } from './forms/payment-info/payment-info';
+import { PaymentInfo } from './forms/payment-info/payment-info';
 import { PriceInfo } from './forms/price-info';
+import { RatesInfo } from './forms/rates-info';
 import { usePaymentContext } from './context';
-import ReviewModal from './forms/payment-info/review';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ReviewModal from './forms/review/review';
 
 import { useStepperStyles } from './classes';
 
@@ -20,7 +21,7 @@ function getStepContent(step: number) {
         case 1:
             return <PriceInfo />;
         case 2:
-            return <PayerInfo />;
+            return <PaymentInfo />;
         case 3:
             return <ReviewModal />;
         case 4:
@@ -59,14 +60,12 @@ export function VerticalPaymentStepper() {
                             <StepContent>
                                 {getStepContent(index)}
                                 <div className={classes.actionsContainer}>
-                                    <div>
-                                        <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                                            Back
-                                        </Button>
-                                        <button onClick={handleNext} className={classes.next} disabled={isErrorState}>
-                                            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                        </button>
-                                    </div>
+                                    <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                                        Back
+                                    </Button>
+                                    <button className={classes.next} onClick={handleNext} disabled={isErrorState}>
+                                        <span>{activeStep === steps.length - 1 ? 'Finish' : 'Next'}</span> <NavigateNextIcon />
+                                    </button>
                                 </div>
                             </StepContent>
                         </Step>

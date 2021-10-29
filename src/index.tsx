@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import App from './App';
-import client from 'lib/apollo-client';
+import client from 'libs/apollo-client';
 import reportWebVitals from './reportWebVitals';
 
 // stylings

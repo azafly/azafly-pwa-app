@@ -9,7 +9,7 @@ import Page404 from 'views/404';
 import UserDashboard from 'views/user-dashboard';
 import Payments from 'views/payments';
 import { UserAccount } from 'views/user-account';
-import { PaymentsCallback } from '../views/payments-callback';
+import { PaymentsCallback } from 'views/payments-callback';
 
 export const Routes = () => {
     return (

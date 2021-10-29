@@ -128,7 +128,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             marginBottom: 30,
             fontSize: '2rem',
             fontFamily: 'Nunito',
-            fontWeight: 900,
+            fontWeight: 800,
             color: theme.colors.textPrimary,
             [theme.breakpoints.up('md')]: {
                 marginLeft: '13vw',

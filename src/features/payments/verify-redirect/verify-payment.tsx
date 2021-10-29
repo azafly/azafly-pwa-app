@@ -1,5 +1,6 @@
 import { Box } from '@mui/system';
 import { useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -34,17 +35,21 @@ export default function RedirectCallback() {
         history.replace('/payment');
     };
 
+    useEffect(() => {}, []);
     return (
         <>
             <NavBar />
             <Box sx={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center' }}>
                 <Box sx={style} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                     {loading ? (
-                        <ThreeDots
-                            styles={{
-                                background: '#4990A4'
-                            }}
-                        />
+                        <>
+                            <h4 style={{ textAlign: 'center' }}> Verifying your payment</h4>
+                            <ThreeDots
+                                styles={{
+                                    background: '#4990A4'
+                                }}
+                            />
+                        </>
                     ) : (
                         <>
                             <h3 style={{ textAlign: 'center' }} id='verify-modal'>

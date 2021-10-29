@@ -8,10 +8,15 @@ export const GetUserTransactions = gql`
             id
             is_success_done
             name
-            created_at
+            payment_offer {
+                payment_status
+                source_amount
+                source_currency
+                target_currency
+                total_in_target_with_charges
+                total_to_pay_in_source_currency
+            }
             updated_at
-            description
-            status
         }
     }
 `;

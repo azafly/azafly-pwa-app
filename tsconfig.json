@@ -27,7 +27,7 @@
   },
   "include": [
     "src/**/*",
-    "src/utils/calendar",
+    "src/libs/calendar",
     "webpack.config.js"
 , "cache.ts"  ],
   "exclude": [

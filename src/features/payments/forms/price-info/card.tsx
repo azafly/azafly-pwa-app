@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-import { formatCurrency } from 'utils';
+import { formatCurrency } from 'libs';
 import { GuaranteeTag } from './guarantee-tag';
 import { usePaymentContext } from '../../context';
 import InfoIcon from '@mui/icons-material/Info';

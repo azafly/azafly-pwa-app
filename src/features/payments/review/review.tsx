@@ -7,7 +7,7 @@ import Snackbar from '@mui/material/Snackbar';
 
 import { PaymentInfo, GetOffersResponseData } from 'services/rest-client/user-payment';
 import { usePaymentContext } from 'features/payments/context';
-import { LOCAL_STORAGE_KEY } from 'utils/local-storage-keys';
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-keys';
 import { User } from '../../../providers/auth/firebase/constants';
 
 const StyledModal = styled(ModalUnstyled)`

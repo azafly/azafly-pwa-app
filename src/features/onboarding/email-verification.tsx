@@ -4,7 +4,7 @@ import { styled } from '@mui/system';
 import { useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 
-import { timeout } from 'utils';
+import { timeout } from 'libs';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useURLParams } from '../../hooks/use-url-params';
 

@@ -1,24 +1,22 @@
 import { Box, Hidden } from '@material-ui/core';
+import { Stack } from '@mui/material';
 import { useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
-import { EmptyCardContainer } from './empty-service';
-import { DefaultSnackbar, SpeedDialTooltip } from 'components';
-import { useDashboardStyles, StyledBadge } from './classes';
-import { Stack } from '@mui/material';
-
 // queries and co
-import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { DefaultSnackbar, SpeedDialTooltip } from 'components';
+import { EmptyCardContainer } from './empty-service';
 import { SideBar } from './side-bar';
-import { TransactionListContainer } from './transaction-list-container';
-
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import { TransactionListContainer } from './transaction-list-container';
+import { Typography } from '@material-ui/core';
+import { useDashboardStyles, StyledBadge } from './classes';
+import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
 
 export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
     const [isSendingLink, setLoading] = useState(false);
-    const [highlightEmailVerify, setHighlightEmailVerify] = useState(false);
     const [hidden, setHidden] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -34,7 +32,7 @@ export default function Dashboard() {
     });
 
     const id = userData?.users[0]?.id;
-    const { data: transactionData, error, loading } = useGetUserTransactionsQuery({ variables: { id } });
+    const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id } });
     const transactions = transactionData?.transaction;
 
     const handleSpeedDialVisibility = () => {
@@ -96,29 +94,23 @@ export default function Dashboard() {
             />
             <Stack direction={'row'}>
                 <Hidden smDown>
-                    <Box>
-                        <SideBar />
-                    </Box>
+                    <SideBar />
                 </Hidden>
 
                 <Box sx={{ mb: 10, margin: 'auto', mt: 10 }}>
                     <Box>
                         {transactionData && !transactions?.length && !loading && (
-                            <EmptyCardContainer
-                                setHighlightEmailVerify={setHighlightEmailVerify}
-                                emailLink={emailLink}
-                                loading={loading}
-                                handleSendVerificationEmail={handleSendVerificationEmail}
-                            />
+                            <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
                         )}
                         <div className={classes.dashboard_container}>
+                            <Typography className={classes.heading}>Your Transactions</Typography>
                             {loading || !transactionData ? (
-                                <Box sx={{ width: '60vw', height: 'calc(100vh - 100px)' }}>
+                                <Box sx={{ width: 'calc(98vw - 25ch)', height: 'calc(100vh - 100px)' }}>
                                     {' '}
                                     <ThreeDots styles={{ backgroundColor: '#4990a4' }} />{' '}
                                 </Box>
                             ) : (
-                                <TransactionListContainer transactions={transactions ?? []} classes={classes} />
+                                <TransactionListContainer transactions={transactions ?? []} />
                             )}
                             <SpeedDialTooltip
                                 handleOpenSpeedDial={handleOpenSpeedDial}

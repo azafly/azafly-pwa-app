@@ -7,7 +7,7 @@ import {
     LocalStorageInitialOffer
 } from 'services/rest-client/user-payment';
 import { IPaymentContext, PaymentContext, IRateInfo, UK } from './constants';
-import { LOCAL_STORAGE_KEY } from 'utils/local-storage-keys';
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-keys';
 
 const paymentContext = createContext<IPaymentContext>(PaymentContext);
 
@@ -96,7 +96,10 @@ function usePaymentProvider() {
             telephone,
             name
         })
-            .then(({ data }) => setPaymentLink(data.data.payment_link))
+            .then(({ data }) => {
+                setPaymentLink(data.data.payment_link);
+                localStorage.removeItem(LOCAL_STORAGE_KEY.INITIAL_OFFER);
+            })
             .catch(() => {
                 setPaymentError('There was an Error connecting you to to one of our payment providers');
             })

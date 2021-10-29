@@ -12,24 +12,17 @@ import { useEmptyCardStyles } from './classes';
 const services = ['WES', 'IELTS', 'School Fees', 'Medical Bills', 'Others'];
 
 interface EmptyCardContainerProps {
-    setHighlightEmailVerify: Dispatch<SetStateAction<boolean>>;
     handleSendVerificationEmail: () => void;
     emailLink: ReactNode;
     loading?: boolean;
 }
-export const EmptyCardContainer = memo(function EmptyCardContainer({
-    emailLink,
-    handleSendVerificationEmail,
-    setHighlightEmailVerify
-}: EmptyCardContainerProps) {
+export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, handleSendVerificationEmail }: EmptyCardContainerProps) {
     const classes = useEmptyCardStyles();
     const {
         authState: { user }
     } = useFirebaseAuthContext();
 
     const emailVerified = user?.emailVerified;
-
-    const handleSetHighlight = () => !emailVerified && setHighlightEmailVerify(true);
 
     return (
         <>
@@ -47,7 +40,6 @@ export const EmptyCardContainer = memo(function EmptyCardContainer({
                         className={clsx(classes.button, {
                             [classes.disabled]: !emailVerified
                         })}
-                        onClick={handleSetHighlight}
                         style={{ textDecoration: 'none' }}
                     >
                         <Button

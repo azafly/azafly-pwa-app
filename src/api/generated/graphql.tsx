@@ -2177,10 +2177,34 @@ export type Payment_Offer = {
   readonly target_currency?: Maybe<Scalars['String']>;
   readonly total_in_target_with_charges: Scalars['numeric'];
   readonly total_to_pay_in_source_currency: Scalars['numeric'];
+  /** An array relationship */
+  readonly transactions: ReadonlyArray<Transaction>;
+  /** An aggregate relationship */
+  readonly transactions_aggregate: Transaction_Aggregate;
   readonly updated_at?: Maybe<Scalars['timestamp']>;
   /** An object relationship */
   readonly user?: Maybe<Users>;
   readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+
+/** columns and relationships of "payment_offer" */
+export type Payment_OfferTransactionsArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
+};
+
+
+/** columns and relationships of "payment_offer" */
+export type Payment_OfferTransactions_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 /** aggregated selection of "payment_offer" */
@@ -2280,6 +2304,7 @@ export type Payment_Offer_Bool_Exp = {
   readonly target_currency?: Maybe<String_Comparison_Exp>;
   readonly total_in_target_with_charges?: Maybe<Numeric_Comparison_Exp>;
   readonly total_to_pay_in_source_currency?: Maybe<Numeric_Comparison_Exp>;
+  readonly transactions?: Maybe<Transaction_Bool_Exp>;
   readonly updated_at?: Maybe<Timestamp_Comparison_Exp>;
   readonly user?: Maybe<Users_Bool_Exp>;
   readonly user_id?: Maybe<Uuid_Comparison_Exp>;
@@ -2321,6 +2346,7 @@ export type Payment_Offer_Insert_Input = {
   readonly target_currency?: Maybe<Scalars['String']>;
   readonly total_in_target_with_charges?: Maybe<Scalars['numeric']>;
   readonly total_to_pay_in_source_currency?: Maybe<Scalars['numeric']>;
+  readonly transactions?: Maybe<Transaction_Arr_Rel_Insert_Input>;
   readonly updated_at?: Maybe<Scalars['timestamp']>;
   readonly user?: Maybe<Users_Obj_Rel_Insert_Input>;
   readonly user_id?: Maybe<Scalars['uuid']>;
@@ -2429,6 +2455,13 @@ export type Payment_Offer_Mutation_Response = {
   readonly returning: ReadonlyArray<Payment_Offer>;
 };
 
+/** input type for inserting object relation for remote table "payment_offer" */
+export type Payment_Offer_Obj_Rel_Insert_Input = {
+  readonly data: Payment_Offer_Insert_Input;
+  /** on conflict condition */
+  readonly on_conflict?: Maybe<Payment_Offer_On_Conflict>;
+};
+
 /** on conflict condition type for table "payment_offer" */
 export type Payment_Offer_On_Conflict = {
   readonly constraint: Payment_Offer_Constraint;
@@ -2455,6 +2488,7 @@ export type Payment_Offer_Order_By = {
   readonly target_currency?: Maybe<Order_By>;
   readonly total_in_target_with_charges?: Maybe<Order_By>;
   readonly total_to_pay_in_source_currency?: Maybe<Order_By>;
+  readonly transactions_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   readonly updated_at?: Maybe<Order_By>;
   readonly user?: Maybe<Users_Order_By>;
   readonly user_id?: Maybe<Order_By>;
@@ -2773,6 +2807,10 @@ export type Payments = {
   readonly processor_response?: Maybe<Scalars['String']>;
   readonly raw_response?: Maybe<Scalars['String']>;
   readonly status?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  readonly transactions: ReadonlyArray<Transaction>;
+  /** An aggregate relationship */
+  readonly transactions_aggregate: Transaction_Aggregate;
   readonly tx_ref?: Maybe<Scalars['String']>;
   readonly updated_at: Scalars['timestamptz'];
   /** An object relationship */
@@ -2798,6 +2836,26 @@ export type PaymentsPayouts_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<ReadonlyArray<Payout_Order_By>>;
   where?: Maybe<Payout_Bool_Exp>;
+};
+
+
+/** columns and relationships of "payments" */
+export type PaymentsTransactionsArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
+};
+
+
+/** columns and relationships of "payments" */
+export type PaymentsTransactions_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 /** aggregated selection of "payments" */
@@ -2910,6 +2968,7 @@ export type Payments_Bool_Exp = {
   readonly processor_response?: Maybe<String_Comparison_Exp>;
   readonly raw_response?: Maybe<String_Comparison_Exp>;
   readonly status?: Maybe<String_Comparison_Exp>;
+  readonly transactions?: Maybe<Transaction_Bool_Exp>;
   readonly tx_ref?: Maybe<String_Comparison_Exp>;
   readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   readonly user?: Maybe<Users_Bool_Exp>;
@@ -2967,6 +3026,7 @@ export type Payments_Insert_Input = {
   readonly processor_response?: Maybe<Scalars['String']>;
   readonly raw_response?: Maybe<Scalars['String']>;
   readonly status?: Maybe<Scalars['String']>;
+  readonly transactions?: Maybe<Transaction_Arr_Rel_Insert_Input>;
   readonly tx_ref?: Maybe<Scalars['String']>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
   readonly user?: Maybe<Users_Obj_Rel_Insert_Input>;
@@ -3194,6 +3254,7 @@ export type Payments_Order_By = {
   readonly processor_response?: Maybe<Order_By>;
   readonly raw_response?: Maybe<Order_By>;
   readonly status?: Maybe<Order_By>;
+  readonly transactions_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   readonly tx_ref?: Maybe<Order_By>;
   readonly updated_at?: Maybe<Order_By>;
   readonly user?: Maybe<Users_Order_By>;
@@ -5806,7 +5867,11 @@ export type Transaction = {
   readonly id: Scalars['uuid'];
   readonly is_success_done: Scalars['Boolean'];
   readonly name?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  readonly payment?: Maybe<Payments>;
   readonly payment_id?: Maybe<Scalars['uuid']>;
+  /** An object relationship */
+  readonly payment_offer?: Maybe<Payment_Offer>;
   readonly payment_offer_id?: Maybe<Scalars['uuid']>;
   /** An array relationship */
   readonly payouts: ReadonlyArray<Payout>;
@@ -5938,7 +6003,9 @@ export type Transaction_Bool_Exp = {
   readonly id?: Maybe<Uuid_Comparison_Exp>;
   readonly is_success_done?: Maybe<Boolean_Comparison_Exp>;
   readonly name?: Maybe<String_Comparison_Exp>;
+  readonly payment?: Maybe<Payments_Bool_Exp>;
   readonly payment_id?: Maybe<Uuid_Comparison_Exp>;
+  readonly payment_offer?: Maybe<Payment_Offer_Bool_Exp>;
   readonly payment_offer_id?: Maybe<Uuid_Comparison_Exp>;
   readonly payouts?: Maybe<Payout_Bool_Exp>;
   readonly service?: Maybe<Service_Bool_Exp>;
@@ -5967,7 +6034,9 @@ export type Transaction_Insert_Input = {
   readonly id?: Maybe<Scalars['uuid']>;
   readonly is_success_done?: Maybe<Scalars['Boolean']>;
   readonly name?: Maybe<Scalars['String']>;
+  readonly payment?: Maybe<Payments_Obj_Rel_Insert_Input>;
   readonly payment_id?: Maybe<Scalars['uuid']>;
+  readonly payment_offer?: Maybe<Payment_Offer_Obj_Rel_Insert_Input>;
   readonly payment_offer_id?: Maybe<Scalars['uuid']>;
   readonly payouts?: Maybe<Payout_Arr_Rel_Insert_Input>;
   readonly service?: Maybe<Service_Obj_Rel_Insert_Input>;
@@ -6062,7 +6131,9 @@ export type Transaction_Order_By = {
   readonly id?: Maybe<Order_By>;
   readonly is_success_done?: Maybe<Order_By>;
   readonly name?: Maybe<Order_By>;
+  readonly payment?: Maybe<Payments_Order_By>;
   readonly payment_id?: Maybe<Order_By>;
+  readonly payment_offer?: Maybe<Payment_Offer_Order_By>;
   readonly payment_offer_id?: Maybe<Order_By>;
   readonly payouts_aggregate?: Maybe<Payout_Aggregate_Order_By>;
   readonly service?: Maybe<Service_Order_By>;
@@ -7651,7 +7722,11 @@ export type GetUserTransactionsQuery = (
   { readonly __typename?: 'query_root' }
   & { readonly transaction: ReadonlyArray<(
     { readonly __typename?: 'transaction' }
-    & Pick<Transaction, 'amount' | 'created_at' | 'id' | 'is_success_done' | 'name'>
+    & Pick<Transaction, 'amount' | 'created_at' | 'id' | 'is_success_done' | 'name' | 'updated_at'>
+    & { readonly payment_offer?: Maybe<(
+      { readonly __typename?: 'payment_offer' }
+      & Pick<Payment_Offer, 'payment_status' | 'source_amount' | 'source_currency' | 'target_currency' | 'total_in_target_with_charges' | 'total_to_pay_in_source_currency'>
+    )> }
   )> }
 );
 
@@ -7780,6 +7855,15 @@ export const GetUserTransactionsDocument = gql`
     id
     is_success_done
     name
+    payment_offer {
+      payment_status
+      source_amount
+      source_currency
+      target_currency
+      total_in_target_with_charges
+      total_to_pay_in_source_currency
+    }
+    updated_at
   }
 }
     `;

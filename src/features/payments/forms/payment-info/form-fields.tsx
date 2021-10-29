@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import { NativeSelect } from '@mui/material';
 import { TextField, InputLabel } from '@material-ui/core';
 
-import { transformCase } from 'utils';
+import { transformCase } from 'libs';
 interface PaymentInfo {
     label: string;
     name: string;

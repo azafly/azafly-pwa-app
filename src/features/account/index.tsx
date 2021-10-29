@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import { DefaultSnackbar } from 'components';
 import { NavBar } from 'features/user-dashboard/nav-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { timeout } from 'utils';
+import { timeout } from 'libs';
 import { useFirebaseAuthContext, storage } from 'providers/auth/firebase';
 import { useGetCurrentUserByEmailQuery, useUpdateUserMutation } from 'api/generated/graphql';
 import { USER_ACCOUNT_FORM_FIELDS } from './utils';

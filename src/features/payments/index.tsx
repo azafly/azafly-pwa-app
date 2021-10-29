@@ -1,13 +1,11 @@
-import { VerticalPaymentStepper } from './stepper';
-import { NavBar } from 'features/user-dashboard/nav-bar';
-import { useSPaymentsStyles } from './classes';
 import { PaymentProvider } from './context';
+import { useSPaymentsStyles } from './classes';
+import { VerticalPaymentStepper } from './stepper';
 
 const Payments = () => {
     const classes = useSPaymentsStyles();
     return (
         <>
-            <NavBar />
             <div className={classes.root}>
                 <PaymentProvider>
                     <VerticalPaymentStepper />

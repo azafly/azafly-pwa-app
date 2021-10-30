@@ -25,12 +25,15 @@ const useStyles = makeStyles((theme: Theme) =>
             position: 'relative',
             [theme.breakpoints.only('xs')]: {
                 width: '100%'
+            },
+            '& .MuiInput-underline::before': {
+                borderBottom: 'none'
             }
         },
         input: {
             color: theme.colors.textPrimary,
             fontWeight: 700,
-            width: 140,
+            marginRight: 20,
             fontSize: '1.1rem',
             borderBottom: 'none',
             '& .MuiInput-underline::before': {
@@ -43,6 +46,8 @@ const useStyles = makeStyles((theme: Theme) =>
         listbox: {
             position: 'absolute',
             top: 20,
+            right: 0,
+            width: 250,
             display: 'flex',
             '& .flag': {
                 margin: 'auto',
@@ -70,11 +75,15 @@ const useStyles = makeStyles((theme: Theme) =>
             fontSize: '1.15em'
         },
         autoCompleteRoot: {
-            width: 500
+            padding: 0,
+
+            '&  .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon .MuiAutocomplete-inputRoot': {
+                padding: 0
+            }
         },
         toggle__section: {
-            width: '100%',
-            maxWidth: 500
+            width: 130,
+            margin: 0
         }
     })
 );
@@ -95,7 +104,7 @@ export function CurrencyAmount() {
         setShowCountryList(!showCountryList);
     };
 
-    const getOptionLabel = (option: Country) => `${option.emoji ?? ''} ${option.name} - ${option.currency.symbol} ${option.currency.code}`;
+    const getOptionLabel = (option: Country) => `${option.emoji ?? ''}  ${option.currency.code}`;
     const optionRenderer = (optionData: Country) => <RenderOptions option={optionData} />;
 
     return (
@@ -103,7 +112,7 @@ export function CurrencyAmount() {
             <TextField
                 id='amount'
                 value={amount}
-                type='text'
+                type='number'
                 label={'Amount'}
                 className={classes.input}
                 onChange={handleSetAmount}
@@ -111,18 +120,19 @@ export function CurrencyAmount() {
                     className: classes.input
                 }}
             />
-            <div className={classes.toggle__section}>
+            <div>
                 <Autocomplete
                     onChange={(_, country) => {
-                        if (!country) return null;
-                        handleTargetCountryChange(_, country);
+                        country && handleTargetCountryChange(_, country);
                     }}
+                    className={classes.toggle__section}
                     disablePortal
                     id='currency'
                     defaultValue={UK}
                     options={options}
                     classes={{
-                        paper: classes.listbox
+                        paper: classes.listbox,
+                        root: classes.autoCompleteRoot
                     }}
                     loading
                     autoComplete
@@ -135,6 +145,9 @@ export function CurrencyAmount() {
                             <TextField
                                 {...params}
                                 label='Send to'
+                                classes={{
+                                    root: classes.autoCompleteRoot
+                                }}
                                 inputProps={{
                                     ...params.inputProps,
                                     className: classes.label

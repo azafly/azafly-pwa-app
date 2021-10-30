@@ -103,7 +103,7 @@ export default function Dashboard() {
                             <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
                         )}
                         <div className={classes.dashboard_container}>
-                            <Typography className={classes.heading}>Your Transactions</Typography>
+                            {!!transactions?.length && <Typography className={classes.heading}>Your Transactions</Typography>}
                             {loading || !transactionData ? (
                                 <Box sx={{ width: 'calc(98vw - 25ch)', height: 'calc(100vh - 100px)' }}>
                                     {' '}

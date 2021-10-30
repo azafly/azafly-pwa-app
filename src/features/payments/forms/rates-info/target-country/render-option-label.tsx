@@ -22,7 +22,8 @@ export const RenderOptions = ({ option }: IRenderOptions) => {
                 },
                 '& .currency': {
                     margin: 'auto',
-                    fontSize: '0.8rem'
+                    fontSize: '0.8rem',
+                    fontWeight: 700
                 },
                 '& .coming_soon': {
                     background: 'grey',
@@ -31,7 +32,7 @@ export const RenderOptions = ({ option }: IRenderOptions) => {
             }}
         >
             <span style={{ borderRadius: '50%', fontSize: '2rem', marginRight: '1ch' }}> {option?.emoji}</span>
-            <Box sx={{ width: '11ch', margin: 'auto', marginRight: 2 }}>
+            <Box sx={{ margin: 'auto', marginRight: 2 }}>
                 <span className='name'> {option?.name} </span>
                 <span className='currency'> ({option?.currency.code}) </span>
             </Box>

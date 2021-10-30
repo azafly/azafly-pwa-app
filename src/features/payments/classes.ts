@@ -41,7 +41,7 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
             marginTop: theme.spacing(1),
             marginRight: theme.spacing(3),
             textTransform: 'none',
-            zIndex: 1,
+            zIndex: 0,
             width: '18ch'
         },
         disabled: {

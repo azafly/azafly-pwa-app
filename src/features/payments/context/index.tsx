@@ -28,7 +28,7 @@ function usePaymentProvider() {
         setSourceCountry(value);
     };
 
-    const handleTargetCountryChange = (value: Country) => {
+    const handleTargetCountryChange = (_: React.ChangeEvent<unknown>, value: Country) => {
         setTargetCountry(value);
     };
 

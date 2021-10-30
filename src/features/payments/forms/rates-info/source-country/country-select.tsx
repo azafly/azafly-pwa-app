@@ -5,11 +5,11 @@ import { TextField } from '@material-ui/core';
 import Autocomplete, { AutocompleteClassKey } from '@material-ui/lab/Autocomplete';
 
 import { Country } from '../../../hooks/use-country-list';
-import { RenderOptions } from '../source-country/render-option-label';
+import { RenderOptions } from './render-option-label';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
-        maxWidth: 700,
+        maxWidth: 400,
         marginBottom: 30,
         marginRight: 20,
         padding: '5px 20px',
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             marginRight: 10
         },
         '& .emoji': {
-            fontSize: '1.1rem',
+            fontSize: '1.5rem',
             margin: 'auto',
             [theme.breakpoints.only('xs')]: {
                 fontSize: '1rem'
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     input: {
         color: theme.colors.textPrimary,
-        fontWeight: 850,
+        fontWeight: 750,
         fontSize: '1.1rem',
         borderBottom: 'none'
     }

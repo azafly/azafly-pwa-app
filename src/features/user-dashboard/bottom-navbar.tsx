@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
             zIndex: 9999,
             left: 0,
             bottom: -0,
-            [theme.breakpoints.up('sm')]: {
+            [theme.breakpoints.up('md')]: {
                 display: 'none'
             }
         },

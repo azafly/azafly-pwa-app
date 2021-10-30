@@ -7,19 +7,20 @@ export interface IRateInfo {
     targetCountry: Country;
     sourceCountry: Country;
     handleSourceCountryChange: (_: React.ChangeEvent<unknown>, value: Country) => void;
-    handleTargetCountryChange: (value: Country) => void;
+    handleTargetCountryChange: (_: React.ChangeEvent<unknown>, value: Country) => void;
     amount: number;
     handleSetAmount: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const UK = {
-    name: 'United Kingdom of Great Britain and Northern Ireland',
+    label: 'UK',
+    name: 'Britain',
     currency: {
         code: 'GBP',
         name: 'British pound',
         symbol: '£'
     },
-    flag: 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GB.svg',
+    emoji: '🇬🇧',
     code: 'GB',
     region: 'EU',
     isPopular: true,

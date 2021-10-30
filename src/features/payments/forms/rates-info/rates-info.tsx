@@ -2,7 +2,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Box, Grid } from '@material-ui/core';
 import Chip from '@mui/material/Chip';
 
-import { CountrySelect } from './target-country/country-select';
+import { CountrySelect } from './source-country/country-select';
 import { CurrencyAmount } from './target-country/currency-amount';
 import { Country, NIGERIA, useCountryList } from '../../hooks/use-country-list';
 import { usePaymentContext } from '../../context';
@@ -56,11 +56,11 @@ export function RatesInfo() {
     const { popularSourceCountries } = useCountryList();
 
     const {
-        rateInfoProps: { sourceCountry, targetCountry, handleSourceCountryChange },
+        rateInfoProps: { sourceCountry, handleSourceCountryChange },
         paymentError
     } = usePaymentContext();
 
-    const getOptionLabel = (option: Country) => `${option.currency.symbol} ${option.name}(${option.currency.code})`;
+    const getOptionLabel = (option: Country) => `${option.emoji ?? ''} ${option.name} - ${option.currency.symbol} ${option.currency.code}`;
     const getOptionDisabled = (option: Country) => option.isComingSoon || option.isNotSupported;
 
     return (
@@ -81,7 +81,7 @@ export function RatesInfo() {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <CurrencyAmount country={targetCountry} />
+                        <CurrencyAmount />
                     </Grid>
                 </Grid>
             </div>

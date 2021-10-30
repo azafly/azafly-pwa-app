@@ -9,8 +9,8 @@ interface Currency {
 
 export interface Country {
     name: string;
+    emoji: string;
     currency: Currency;
-    flag: string;
     code: string;
     region: string;
     isComingSoon: boolean;
@@ -44,7 +44,7 @@ export const NIGERIA: Country = {
         name: 'Nigerian naira',
         symbol: '₦'
     },
-    flag: 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NG.svg',
+    emoji: '🇳🇬',
     code: 'NG',
     region: 'AF',
     isNotSupported: false,

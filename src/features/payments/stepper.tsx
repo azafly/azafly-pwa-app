@@ -43,13 +43,6 @@ export function VerticalPaymentStepper() {
     const handleBack = () => {
         setActiveStep(prevActiveStep => prevActiveStep - 1);
     };
-    // const handleInitialOfferStep = async () => {
-    //     await handleGetInitialOffer();
-    //     canGoNext && setActiveStep(1);
-    //     // if (initialOffer && !paymentError) {
-    //     //
-    //     // }
-    // };
 
     const handleStepper = (step: number) => {
         switch (step) {
@@ -133,14 +126,6 @@ export function VerticalPaymentStepper() {
                         </Step>
                     ))}
                 </Stepper>
-                {activeStep === steps.length && (
-                    <div className={classes.resetContainer}>
-                        <Typography> All steps completed 🎉 </Typography>
-                        <Link to={'/dashboard'} className={classes.dashboard_link}>
-                            Track my payment
-                        </Link>
-                    </div>
-                )}
             </div>
         </Slide>
     );

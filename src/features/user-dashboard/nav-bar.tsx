@@ -9,13 +9,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import React, { memo } from 'react';
+import React, { memo, ReactElement } from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-import { Logo2SvgComponent } from 'components/icons/logo-style-2';
-import { MobileBackButton } from '../../components';
 import { DashboardSvgComponent, SignOutSvgComponent, ProfileSvgComponent, HelpSvgComponent } from 'components/icons';
+import { Logo2SvgComponent } from 'components/icons/logo-style-2';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -65,7 +64,21 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export const NavBar = memo(function NavBar() {
+interface NavBarProps {
+    callToAction?: {
+        text: string;
+        icon?: ReactElement;
+        link: string;
+    };
+}
+
+const defaultCallToAction: NavBarProps['callToAction'] = {
+    text: 'Dashboard',
+    icon: <DashboardSvgComponent />,
+    link: '/dashboard'
+};
+
+export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction }: NavBarProps) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -110,19 +123,19 @@ export const NavBar = memo(function NavBar() {
             onClose={handleMenuClose}
         >
             <MenuItem component={Link} to={'/account'}>
-                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
                     <ProfileSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Profile</Typography>
             </MenuItem>
-            <MenuItem component={Link} to={'https://www.lucqax.com/faq'}>
-                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
+            <MenuItem onClick={() => location.replace('https://www.lucqax.com/faq')}>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
                     <HelpSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Help</Typography>
             </MenuItem>
             <MenuItem component={Link} to={'/dashboard'}>
-                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
                     <DashboardSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Dashboard</Typography>
@@ -131,7 +144,7 @@ export const NavBar = memo(function NavBar() {
             <MenuItem /> <MenuItem /> <MenuItem /> <MenuItem />
             <MenuItem />
             <MenuItem onClick={() => signout()}>
-                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
                     <SignOutSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Signout</Typography>
@@ -139,7 +152,7 @@ export const NavBar = memo(function NavBar() {
         </Menu>
     );
 
-    const mobileMenuId = 'primary-search-account-menu-mobile';
+    const mobileMenuId = 'menu-mobile';
     const renderMobileMenu = (
         <Menu
             anchorEl={mobileMoreAnchorEl}
@@ -150,14 +163,26 @@ export const NavBar = memo(function NavBar() {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem component={Link} to={'account'}>
-                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
+            <MenuItem component={Link} to={'/account'}>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
                     <ProfileSvgComponent />
                 </IconButton>
                 <Typography>Profile</Typography>
             </MenuItem>
+            <MenuItem onClick={() => location.replace('https://www.lucqax.com/faq')}>
+                <IconButton aria-label='help' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                    <HelpSvgComponent />
+                </IconButton>
+                <Typography>Help</Typography>
+            </MenuItem>
+            <MenuItem component={Link} to={'/payment'}>
+                <IconButton aria-label='help' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                    <PaymentsIcon />
+                </IconButton>
+                <Typography>New Payment</Typography>
+            </MenuItem>
             <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
-                <IconButton aria-label='account of current user' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
+                <IconButton aria-label='dashboard' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
                     <DashboardSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Dashboard</Typography>
@@ -166,7 +191,7 @@ export const NavBar = memo(function NavBar() {
             <MenuItem /> <MenuItem />
             <MenuItem />
             <MenuItem onClick={() => signout()}>
-                <IconButton aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
                     <SignOutSvgComponent />
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Signout</Typography>
@@ -178,7 +203,6 @@ export const NavBar = memo(function NavBar() {
         <div className={classes.grow}>
             <AppBar position='fixed' elevation={0}>
                 <Toolbar>
-                    <MobileBackButton />
                     <Link to='/' className={classes.title}>
                         {' '}
                         <Logo2SvgComponent />{' '}
@@ -220,10 +244,10 @@ export const NavBar = memo(function NavBar() {
                             onClick={handleProfileMenuOpen}
                             color='inherit'
                         >
-                            <Link to='/payment' className='link'>
+                            <Link to={callToAction.link} className='link'>
                                 {' '}
-                                <Button variant='contained' className='payment_button' endIcon={<PaymentsIcon />}>
-                                    New Payment
+                                <Button variant='contained' className='payment_button' endIcon={callToAction.icon}>
+                                    {callToAction.text}
                                 </Button>
                             </Link>
                         </IconButton>

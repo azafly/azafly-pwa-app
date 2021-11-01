@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
             },
             '& .MuiInput-underline::before': {
                 borderBottom: 'none'
+            },
+            '& .MuiInput-underline::after': {
+                borderBottom: 'none'
             }
         },
         input: {
@@ -74,13 +77,7 @@ const useStyles = makeStyles((theme: Theme) =>
             fontWeight: 750,
             fontSize: '1.15em'
         },
-        autoCompleteRoot: {
-            padding: 0,
-
-            '&  .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon .MuiAutocomplete-inputRoot': {
-                padding: 0
-            }
-        },
+        autoCompleteRoot: {},
         toggle__section: {
             width: 130,
             margin: 0

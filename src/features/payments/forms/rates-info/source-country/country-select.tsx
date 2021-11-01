@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) => ({
         },
         '& .MuiInput-underline::before': {
             borderBottom: 'none'
+        },
+        '& .MuiInput-underline::after': {
+            borderBottom: 'none'
         }
     },
     option: {

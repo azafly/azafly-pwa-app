@@ -2,6 +2,7 @@ import React from 'react';
 import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -11,6 +12,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import PaymentIcon from '@mui/icons-material/Payment';
 
 import { DashboardSvgComponent } from 'components/icons/dashboard';
+import { usePrevious } from '../../hooks/use-previous';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -76,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export default function UserAppBar() {
+export function BottomNavBar() {
     const classes = useStyles();
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -122,20 +124,43 @@ export default function UserAppBar() {
         </Menu>
     );
 
+    const previousLinkValue = usePrevious(value);
+    const currentHistory = useHistory();
+
+    const goToLink = (key: number) => {
+        setValue(key);
+        const isKeyChanged = previousLinkValue !== key;
+        switch (key) {
+            case 0:
+                isKeyChanged && currentHistory.push('//dashboard');
+                break;
+            case 1:
+                isKeyChanged && currentHistory.push('/dashboard');
+                break;
+            case 2:
+                isKeyChanged && currentHistory.push('/payment');
+                break;
+            case 3:
+                isKeyChanged && currentHistory.push('/account');
+                break;
+            default:
+                break;
+        }
+    };
     return (
         <>
             <BottomNavigation
                 value={value}
-                onChange={(event, newValue) => {
-                    setValue(newValue);
+                onChange={(_, newValue) => {
+                    goToLink(newValue);
                 }}
                 className={classes.bottomNavRoot}
                 showLabels
             >
                 <BottomNavigationAction label='Home' icon={<HomeSharp />} />
                 <BottomNavigationAction label='Dashboard' icon={<DashboardSvgComponent />} />
-                <BottomNavigationAction onClick={() => location.replace('/payment')} label='New Payment' icon={<PaymentIcon />} />
-                <BottomNavigationAction onClick={() => location.replace('/account')} label='Profile' icon={<AccountCircle />} />
+                <BottomNavigationAction label='New Payment' icon={<PaymentIcon />} />
+                <BottomNavigationAction label='Profile' icon={<AccountCircle />} />
             </BottomNavigation>
             {renderMobileMenu}
         </>

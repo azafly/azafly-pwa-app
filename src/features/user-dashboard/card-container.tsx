@@ -36,7 +36,9 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
                     <div className={classes.serviceName}>
                         <h1 className='name'>{formattedAmount} </h1>
                         <Typography className='date' paragraph color='secondary' style={{ fontWeight: 800 }}>
-                            Reference: {name}
+                            {/* TODO: UPDATE WHEN DETAILS CHANGES IN SERVER */}
+                            {/* {name} */}
+                            Reference: Birmingham School Fees
                         </Typography>
                         <Typography className='date' paragraph color='secondary'>
                             {date}

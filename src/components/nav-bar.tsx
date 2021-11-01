@@ -5,7 +5,6 @@ import { Logo1SvgComponent } from 'components/icons';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import { Link } from 'react-router-dom';
-import { MobileBackButton } from 'components';
 
 interface NavbarProps {
     handleDrawerOpen?: () => void;
@@ -130,7 +129,6 @@ export const NavBar = ({ handleDrawerOpen, open }: NavbarProps) => {
                     })}
                 >
                     <Toolbar>
-                        <MobileBackButton stroke={'#4990a4'} fill={'#4990a4'} />
                         <Link to='/' className={`${classes.logo}`}>
                             <Logo1SvgComponent />{' '}
                         </Link>

@@ -10,6 +10,7 @@ import HomeSharp from '@material-ui/icons/HomeSharp';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PaymentIcon from '@mui/icons-material/Payment';
+import PaymentsIcon from '@mui/icons-material/Payments';
 
 import { DashboardSvgComponent } from 'components/icons/dashboard';
 import { usePrevious } from '../../hooks/use-previous';
@@ -132,7 +133,7 @@ export function BottomNavBar() {
         const isKeyChanged = previousLinkValue !== key;
         switch (key) {
             case 0:
-                isKeyChanged && currentHistory.push('//dashboard');
+                isKeyChanged && currentHistory.push('/dashboard');
                 break;
             case 1:
                 isKeyChanged && currentHistory.push('/dashboard');
@@ -157,8 +158,8 @@ export function BottomNavBar() {
                 className={classes.bottomNavRoot}
                 showLabels
             >
-                <BottomNavigationAction label='Home' icon={<HomeSharp />} />
                 <BottomNavigationAction label='Dashboard' icon={<DashboardSvgComponent />} />
+                <BottomNavigationAction label='My Cards' icon={<PaymentsIcon />} />
                 <BottomNavigationAction label='New Payment' icon={<PaymentIcon />} />
                 <BottomNavigationAction label='Profile' icon={<AccountCircle />} />
             </BottomNavigation>

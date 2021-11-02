@@ -69,7 +69,11 @@ function useFirebaseProviderAuth() {
             const profile = { displayName };
             localStorage.setItem(LOCAL_STORAGE_KEY.IS_EMAIL_SIGNUP_SENT, 'true');
             user.updateProfile(profile)
-                .then(() => {
+                .then(async () => {
+                    const token = await user.getIdToken(true);
+                    const idTokenResult = await user.getIdTokenResult();
+                    const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
+                    hasuraClaim && localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                     setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
                 })
                 .catch(error => console.log(error));
@@ -132,6 +136,7 @@ function useFirebaseProviderAuth() {
                     });
                 }
                 if (hasuraClaim) {
+                    localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                     setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
                 } else {
                     // Check if refresh is required.

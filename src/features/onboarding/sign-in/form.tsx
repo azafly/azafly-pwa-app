@@ -1,8 +1,8 @@
 import { Button, TextField } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { useHistory } from 'react-router-dom';
-import { SetStateAction, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import * as yup from 'yup';
 
 import { DefaultSnackbar } from 'components';
@@ -11,7 +11,6 @@ import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useFormStyles } from '../classes';
 import Logo from 'assets/google.svg';
-import { string } from 'yup/lib/locale';
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Enter a valid email').required('Email is required'),
@@ -31,6 +30,7 @@ export const SignInForm = () => {
     const [openSnackBar, setOpenSnackBar] = useState(false);
 
     const history = useHistory();
+    const location = useLocation();
 
     const handleSignin = (method: SignInMethod, email?: string, password?: string) => {
         const DASHBOARD = '/dashboard';
@@ -88,6 +88,15 @@ export const SignInForm = () => {
             handleSignin(SignInMethod.EMAIL_AND_PASSWORD, values.email, values.password);
         }
     });
+
+    const { from } = location.state || {
+        from: { pathname: '/dashboard' }
+    };
+
+    const token = localStorage.getItem('token');
+    if (token) {
+        history.replace(from);
+    }
 
     const classes = useFormStyles();
     return (

@@ -4,6 +4,7 @@ export const useCardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboardCard__root: {
             cursor: 'pointer',
+            maxWidth: 1000,
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             borderRadius: 12,
             margin: 'auto',

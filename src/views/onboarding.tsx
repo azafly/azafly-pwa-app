@@ -1,7 +1,6 @@
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { Grid, Snackbar, SnackbarCloseReason, SnackbarOrigin } from '@material-ui/core';
 import { SyntheticEvent, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
 
 import { OnboardingIllustration } from 'features/onboarding/illustration';
 import { OnboardingTab } from 'features/onboarding/tab';
@@ -15,8 +14,7 @@ interface SnackBarAlertState {
 
 const Onboarding = () => {
     const classes = useOnboardingMainStyles();
-    const history = useHistory();
-    const location = useLocation();
+
     const [alertState, setAlertState] = useState<SnackBarAlertState>({
         open: false,
         vertical: 'top',
@@ -32,16 +30,6 @@ const Onboarding = () => {
 
         setAlertState({ ...alertState, open: false });
     };
-
-    const { from } = location.state || {
-        from: { pathname: '/dashboard' }
-    };
-
-    const token = localStorage.getItem('token');
-    if (token) {
-        history.replace(from);
-        history.go(0);
-    }
 
     return (
         <div className={classes.onboarding}>

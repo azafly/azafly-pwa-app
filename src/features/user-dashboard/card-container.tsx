@@ -22,7 +22,6 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
     const {
         created_at,
         is_success_done,
-        name,
         payment_offer: { source_currency: currency, source_amount: amount }
     } = transactionData;
 

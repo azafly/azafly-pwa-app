@@ -91,7 +91,7 @@ export function CurrencyAmount() {
 
     const { popularTargetCountries } = useCountryList();
 
-    const options = popularTargetCountries.map(it => ({ ...it, label: it.name }));
+    const options = popularTargetCountries?.map(it => ({ ...it, label: it.name }));
     const {
         rateInfoProps: { amount, handleSetAmount, handleTargetCountryChange }
     } = usePaymentContext();

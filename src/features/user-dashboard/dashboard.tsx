@@ -1,18 +1,19 @@
-import { Box, Hidden } from '@material-ui/core';
+import { Box, Hidden, Typography } from '@material-ui/core';
 import { Stack } from '@mui/material';
 import { useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
 // queries and co
+import { DashboardLoaderSkeleton } from 'features/user-dashboard/loader-skeleton';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { EmptyCardContainer } from './empty-service';
 import { SideBar } from './side-bar';
-import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { TransactionListContainer } from './transaction-list-container';
-import { Typography } from '@material-ui/core';
-import { useDashboardStyles, StyledBadge } from './classes';
+
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
+
+import { useDashboardStyles, StyledBadge } from './classes';
 
 export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
@@ -72,7 +73,7 @@ export default function Dashboard() {
     };
 
     const emailLink = isSendingLink ? (
-        <ThreeDots />
+        <DashboardLoaderSkeleton />
     ) : (
         <>
             <ErrorIcon className={ripples.badge} />
@@ -105,10 +106,7 @@ export default function Dashboard() {
                         <div className={classes.dashboard_container}>
                             {!!transactions?.length && <Typography className={classes.heading}>Your Transactions</Typography>}
                             {loading || !transactionData ? (
-                                <Box sx={{ width: 'calc(98vw - 25ch)', height: 'calc(100vh - 100px)' }}>
-                                    {' '}
-                                    <ThreeDots styles={{ backgroundColor: '#4990a4' }} />{' '}
-                                </Box>
+                                <DashboardLoaderSkeleton />
                             ) : (
                                 <TransactionListContainer transactions={transactions ?? []} />
                             )}

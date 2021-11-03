@@ -1,4 +1,4 @@
-import { Card, CardContent, Chip, Collapse, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, Chip, Collapse, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
 import { useCardStyles } from './classes';
 import React, { memo } from 'react';
@@ -29,7 +29,7 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
     const classes = useCardStyles();
     const formattedAmount = formatCurrency({ currency, amount, countryCode: 'DE' });
     return (
-        <Card className={classes.dashboardCard__root} onClick={handleExpandClick}>
+        <Card className={classes.dashboardCard__root}>
             <CardContent>
                 <div className={classes.starter}>
                     <div className={classes.serviceName}>
@@ -45,7 +45,9 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
                     </div>
                     <Chip className={classes.serviceInitiated} label={is_success_done ? 'Completed' : 'In Progress'} />
                 </div>
-                <InfoText text={data.infoText} />
+                <Box onClick={handleExpandClick}>
+                    <InfoText text={data.infoText} />
+                </Box>
                 <div className={classes.divider} />
                 <Collapse in={expanded} timeout='auto' unmountOnExit>
                     <Typography variant='h6' color='textSecondary' align={'center'} className={classes.summary_heading}>

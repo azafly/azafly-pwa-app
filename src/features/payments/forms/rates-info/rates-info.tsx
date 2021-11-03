@@ -15,9 +15,6 @@ const useStyles = makeStyles((theme: Theme) =>
             borderRadius: 8,
             margin: 50,
             maxWidth: 675,
-            [theme.breakpoints.up('sm')]: {
-                boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important'
-            },
             [theme.breakpoints.only('xs')]: {
                 width: '100%',
                 margin: '40px 0px 10px',

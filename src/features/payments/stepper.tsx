@@ -1,11 +1,10 @@
-import { Button, Stepper, Step, StepContent, StepLabel, Typography, Slide } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Button, Stepper, Step, StepContent, StepLabel, Slide } from '@material-ui/core';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { PaymentInfo } from './forms/payment-info/payment-info';
 import { PriceInfo } from './forms/price-info';
 import { RatesInfo } from './forms/rates-info';
 import { usePaymentContext } from './context';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import ReviewModal from './review/review';
 
 // classes

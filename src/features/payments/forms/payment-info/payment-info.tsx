@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme: Theme) =>
                     marginLeft: 5,
                     fontSize: '0.85rem'
                 }
+            },
+            '& .info': {
+                color: 'blue'
             }
         }
     })
@@ -70,16 +73,17 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
             <div>
                 <Grid container spacing={3}>
                     {PAYMENT_INFO.map(option => {
-                        const { label, name } = option;
+                        const { label, name, helperText } = option;
                         return (
                             <Grid item xs={12} sm={6} className={classes.formControl} key={label}>
                                 {generateInputType(
                                     {
                                         onChange: formik.handleChange,
                                         error: formik.touched[name] && Boolean(formik.errors[name]),
-                                        helperText: formik.touched[name] && formik.errors[name]
+                                        helperText: !formik.touched[name] && helperText ? helperText : formik.touched[name] && formik.errors[name]
                                     },
-                                    option
+                                    option,
+                                    formik.touched[name] && Boolean(formik.errors[name])
                                 )}
                             </Grid>
                         );

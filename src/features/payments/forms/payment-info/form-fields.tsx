@@ -9,9 +9,9 @@ interface PaymentInfo {
     type?: 'text' | 'textArea' | 'select' | 'checkbox' | 'email' | 'number';
     yupType?: 'string' | 'email' | 'bool';
     errorMessage?: string;
-    information?: string;
     isOptional: boolean;
     items?: string[];
+    helperText?: string;
 }
 export type BY_WHOM = 'self' | 'others';
 
@@ -68,7 +68,7 @@ export const PAYMENT_INFO: PaymentInfo[] = [
         name: 'references',
         type: 'textArea',
         errorMessage: 'Reference is compulsory for remittance',
-        information: 'Enter information such as invoice ID etc',
+        helperText: 'Enter information such as invoice ID etc',
         isOptional: false
     },
     {
@@ -110,7 +110,7 @@ export const validationSchema = yup.object().shape({
         .required('This is where you enter details about the payment')
 });
 
-export const generateInputType = (props: any, option: PaymentInfo) => {
+export const generateInputType = (props: any, option: PaymentInfo, isError?: boolean) => {
     if (option?.type === 'select') {
         const label = option.name === 'by' ? `Who's making payment` : `Select Purpose`;
         const defaultValue: PURPOSE | BY_WHOM = option.name === 'by' ? 'self' : 'education';
@@ -130,6 +130,18 @@ export const generateInputType = (props: any, option: PaymentInfo) => {
             </>
         );
     } else {
-        return <TextField fullWidth id={option?.label} name={option?.name} label={option?.label} type={option?.type ?? 'text'} {...props} />;
+        return (
+            <TextField
+                fullWidth
+                id={option?.label}
+                name={option?.name}
+                label={option?.label}
+                type={option?.type ?? 'text'}
+                {...props}
+                FormHelperTextProps={{
+                    className: isError ? '' : 'info'
+                }}
+            />
+        );
     }
 };

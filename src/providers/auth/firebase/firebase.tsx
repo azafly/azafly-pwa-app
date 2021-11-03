@@ -60,7 +60,7 @@ function useFirebaseProviderAuth() {
             .then(() => {
                 setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
             })
-            .catch((error: any) => console.log(error));
+            .catch((error: unknown) => console.log(error));
     };
 
     const signupWithEmailPassword = async ({ email, password, displayName }: EmailAndPasswordSignUp) => {
@@ -69,6 +69,7 @@ function useFirebaseProviderAuth() {
             const profile = { displayName };
             localStorage.setItem(LOCAL_STORAGE_KEY.IS_EMAIL_SIGNUP_SENT, 'true');
             user.updateProfile(profile)
+
                 .then(async () => {
                     const token = await user.getIdToken(true);
                     const idTokenResult = await user.getIdTokenResult();
@@ -120,6 +121,7 @@ function useFirebaseProviderAuth() {
     useEffect(() => {
         const unsubscribe = firebaseApp.auth().onAuthStateChanged(async user => {
             if (user) {
+                console.log(user);
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
@@ -138,6 +140,10 @@ function useFirebaseProviderAuth() {
                 if (hasuraClaim) {
                     localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                     setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
+                    const isFirstTimeUser = user.metadata.creationTime === user.metadata.lastSignInTime;
+                    if (isFirstTimeUser) {
+                        alert('Welcome');
+                    }
                 } else {
                     // Check if refresh is required.
                     const metadataRef = firebaseApp.database().ref('metadata/' + user.uid + '/refreshTime');

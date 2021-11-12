@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { Button, Checkbox, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import * as yup from 'yup';
 
@@ -81,16 +81,18 @@ export const SignUpForm = () => {
     type FormValue = keyof typeof formik.initialValues;
 
     const history = useHistory();
+    const location = useLocation();
 
     const handleSignUp = (method: SignUpMethod, email?: string, password?: string, displayName?: string) => {
         const DASHBOARD = '/dashboard';
+        const from = location.state?.from?.pathname || DASHBOARD;
         setAuthLoadingState(true);
         switch (method) {
             case SignUpMethod.FACEBOOK:
                 return signInWithFacebook()
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace(DASHBOARD);
+                        history.replace(from);
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setAuthLoadingState(false);
@@ -101,7 +103,7 @@ export const SignUpForm = () => {
                 return signInWithGoogle()
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace(DASHBOARD);
+                        history.replace(from);
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setOpenSnackBar(true);
@@ -113,7 +115,7 @@ export const SignUpForm = () => {
                 return signupWithEmailPassword({ email, password, displayName })
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace(DASHBOARD);
+                        history.replace(from);
                         addUser({
                             email,
                             displayName,

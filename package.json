@@ -58,6 +58,7 @@
     "react-router-dom": "^5.2.0",
     "react-router-transition": "^2.1.0",
     "react-scripts": "4.0.3",
+    "react-slick": "^0.28.1",
     "react-swipeable-views": "^0.14.0",
     "react-transition-group": "^4.4.2",
     "react-window": "^1.8.6",
@@ -108,6 +109,7 @@
   },
   "devDependencies": {
     "@types/faker": "^5.5.8",
+    "@types/react-slick": "^0.23.7",
     "@types/react-swipeable-views-utils": "^0.13.3",
     "@types/react-window": "^1.8.5",
     "env-cmd": "^10.1.0",

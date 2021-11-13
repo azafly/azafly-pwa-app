@@ -3,17 +3,16 @@ import { Stack } from '@mui/material';
 import { useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
-// queries and co
 import { DashboardLoaderSkeleton } from 'features/user-dashboard/loader-skeleton';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { EmptyCardContainer } from './empty-service';
 import { SideBar } from './side-bar';
 import { TransactionListContainer } from './transaction-list-container';
-
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
 
 import { useDashboardStyles, StyledBadge } from './classes';
+import WalletContainer from '../wallet/wallet-container';
 
 export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
@@ -94,16 +93,20 @@ export default function Dashboard() {
                 info={verificationEmailSent}
             />
             <Stack direction={'row'}>
-                <Hidden smDown>
+                <Hidden mdDown>
                     <SideBar />
                 </Hidden>
-
-                <Box sx={{ mb: 10, margin: 'auto', mt: 10 }}>
+                <Box className={classes.main}>
+                    <WalletContainer />
                     <Box>
-                        {transactionData && !transactions?.length && !loading && (
-                            <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
-                        )}
                         <div className={classes.dashboard_container}>
+                            {transactionData && !transactions?.length && !loading && (
+                                <EmptyCardContainer
+                                    emailLink={emailLink}
+                                    loading={loading}
+                                    handleSendVerificationEmail={handleSendVerificationEmail}
+                                />
+                            )}
                             {!!transactions?.length && <Typography className={classes.heading}>Your Transactions</Typography>}
                             {loading || !transactionData ? (
                                 <DashboardLoaderSkeleton />

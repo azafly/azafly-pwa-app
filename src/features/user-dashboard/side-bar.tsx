@@ -1,4 +1,3 @@
-import { Box } from '@mui/system';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
@@ -43,26 +42,16 @@ const sideMenu = [
 export const SideBar = () => {
     const classes = useSidebarStyles();
     return (
-        <Box
-            sx={{
-                height: '80vh',
-                overflowY: 'clip',
-                borderRadius: 4,
-                marginTop: '10vh',
-                marginLeft: '2vw'
-            }}
-        >
-            <Stack sx={{ pt: 20, m: 2 }} spacing={2} className={classes.item}>
-                {sideMenu.map(({ icon, label, route }) => {
-                    return (
-                        <Stack key={label + route} direction='row' className={classes.button} spacing={2}>
-                            <Button startIcon={icon} component={Link} to={route} classes={{ root: classes.button }} size={'large'}>
-                                {label}{' '}
-                            </Button>
-                        </Stack>
-                    );
-                })}
-            </Stack>
-        </Box>
+        <Stack sx={{ pt: 20, pl: 2, mr: 2 }} spacing={2} className={classes.item}>
+            {sideMenu.map(({ icon, label, route }) => {
+                return (
+                    <Stack key={label + route} direction='row' className={classes.button} spacing={2}>
+                        <Button startIcon={icon} component={Link} to={route} classes={{ root: classes.button }} size={'large'}>
+                            {label}{' '}
+                        </Button>
+                    </Stack>
+                );
+            })}
+        </Stack>
     );
 };

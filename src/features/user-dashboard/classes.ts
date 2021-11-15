@@ -6,10 +6,12 @@ export const useCardStyles = makeStyles((theme: Theme) =>
             cursor: 'pointer',
             borderRadius: 12,
             maxWidth: 1200,
+            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             marginBottom: 20,
             margin: 'auto',
             [theme.breakpoints.only('lg')]: {
-                marginRight: '-15vw'
+                marginLeft: '10vw',
+                width: '60vw'
             },
             [theme.breakpoints.down('sm')]: {
                 width: '90vw'
@@ -92,7 +94,8 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
             position: 'fixed',
             width: 250,
             flexGrow: 1,
-            marginRight: '3vw'
+            marginRight: '3vw',
+            paddingTop: '20vh'
         },
         button: {
             textDecoration: 'none',
@@ -113,7 +116,10 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             backgroundColor: theme.palette.background.default,
             margin: 'auto',
             flexDirection: 'column',
-            marginTop: '10vh'
+            marginTop: '10vh',
+            [theme.breakpoints.up('lg')]: {
+                width: '60vw'
+            }
         },
         main: {
             display: 'flex'
@@ -122,17 +128,17 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             marginBottom: 10,
             fontFamily: 'Nunito',
             fontWeight: 800,
-            marginTop: 10,
+            marginTop: '4em',
             color: theme.colors.textPrimary,
             [theme.breakpoints.up('md')]: {
-                marginTop: '2vh'
+                marginLeft: '10vw'
             },
+            [theme.breakpoints.only('lg')]: {},
             [theme.breakpoints.only('sm')]: {
                 marginLeft: '8vw'
             },
             [theme.breakpoints.only('xs')]: {
-                textAlign: 'center',
-                marginTop: '4vh'
+                textAlign: 'center'
             }
         },
         name: {
@@ -146,7 +152,6 @@ export const useEmptyCardStyles = makeStyles((theme: Theme) =>
         empty_card_root: {
             borderRadius: 12,
             margin: 'auto',
-            marginTop: '3vh',
             marginBottom: 20,
             maxWidth: 1200,
             [theme.breakpoints.only('lg')]: {

@@ -25,6 +25,12 @@ const useStyles = makeStyles((theme: Theme) =>
             bottom: -0,
             [theme.breakpoints.up('lg')]: {
                 display: 'none'
+            },
+            '& .MuiBottomNavigationAction-label.Mui-selected': {
+                fontSize: '0.85em'
+            },
+            '& .MuiBottomNavigationAction-label': {
+                fontSize: '0.85em'
             }
         },
         grow: {

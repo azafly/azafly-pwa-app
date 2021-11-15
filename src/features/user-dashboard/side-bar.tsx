@@ -1,4 +1,4 @@
-import { Box, Button, Paper } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';

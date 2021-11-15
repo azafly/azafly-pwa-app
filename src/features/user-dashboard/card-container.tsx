@@ -29,7 +29,7 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
     const classes = useCardStyles();
     const formattedAmount = formatCurrency({ currency, amount, countryCode: 'DE' });
     return (
-        <Card className={classes.dashboardCard__root}>
+        <Card elevation={0} className={classes.dashboardCard__root}>
             <CardContent>
                 <div className={classes.starter}>
                     <div className={classes.serviceName}>

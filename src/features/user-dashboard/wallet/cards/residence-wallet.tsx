@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         card_container: {
             padding: 10,
+            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             [theme.breakpoints.only('xs')]: {
                 width: '90vw',
                 margin: 'auto'

@@ -1,4 +1,3 @@
-import { Typography } from '@material-ui/core';
 import { memo } from 'react';
 
 import { CardContainer } from './card-container';
@@ -11,7 +10,6 @@ interface TransactionListContainerProps {
 export const TransactionListContainer = memo(function TransactionListContainer({ classes, transactions }: TransactionListContainerProps) {
     return (
         <>
-            <Typography className={classes.heading}>Your Transactions</Typography>
             {transactions?.map((transaction: any) => (
                 <CardContainer transactionData={transaction} key={transaction.id} />
             ))}

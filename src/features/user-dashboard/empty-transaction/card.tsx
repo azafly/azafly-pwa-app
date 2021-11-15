@@ -15,9 +15,8 @@ interface EmptyCardContainerProps {
     handleSendVerificationEmail: () => void;
     emailLink: ReactNode;
     loading: boolean;
-    isEmpty: boolean;
 }
-export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, handleSendVerificationEmail }: EmptyCardContainerProps) {
+export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, handleSendVerificationEmail, loading }: EmptyCardContainerProps) {
     const classes = useEmptyCardStyles();
     const {
         authState: { user }
@@ -27,7 +26,7 @@ export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, 
 
     return (
         <div className={classes.empty_card_root}>
-            {true && (
+            {!loading && (
                 <>
                     {!emailVerified && <VerificationRequestBox emailLink={emailLink} handleSendVerificationEmail={handleSendVerificationEmail} />}
                     <Card>

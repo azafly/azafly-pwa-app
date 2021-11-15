@@ -1,4 +1,4 @@
-import { Hidden, Modal } from '@material-ui/core';
+import { Hidden, Modal, Typography } from '@material-ui/core';
 import { useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
@@ -13,6 +13,7 @@ import WalletContainer from './wallet/wallet-container';
 
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
+import { DashboardLoaderSkeleton } from 'features/user-dashboard/loader-skeleton';
 
 export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
@@ -110,16 +111,16 @@ export default function Dashboard() {
                 </Hidden>
                 <div className={classes.dashboard_container}>
                     <WalletContainer handleOpen={handleOpenCreditCardModal} />
-                    {transactions?.length ? (
-                        <TransactionListContainer classes={classes} transactions={transactions ?? []} />
-                    ) : (
-                        <EmptyCardContainer
-                            emailLink={emailLink}
-                            isEmpty={!transactions?.length}
-                            loading={loading}
-                            handleSendVerificationEmail={handleSendVerificationEmail}
-                        />
+                    {!transactionData && <DashboardLoaderSkeleton />}
+                    {transactionData && Boolean(transactions?.length) && (
+                        <>
+                            <Typography className={classes.heading}>Your Transactions</Typography>
+                            <TransactionListContainer classes={classes} transactions={transactions ?? []} />
+                        </>
                     )}
+                    {!Boolean(transactions?.length) ? (
+                        <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
+                    ) : null}
                 </div>
             </div>
 

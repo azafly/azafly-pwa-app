@@ -14,7 +14,8 @@ const useStyles = makeStyles((theme: Theme) =>
             marginBottom: 20,
             margin: 'auto',
             [theme.breakpoints.only('lg')]: {
-                marginRight: '-15vw'
+                marginLeft: '10vw',
+                width: '60vw'
             },
             [theme.breakpoints.down('sm')]: {
                 width: '90vw'

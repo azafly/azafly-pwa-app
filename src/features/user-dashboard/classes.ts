@@ -144,7 +144,6 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
 export const useEmptyCardStyles = makeStyles((theme: Theme) =>
     createStyles({
         empty_card_root: {
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             borderRadius: 12,
             margin: 'auto',
             marginTop: '3vh',
@@ -153,7 +152,7 @@ export const useEmptyCardStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.only('lg')]: {
                 marginRight: '-15vw'
             },
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 width: '90vw'
             },
             '& svg': {

@@ -14,7 +14,7 @@ export const VerificationRequestBox = memo(function VerificationRequestBox({ ema
                 justifyContent: 'center',
                 marginRight: 10,
                 marginLeft: 10,
-                maxWidth: 900,
+                maxWidth: 1200,
                 margin: 'auto',
                 borderRadius: 3,
                 flexWrap: 'wrap',

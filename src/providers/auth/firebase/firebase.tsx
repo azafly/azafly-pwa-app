@@ -141,9 +141,6 @@ function useFirebaseProviderAuth() {
                     localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                     setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
                     const isFirstTimeUser = user.metadata.creationTime === user.metadata.lastSignInTime;
-                    if (isFirstTimeUser) {
-                        alert('Welcome');
-                    }
                 } else {
                     // Check if refresh is required.
                     const metadataRef = firebaseApp.database().ref('metadata/' + user.uid + '/refreshTime');

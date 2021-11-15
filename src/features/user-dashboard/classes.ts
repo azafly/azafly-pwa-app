@@ -4,18 +4,15 @@ export const useCardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboardCard__root: {
             cursor: 'pointer',
-            maxWidth: 1000,
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             borderRadius: 12,
-            margin: 'auto',
+            maxWidth: 1000,
             marginBottom: 20,
-            [theme.breakpoints.only('sm')]: {
-                width: '84vw',
-                padding: 10
+            margin: 'auto',
+            [theme.breakpoints.only('lg')]: {
+                marginRight: '-15vw'
             },
-            [theme.breakpoints.only('xs')]: {
-                width: '90vw',
-                padding: 0
+            [theme.breakpoints.down('sm')]: {
+                width: '90vw'
             }
         },
         summary_heading: {
@@ -86,16 +83,15 @@ export const StyledBadge = makeStyles(() =>
     })
 );
 
-export const useSidebarStyles = makeStyles(() =>
+export const useSidebarStyles = makeStyles((theme: Theme) =>
     createStyles({
         sidebar__root: {
             height: '100vh',
-
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
-            overflowY: 'clip',
             borderRadius: 4,
-            backgroundColor: 'white',
-            width: '25vw'
+            position: 'fixed',
+            width: 250,
+            flexGrow: 1,
+            marginRight: '3vw'
         },
         button: {
             textDecoration: 'none',
@@ -106,10 +102,6 @@ export const useSidebarStyles = makeStyles(() =>
                 fontWeight: 650,
                 fontSize: '1.1em'
             }
-        },
-        item: {
-            marginTop: '15vh',
-            width: '25vw'
         }
     })
 );
@@ -119,9 +111,11 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
         dashboard_container: {
             backgroundColor: theme.palette.background.default,
             margin: 'auto',
-            width: '100%',
             flexDirection: 'column',
-            position: 'relative'
+            marginTop: '10vh'
+        },
+        main: {
+            display: 'flex'
         },
         heading: {
             marginBottom: 10,
@@ -140,16 +134,6 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
                 marginTop: '4vh'
             }
         },
-        main: {
-            marginBottom: 10,
-            margin: 'auto',
-            marginTop: '10vh',
-            overflow: 'hidden',
-            [theme.breakpoints.up('md')]: {
-                width: '70vw',
-                marginLeft: 'auto'
-            }
-        },
         name: {
             marginTop: 100
         }
@@ -164,14 +148,6 @@ export const useEmptyCardStyles = makeStyles((theme: Theme) =>
             margin: 'auto',
             marginTop: '3vh',
             marginBottom: 20,
-            [theme.breakpoints.only('sm')]: {
-                width: '84vw',
-                padding: 10
-            },
-            [theme.breakpoints.only('xs')]: {
-                width: '90vw',
-                padding: 0
-            },
             '& svg': {
                 width: '80%',
                 height: '30vh',

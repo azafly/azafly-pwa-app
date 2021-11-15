@@ -1,18 +1,21 @@
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 import AddIcon from '@mui/icons-material/Add';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        credit_card__container: {
+        card_container: {
             padding: 10,
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)'
+            [theme.breakpoints.only('xs')]: {
+                width: '90vw',
+                margin: 'auto'
+            }
         },
         action: {
-            fontSize: 14,
+            fontSize: '0.75em',
             fontWeight: 700,
             textTransform: 'capitalize'
         },
@@ -20,26 +23,21 @@ const useStyles = makeStyles(() =>
             fontSize: '1.1rem',
             fontWeight: 700,
             fontFamily: 'Nunito'
-        },
-        cardNumber: {
-            fontSize: '1.3rem'
-        },
-        cvv: {},
-        expiryDate: {}
+        }
     })
 );
 
-export default function LocalWalletCard() {
+export default function ResidenceWalletCard() {
     const classes = useStyles();
     return (
-        <Card className={classes.credit_card__container}>
+        <Card className={classes.card_container}>
             <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography className={classes.typography} gutterBottom>
-                        <span style={{ fontSize: '1.2rem' }}> 🇳🇬 </span> NGN
+                        <span style={{ fontSize: '1.2rem' }}> 🇬🇧 </span> GBP
                     </Typography>
                     <Typography variant='body2' className={classes.typography}>
-                        {'₦750,789'}
+                        {'£1,340'}
                     </Typography>
                 </Box>
             </CardContent>

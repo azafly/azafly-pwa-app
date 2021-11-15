@@ -1,5 +1,5 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import AddIcon from '@mui/icons-material/Add';
 import PaymentsIcon from '@mui/icons-material/Payments';
@@ -7,16 +7,15 @@ import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        card_container: {
+        credit_card__container: {
             padding: 10,
-            width: '100%',
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             [theme.breakpoints.only('xs')]: {
-                width: '95%'
+                width: '90vw',
+                margin: 'auto'
             }
         },
         action: {
-            fontSize: 14,
+            fontSize: '0.75em',
             fontWeight: 700,
             textTransform: 'capitalize'
         },
@@ -28,17 +27,21 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export default function ResidenceWalletCard() {
+interface LocalWalletCardProps {
+    handleOpen: () => void;
+}
+
+export default function LocalWalletCard({ handleOpen }: LocalWalletCardProps) {
     const classes = useStyles();
     return (
-        <Card className={classes.card_container}>
+        <Card className={classes.credit_card__container}>
             <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography className={classes.typography} gutterBottom>
-                        <span style={{ fontSize: '1.2rem' }}> 🇬🇧 </span> GBP
+                        <span style={{ fontSize: '1.2rem' }}> 🇳🇬 </span> NGN
                     </Typography>
                     <Typography variant='body2' className={classes.typography}>
-                        {'£1,340'}
+                        {'₦750,789'}
                     </Typography>
                 </Box>
             </CardContent>
@@ -50,7 +53,7 @@ export default function ResidenceWalletCard() {
                     <Button endIcon={<FlipCameraAndroidIcon />} size='small' className={classes.action}>
                         convert
                     </Button>
-                    <Button endIcon={<PaymentsIcon />} size='small' className={classes.action}>
+                    <Button endIcon={<PaymentsIcon />} size='small' className={classes.action} onClick={handleOpen}>
                         Spend
                     </Button>
                 </Box>

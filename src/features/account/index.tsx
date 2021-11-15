@@ -3,25 +3,24 @@ import { useEffect, useState, useMemo, ChangeEvent } from 'react';
 import { useFormik } from 'formik';
 
 import { DefaultSnackbar } from 'components';
+import { FilesContainer } from './files-container';
 import { NavBar } from 'features/user-dashboard/nav-bar';
+import { ProfilePicture } from './profile-picture';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { timeout } from 'libs';
+import { UploadIconText } from './upload-icon-text';
 import { useFirebaseAuthContext, storage } from 'providers/auth/firebase';
 import { useGetCurrentUserByEmailQuery, useUpdateUserMutation } from 'api/generated/graphql';
 import { USER_ACCOUNT_FORM_FIELDS } from './utils';
-
-import { FilesContainer } from './files-container';
-import { ProfilePicture } from './profile-picture';
-import { UploadIconText } from './upload-icon-text';
 import { useStyles } from './classes';
 
 const UserAccount = () => {
-    const [isAuthStateIsLoading, setAuthLoadingState] = useState(false);
-    const [makeEditable, setEditable] = useState(false);
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
     const [files, setFiles] = useState<string[]>([]);
     const [fileUploadLoading, setFileUploadLoading] = useState(false);
+    const [isAuthStateIsLoading, setAuthLoadingState] = useState(false);
+    const [makeEditable, setEditable] = useState(false);
+    const [success, setSuccess] = useState('');
 
     const {
         authState: { user },
@@ -156,7 +155,7 @@ const UserAccount = () => {
                     <div className={classes.form_container}>
                         <form onSubmit={formik.handleSubmit}>
                             <Grid container spacing={3}>
-                                {USER_ACCOUNT_FORM_FIELDS.map(({ name, label }) => {
+                                {USER_ACCOUNT_FORM_FIELDS.map(({ name, label, helperText }) => {
                                     return (
                                         <Grid item xs={12} md={6} key={name}>
                                             <TextField
@@ -170,7 +169,14 @@ const UserAccount = () => {
                                                 value={formik.values[name as FormValue]}
                                                 onChange={formik.handleChange}
                                                 error={formik.touched[name as FormValue] && Boolean(formik.errors[name as FormValue])}
-                                                helperText={formik.touched[name as FormValue] && formik.errors[name as FormValue]}
+                                                helperText={
+                                                    !formik.touched[name as FormValue] && helperText
+                                                        ? helperText
+                                                        : formik.touched[name as FormValue] && formik.errors[name as FormValue]
+                                                }
+                                                FormHelperTextProps={{
+                                                    className: 'info'
+                                                }}
                                             />
                                         </Grid>
                                     );

@@ -24,7 +24,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         },
         files: {
             margin: 'auto',
-            '& img': {
+            '& a': {
                 width: '90%',
                 margin: 'auto',
                 height: 300,
@@ -36,7 +36,9 @@ export const useStyles = makeStyles((theme: Theme) =>
             flexDirection: 'column',
             justifyContent: 'center',
             margin: '3vh 5vw',
-            [theme.breakpoints.down('md')]: {}
+            '& .info': {
+                color: '#4990A4'
+            }
         },
         edit: {
             cursor: 'pointer',

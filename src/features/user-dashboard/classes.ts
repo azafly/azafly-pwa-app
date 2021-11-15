@@ -4,34 +4,22 @@ export const useCardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboardCard__root: {
             cursor: 'pointer',
-            maxWidth: 1000,
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             borderRadius: 12,
-            margin: 'auto',
+            maxWidth: 1200,
+            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             marginBottom: 20,
-            [theme.breakpoints.up('md')]: {
-                width: '74vw',
-                padding: 20
+            margin: 'auto',
+            [theme.breakpoints.only('lg')]: {
+                marginLeft: '10vw',
+                width: '60vw'
             },
-            [theme.breakpoints.only('sm')]: {
-                width: '84vw',
-                padding: 10
-            },
-            [theme.breakpoints.only('xs')]: {
-                width: '90vw',
-                padding: 0
+            [theme.breakpoints.down('sm')]: {
+                width: '90vw'
             }
         },
         summary_heading: {
             fontWeight: 800,
-            paddingBottom: 30
-        },
-        divider: {
-            width: '150%',
-            backgroundColor: 'rgb(212, 227, 235)',
-            border: 'medium none',
-            height: 2,
-            margin: '30px -100px'
+            padding: 30
         },
         serviceInitiated: {
             backgroundColor: '#C5FAAC',
@@ -84,6 +72,7 @@ export const useInfoTextStyles = makeStyles((theme: Theme) =>
 export const StyledBadge = makeStyles(() =>
     createStyles({
         badge: {
+            fontSize: '1.1rem',
             animation: '$ripple 1.4s infinite ease-in-out'
         },
         '@keyframes ripple': {
@@ -97,8 +86,17 @@ export const StyledBadge = makeStyles(() =>
     })
 );
 
-export const useSidebarStyles = makeStyles(() =>
+export const useSidebarStyles = makeStyles((theme: Theme) =>
     createStyles({
+        sidebar__root: {
+            height: '100vh',
+            borderRadius: 4,
+            position: 'fixed',
+            width: 250,
+            flexGrow: 1,
+            marginRight: '3vw',
+            paddingTop: '20vh'
+        },
         button: {
             textDecoration: 'none',
             '& a': {
@@ -108,10 +106,6 @@ export const useSidebarStyles = makeStyles(() =>
                 fontWeight: 650,
                 fontSize: '1.1em'
             }
-        },
-        item: {
-            width: '25ch',
-            margin: 'auto'
         }
     })
 );
@@ -121,26 +115,30 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
         dashboard_container: {
             backgroundColor: theme.palette.background.default,
             margin: 'auto',
-            width: '100%',
             flexDirection: 'column',
-            position: 'relative'
+            marginTop: '10vh',
+            [theme.breakpoints.up('lg')]: {
+                width: '60vw'
+            }
+        },
+        main: {
+            display: 'flex'
         },
         heading: {
-            marginBottom: 30,
-            fontSize: '2rem',
+            marginBottom: 10,
             fontFamily: 'Nunito',
             fontWeight: 800,
+            marginTop: '4em',
             color: theme.colors.textPrimary,
             [theme.breakpoints.up('md')]: {
-                marginLeft: '13vw',
-                marginTop: '8vh'
+                marginLeft: '10vw'
             },
+            [theme.breakpoints.only('lg')]: {},
             [theme.breakpoints.only('sm')]: {
                 marginLeft: '8vw'
             },
             [theme.breakpoints.only('xs')]: {
-                textAlign: 'center',
-                marginTop: '4vh'
+                textAlign: 'center'
             }
         },
         name: {
@@ -152,28 +150,24 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
 export const useEmptyCardStyles = makeStyles((theme: Theme) =>
     createStyles({
         empty_card_root: {
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             borderRadius: 12,
             margin: 'auto',
-            marginTop: '3vh',
             marginBottom: 20,
-            [theme.breakpoints.up('md')]: {
-                width: '74vw',
-                padding: 20
+            maxWidth: 1200,
+            [theme.breakpoints.only('lg')]: {
+                marginRight: '-15vw'
             },
-            [theme.breakpoints.only('sm')]: {
-                width: '84vw',
-                padding: 10
-            },
-            [theme.breakpoints.only('xs')]: {
-                width: '90vw',
-                padding: 0
+            [theme.breakpoints.down('md')]: {
+                width: '90vw'
             },
             '& svg': {
-                width: '80%',
-                height: '30vh',
-                margin: 'auto'
+                height: '20vh',
+                margin: 'auto',
+                width: '80%'
             }
+        },
+        card: {
+            marginTop: 20
         },
         button: {
             textTransform: 'none',

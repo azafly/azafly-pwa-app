@@ -4,18 +4,15 @@ import { CardContainer } from './card-container';
 
 interface TransactionListContainerProps {
     transactions: readonly any[];
+    classes: Record<string, string>;
 }
 
-export const TransactionListContainer = memo(function TransactionListContainer({ transactions }: TransactionListContainerProps) {
+export const TransactionListContainer = memo(function TransactionListContainer({ classes, transactions }: TransactionListContainerProps) {
     return (
         <>
-            {!!transactions.length && (
-                <>
-                    {transactions?.map((transaction: any) => (
-                        <CardContainer transactionData={transaction} key={transaction.id} />
-                    ))}
-                </>
-            )}
+            {transactions?.map((transaction: any) => (
+                <CardContainer transactionData={transaction} key={transaction.id} />
+            ))}
         </>
     );
 });

@@ -1,5 +1,6 @@
-import { memo } from 'react';
 import { Grid } from '@material-ui/core';
+import { memo } from 'react';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 interface FilesContainerProps {
     files: string[];
@@ -12,7 +13,10 @@ export const FilesContainer = memo(function FilesContainer({ files, className }:
             {files?.map((file: string) => {
                 return (
                     <Grid key={file} item xs={12} md={6}>
-                        <img src={file} alt={'kyc-files'} />;
+                        <a href={file} target='_blank' rel='noopener noreferrer'>
+                            {' '}
+                            Identity Document <OpenInNewIcon />{' '}
+                        </a>
                     </Grid>
                 );
             })}

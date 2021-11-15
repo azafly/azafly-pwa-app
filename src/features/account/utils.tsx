@@ -1,31 +1,22 @@
 export const USER_ACCOUNT_FORM_FIELDS = [
     {
         label: 'Full Name',
-        name: 'fullname'
+        name: 'fullname',
+        helperText: 'Your name as it appears on your ID'
     },
     {
         label: 'Address',
-        name: 'address'
+        name: 'address',
+        helperText: ''
     },
     {
         label: 'Phone number',
-        name: 'phone'
+        name: 'phone',
+        helperText: ''
     },
     {
         label: 'Date of Birth',
-        name: 'dob'
+        name: 'dob',
+        helperText: ''
     }
-    // {
-    //     label: 'By Whom',
-    //     name: 'by',
-    //     type: 'select'
-    // },
-    // {
-    //     label: 'Terms and Condition',
-    //     name: 'terms'
-    // },
-    // {
-    //     label: 'Purpose',
-    //     name: 'purpose'
-    // }
 ];

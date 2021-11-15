@@ -34,13 +34,15 @@ export const SignInForm = () => {
 
     const handleSignin = (method: SignInMethod, email?: string, password?: string) => {
         const DASHBOARD = '/dashboard';
+        const from = location.state?.from?.pathname || DASHBOARD;
+
         setAuthLoadingState(true);
         switch (method) {
             case SignInMethod.FACEBOOK:
                 signInWithFacebook()
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace(DASHBOARD);
+                        history.replace(from);
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setAuthLoadingState(false);
@@ -52,7 +54,7 @@ export const SignInForm = () => {
                 signInWithGoogle()
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace(DASHBOARD);
+                        history.replace(from);
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setAuthLoadingState(false);
@@ -64,7 +66,7 @@ export const SignInForm = () => {
                 signinWithEmailPassword(email, password)
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace(DASHBOARD);
+                        history.replace(from);
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setAuthLoadingState(false);

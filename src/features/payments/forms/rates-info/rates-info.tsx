@@ -57,7 +57,7 @@ export function RatesInfo() {
         paymentError
     } = usePaymentContext();
 
-    const getOptionLabel = (option: Country) => `${option.emoji ?? ''} ${option.name} - ${option.currency.symbol} ${option.currency.code}`;
+    const getOptionLabel = (option: Country) => `${option.emoji ?? ''} ${' '}${option.currency.code}`;
     const getOptionDisabled = (option: Country) => option.isComingSoon || option.isNotSupported;
 
     return (

@@ -1,19 +1,19 @@
-import { Box, Hidden, Typography } from '@material-ui/core';
-import { Stack } from '@mui/material';
+import { Hidden, Modal, Typography } from '@material-ui/core';
 import { useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
-// queries and co
-import { DashboardLoaderSkeleton } from 'features/user-dashboard/loader-skeleton';
+import { CreditCard } from 'features/user-dashboard/wallet/cards/credit-card';
+import { EmptyCardContainer } from './empty-transaction/card';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
-import { EmptyCardContainer } from './empty-service';
 import { SideBar } from './side-bar';
 import { TransactionListContainer } from './transaction-list-container';
+import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import { useDashboardStyles, StyledBadge } from './classes';
+import WalletContainer from './wallet/wallet-container';
 
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
-
-import { useDashboardStyles, StyledBadge } from './classes';
+import { DashboardLoaderSkeleton } from 'features/user-dashboard/loader-skeleton';
 
 export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
@@ -21,6 +21,9 @@ export default function Dashboard() {
     const [hidden, setHidden] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
+    const [openCreditCardModal, setOpenCreditCardModal] = useState(false);
+    const handleOpenCreditCardModal = () => setOpenCreditCardModal(true);
+    const handleCloseCreditCardModal = () => setOpenCreditCardModal(false);
 
     const {
         authState: { user }
@@ -73,12 +76,12 @@ export default function Dashboard() {
     };
 
     const emailLink = isSendingLink ? (
-        <DashboardLoaderSkeleton />
+        <ThreeDots styles={{ background: 'green' }} />
     ) : (
-        <>
-            <ErrorIcon className={ripples.badge} />
-            {' You need to verify your email to make payments. Click here to get a new Verification Email'}
-        </>
+        <div>
+            <ErrorIcon className={ripples.badge} style={{ width: 20, height: 20 }} />
+            <span style={{ fontWeight: 500 }}> {' You need to verify your email to make payments. Click here to get a new Verification Email'} </span>
+        </div>
     );
 
     const alertSeverity = verificationEmailSent.includes('Error') ? 'error' : 'success';
@@ -93,34 +96,41 @@ export default function Dashboard() {
                 title={alertTitle}
                 info={verificationEmailSent}
             />
-            <Stack direction={'row'}>
-                <Hidden smDown>
+            <Modal
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                open={openCreditCardModal}
+                onClose={handleCloseCreditCardModal}
+                aria-labelledby='credit-card'
+                aria-describedby='credit-card-payment'
+            >
+                <CreditCard />
+            </Modal>
+            <div className={classes.main}>
+                <Hidden mdDown>
                     <SideBar />
                 </Hidden>
+                <div className={classes.dashboard_container}>
+                    <WalletContainer handleOpen={handleOpenCreditCardModal} />
+                    {!transactionData && <DashboardLoaderSkeleton />}
+                    {transactionData && Boolean(transactions?.length) && (
+                        <>
+                            <Typography className={classes.heading}>Your Transactions</Typography>
+                            <TransactionListContainer classes={classes} transactions={transactions ?? []} />
+                        </>
+                    )}
+                    {!Boolean(transactions?.length) ? (
+                        <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
+                    ) : null}
+                </div>
+            </div>
 
-                <Box sx={{ mb: 10, margin: 'auto', mt: 10 }}>
-                    <Box>
-                        {transactionData && !transactions?.length && !loading && (
-                            <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
-                        )}
-                        <div className={classes.dashboard_container}>
-                            {!!transactions?.length && <Typography className={classes.heading}>Your Transactions</Typography>}
-                            {loading || !transactionData ? (
-                                <DashboardLoaderSkeleton />
-                            ) : (
-                                <TransactionListContainer transactions={transactions ?? []} />
-                            )}
-                            <SpeedDialTooltip
-                                handleOpenSpeedDial={handleOpenSpeedDial}
-                                handleSpeedDialClose={handleSpeedDialClose}
-                                openSpeedDial={openSpeedDial}
-                                hidden={hidden}
-                                handleSpeedDialVisibility={handleSpeedDialVisibility}
-                            />
-                        </div>
-                    </Box>
-                </Box>
-            </Stack>
+            <SpeedDialTooltip
+                handleOpenSpeedDial={handleOpenSpeedDial}
+                handleSpeedDialClose={handleSpeedDialClose}
+                openSpeedDial={openSpeedDial}
+                hidden={hidden}
+                handleSpeedDialVisibility={handleSpeedDialVisibility}
+            />
         </>
     );
 }

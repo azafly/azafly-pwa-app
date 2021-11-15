@@ -76,8 +76,8 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "generate": "graphql-codegen --config codegen.js",
     "prettier": "prettier src/**/*.{ts,tsx,js,json,d.ts}",
-    "build:staging": "env-cmd -f .env.staging react-app-rewired build && firebase deploy -P staging",
-    "build:prod": "env-cmd -f .env.production react-app-rewired build && firebase deploy -P prod",
+    "deploy:staging": "env-cmd -f .env.staging react-app-rewired build && firebase deploy -P staging",
+    "deploy:prod": "env-cmd -f .env.production react-app-rewired build && firebase deploy -P prod",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "eslintConfig": {
@@ -108,6 +108,7 @@
   },
   "devDependencies": {
     "@types/faker": "^5.5.8",
+    "@types/react-slick": "^0.23.7",
     "@types/react-swipeable-views-utils": "^0.13.3",
     "@types/react-window": "^1.8.5",
     "env-cmd": "^10.1.0",

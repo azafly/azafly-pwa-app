@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 }
             },
             '& .info': {
-                color: 'blue'
+                color: '#4990A4'
             }
         }
     })

@@ -21,13 +21,12 @@ export const VerificationRequestBox = memo(function VerificationRequestBox({ ema
                 padding: 10,
                 border: '1px solid ',
                 cursor: 'pointer',
-                width: '90vw',
-                marginTop: '2vh',
-                background: '#FFEBE9'
+                background: '#FFEBE9',
+                marginBottom: 30
             }}
             onClick={handleSendVerificationEmail}
         >
-            <Box fontWeight={500}>{emailLink}</Box>
+            {emailLink}
         </Box>
     );
 });

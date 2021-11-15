@@ -7,7 +7,18 @@ import ResidenceWalletCard from './cards/residence-wallet';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         reviewSlider_container: {
-            marginTop: 40
+            marginTop: 40,
+            cursor: 'pointer',
+            borderRadius: 12,
+            maxWidth: 1200,
+            marginBottom: 20,
+            margin: 'auto',
+            [theme.breakpoints.only('lg')]: {
+                marginRight: '-15vw'
+            },
+            [theme.breakpoints.down('sm')]: {
+                width: '90vw'
+            }
         },
         heading: {
             fontWeight: 750,

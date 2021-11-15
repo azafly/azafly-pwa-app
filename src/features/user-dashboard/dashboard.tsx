@@ -1,9 +1,9 @@
-import { Hidden, Modal, Paper } from '@material-ui/core';
+import { Hidden, Modal } from '@material-ui/core';
 import { useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { CreditCard } from 'features/user-dashboard/wallet/cards/credit-card';
-import { EmptyCardContainer } from './empty-service';
+import { EmptyCardContainer } from './empty-transaction/card';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { SideBar } from './side-bar';
 import { TransactionListContainer } from './transaction-list-container';
@@ -77,10 +77,10 @@ export default function Dashboard() {
     const emailLink = isSendingLink ? (
         <ThreeDots styles={{ background: 'green' }} />
     ) : (
-        <>
-            <ErrorIcon className={ripples.badge} />
-            {' You need to verify your email to make payments. Click here to get a new Verification Email'}
-        </>
+        <div>
+            <ErrorIcon className={ripples.badge} style={{ width: 20, height: 20 }} />
+            <span style={{ fontWeight: 500 }}> {' You need to verify your email to make payments. Click here to get a new Verification Email'} </span>
+        </div>
     );
 
     const alertSeverity = verificationEmailSent.includes('Error') ? 'error' : 'success';

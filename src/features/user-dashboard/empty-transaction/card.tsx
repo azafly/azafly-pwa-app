@@ -7,7 +7,7 @@ import { EmptyServiceSvgComponent } from 'components/illustrations';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { VerificationRequestBox } from './verification-request-box';
 
-import { useEmptyCardStyles } from './classes';
+import { useEmptyCardStyles } from '../classes';
 
 const services = ['WES', 'IELTS', 'School Fees', 'Medical Bills', 'Others'];
 
@@ -26,11 +26,11 @@ export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, 
     const emailVerified = user?.emailVerified;
 
     return (
-        <>
+        <div className={classes.empty_card_root}>
             {true && (
                 <>
                     {!emailVerified && <VerificationRequestBox emailLink={emailLink} handleSendVerificationEmail={handleSendVerificationEmail} />}
-                    <Card className={classes.empty_card_root}>
+                    <Card>
                         <Typography variant={'h5'} className={classes.nothing}>
                             {`You do not have any transactions yet`}{' '}
                         </Typography>
@@ -89,6 +89,6 @@ export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, 
                     </Card>
                 </>
             )}
-        </>
+        </div>
     );
 });

@@ -5,7 +5,7 @@ export const useCardStyles = makeStyles((theme: Theme) =>
         dashboardCard__root: {
             cursor: 'pointer',
             borderRadius: 12,
-            maxWidth: 1000,
+            maxWidth: 1200,
             marginBottom: 20,
             margin: 'auto',
             [theme.breakpoints.only('lg')]: {
@@ -70,6 +70,7 @@ export const useInfoTextStyles = makeStyles((theme: Theme) =>
 export const StyledBadge = makeStyles(() =>
     createStyles({
         badge: {
+            fontSize: '1.1rem',
             animation: '$ripple 1.4s infinite ease-in-out'
         },
         '@keyframes ripple': {
@@ -148,11 +149,21 @@ export const useEmptyCardStyles = makeStyles((theme: Theme) =>
             margin: 'auto',
             marginTop: '3vh',
             marginBottom: 20,
+            maxWidth: 1200,
+            [theme.breakpoints.only('lg')]: {
+                marginRight: '-15vw'
+            },
+            [theme.breakpoints.down('sm')]: {
+                width: '90vw'
+            },
             '& svg': {
-                width: '80%',
-                height: '30vh',
-                margin: 'auto'
+                height: '20vh',
+                margin: 'auto',
+                width: '80%'
             }
+        },
+        card: {
+            marginTop: 20
         },
         button: {
             textTransform: 'none',

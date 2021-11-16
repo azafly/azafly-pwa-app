@@ -2,16 +2,27 @@ import * as yup from 'yup';
 import { NativeSelect } from '@mui/material';
 import { TextField, InputLabel } from '@material-ui/core';
 
+import { Country, State, City } from 'country-state-city';
 import { transformCase } from 'libs';
+import { Key } from 'react';
 interface PaymentInfo {
     label: string;
     name: string;
+    typePicker?: string;
     type?: 'text' | 'textArea' | 'select' | 'checkbox' | 'email' | 'number';
     yupType?: 'string' | 'email' | 'bool';
     errorMessage?: string;
     isOptional: boolean;
     items?: string[];
+    picker?: any;
+    selector?: boolean;
     helperText?: string;
+}
+
+interface handlerType {
+    state: string;
+    city: string;
+    country: string;
 }
 export type BY_WHOM = 'self' | 'others';
 
@@ -46,17 +57,29 @@ export const PAYMENT_INFO: PaymentInfo[] = [
         isOptional: false
     },
     {
-        label: 'City',
-        name: 'city',
-        errorMessage: 'Please select city',
-        isOptional: false
+        label: 'Country',
+        name: 'country',
+        typePicker: 'country',
+        errorMessage: 'Please select country',
+        isOptional: false,
+        selector: true
     },
     {
         label: 'State',
         name: 'state',
+        typePicker: 'state',
         errorMessage: 'Please select a state',
-        isOptional: false
+        isOptional: false,
+        selector: true
     },
+    {
+        label: 'City',
+        name: 'city',
+        errorMessage: 'Please select city',
+        isOptional: false,
+        selector: true
+    },
+
     {
         label: 'Phone number',
         name: 'phone',
@@ -95,13 +118,14 @@ export const initialValues = () => {
     });
     return values;
 };
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 export const validationSchema = yup.object().shape({
     fullname: yup.string().required('Enter a your family name'),
     address: yup.string().required('Enter your Address '),
+    country: yup.string().required('Enter your country. This is for data compliance purpose only.'),
     city: yup.string().required('Enter your city. This is for data compliance purpose only.'),
-    state: yup.string().required('Enter your State This is for data compliance purpose only.'),
-    phone: yup.string().required('Enter a valid phone number.'),
+    phone: yup.string().matches(phoneRegExp, 'Phone number is not valid').required('Enter a valid phone number.'),
     references: yup.string().required('This is where you enter details about the payment'),
     by: yup.string().oneOf(['self', 'others'], 'Please select one'),
     purpose: yup
@@ -109,8 +133,14 @@ export const validationSchema = yup.object().shape({
         .oneOf(['medical', 'education', 'software', 'mortgage', 'family_and_friends', 'school_fees', 'others'], 'Please select one')
         .required('This is where you enter details about the payment')
 });
+interface generateInput {
+    props: any;
+    option: PaymentInfo;
+    isError?: boolean;
+    handler: Record<string, string>;
+}
 
-export const generateInputType = (props: any, option: PaymentInfo, isError?: boolean) => {
+export const generateInputType = ({ props, option, isError, handler }: generateInput) => {
     if (option?.type === 'select') {
         const label = option.name === 'by' ? `Who's making payment` : `Select Purpose`;
         const defaultValue: PURPOSE | BY_WHOM = option.name === 'by' ? 'self' : 'education';
@@ -129,6 +159,57 @@ export const generateInputType = (props: any, option: PaymentInfo, isError?: boo
                 </NativeSelect>
             </>
         );
+    } else if (option?.selector === true) {
+        if (option?.typePicker === 'country') {
+            return (
+                <>
+                    <InputLabel id={option?.label}>{option?.label}</InputLabel>
+                    <NativeSelect label={option?.label} labelId='' id={option?.label} {...props} name={option?.name} style={{ width: '100%' }}>
+                        <option key={''} value={'Select country'} defaultValue={'Select country'}>
+                            {''}
+                        </option>
+
+                        {Country.getAllCountries()?.map((item: any) => (
+                            <option key={item.isoCode} value={item.isoCode}>
+                                {transformCase(item.name)}
+                            </option>
+                        ))}
+                    </NativeSelect>
+                </>
+            );
+        } else if (option?.typePicker === 'state') {
+            return (
+                <>
+                    <InputLabel id={option?.label}>{option?.label}</InputLabel>
+                    <NativeSelect label={option?.label} labelId='' id={option?.label} {...props} name={option?.name} style={{ width: '100%' }}>
+                        <option key={''} value={'Select country'} defaultValue={'Select country'}>
+                            {''}
+                        </option>
+                        {State.getStatesOfCountry(handler?.country)?.map((item: any) => (
+                            <option key={item.name} value={item.isCode}>
+                                {transformCase(item.name)}
+                            </option>
+                        ))}
+                    </NativeSelect>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <InputLabel id={option?.label}>{option?.label}</InputLabel>
+                    <NativeSelect label={option?.label} labelId='' id={option?.label} {...props} name={option?.name} style={{ width: '100%' }}>
+                        <option key={''} value={'Select country'} defaultValue={'Select country'}>
+                            {''}
+                        </option>
+                        {City.getCitiesOfCountry(handler?.country)?.map((item: any) => (
+                            <option key={item.name} value={item.name}>
+                                {transformCase(item.name)}
+                            </option>
+                        ))}
+                    </NativeSelect>
+                </>
+            );
+        }
     } else {
         return (
             <TextField

@@ -76,18 +76,20 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
                         const { label, name, helperText } = option;
                         return (
                             <Grid item xs={12} sm={6} className={classes.formControl} key={label}>
-                                {generateInputType(
-                                    {
+                                {generateInputType({
+                                    props: {
                                         onChange: formik.handleChange,
                                         error: formik.touched[name] && Boolean(formik.errors[name]),
                                         helperText: !formik.touched[name] && helperText ? helperText : formik.touched[name] && formik.errors[name]
                                     },
                                     option,
-                                    formik.touched[name] && Boolean(formik.errors[name])
-                                )}
+                                    isError: formik.touched[name] && Boolean(formik.errors[name]),
+                                    handler: formik.values
+                                })}
                             </Grid>
                         );
                     })}
+
                     <Button color='primary' variant='contained' fullWidth type='submit' style={{ marginTop: 10 }}>
                         Submit
                     </Button>

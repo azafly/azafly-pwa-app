@@ -1,4 +1,4 @@
-import { Hidden, Modal, Typography } from '@material-ui/core';
+import { Hidden, Modal } from '@material-ui/core';
 import { useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
@@ -80,7 +80,7 @@ export default function Dashboard() {
     ) : (
         <div>
             <ErrorIcon className={ripples.badge} style={{ width: 20, height: 20 }} />
-            <span style={{ fontWeight: 500 }}> {' You need to verify your email to make payments. Click here to get a new Verification Email'} </span>
+            <span style={{ fontWeight: 500 }}> {' Please  verify your email to make payments. Click here to get a new Verification Email'} </span>
         </div>
     );
 
@@ -111,16 +111,11 @@ export default function Dashboard() {
                 </Hidden>
                 <div className={classes.dashboard_container}>
                     <WalletContainer handleOpen={handleOpenCreditCardModal} />
-                    {!transactionData && <DashboardLoaderSkeleton />}
-                    {transactionData && Boolean(transactions?.length) && (
-                        <>
-                            <Typography className={classes.heading}>Your Transactions</Typography>
-                            <TransactionListContainer classes={classes} transactions={transactions ?? []} />
-                        </>
-                    )}
-                    {!Boolean(transactions?.length) ? (
+                    {!transactionData && loading && <DashboardLoaderSkeleton />}
+                    {transactionData && <TransactionListContainer classes={classes} transactions={transactions ?? []} />}
+                    {!Boolean(transactions?.length) && (
                         <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
-                    ) : null}
+                    )}
                 </div>
             </div>
 

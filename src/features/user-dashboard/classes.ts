@@ -155,7 +155,8 @@ export const useEmptyCardStyles = makeStyles((theme: Theme) =>
             marginBottom: 20,
             maxWidth: 1200,
             [theme.breakpoints.only('lg')]: {
-                marginRight: '-15vw'
+                marginLeft: '10vw',
+                width: '60vw'
             },
             [theme.breakpoints.down('md')]: {
                 width: '90vw'

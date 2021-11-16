@@ -16,9 +16,12 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         action: {
-            fontSize: '0.75em',
+            fontSize: '0.95em',
             fontWeight: 700,
-            textTransform: 'capitalize'
+            textTransform: 'capitalize',
+            [theme.breakpoints.only('sm')]: {
+                fontSize: '0.85em'
+            }
         },
         typography: {
             fontSize: '1.1rem',

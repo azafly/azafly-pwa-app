@@ -1,5 +1,4 @@
-import { Box } from '@mui/system';
-import { Button } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -43,16 +42,8 @@ const sideMenu = [
 export const SideBar = () => {
     const classes = useSidebarStyles();
     return (
-        <Box
-            sx={{
-                height: '80vh',
-                overflowY: 'clip',
-                borderRadius: 4,
-                marginTop: '10vh',
-                marginLeft: '2vw'
-            }}
-        >
-            <Stack sx={{ pt: 20, m: 2 }} spacing={2} className={classes.item}>
+        <Paper className={classes.sidebar__root}>
+            <Stack sx={{ pt: 20, pl: 2, mr: 2 }} spacing={2}>
                 {sideMenu.map(({ icon, label, route }) => {
                     return (
                         <Stack key={label + route} direction='row' className={classes.button} spacing={2}>
@@ -63,6 +54,6 @@ export const SideBar = () => {
                     );
                 })}
             </Stack>
-        </Box>
+        </Paper>
     );
 };

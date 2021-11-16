@@ -29,7 +29,7 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
     const classes = useCardStyles();
     const formattedAmount = formatCurrency({ currency, amount, countryCode: 'DE' });
     return (
-        <Card className={classes.dashboardCard__root}>
+        <Card elevation={0} className={classes.dashboardCard__root}>
             <CardContent>
                 <div className={classes.starter}>
                     <div className={classes.serviceName}>
@@ -48,7 +48,6 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
                 <Box onClick={handleExpandClick}>
                     <InfoText text={data.infoText} />
                 </Box>
-                <div className={classes.divider} />
                 <Collapse in={expanded} timeout='auto' unmountOnExit>
                     <Typography variant='h6' color='textSecondary' align={'center'} className={classes.summary_heading}>
                         Your progress summary

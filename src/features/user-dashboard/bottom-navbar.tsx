@@ -6,7 +6,6 @@ import { useHistory } from 'react-router';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import HomeSharp from '@material-ui/icons/HomeSharp';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PaymentIcon from '@mui/icons-material/Payment';
@@ -24,8 +23,14 @@ const useStyles = makeStyles((theme: Theme) =>
             zIndex: 9999,
             left: 0,
             bottom: -0,
-            [theme.breakpoints.up('md')]: {
+            [theme.breakpoints.up('lg')]: {
                 display: 'none'
+            },
+            '& .MuiBottomNavigationAction-label.Mui-selected': {
+                fontSize: '0.85em'
+            },
+            '& .MuiBottomNavigationAction-label': {
+                fontSize: '0.85em'
             }
         },
         grow: {

@@ -14,20 +14,19 @@ export const VerificationRequestBox = memo(function VerificationRequestBox({ ema
                 justifyContent: 'center',
                 marginRight: 10,
                 marginLeft: 10,
-                maxWidth: 900,
+                maxWidth: 1200,
                 margin: 'auto',
                 borderRadius: 3,
                 flexWrap: 'wrap',
                 padding: 10,
                 border: '1px solid ',
                 cursor: 'pointer',
-                width: '90vw',
-                marginTop: '2vh',
-                background: '#FFEBE9'
+                background: '#FFEBE9',
+                marginBottom: 30
             }}
             onClick={handleSendVerificationEmail}
         >
-            <Box fontWeight={500}>{emailLink}</Box>
+            {emailLink}
         </Box>
     );
 });

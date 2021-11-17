@@ -1,7 +1,7 @@
 {
   "theme_color": "#4990A4",
   "background_color": "#4990A4",
-  "display": "standalone",
+  "display": "fullscreen",
   "scope": "/",
   "start_url": "/",
   "name": "Lucqax",

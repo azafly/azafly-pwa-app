@@ -10,6 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: 'yarn && yarn deploy:staging'
+      - env: 
+          REACT_APP_CLIENT_API_TOKEN:  '${{ secrets.REACT_APP_CLIENT_API_TOKEN }}'
+          REACT_APP_FIREBASE_API_KEY:  '${{ secrets.REACT_APP_FIREBASE_API_KEY }}'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.REPO_TOKEN }}'

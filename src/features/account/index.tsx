@@ -4,7 +4,6 @@ import { useFormik } from 'formik';
 
 import { DefaultSnackbar } from 'components';
 import { FilesContainer } from './files-container';
-import { NavBar } from 'features/user-dashboard/nav-bar';
 import { ProfilePicture } from './profile-picture';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { timeout } from 'libs';
@@ -12,6 +11,8 @@ import { UploadIconText } from './upload-icon-text';
 import { useFirebaseAuthContext, storage } from 'providers/auth/firebase';
 import { useGetCurrentUserByEmailQuery, useUpdateUserMutation } from 'api/generated/graphql';
 import { USER_ACCOUNT_FORM_FIELDS } from './utils';
+import useGeolocation from 'hooks/use-geolocation';
+
 import { useStyles } from './classes';
 
 const UserAccount = () => {
@@ -21,6 +22,10 @@ const UserAccount = () => {
     const [isAuthStateIsLoading, setAuthLoadingState] = useState(false);
     const [makeEditable, setEditable] = useState(false);
     const [success, setSuccess] = useState('');
+
+    const { location } = useGeolocation();
+
+    console.log(location);
 
     const {
         authState: { user },
@@ -133,73 +138,69 @@ const UserAccount = () => {
     */
 
     return (
-        <>
-            <Box sx={{ mb: 10 }}></Box>
-            <NavBar />
-            <Slide direction='right' in={true} mountOnEnter unmountOnExit appear timeout={800}>
-                <div className={classes.user_account__root}>
-                    <DefaultSnackbar
-                        open={showAlert}
-                        handleClose={handleCloseSnackBar}
-                        severity={alertSeverity}
-                        title={alertTitle}
-                        info={success || error}
-                    />
-                    <ProfilePicture
-                        classes={classes}
-                        isEditable={makeEditable}
-                        handleFileUpload={handleUpload}
-                        setIsEditable={setEditable}
-                        fileUploadIsLoading={fileUploadLoading}
-                    />
-                    <div className={classes.form_container}>
-                        <form onSubmit={formik.handleSubmit}>
-                            <Grid container spacing={3}>
-                                {USER_ACCOUNT_FORM_FIELDS.map(({ name, label, helperText }) => {
-                                    return (
-                                        <Grid item xs={12} md={6} key={name}>
-                                            <TextField
-                                                id={name}
-                                                name={name}
-                                                className={classes.input}
-                                                defaultValue={name}
-                                                label={label}
-                                                disabled={!makeEditable}
-                                                type={name === 'dob' ? 'date' : 'text'}
-                                                value={formik.values[name as FormValue]}
-                                                onChange={formik.handleChange}
-                                                error={formik.touched[name as FormValue] && Boolean(formik.errors[name as FormValue])}
-                                                helperText={
-                                                    !formik.touched[name as FormValue] && helperText
-                                                        ? helperText
-                                                        : formik.touched[name as FormValue] && formik.errors[name as FormValue]
-                                                }
-                                                FormHelperTextProps={{
-                                                    className: 'info'
-                                                }}
-                                            />
-                                        </Grid>
-                                    );
-                                })}
-                                <UploadIconText
-                                    classes={classes}
-                                    isEditable={makeEditable}
-                                    handleFileUpload={handleUpload}
-                                    setIsEditable={setEditable}
-                                    fileUploadIsLoading={fileUploadLoading}
-                                />
-                            </Grid>
-                            <FilesContainer files={files} className={classes.files} />
-                            {makeEditable && (
-                                <Button color='primary' variant='contained' fullWidth type='submit' className={classes.submit}>
-                                    {isAuthStateIsLoading ? <ThreeDots /> : 'Save Changes'}
-                                </Button>
-                            )}
-                        </form>
-                    </div>
+        <Slide direction='right' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+            <div className={classes.user_account__root}>
+                <DefaultSnackbar
+                    open={showAlert}
+                    handleClose={handleCloseSnackBar}
+                    severity={alertSeverity}
+                    title={alertTitle}
+                    info={success || error}
+                />
+                <ProfilePicture
+                    classes={classes}
+                    isEditable={makeEditable}
+                    handleFileUpload={handleUpload}
+                    setIsEditable={setEditable}
+                    fileUploadIsLoading={fileUploadLoading}
+                />
+                <div className={classes.form_container}>
+                    <form onSubmit={formik.handleSubmit}>
+                        <Grid container spacing={3}>
+                            {USER_ACCOUNT_FORM_FIELDS.map(({ name, label, helperText }) => {
+                                return (
+                                    <Grid item xs={12} md={6} key={name}>
+                                        <TextField
+                                            id={name}
+                                            name={name}
+                                            className={classes.input}
+                                            defaultValue={name}
+                                            label={label}
+                                            disabled={!makeEditable}
+                                            type={name === 'dob' ? 'date' : 'text'}
+                                            value={formik.values[name as FormValue]}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched[name as FormValue] && Boolean(formik.errors[name as FormValue])}
+                                            helperText={
+                                                !formik.touched[name as FormValue] && helperText
+                                                    ? helperText
+                                                    : formik.touched[name as FormValue] && formik.errors[name as FormValue]
+                                            }
+                                            FormHelperTextProps={{
+                                                className: 'info'
+                                            }}
+                                        />
+                                    </Grid>
+                                );
+                            })}
+                            <UploadIconText
+                                classes={classes}
+                                isEditable={makeEditable}
+                                handleFileUpload={handleUpload}
+                                setIsEditable={setEditable}
+                                fileUploadIsLoading={fileUploadLoading}
+                            />
+                        </Grid>
+                        <FilesContainer files={files} className={classes.files} />
+                        {makeEditable && (
+                            <Button color='primary' variant='contained' fullWidth type='submit' className={classes.submit}>
+                                {isAuthStateIsLoading ? <ThreeDots /> : 'Save Changes'}
+                            </Button>
+                        )}
+                    </form>
                 </div>
-            </Slide>
-        </>
+            </div>
+        </Slide>
     );
 };
 

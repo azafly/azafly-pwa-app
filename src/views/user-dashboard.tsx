@@ -2,7 +2,6 @@ import { Box } from '@mui/system';
 import { lazy, Suspense } from 'react';
 import PaymentsIcon from '@mui/icons-material/Payments';
 
-import { BottomNavBar } from 'features/user-dashboard/bottom-navbar';
 import { NavBar } from 'features/user-dashboard/nav-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots';
 
@@ -27,7 +26,6 @@ const UserDashboard = () => {
             <Suspense fallback={<SuspenseComponent />}>
                 <LazyDashBoard />
             </Suspense>
-            <BottomNavBar />
         </>
     );
 };

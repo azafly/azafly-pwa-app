@@ -37,48 +37,45 @@ export default function RedirectCallback() {
 
     useEffect(() => {}, []);
     return (
-        <>
-            <NavBar />
-            <Box sx={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center' }}>
-                <Box sx={style} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                    {loading ? (
-                        <>
-                            <h4 style={{ textAlign: 'center' }}> Verifying your payment</h4>
-                            <ThreeDots
-                                styles={{
-                                    background: '#4990A4'
-                                }}
-                            />
-                        </>
-                    ) : (
-                        <>
-                            <h3 style={{ textAlign: 'center' }} id='verify-modal'>
-                                {heading}
-                            </h3>
-                            {status === 'success' && <CheckCircleOutlineIcon style={{ fontSize: 50 }} color={'success'} />}
-                            {status === 'error' && <CancelIcon style={{ fontSize: 50 }} color={'error'} />}
-                            <p style={{ textAlign: 'center' }} id='payment-verify'>
-                                {text} <strong>{status === 'error' && 'support@azafly.com'}</strong>
-                            </p>
-                            <Box sx={{ margin: 1 }}>
-                                {status === 'success' && (
-                                    <Button variant={'contained'} onClick={goTDashboard} color={'success'}>
+        <Box sx={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center' }}>
+            <Box sx={style} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                {loading ? (
+                    <>
+                        <h4 style={{ textAlign: 'center' }}> Verifying your payment</h4>
+                        <ThreeDots
+                            styles={{
+                                background: '#4990A4'
+                            }}
+                        />
+                    </>
+                ) : (
+                    <>
+                        <h3 style={{ textAlign: 'center' }} id='verify-modal'>
+                            {heading}
+                        </h3>
+                        {status === 'success' && <CheckCircleOutlineIcon style={{ fontSize: 50 }} color={'success'} />}
+                        {status === 'error' && <CancelIcon style={{ fontSize: 50 }} color={'error'} />}
+                        <p style={{ textAlign: 'center' }} id='payment-verify'>
+                            {text} <strong>{status === 'error' && 'support@azafly.com'}</strong>
+                        </p>
+                        <Box sx={{ margin: 1 }}>
+                            {status === 'success' && (
+                                <Button variant={'contained'} onClick={goTDashboard} color={'success'}>
+                                    {cta}
+                                </Button>
+                            )}
+                            {status === 'error' && (
+                                <>
+                                    <h4 style={{ textAlign: 'center' }}> Or</h4>
+                                    <Button variant={'contained'} sx={{ margin: 1 }} onClick={goToPayments} color={'error'}>
                                         {cta}
                                     </Button>
-                                )}
-                                {status === 'error' && (
-                                    <>
-                                        <h4 style={{ textAlign: 'center' }}> Or</h4>
-                                        <Button variant={'contained'} sx={{ margin: 1 }} onClick={goToPayments} color={'error'}>
-                                            {cta}
-                                        </Button>
-                                    </>
-                                )}
-                            </Box>
-                        </>
-                    )}
-                </Box>
+                                </>
+                            )}
+                        </Box>
+                    </>
+                )}
             </Box>
-        </>
+        </Box>
     );
 }

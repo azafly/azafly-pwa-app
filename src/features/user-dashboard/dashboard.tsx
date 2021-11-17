@@ -1,5 +1,5 @@
 import { Hidden, Modal, Typography } from '@material-ui/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { CreditCard } from 'features/user-dashboard/wallet/cards/credit-card';
@@ -14,6 +14,8 @@ import WalletContainer from './wallet/wallet-container';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
 import { DashboardLoaderSkeleton } from 'features/user-dashboard/loader-skeleton';
+import { fetchWallet } from './mock';
+export { fetchWallet };
 
 export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
@@ -87,6 +89,10 @@ export default function Dashboard() {
     const alertSeverity = verificationEmailSent.includes('Error') ? 'error' : 'success';
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
 
+    useEffect(() => {
+        fetchWallet().then(data => console.log(data));
+    }, []);
+
     return (
         <>
             <DefaultSnackbar
@@ -118,7 +124,7 @@ export default function Dashboard() {
                             <TransactionListContainer classes={classes} transactions={transactions ?? []} />
                         </>
                     )}
-                    {!Boolean(transactions?.length) ? (
+                    {transactionData && !Boolean(transactions?.length) ? (
                         <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
                     ) : null}
                 </div>

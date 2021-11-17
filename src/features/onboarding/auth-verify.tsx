@@ -2,7 +2,6 @@ import { SyntheticEvent, useState } from 'react';
 import { Snackbar, SnackbarCloseReason, SnackbarOrigin } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-import { NavBar } from 'features/user-dashboard/nav-bar';
 import { useForgotPasswordStyles } from './classes';
 import { EmailVerification } from './email-verification';
 import { PasswordVerification } from './password-verification';
@@ -33,30 +32,27 @@ const ResetPassword = () => {
     };
 
     return (
-        <>
-            <NavBar />
-            <div className={classes.forgotPasswordRoot}>
-                <Snackbar
-                    open={!!error}
-                    autoHideDuration={3000}
-                    onClose={handleClose}
-                    anchorOrigin={{ vertical, horizontal }}
-                    key={vertical + horizontal}
-                >
-                    <Alert onClose={handleClose} className={`${classes.alert}`} severity={'error'}>
-                        <AlertTitle>
-                            {' '}
-                            <strong>Error</strong>{' '}
-                        </AlertTitle>
-                        {error}
-                    </Alert>
-                </Snackbar>
-                <div className={classes.form_container}>
-                    <EmailVerification />
-                    <PasswordVerification setError={setError} />
-                </div>
+        <div className={classes.forgotPasswordRoot}>
+            <Snackbar
+                open={!!error}
+                autoHideDuration={3000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical, horizontal }}
+                key={vertical + horizontal}
+            >
+                <Alert onClose={handleClose} className={`${classes.alert}`} severity={'error'}>
+                    <AlertTitle>
+                        {' '}
+                        <strong>Error</strong>{' '}
+                    </AlertTitle>
+                    {error}
+                </Alert>
+            </Snackbar>
+            <div className={classes.form_container}>
+                <EmailVerification />
+                <PasswordVerification setError={setError} />
             </div>
-        </>
+        </div>
     );
 };
 

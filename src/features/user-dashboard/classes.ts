@@ -39,7 +39,8 @@ export const useCardStyles = makeStyles((theme: Theme) =>
         },
         serviceName: {
             '& .name': {
-                fontWeight: 600
+                fontWeight: 800,
+                fontSize: '1.1rem'
             },
             '& .date': {
                 fontSize: '0.9rem',
@@ -92,6 +93,8 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
             height: '100vh',
             borderRadius: 4,
             position: 'fixed',
+            background: 'white',
+            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             width: 250,
             flexGrow: 1,
             marginRight: '3vw',
@@ -103,8 +106,8 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
                 textTransform: 'capitalize',
                 fontFamily: 'Nunito',
                 color: '#0D324D',
-                fontWeight: 650,
-                fontSize: '1.1em'
+                fontWeight: 600,
+                fontSize: '0.9rem'
             }
         }
     })

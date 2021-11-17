@@ -140,6 +140,7 @@ function useFirebaseProviderAuth() {
                 if (hasuraClaim) {
                     localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                     setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
+                    // TODO : CLEAR WHEN ACTION IS COMPLETED
                     const isFirstTimeUser = user.metadata.creationTime === user.metadata.lastSignInTime;
                 } else {
                     // Check if refresh is required.

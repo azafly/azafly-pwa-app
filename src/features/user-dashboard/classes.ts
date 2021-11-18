@@ -43,7 +43,7 @@ export const useCardStyles = makeStyles((theme: Theme) =>
                 fontSize: '1.1rem'
             },
             '& .date': {
-                fontSize: '0.9rem',
+                fontSize: '0.8rem',
                 fontWeight: 500
             }
         }
@@ -137,9 +137,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
                 marginLeft: '10vw'
             },
             [theme.breakpoints.only('lg')]: {},
-            [theme.breakpoints.only('sm')]: {
-                marginLeft: '8vw'
-            },
+            [theme.breakpoints.only('sm')]: { textAlign: 'center' },
             [theme.breakpoints.only('xs')]: {
                 textAlign: 'center'
             }

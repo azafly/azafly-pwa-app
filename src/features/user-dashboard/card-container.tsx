@@ -7,7 +7,6 @@ import { dashboard as data } from 'mocks/dashboard';
 import { formatCurrency } from 'libs';
 import { InfoText } from './info-text';
 import { ProgressStatusSteppers } from './status-stepper';
-// import TaskList from './task-list';
 
 interface CardProps {
     transactionData: any;

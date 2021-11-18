@@ -1,5 +1,6 @@
-import { Hidden, Modal, Typography } from '@material-ui/core';
 import { useState, useEffect } from 'react';
+
+import { Box, Hidden, Modal, Typography } from '@material-ui/core';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { CreditCard } from 'features/user-dashboard/wallet/cards/credit-card';
@@ -13,9 +14,7 @@ import WalletContainer from './wallet/wallet-container';
 
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
-import { DashboardLoaderSkeleton } from 'features/user-dashboard/loader-skeleton';
 import { fetchWallet } from './mock';
-export { fetchWallet };
 
 export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
@@ -117,7 +116,11 @@ export default function Dashboard() {
                 </Hidden>
                 <div className={classes.dashboard_container}>
                     <WalletContainer handleOpen={handleOpenCreditCardModal} />
-                    {!transactionData && <DashboardLoaderSkeleton />}
+                    {!transactionData && (
+                        <Box sx={{ width: '100%', display: 'flex' }}>
+                            <ThreeDots styles={{ backgroundColor: '#4990A4' }} />
+                        </Box>
+                    )}
                     {transactionData && Boolean(transactions?.length) && (
                         <>
                             <Typography className={classes.heading}>Your Transactions</Typography>

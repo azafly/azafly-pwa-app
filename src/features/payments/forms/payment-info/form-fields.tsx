@@ -17,13 +17,9 @@ interface PaymentInfo {
     picker?: any;
     selector?: boolean;
     helperText?: string;
+    defVal?: string;
 }
 
-interface handlerType {
-    state: string;
-    city: string;
-    country: string;
-}
 export type BY_WHOM = 'self' | 'others';
 
 export const byWhom: Record<string, BY_WHOM> = {
@@ -118,7 +114,7 @@ export const initialValues = () => {
     });
     return values;
 };
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const phoneRegExp = /^\+(?:[0-9] ?){6,14}[0-9]$/;
 
 export const validationSchema = yup.object().shape({
     fullname: yup.string().required('Enter a your family name'),
@@ -141,6 +137,8 @@ interface generateInput {
 }
 
 export const generateInputType = ({ props, option, isError, handler }: generateInput) => {
+    console.log(handler);
+
     if (option?.type === 'select') {
         const label = option.name === 'by' ? `Who's making payment` : `Select Purpose`;
         const defaultValue: PURPOSE | BY_WHOM = option.name === 'by' ? 'self' : 'education';
@@ -182,7 +180,7 @@ export const generateInputType = ({ props, option, isError, handler }: generateI
                 <>
                     <InputLabel id={option?.label}>{option?.label}</InputLabel>
                     <NativeSelect label={option?.label} labelId='' id={option?.label} {...props} name={option?.name} style={{ width: '100%' }}>
-                        <option key={''} value={'Select country'} defaultValue={'Select country'}>
+                        <option key={''} value={'Select state'} defaultValue={'Select state'}>
                             {''}
                         </option>
                         {State.getStatesOfCountry(handler?.country)?.map((item: any) => (
@@ -198,7 +196,7 @@ export const generateInputType = ({ props, option, isError, handler }: generateI
                 <>
                     <InputLabel id={option?.label}>{option?.label}</InputLabel>
                     <NativeSelect label={option?.label} labelId='' id={option?.label} {...props} name={option?.name} style={{ width: '100%' }}>
-                        <option key={''} value={'Select country'} defaultValue={'Select country'}>
+                        <option key={''} value={'Select city'} defaultValue={'Select city'}>
                             {''}
                         </option>
                         {City.getCitiesOfCountry(handler?.country)?.map((item: any) => (
@@ -216,6 +214,7 @@ export const generateInputType = ({ props, option, isError, handler }: generateI
                 fullWidth
                 id={option?.label}
                 name={option?.name}
+                defaultValue={option?.defVal}
                 label={option?.label}
                 type={option?.type ?? 'text'}
                 {...props}

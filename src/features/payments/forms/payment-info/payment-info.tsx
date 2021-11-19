@@ -58,7 +58,9 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
     const classes = useStyles();
 
     // TODO - prefill form
-
+    const initVale = {
+        fullname: 'adedayo'
+    };
     const formik = useFormik({
         initialValues: initialValues(),
         validationSchema,

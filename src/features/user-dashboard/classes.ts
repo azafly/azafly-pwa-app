@@ -6,9 +6,9 @@ export const useCardStyles = makeStyles((theme: Theme) =>
             cursor: 'pointer',
             borderRadius: 12,
             maxWidth: 1200,
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             marginBottom: 20,
             margin: 'auto',
+            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             [theme.breakpoints.only('lg')]: {
                 marginLeft: '10vw',
                 width: '60vw'
@@ -116,12 +116,15 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
 export const useDashboardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboard_container: {
-            backgroundColor: theme.palette.background.default,
+            backgroundColor: 'red',
             margin: 'auto',
             flexDirection: 'column',
             marginTop: '10vh',
             [theme.breakpoints.up('lg')]: {
                 width: '60vw'
+            },
+            [theme.breakpoints.only('md')]: {
+                width: '80vw'
             }
         },
         main: {

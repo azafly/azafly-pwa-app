@@ -11,6 +11,8 @@ import reportWebVitals from './reportWebVitals';
 
 // stylings
 import './index.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 ReactDOM.render(
     <React.StrictMode>

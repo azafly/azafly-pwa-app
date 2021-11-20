@@ -66,6 +66,7 @@ export interface AuthContext {
     verifyEmail: any;
     setAuthError: Dispatch<SetStateAction<string>>;
     authError: string;
+    isFirstTimeUser: boolean;
     handleUpdateFirebaseProfile: any;
 }
 
@@ -82,5 +83,6 @@ export const defaultAuhContext: AuthContext = {
     verifyEmail: () => new Promise(() => {}),
     setAuthError: () => {},
     authError: '',
+    isFirstTimeUser: false,
     handleUpdateFirebaseProfile: () => {}
 };

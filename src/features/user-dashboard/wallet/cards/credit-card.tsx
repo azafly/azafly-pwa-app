@@ -7,7 +7,7 @@ const useStyles = makeStyles(() =>
         credit_card__container: {
             padding: 10,
             width: 350,
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)'
+            border: '.01px solid grey'
         },
         action: {
             fontSize: 14,
@@ -38,7 +38,7 @@ export const CreditCard = () => {
     const classes = useStyles();
     return (
         <div className={classes.credit_card__container}>
-            <Card className={classes.card}>
+            <Card elevation={0} className={classes.card}>
                 <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography className={classes.typography} gutterBottom>

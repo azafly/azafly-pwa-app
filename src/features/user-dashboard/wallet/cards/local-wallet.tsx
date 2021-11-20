@@ -8,12 +8,7 @@ import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         card__container: {
-            padding: 10,
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
-            [theme.breakpoints.only('xs')]: {
-                width: '90vw',
-                margin: 'auto'
-            }
+            padding: 10
         },
         action: {
             fontSize: '0.75em',
@@ -35,7 +30,7 @@ interface LocalWalletCardProps {
 export default function LocalWalletCard({ handleOpen }: LocalWalletCardProps) {
     const classes = useStyles();
     return (
-        <Card className={classes.card__container}>
+        <Card elevation={1} className={classes.card__container}>
             <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography className={classes.typography} gutterBottom>
@@ -51,11 +46,8 @@ export default function LocalWalletCard({ handleOpen }: LocalWalletCardProps) {
                     <Button endIcon={<AddIcon />} size='small' className={classes.action}>
                         Add money
                     </Button>
-                    <Button endIcon={<FlipCameraAndroidIcon />} size='small' className={classes.action}>
-                        convert
-                    </Button>
                     <Button endIcon={<PaymentsIcon />} size='small' className={classes.action} onClick={handleOpen}>
-                        Spend
+                        Withdraw
                     </Button>
                 </Box>
             </CardActions>

@@ -24,7 +24,7 @@ enum SignInMethod {
 }
 
 export const SignInForm = () => {
-    const { signInWithFacebook, signInWithGoogle, signinWithEmailPassword } = useFirebaseAuthContext();
+    const { signInWithFacebook, signInWithGoogle, signinWithEmailPassword, isFirstTimeUser } = useFirebaseAuthContext();
     const [isAuthStateIsLoading, setAuthLoadingState] = useState(false);
     const [authError, setAuthError] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -33,7 +33,7 @@ export const SignInForm = () => {
     const location = useLocation();
 
     const handleSignin = (method: SignInMethod, email?: string, password?: string) => {
-        const DASHBOARD = '/dashboard';
+        const DASHBOARD = isFirstTimeUser ? '/onboarding-update' : '/dashboard';
         const from = location.state?.from?.pathname || DASHBOARD;
 
         setAuthLoadingState(true);

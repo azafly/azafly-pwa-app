@@ -50,6 +50,7 @@ export const updateFirebaseUser = (userId: string, user: Partial<FirebaseUser>) 
 function useFirebaseProviderAuth() {
     const [authState, setAuthState] = useState<AuthState>(defaultAuthState);
     const [authError, setAuthError] = useState('');
+    const [isFirstTimeUser, setFirstTimeUser] = useState(false);
 
     const signinWithEmailPassword = async (email: string, password: string) => {
         return firebaseApp.auth().signInWithEmailAndPassword(email, password);
@@ -121,7 +122,6 @@ function useFirebaseProviderAuth() {
     useEffect(() => {
         const unsubscribe = firebaseApp.auth().onAuthStateChanged(async user => {
             if (user) {
-                console.log(user);
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
@@ -141,7 +141,6 @@ function useFirebaseProviderAuth() {
                     localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                     setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
                     // TODO : CLEAR WHEN ACTION IS COMPLETED
-                    const isFirstTimeUser = user.metadata.creationTime === user.metadata.lastSignInTime;
                 } else {
                     // Check if refresh is required.
                     const metadataRef = firebaseApp.database().ref('metadata/' + user.uid + '/refreshTime');
@@ -154,6 +153,7 @@ function useFirebaseProviderAuth() {
                         localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, newToken);
                     });
                 }
+                setFirstTimeUser(user.metadata.creationTime === user.metadata.lastSignInTime);
             } else {
                 localStorage.removeItem(LOCAL_STORAGE_KEY.TOKEN);
                 setAuthState(prevState => ({ ...prevState, isAuth: false, user: null }));
@@ -165,6 +165,7 @@ function useFirebaseProviderAuth() {
     return {
         authError,
         authState,
+        isFirstTimeUser,
         confirmPasswordReset,
         handleUpdateFirebaseProfile,
         sendPasswordResetEmail,

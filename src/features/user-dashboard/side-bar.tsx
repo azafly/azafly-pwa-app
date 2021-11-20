@@ -42,7 +42,7 @@ const sideMenu = [
 export const SideBar = () => {
     const classes = useSidebarStyles();
     return (
-        <div className={classes.sidebar__root}>
+        <Paper className={classes.sidebar__root}>
             <Stack sx={{ pt: 20, pl: 2, mr: 2 }} spacing={2}>
                 {sideMenu.map(({ icon, label, route }) => {
                     return (
@@ -54,6 +54,6 @@ export const SideBar = () => {
                     );
                 })}
             </Stack>
-        </div>
+        </Paper>
     );
 };

@@ -15,11 +15,6 @@ import Logo from 'assets/google.svg';
 
 const formFieldArray = [
     {
-        placeholder: 'Email',
-        type: 'email',
-        name: 'email'
-    },
-    {
         placeholder: 'Password',
         type: 'password',
         name: 'password'
@@ -30,10 +25,12 @@ const formFieldArray = [
         name: 'confirmPassword'
     }
 ];
+const phoneRegExp = /^\+(?:[0-9] ?){6,14}[0-9]$/;
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Enter a valid email').required('Email is required'),
     password: yup.string().required('Password is required'),
+    phone: yup.string().matches(phoneRegExp, 'Phone number is not valid'),
     confirmPassword: yup
         .string()
         .oneOf([yup.ref('password'), null], 'Needs to match password')
@@ -59,6 +56,7 @@ export const SignUpForm = () => {
         signupWithEmailPassword,
         signInWithFacebook,
         signInWithGoogle,
+        isFirstTimeUser,
         authState: { user }
     } = useFirebaseAuthContext();
 
@@ -69,7 +67,8 @@ export const SignUpForm = () => {
             confirmPassword: '',
             firstName: '',
             lastName: '',
-            terms: ''
+            terms: '',
+            phone: ''
         },
         validationSchema: validationSchema,
         onSubmit: values => {
@@ -84,7 +83,7 @@ export const SignUpForm = () => {
     const location = useLocation();
 
     const handleSignUp = (method: SignUpMethod, email?: string, password?: string, displayName?: string) => {
-        const DASHBOARD = '/dashboard';
+        const DASHBOARD = isFirstTimeUser ? '/onboarding-update' : '/dashboard';
         const from = location.state?.from?.pathname || DASHBOARD;
         setAuthLoadingState(true);
         switch (method) {
@@ -179,6 +178,35 @@ export const SignUpForm = () => {
                             onChange={formik.handleChange}
                             error={formik.touched.lastName && Boolean(formik.errors.lastName)}
                             helperText={formik.touched.lastName && formik.errors.lastName}
+                        />
+                    </div>
+                    <div className={`${classes.name}`}>
+                        <TextField
+                            fullWidth
+                            id='email'
+                            name='email'
+                            label='Email'
+                            type='text'
+                            value={formik.values.firstName}
+                            onChange={formik.handleChange}
+                            error={formik.touched.email && Boolean(formik.errors.email)}
+                            helperText={formik.touched.email && formik.errors.email}
+                        />
+                        <TextField
+                            fullWidth
+                            id='phone'
+                            name='phone'
+                            label='Phone Number'
+                            type='text'
+                            placeholder='Phone Number'
+                            className={`lastname`}
+                            value={formik.values.phone}
+                            onChange={formik.handleChange}
+                            FormHelperTextProps={{
+                                className: Boolean(formik.errors.phone) ? '' : 'info'
+                            }}
+                            error={formik.touched.phone && Boolean(formik.errors.phone)}
+                            helperText={!formik.errors.phone ? 'Your phone number with the code' : formik.touched.phone && formik.errors.phone}
                         />
                     </div>
                     <div className={` ${classes.others}`}>

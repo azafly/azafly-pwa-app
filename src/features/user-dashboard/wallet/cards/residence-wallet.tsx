@@ -1,19 +1,13 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
 
 import AddIcon from '@mui/icons-material/Add';
-import PaymentsIcon from '@mui/icons-material/Payments';
 import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         card_container: {
-            padding: 10,
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
-            [theme.breakpoints.only('xs')]: {
-                width: '90vw',
-                margin: 'auto'
-            }
+            padding: 10
         },
         action: {
             fontSize: '0.75em',
@@ -31,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function ResidenceWalletCard() {
     const classes = useStyles();
     return (
-        <Card className={classes.card_container}>
+        <Card elevation={1} className={classes.card_container}>
             <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography className={classes.typography} gutterBottom>
@@ -49,9 +43,6 @@ export default function ResidenceWalletCard() {
                     </Button>
                     <Button endIcon={<FlipCameraAndroidIcon />} size='small' className={classes.action}>
                         convert
-                    </Button>
-                    <Button endIcon={<PaymentsIcon />} size='small' className={classes.action}>
-                        Spend
                     </Button>
                 </Box>
             </CardActions>

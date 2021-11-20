@@ -23,6 +23,9 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
             [theme.breakpoints.down('md')]: {
                 margin: 0
+            },
+            '& .info': {
+                color: '#4990A4'
             }
         },
         name: {

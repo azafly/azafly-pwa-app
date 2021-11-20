@@ -9,10 +9,10 @@ interface TransactionListContainerProps {
 
 export const TransactionListContainer = memo(function TransactionListContainer({ classes, transactions }: TransactionListContainerProps) {
     return (
-        <>
+        <div>
             {transactions?.map((transaction: any) => (
                 <CardContainer transactionData={transaction} key={transaction.id} />
             ))}
-        </>
+        </div>
     );
 });

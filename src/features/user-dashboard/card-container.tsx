@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Chip, Collapse, Typography } from '@material-ui/core';
+import { Card, CardContent, Chip, Collapse, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
 import { useCardStyles } from './classes';
 import React, { memo } from 'react';
@@ -28,7 +28,7 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
     const classes = useCardStyles();
     const formattedAmount = formatCurrency({ currency, amount, countryCode: 'DE' });
     return (
-        <Card elevation={0} className={classes.dashboardCard__root}>
+        <Card elevation={0} className={classes.dashboardCard__root} onClick={handleExpandClick}>
             <CardContent>
                 <div className={classes.starter}>
                     <div className={classes.serviceName}>
@@ -44,9 +44,9 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
                     </div>
                     <Chip className={classes.serviceInitiated} label={is_success_done ? 'Completed' : 'In Progress'} />
                 </div>
-                <Box onClick={handleExpandClick}>
-                    <InfoText text={data.infoText} />
-                </Box>
+
+                <InfoText text={data.infoText} />
+
                 <Collapse in={expanded} timeout='auto' unmountOnExit>
                     <Typography variant='h6' color='textSecondary' align={'center'} className={classes.summary_heading}>
                         Your progress summary

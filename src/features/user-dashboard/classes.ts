@@ -5,17 +5,11 @@ export const useCardStyles = makeStyles((theme: Theme) =>
         dashboardCard__root: {
             cursor: 'pointer',
             borderRadius: 12,
-            maxWidth: 1200,
             marginBottom: 20,
+            maxWidth: 900,
             margin: 'auto',
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
-            [theme.breakpoints.only('lg')]: {
-                marginLeft: '10vw',
-                width: '60vw'
-            },
-            [theme.breakpoints.down('sm')]: {
-                width: '90vw'
-            }
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         },
         summary_heading: {
             fontWeight: 800,
@@ -98,7 +92,8 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
             width: 250,
             flexGrow: 1,
             marginRight: '3vw',
-            paddingTop: '20vh'
+            paddingTop: '10vh',
+            marginTop: '-10vh'
         },
         button: {
             textDecoration: 'none',
@@ -116,37 +111,34 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
 export const useDashboardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboard_container: {
-            backgroundColor: 'red',
+            marginTop: '10vh'
+        },
+        data__section: {
             margin: 'auto',
-            flexDirection: 'column',
-            marginTop: '10vh',
-            [theme.breakpoints.up('lg')]: {
-                width: '60vw'
+            '& .heading': {
+                marginBottom: 10,
+                fontFamily: 'Nunito',
+                fontWeight: 800,
+                marginTop: '4em',
+                display: 'block',
+                maxWidth: 900,
+                margin: 'auto',
+                color: theme.colors.textPrimary,
+                [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
+                [theme.breakpoints.down('xs')]: { textAlign: 'center' }
             },
-            [theme.breakpoints.only('md')]: {
-                width: '80vw'
-            }
-        },
-        main: {
-            display: 'flex'
-        },
-        heading: {
-            marginBottom: 10,
-            fontFamily: 'Nunito',
-            fontWeight: 800,
-            marginTop: '4em',
-            color: theme.colors.textPrimary,
-            [theme.breakpoints.up('md')]: {
-                marginLeft: '10vw'
-            },
-            [theme.breakpoints.only('lg')]: {},
-            [theme.breakpoints.only('sm')]: { textAlign: 'center' },
-            [theme.breakpoints.only('xs')]: {
-                textAlign: 'center'
-            }
+            [theme.breakpoints.down('sm')]: { width: '90vw' }
         },
         name: {
-            marginTop: 100
+            marginTop: 50,
+            fontWeight: 900,
+            fontSize: '2.5rem',
+            maxWidth: 900,
+            margin: 'auto',
+            color: '#4990a4',
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
+            [theme.breakpoints.only('xs')]: { marginTop: 20 },
+            textTransform: 'capitalize'
         }
     })
 );
@@ -157,10 +149,8 @@ export const useEmptyCardStyles = makeStyles((theme: Theme) =>
             borderRadius: 12,
             margin: 'auto',
             marginBottom: 20,
-            maxWidth: 1200,
-            [theme.breakpoints.only('lg')]: {
-                marginRight: '-15vw'
-            },
+            maxWidth: 900,
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
             [theme.breakpoints.down('md')]: {
                 width: '90vw'
             },

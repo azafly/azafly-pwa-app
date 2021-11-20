@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { Box, Hidden, Modal, Typography } from '@material-ui/core';
+import { Box, Grid, Hidden, Modal, Typography } from '@material-ui/core';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { CreditCard } from 'features/user-dashboard/wallet/cards/credit-card';
@@ -15,6 +15,7 @@ import WalletContainer from './wallet/wallet-container';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
 import { fetchWallet } from './mock';
+import { formatFirstName } from 'libs';
 
 export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
@@ -89,11 +90,11 @@ export default function Dashboard() {
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
 
     useEffect(() => {
-        fetchWallet().then(data => console.log(data));
+        fetchWallet();
     }, []);
 
     return (
-        <>
+        <div className={classes.dashboard_container}>
             <DefaultSnackbar
                 severity={alertSeverity}
                 open={openSnackBar}
@@ -110,12 +111,18 @@ export default function Dashboard() {
             >
                 <CreditCard />
             </Modal>
-            <div className={classes.main}>
+            <Grid container>
                 <Hidden mdDown>
-                    <SideBar />
+                    <Grid item md={2}>
+                        <SideBar />
+                    </Grid>
                 </Hidden>
-                <div className={classes.dashboard_container}>
+                <Grid item md={10} className={classes.data__section}>
+                    <Typography color={'textSecondary'} className={classes.name}>
+                        Hey 👋🏾 {formatFirstName(user?.displayName ?? '')}
+                    </Typography>{' '}
                     <WalletContainer handleOpen={handleOpenCreditCardModal} />
+                    <Typography className={'heading'}>Your Transactions</Typography>{' '}
                     {!transactionData && (
                         <Box sx={{ width: '100%', display: 'flex' }}>
                             <ThreeDots styles={{ backgroundColor: '#4990A4' }} />
@@ -123,15 +130,14 @@ export default function Dashboard() {
                     )}
                     {transactionData && Boolean(transactions?.length) && (
                         <>
-                            <Typography className={classes.heading}>Your Transactions</Typography>
                             <TransactionListContainer classes={classes} transactions={transactions ?? []} />
                         </>
                     )}
                     {transactionData && !Boolean(transactions?.length) ? (
                         <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
                     ) : null}
-                </div>
-            </div>
+                </Grid>
+            </Grid>
 
             <SpeedDialTooltip
                 handleOpenSpeedDial={handleOpenSpeedDial}
@@ -140,6 +146,6 @@ export default function Dashboard() {
                 hidden={hidden}
                 handleSpeedDialVisibility={handleSpeedDialVisibility}
             />
-        </>
+        </div>
     );
 }

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: 10
         },
         action: {
-            fontSize: '0.75em',
+            fontSize: '0.85em',
             fontWeight: 700,
             textTransform: 'capitalize'
         },
@@ -44,7 +44,7 @@ export default function LocalWalletCard({ handleOpen }: LocalWalletCardProps) {
             <CardActions>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                     <Button endIcon={<AddIcon />} size='small' className={classes.action}>
-                        Add money
+                        Fund Account
                     </Button>
                     <Button endIcon={<PaymentsIcon />} size='small' className={classes.action} onClick={handleOpen}>
                         Withdraw

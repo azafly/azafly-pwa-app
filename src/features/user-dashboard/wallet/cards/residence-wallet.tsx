@@ -10,7 +10,7 @@ const useStyles = makeStyles(() =>
             padding: 10
         },
         action: {
-            fontSize: '0.75em',
+            fontSize: '0.85em',
             fontWeight: 700,
             textTransform: 'capitalize'
         },
@@ -39,7 +39,7 @@ export default function ResidenceWalletCard() {
             <CardActions>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                     <Button endIcon={<AddIcon />} size='small' className={classes.action}>
-                        Add money
+                        Fund Account
                     </Button>
                     <Button endIcon={<FlipCameraAndroidIcon />} size='small' className={classes.action}>
                         convert

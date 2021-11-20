@@ -109,7 +109,6 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
     };
 
     const profileSrc = user?.photoURL;
-    const displayName = user?.displayName;
 
     const menuId = 'primary-account-menu';
     const renderMenu = (
@@ -226,11 +225,7 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
                             aria-haspopup='true'
                             onClick={handleProfileMenuOpen}
                             color='inherit'
-                        >
-                            <Box className={'name'}>
-                                <Typography>{displayName}</Typography>
-                            </Box>
-                        </IconButton>
+                        />
                         <IconButton aria-label='notifications' color='inherit'>
                             <Badge badgeContent={3} color='secondary'>
                                 <NotificationsIcon />

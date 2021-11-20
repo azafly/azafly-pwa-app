@@ -13,15 +13,17 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: 40,
             cursor: 'pointer',
             borderRadius: 12,
-            maxWidth: 1200,
+            maxWidth: 900,
+            margin: 'auto',
             marginBottom: 20,
-
-            [theme.breakpoints.only('lg')]: {
-                marginLeft: '10vw',
-                width: '60vw'
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
+            '& .slick-dots li.slick-active': {
+                '& button::before': {
+                    color: theme.colors.base
+                }
             },
-            [theme.breakpoints.down('sm')]: {
-                width: '90vw'
+            '& .slick-prev::before, .slick-next::before': {
+                color: theme.colors.base
             }
         },
         heading: {
@@ -57,7 +59,7 @@ const WalletContainer = ({ handleOpen }: WalletContainerProps) => {
 
     return (
         <div className={classes.reviewSlider_container}>
-            <Typography className={classes.heading}> Your Wallets </Typography>
+            <Typography className={classes.heading}> Balances </Typography>
 
             {isSmallScreen ? (
                 <Slider {...settings}>

@@ -33,6 +33,7 @@ export const useCardStyles = makeStyles((theme: Theme) =>
             justifyContent: 'space-between'
         },
         serviceName: {
+            fontFamily: 'Nunito',
             '& .name': {
                 fontWeight: 800,
                 fontSize: '1.1rem'

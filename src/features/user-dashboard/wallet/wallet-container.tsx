@@ -51,6 +51,7 @@ const WalletContainer = ({ handleOpen }: WalletContainerProps) => {
 
     const settings = {
         dots: true,
+        arrows: false,
         speed: 500,
         slidesToScroll: 1,
         slidesToShow: 1,

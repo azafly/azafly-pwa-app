@@ -10,7 +10,6 @@ import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { SideBar } from './side-bar';
 import { TransactionListContainer } from './transaction-list-container';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { useDashboardStyles, StyledBadge } from './classes';
 import WalletContainer from './wallet/wallet-container';
 
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
@@ -18,15 +17,24 @@ import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/
 import { fetchWallet } from './mock';
 import { formatFirstName } from 'libs';
 
+import { useDashboardStyles, StyledBadge } from './classes';
+
+enum Filter {
+    ALL = 'ALL',
+    PENDING = 'PENDING',
+    PAID = 'PAID'
+}
+
 export default function Dashboard() {
-    const [openSpeedDial, setOpenSpeedDial] = useState(false);
-    const [isSendingLink, setLoading] = useState(false);
+    const [filteredTransaction, setTransaction] = useState([]);
     const [hidden, setHidden] = useState(false);
-    const [verificationEmailSent, setSent] = useState('');
-    const [openSnackBar, setOpenSnackBar] = useState(false);
+    const [isSendingLink, setLoading] = useState(false);
     const [openCreditCardModal, setOpenCreditCardModal] = useState(false);
-    const handleOpenCreditCardModal = () => setOpenCreditCardModal(true);
+    const [openSnackBar, setOpenSnackBar] = useState(false);
+    const [openSpeedDial, setOpenSpeedDial] = useState(false);
+    const [verificationEmailSent, setSent] = useState('');
     const handleCloseCreditCardModal = () => setOpenCreditCardModal(false);
+    const handleOpenCreditCardModal = () => setOpenCreditCardModal(true);
 
     const {
         authState: { user }
@@ -54,6 +62,7 @@ export default function Dashboard() {
         setOpenSpeedDial(false);
     };
 
+    const handleFilterTransactions = (filter: Filter) => {};
     const classes = useDashboardStyles();
     const ripples = StyledBadge();
 
@@ -130,7 +139,9 @@ export default function Dashboard() {
                             <CardSkeleton />
                         </>
                     ) : (
-                        <TransactionListContainer classes={classes} transactions={transactions ?? []} />
+                        <>
+                            <TransactionListContainer classes={classes} transactions={transactions ?? []} />
+                        </>
                     )}
                     {transactionData && !Boolean(transactions?.length) ? (
                         <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />

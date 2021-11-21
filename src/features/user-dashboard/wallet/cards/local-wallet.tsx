@@ -3,12 +3,13 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import AddIcon from '@mui/icons-material/Add';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         card__container: {
-            padding: 10
+            padding: 10,
+            border: '2px solid #DCDCDC',
+            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)'
         },
         action: {
             fontSize: '0.85em',

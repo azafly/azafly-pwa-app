@@ -12,6 +12,8 @@ import 'firebase/storage';
 firebaseApp.initializeApp(firebaseConfig);
 const fireStore = firebaseApp.firestore();
 export const storage = firebaseApp.storage();
+const auth = firebaseApp.auth();
+auth.useEmulator('http://localhost:9099');
 
 const HASURA_CLAIMS_URL = 'https://hasura.io/jwt/claims';
 

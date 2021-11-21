@@ -1,13 +1,13 @@
 import { memo } from 'react';
 
-import { CardContainer } from './card-container';
+import { CardContainer, CardSkeleton } from './card';
 
 interface TransactionListContainerProps {
     transactions: readonly any[];
-    classes: Record<string, string>;
+    classes?: Record<string, string>;
 }
 
-export const TransactionListContainer = memo(function TransactionListContainer({ classes, transactions }: TransactionListContainerProps) {
+export const TransactionListContainer = memo(function TransactionListContainer({ transactions }: TransactionListContainerProps) {
     return (
         <div>
             {transactions?.map((transaction: any) => (

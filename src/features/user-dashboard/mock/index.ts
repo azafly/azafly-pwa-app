@@ -16,7 +16,6 @@ export const fakeWalletAPI = () => {
     });
 };
 let loading = false;
-console.log(loading);
 
 export const fetchWallet = async () => {
     loading = true;

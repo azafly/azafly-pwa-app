@@ -25,6 +25,11 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: '100%',
                 padding: 15,
                 backgroundColor: '#f7f7f7'
+            },
+            '& .option-label': {
+                fontSize: '1.1rem',
+                fontFamily: 'inherit',
+                fontWeight: 400
             }
         },
         formControl: {
@@ -57,8 +62,6 @@ interface PaymentInfoProps {
 export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
     const classes = useStyles();
 
-    // TODO - prefill form
-
     const formik = useFormik({
         initialValues: initialValues(),
         validationSchema,
@@ -76,18 +79,20 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
                         const { label, name, helperText } = option;
                         return (
                             <Grid item xs={12} sm={6} className={classes.formControl} key={label}>
-                                {generateInputType(
-                                    {
+                                {generateInputType({
+                                    props: {
                                         onChange: formik.handleChange,
                                         error: formik.touched[name] && Boolean(formik.errors[name]),
                                         helperText: !formik.touched[name] && helperText ? helperText : formik.touched[name] && formik.errors[name]
                                     },
                                     option,
-                                    formik.touched[name] && Boolean(formik.errors[name])
-                                )}
+                                    isError: formik.touched[name] && Boolean(formik.errors[name]),
+                                    handler: formik.values
+                                })}
                             </Grid>
                         );
                     })}
+
                     <Button color='primary' variant='contained' fullWidth type='submit' style={{ marginTop: 10 }}>
                         Submit
                     </Button>

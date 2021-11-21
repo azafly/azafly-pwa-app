@@ -10,16 +10,17 @@ interface FilesContainerProps {
 export const FilesContainer = memo(function FilesContainer({ files, className }: FilesContainerProps) {
     return (
         <Grid container className={`${className}`} spacing={3}>
-            {files?.map((file: string) => {
-                return (
-                    <Grid key={file} item xs={12} md={6}>
-                        <a href={file} target='_blank' rel='noopener noreferrer'>
-                            {' '}
-                            Identity Document <OpenInNewIcon />{' '}
-                        </a>
-                    </Grid>
-                );
-            })}
+            {files &&
+                [files[0]]?.map((file: string) => {
+                    return (
+                        <Grid key={file} item xs={12} md={6}>
+                            <a href={file} target='_blank' rel='noopener noreferrer'>
+                                {' '}
+                                Identity Document <OpenInNewIcon />{' '}
+                            </a>
+                        </Grid>
+                    );
+                })}
         </Grid>
     );
 });

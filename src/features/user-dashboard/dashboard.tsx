@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 
-import { Box, Grid, Hidden, Modal, Typography } from '@material-ui/core';
+import { Grid, Hidden, Modal, Typography } from '@material-ui/core';
 import ErrorIcon from '@mui/icons-material/Error';
 
+import { CardSkeleton } from './card';
 import { CreditCard } from 'features/user-dashboard/wallet/cards/credit-card';
 import { EmptyCardContainer } from './empty-transaction/card';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
@@ -119,19 +120,17 @@ export default function Dashboard() {
                 </Hidden>
                 <Grid item md={10} className={classes.data__section}>
                     <Typography color={'textSecondary'} className={classes.name}>
-                        Hey 👋🏾 {formatFirstName(user?.displayName ?? '')}
+                        Hey 👋🏾 {formatFirstName(userData?.users[0]?.display_name ?? '')}!
                     </Typography>{' '}
                     <WalletContainer handleOpen={handleOpenCreditCardModal} />
                     <Typography className={'heading'}>Your Transactions</Typography>{' '}
-                    {!transactionData && (
-                        <Box sx={{ width: '100%', display: 'flex' }}>
-                            <ThreeDots styles={{ backgroundColor: '#4990A4' }} />
-                        </Box>
-                    )}
-                    {transactionData && Boolean(transactions?.length) && (
+                    {loading || !transactionData ? (
                         <>
-                            <TransactionListContainer classes={classes} transactions={transactions ?? []} />
+                            <CardSkeleton />
+                            <CardSkeleton />
                         </>
+                    ) : (
+                        <TransactionListContainer classes={classes} transactions={transactions ?? []} />
                     )}
                     {transactionData && !Boolean(transactions?.length) ? (
                         <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />

@@ -32,5 +32,13 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "emulators": {
+    "auth": {
+      "port": "9099"
+    },
+    "hosting": {
+      "port": "3007"
+    }
   }
 }

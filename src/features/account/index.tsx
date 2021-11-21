@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Slide, TextField } from '@material-ui/core';
+import { Button, Grid, Slide, TextField } from '@material-ui/core';
 import { useEffect, useState, useMemo, ChangeEvent } from 'react';
 import { useFormik } from 'formik';
 
@@ -14,7 +14,7 @@ import { USER_ACCOUNT_FORM_FIELDS } from './utils';
 import useGeolocation from 'hooks/use-geolocation';
 
 import { useStyles } from './classes';
-
+import client from '../../libs/apollo-client';
 const UserAccount = () => {
     const [error, setError] = useState('');
     const [files, setFiles] = useState<string[]>([]);
@@ -24,8 +24,6 @@ const UserAccount = () => {
     const [success, setSuccess] = useState('');
 
     const { location } = useGeolocation();
-
-    console.log(location);
 
     const {
         authState: { user },
@@ -51,7 +49,10 @@ const UserAccount = () => {
         })
             .then(() => {
                 setAuthLoadingState(false);
-                setSuccess('Great job!! Profile updated successfully 🙌');
+                setSuccess('Profile updated successfully 🙌');
+                client.refetchQueries({
+                    include: ['getCurrentUserByEmail']
+                });
             })
             .catch(() => setError('Error updating your profile. Try again later'))
             .finally(async () => {
@@ -107,7 +108,7 @@ const UserAccount = () => {
             },
             () => {
                 storageRef.snapshot.ref.getDownloadURL().then(photoURL => {
-                    setSuccess('Great job 🎉!! Profile updated successfully');
+                    setSuccess('Profile updated successfully 🎉');
                     setFileUploadLoading(false);
                     handleUpdateFirebaseProfile(user, { photoURL });
                     //TODO update in Hasura

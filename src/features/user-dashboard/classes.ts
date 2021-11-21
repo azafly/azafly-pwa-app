@@ -4,8 +4,9 @@ export const useCardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboardCard__root: {
             cursor: 'pointer',
-            borderRadius: 12,
-            marginBottom: 20,
+            border: '2px solid #DCDCDC',
+            borderRadius: 8,
+            marginBottom: 10,
             maxWidth: 900,
             margin: 'auto',
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
@@ -88,6 +89,7 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
             borderRadius: 4,
             position: 'fixed',
             background: 'white',
+            border: '0.1px solid #DCDCDC',
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             width: 250,
             flexGrow: 1,
@@ -115,6 +117,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
         },
         data__section: {
             margin: 'auto',
+            backgroundColor: 'rgb(248, 251, 255) none repeat scroll 0% 0%',
             '& .heading': {
                 marginBottom: 10,
                 fontFamily: 'Nunito',
@@ -132,10 +135,10 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
         name: {
             marginTop: 50,
             fontWeight: 900,
-            fontSize: '2.5rem',
-            maxWidth: 900,
+            fontSize: '1.5rem',
+            maxWidth: 600,
             margin: 'auto',
-            color: '#4990a4',
+            color: '#0D324D',
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
             [theme.breakpoints.only('xs')]: { marginTop: 20 },
             textTransform: 'capitalize'

@@ -15,6 +15,7 @@ interface SnackBarAlertState {
 const ResetPassword = () => {
     const classes = useForgotPasswordStyles();
     const [error, setError] = useState('');
+
     const [alertState, setAlertState] = useState<SnackBarAlertState>({
         open: false,
         vertical: 'top',

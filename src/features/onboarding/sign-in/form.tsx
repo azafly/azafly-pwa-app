@@ -1,8 +1,10 @@
-import { Button, TextField } from '@material-ui/core';
+import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useState } from 'react';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import * as yup from 'yup';
 
 import { DefaultSnackbar } from 'components';
@@ -28,6 +30,10 @@ export const SignInForm = () => {
     const [isAuthStateIsLoading, setAuthLoadingState] = useState(false);
     const [authError, setAuthError] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
     const history = useHistory();
     const location = useLocation();
@@ -136,12 +142,25 @@ export const SignInForm = () => {
                         id='password'
                         name='password'
                         label='Password'
-                        type='password'
+                        type={showPassword ? 'text' : 'password'}
                         value={formik.values.password}
                         className={classes.input}
                         onChange={formik.handleChange}
                         error={formik.touched.password && Boolean(formik.errors.password)}
                         helperText={formik.touched.password && formik.errors.password}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position='end'>
+                                    <IconButton
+                                        aria-label='toggle password visibility'
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                    >
+                                        {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
                     />
                     <Link to='/forgot-password' className={classes.forgotPassword}>
                         {' '}

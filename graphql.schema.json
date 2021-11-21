@@ -41146,7 +41146,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "numeric",
                 "ofType": null
               }
             },
@@ -42241,7 +42241,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
+              "name": "numeric_comparison_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -42461,7 +42461,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "numeric",
               "ofType": null
             },
             "defaultValue": null,
@@ -42484,7 +42484,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "numeric",
               "ofType": null
             },
             "defaultValue": null,
@@ -42687,7 +42687,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "numeric",
               "ofType": null
             },
             "isDeprecated": false,
@@ -42925,7 +42925,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "numeric",
               "ofType": null
             },
             "isDeprecated": false,
@@ -43617,7 +43617,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "numeric",
               "ofType": null
             },
             "defaultValue": null,
@@ -43886,7 +43886,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "numeric",
               "ofType": null
             },
             "isDeprecated": false,
@@ -54729,7 +54729,20 @@
           {
             "name": "args",
             "description": null,
-            "args": [],
+            "args": [
+              {
+                "name": "includeDeprecated",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": "false",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
             "type": {
               "kind": "NON_NULL",
               "name": null,

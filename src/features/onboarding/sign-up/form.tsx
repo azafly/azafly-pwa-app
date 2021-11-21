@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { Button, Checkbox, TextField } from '@material-ui/core';
+import { Button, Checkbox, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useState } from 'react';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import * as yup from 'yup';
 
 import { addUser } from 'providers/auth/firebase/firebase';
@@ -51,6 +53,10 @@ export const SignUpForm = () => {
     const [isAuthStateLoading, setAuthLoadingState] = useState(false);
     const [authError, setAuthError] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
+    const history = useHistory();
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
     const {
         signupWithEmailPassword,
@@ -79,7 +85,6 @@ export const SignUpForm = () => {
 
     type FormValue = keyof typeof formik.initialValues;
 
-    const history = useHistory();
     const location = useLocation();
 
     const handleSignUp = (method: SignUpMethod, email?: string, password?: string, displayName?: string) => {
@@ -217,12 +222,25 @@ export const SignUpForm = () => {
                                     id={name}
                                     name={name}
                                     label={placeholder}
-                                    type={type}
+                                    type={showPassword ? 'text' : type}
                                     key={name}
                                     value={formik.values[name as FormValue]}
                                     onChange={formik.handleChange}
                                     error={formik.touched[name as FormValue] && Boolean(formik.errors[name as FormValue])}
                                     helperText={formik.touched[name as FormValue] && formik.errors[name as FormValue]}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position='end'>
+                                                <IconButton
+                                                    aria-label='toggle password visibility'
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        )
+                                    }}
                                 />
                             );
                         })}

@@ -63,6 +63,7 @@ const ForgotPassword = () => {
             </Snackbar>
 
             <div className={classes.form_container}>
+                <div>{resetState.success && ' We have sent a link to your email. Please follow the link to reset your password'}</div>
                 <Input
                     classes={{ underline: classes.underline }}
                     type='text'
@@ -77,11 +78,6 @@ const ForgotPassword = () => {
                         Send Reset Link
                     </Button>
                 </div>
-
-                <Link to='reset-password' className={classes.loginLink}>
-                    {' '}
-                    Login with your new password
-                </Link>
             </div>
         </div>
     );

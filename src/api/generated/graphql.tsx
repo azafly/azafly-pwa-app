@@ -7730,6 +7730,19 @@ export type GetUserTransactionsQuery = (
   )> }
 );
 
+export type GetUserPendingOffersQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type GetUserPendingOffersQuery = (
+  { readonly __typename?: 'query_root' }
+  & { readonly payment_offer: ReadonlyArray<(
+    { readonly __typename?: 'payment_offer' }
+    & Pick<Payment_Offer, 'id' | 'created_at' | 'payment_status' | 'source_amount' | 'source_currency' | 'target_currency' | 'total_in_target_with_charges' | 'total_to_pay_in_source_currency'>
+  )> }
+);
+
 export type GetCurrentUserQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
@@ -7895,6 +7908,51 @@ export function useGetUserTransactionsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetUserTransactionsQueryHookResult = ReturnType<typeof useGetUserTransactionsQuery>;
 export type GetUserTransactionsLazyQueryHookResult = ReturnType<typeof useGetUserTransactionsLazyQuery>;
 export type GetUserTransactionsQueryResult = Apollo.QueryResult<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>;
+export const GetUserPendingOffersDocument = gql`
+    query getUserPendingOffers($id: uuid!) {
+  payment_offer(
+    where: {user_id: {_eq: $id}, payment_status: {_eq: "PENDING"}}
+    order_by: {updated_at: desc}
+  ) {
+    id
+    created_at
+    payment_status
+    source_amount
+    source_currency
+    target_currency
+    total_in_target_with_charges
+    total_to_pay_in_source_currency
+  }
+}
+    `;
+
+/**
+ * __useGetUserPendingOffersQuery__
+ *
+ * To run a query within a React component, call `useGetUserPendingOffersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserPendingOffersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserPendingOffersQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserPendingOffersQuery(baseOptions: Apollo.QueryHookOptions<GetUserPendingOffersQuery, GetUserPendingOffersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserPendingOffersQuery, GetUserPendingOffersQueryVariables>(GetUserPendingOffersDocument, options);
+      }
+export function useGetUserPendingOffersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserPendingOffersQuery, GetUserPendingOffersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserPendingOffersQuery, GetUserPendingOffersQueryVariables>(GetUserPendingOffersDocument, options);
+        }
+export type GetUserPendingOffersQueryHookResult = ReturnType<typeof useGetUserPendingOffersQuery>;
+export type GetUserPendingOffersLazyQueryHookResult = ReturnType<typeof useGetUserPendingOffersLazyQuery>;
+export type GetUserPendingOffersQueryResult = Apollo.QueryResult<GetUserPendingOffersQuery, GetUserPendingOffersQueryVariables>;
 export const GetCurrentUserDocument = gql`
     query getCurrentUser($id: uuid!) {
   users_by_pk(id: $id) {

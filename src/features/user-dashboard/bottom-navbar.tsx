@@ -155,7 +155,7 @@ export function BottomNavBar() {
     };
     return (
         <>
-            <div style={{ marginTop: 100 }}></div>
+            <div style={{ marginTop: '10vh' }}></div>
             <BottomNavigation
                 value={value}
                 onChange={(_, newValue) => {

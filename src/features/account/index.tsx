@@ -11,7 +11,6 @@ import { UploadIconText } from './upload-icon-text';
 import { useFirebaseAuthContext, storage } from 'providers/auth/firebase';
 import { useGetCurrentUserByEmailQuery, useUpdateUserMutation } from 'api/generated/graphql';
 import { USER_ACCOUNT_FORM_FIELDS } from './utils';
-import useGeolocation from 'hooks/use-geolocation';
 
 import { useStyles } from './classes';
 import client from '../../libs/apollo-client';
@@ -22,8 +21,6 @@ const UserAccount = () => {
     const [isAuthStateIsLoading, setAuthLoadingState] = useState(false);
     const [makeEditable, setEditable] = useState(false);
     const [success, setSuccess] = useState('');
-
-    const { location } = useGeolocation();
 
     const {
         authState: { user },

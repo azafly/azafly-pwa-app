@@ -5,7 +5,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         emptyList__container: {
             cursor: 'pointer',
-            border: '2px solid #DCDCDC',
+            border: '1px solid #DCDCDC',
             borderRadius: 8,
             background: 'white',
             maxWidth: 900,

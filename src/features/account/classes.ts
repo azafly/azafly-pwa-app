@@ -86,7 +86,8 @@ export const useStyles = makeStyles((theme: Theme) =>
             cursor: 'pointer'
         },
         submit: {
-            margin: 25
+            margin: 'auto',
+            marginBottom: '40vh'
         },
         disable: {
             pointerEvents: 'none'

@@ -202,7 +202,7 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
         <div className={classes.grow}>
             <AppBar position='fixed' elevation={0}>
                 <Toolbar>
-                    <Link to='/' className={classes.title}>
+                    <Link to='/dashboard' className={classes.title}>
                         {' '}
                         <Logo2SvgComponent />{' '}
                     </Link>

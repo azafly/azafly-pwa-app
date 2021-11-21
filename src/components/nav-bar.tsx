@@ -129,7 +129,7 @@ export const NavBar = ({ handleDrawerOpen, open }: NavbarProps) => {
                     })}
                 >
                     <Toolbar>
-                        <Link to='/' className={`${classes.logo}`}>
+                        <Link to='/dashboard' className={`${classes.logo}`}>
                             <Logo1SvgComponent />{' '}
                         </Link>
                         <IconButton
@@ -146,7 +146,7 @@ export const NavBar = ({ handleDrawerOpen, open }: NavbarProps) => {
             ) : (
                 <AppBar className={classes.appBar} elevation={0}>
                     <Toolbar className={classes.toolBar}>
-                        <Link to='/' className={`${classes.logo}`}>
+                        <Link to='/dashboard' className={`${classes.logo}`}>
                             <Logo1SvgComponent />{' '}
                         </Link>
                         <section className={classes.links}></section>

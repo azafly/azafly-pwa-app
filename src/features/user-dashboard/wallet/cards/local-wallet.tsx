@@ -1,16 +1,15 @@
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 import AddIcon from '@mui/icons-material/Add';
 import PaymentsIcon from '@mui/icons-material/Payments';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         card__container: {
             padding: 10,
-            border: '2px solid #DCDCDC',
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)'
+            border: '1px solid #DCDCDC'
         },
         action: {
             fontSize: '0.85em',
@@ -34,8 +33,8 @@ export default function LocalWalletCard({ handleOpen, loading }: LocalWalletCard
     const classes = useStyles();
 
     return (
-        <SkeletonTheme baseColor='' highlightColor='#4990A4' borderRadius='0.5rem' duration={4}>
-            <Card elevation={1} className={classes.card__container}>
+        <SkeletonTheme baseColor='' highlightColor='#eef5f7' borderRadius='0.5rem' duration={4}>
+            <Card elevation={0} className={classes.card__container}>
                 <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         {loading ? (

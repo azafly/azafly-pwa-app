@@ -6,7 +6,7 @@ import { useCardStyles } from '../classes';
 export const CardSkeleton = () => {
     const classes = useCardStyles();
     return (
-        <SkeletonTheme baseColor='' highlightColor='#4990A4' borderRadius='0.5rem' duration={4}>
+        <SkeletonTheme baseColor='' highlightColor='#eef5f7' borderRadius='0.5rem' duration={4}>
             <Card elevation={0} className={classes.dashboardCard__root}>
                 <CardContent>
                     <div className={classes.starter}>

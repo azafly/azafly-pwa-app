@@ -4,13 +4,17 @@ export const useCardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboardCard__root: {
             cursor: 'pointer',
-            border: '2px solid #DCDCDC',
+            border: '1px solid #DCDCDC',
             borderRadius: 8,
             marginBottom: 10,
             maxWidth: 900,
             margin: 'auto',
+            padding: 0,
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
-            [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
+            [theme.breakpoints.down('md')]: {
+                width: '90vw'
+            }
         },
         summary_heading: {
             fontWeight: 800,
@@ -90,7 +94,7 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
             borderRadius: 4,
             position: 'fixed',
             background: 'white',
-            border: '0.1px solid #DCDCDC',
+            border: '1px solid #DCDCDC',
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             width: 250,
             flexGrow: 1,
@@ -122,7 +126,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             '& .heading': {
                 marginBottom: 10,
                 fontFamily: 'Nunito',
-                fontWeight: 800,
+                fontWeight: 600,
                 marginTop: '4em',
                 display: 'block',
                 maxWidth: 900,
@@ -139,7 +143,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             fontSize: '1.5rem',
             maxWidth: 900,
             margin: 'auto',
-            color: theme.colors.base,
+            color: theme.colors.textPrimary,
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
             [theme.breakpoints.only('xs')]: { marginTop: 20 },
             textTransform: 'capitalize'

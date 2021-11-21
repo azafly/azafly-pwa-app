@@ -1,16 +1,18 @@
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 import AddIcon from '@mui/icons-material/Add';
 import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         card_container: {
             padding: 10,
-            border: '2px solid #DCDCDC',
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)'
+            border: '1px solid #DCDCDC',
+            [theme.breakpoints.only('xs')]: {
+                marginRight: 10
+            }
         },
         action: {
             fontSize: '0.85em',
@@ -30,11 +32,11 @@ interface ResidenceCardProps {
     loading: boolean;
 }
 
-export default function ResidenceWalletCard({ handleOpen, loading }: ResidenceCardProps) {
+export default function ResidenceWalletCard({ loading }: ResidenceCardProps) {
     const classes = useStyles();
     return (
-        <SkeletonTheme baseColor='' highlightColor='#4990A4' borderRadius='0.5rem' duration={4}>
-            <Card elevation={1} className={classes.card_container}>
+        <SkeletonTheme baseColor='' highlightColor='#eef5f7' borderRadius='0.5rem' duration={4}>
+            <Card elevation={0} className={classes.card_container}>
                 <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         {loading ? (

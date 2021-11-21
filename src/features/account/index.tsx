@@ -115,7 +115,7 @@ const UserAccount = () => {
     };
 
     useEffect(() => {
-        const fetchImages = async () => {
+        const fetchImages = async (): Promise<string[]> => {
             const result = await storage.ref().child('/images/user-kyc').listAll();
             const urlPromises = result.items.map(imageRef => imageRef.getDownloadURL());
             return Promise.all(urlPromises);

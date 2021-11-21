@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, ReactNode } from 'react';
 
 import { CardContainer } from './card';
 import { TransactionFilterTab } from './filter/tab';
@@ -7,13 +7,22 @@ import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetUserPendingOffersQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
 
 import { PendingOfferCardContainer } from './pending-offer/index';
+import { EmptyCardContainer } from './empty-transaction/card';
 
 interface TransactionListContainerProps {
     transactions: readonly any[];
     classes?: Record<string, string>;
+    emailLink: ReactNode;
+    loading: boolean;
+    handleSendVerificationEmail: () => void;
 }
 
-export const TransactionListContainer = memo(function TransactionListContainer({ transactions }: TransactionListContainerProps) {
+export const TransactionListContainer = memo(function TransactionListContainer({
+    transactions,
+    emailLink,
+    loading,
+    handleSendVerificationEmail
+}: TransactionListContainerProps) {
     const {
         authState: { user }
     } = useFirebaseAuthContext();
@@ -31,6 +40,12 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     const pending = offerData?.payment_offer?.map((transaction: any) => (
         <PendingOfferCardContainer transactionData={transaction} key={transaction.id} />
     ));
+    const allOffers = transactions.length ? (
+        all
+    ) : (
+        <EmptyCardContainer emailLink={emailLink} handleSendVerificationEmail={handleSendVerificationEmail} loading={loading} />
+    );
+
     const pendingTransactions = pending?.length ? (
         pending
     ) : (
@@ -40,5 +55,5 @@ export const TransactionListContainer = memo(function TransactionListContainer({
         </Typography>
     );
 
-    return <TransactionFilterTab tabViews={[all, pendingTransactions]} />;
+    return <TransactionFilterTab tabViews={[allOffers, pendingTransactions]} />;
 });

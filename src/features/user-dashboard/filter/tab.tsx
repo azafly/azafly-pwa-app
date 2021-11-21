@@ -12,7 +12,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         filter_tab__container: {
             cursor: 'pointer',
-            border: '2px solid #DCDCDC',
+            border: '1px solid #DCDCDC',
             borderRadius: 8,
             background: 'white',
             maxWidth: 900,
@@ -35,7 +35,7 @@ function TabPanel(props: TabPanelProps) {
     return (
         <div role='tabpanel' hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
             {value === index && (
-                <Box p={3}>
+                <Box pt={1}>
                     <Typography>{children}</Typography>
                 </Box>
             )}
@@ -55,7 +55,7 @@ interface TransactionFilterTabProps {
 export const TransactionFilterTab = ({ tabViews }: TransactionFilterTabProps) => {
     const [value, setValue] = React.useState(0);
 
-    const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
+    const handleChange = (_: React.ChangeEvent<unknown>, newValue: number) => {
         setValue(newValue);
     };
 
@@ -63,8 +63,8 @@ export const TransactionFilterTab = ({ tabViews }: TransactionFilterTabProps) =>
     return (
         <>
             <Tabs value={value} onChange={handleChange} aria-label='onboarding tab' className={classes.filter_tab__container}>
-                <Tab label='All' {...a11yProps(0)} />
-                <Tab label='Pending' {...a11yProps(1)} />
+                <Tab label='Transactions' {...a11yProps(0)} />
+                <Tab label='Pending Offers' {...a11yProps(1)} />
             </Tabs>
             {tabViews.map((transactionCards, index) => {
                 return (

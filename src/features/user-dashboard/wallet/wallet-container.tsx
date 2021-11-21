@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         heading: {
-            fontWeight: 750,
+            fontWeight: 600,
             marginBottom: 10,
             [theme.breakpoints.only('xs')]: {
                 textAlign: 'center'
@@ -56,8 +56,8 @@ const WalletContainer = ({ handleOpen }: WalletContainerProps) => {
         arrows: false,
         speed: 500,
         slidesToScroll: 1,
-        slidesToShow: 1,
-        centerPadding: '60px'
+        slidesToShow: 1.2,
+        infinite: false
     };
 
     const {
@@ -75,7 +75,7 @@ const WalletContainer = ({ handleOpen }: WalletContainerProps) => {
 
     return (
         <div className={classes.reviewSlider_container}>
-            <Typography className={classes.heading}> Balances </Typography>
+            <Typography className={classes.heading}> Your Accounts </Typography>
 
             {isSmallScreen ? (
                 <Slider {...settings}>

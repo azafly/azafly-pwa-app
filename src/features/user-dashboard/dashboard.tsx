@@ -5,7 +5,6 @@ import ErrorIcon from '@mui/icons-material/Error';
 
 import { CardSkeleton } from './card';
 import { CreditCard } from 'features/user-dashboard/wallet/cards/credit-card';
-import { EmptyCardContainer } from './empty-transaction/card';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { SideBar } from './side-bar';
 import { TransactionListContainer } from './transaction-list-container';
@@ -18,12 +17,6 @@ import { fetchWallet } from './mock';
 import { formatFirstName } from 'libs';
 
 import { useDashboardStyles, StyledBadge } from './classes';
-
-enum Filter {
-    ALL = 'ALL',
-    PENDING = 'PENDING',
-    PAID = 'PAID'
-}
 
 export default function Dashboard() {
     const [hidden, setHidden] = useState(false);
@@ -130,7 +123,7 @@ export default function Dashboard() {
                         Hey 👋🏾 {formatFirstName(userData?.users[0]?.display_name ?? '')}!
                     </Typography>{' '}
                     <WalletContainer handleOpen={handleOpenCreditCardModal} />
-                    <Typography className={'heading'}>Your Transactions</Typography>{' '}
+                    <Typography className={'heading'}>Recent Activities</Typography>{' '}
                     {loading || !transactionData ? (
                         <>
                             <CardSkeleton />
@@ -138,12 +131,15 @@ export default function Dashboard() {
                         </>
                     ) : (
                         <>
-                            <TransactionListContainer classes={classes} transactions={transactions ?? []} />
+                            <TransactionListContainer
+                                classes={classes}
+                                transactions={transactions ?? []}
+                                emailLink={emailLink}
+                                loading={loading}
+                                handleSendVerificationEmail={handleSendVerificationEmail}
+                            />
                         </>
                     )}
-                    {transactionData && !Boolean(transactions?.length) ? (
-                        <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
-                    ) : null}
                 </Grid>
             </Grid>
 

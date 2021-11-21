@@ -30,7 +30,7 @@ const steps = ['Service started', 'Payment Received', 'Payment Sent to Recieving
 export const dashboard = {
     serviceName: 'First Service',
     date: '14-02-2021',
-    infoText: `We received your payment.We've processed the payment. We have sent your payments to receiving institution.`,
+    infoText: `More information about this transaction`,
     taskList,
     steps
 };

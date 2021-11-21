@@ -24,3 +24,8 @@ export const formatCurrency = ({ countryCode, amount, currency }: IFormatCurrenc
 export function timeout(delay: number) {
     return new Promise(res => setTimeout(res, delay));
 }
+
+export const formatFirstName = (name: string) => {
+    const [surName, firstName] = name.split(' ');
+    return !firstName ? surName : firstName;
+};

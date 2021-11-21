@@ -25,6 +25,11 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: '100%',
                 padding: 15,
                 backgroundColor: '#f7f7f7'
+            },
+            '& .option-label': {
+                fontSize: '1.1rem',
+                fontFamily: 'inherit',
+                fontWeight: 400
             }
         },
         formControl: {
@@ -57,10 +62,6 @@ interface PaymentInfoProps {
 export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
     const classes = useStyles();
 
-    // TODO - prefill form
-    const initVale = {
-        fullname: 'adedayo'
-    };
     const formik = useFormik({
         initialValues: initialValues(),
         validationSchema,

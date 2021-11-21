@@ -4,7 +4,6 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 import { Link } from 'react-router-dom';
 
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
-import { NavBar } from 'features/user-dashboard/nav-bar';
 import { useForgotPasswordStyles } from './classes';
 
 interface SnackBarAlertState {
@@ -52,48 +51,39 @@ const ForgotPassword = () => {
     const alertSeverity = resetState.success ? 'success' : 'error';
 
     return (
-        <>
-            <NavBar />
-            <div className={classes.forgotPasswordRoot}>
-                <Snackbar
-                    open={open}
-                    autoHideDuration={6000}
-                    onClose={handleClose}
-                    anchorOrigin={{ vertical, horizontal }}
-                    key={vertical + horizontal}
-                >
-                    <Alert onClose={handleClose} className={`${classes.alert}`} severity={alertSeverity}>
-                        <AlertTitle>
-                            {' '}
-                            <strong>{alertSeverity}</strong>{' '}
-                        </AlertTitle>
-                        {message}
-                    </Alert>
-                </Snackbar>
-
-                <div className={classes.form_container}>
-                    <Input
-                        classes={{ underline: classes.underline }}
-                        type='text'
-                        id='reset-email'
-                        placeholder='Email Address'
-                        name={'email'}
-                        className={classes.input}
-                        onChange={e => handleFieldUpdate(e)}
-                    />
-                    <div>
-                        <Button className={classes.submit} disabled={!email} onClick={handleSendResetEmail}>
-                            Send Reset Link
-                        </Button>
-                    </div>
-
-                    <Link to='reset-password' className={classes.loginLink}>
+        <div className={classes.forgotPasswordRoot}>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                <Alert onClose={handleClose} className={`${classes.alert}`} severity={alertSeverity}>
+                    <AlertTitle>
                         {' '}
-                        Login with your new password
-                    </Link>
+                        <strong>{alertSeverity}</strong>{' '}
+                    </AlertTitle>
+                    {message}
+                </Alert>
+            </Snackbar>
+
+            <div className={classes.form_container}>
+                <Input
+                    classes={{ underline: classes.underline }}
+                    type='text'
+                    id='reset-email'
+                    placeholder='Email Address'
+                    name={'email'}
+                    className={classes.input}
+                    onChange={e => handleFieldUpdate(e)}
+                />
+                <div>
+                    <Button className={classes.submit} disabled={!email} onClick={handleSendResetEmail}>
+                        Send Reset Link
+                    </Button>
                 </div>
+
+                <Link to='reset-password' className={classes.loginLink}>
+                    {' '}
+                    Login with your new password
+                </Link>
             </div>
-        </>
+        </div>
     );
 };
 

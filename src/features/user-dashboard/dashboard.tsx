@@ -1,28 +1,39 @@
-import { Box, Hidden, Modal, Typography } from '@material-ui/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import { Grid, Hidden, Modal, Typography } from '@material-ui/core';
 import ErrorIcon from '@mui/icons-material/Error';
 
+import { CardSkeleton } from './card';
 import { CreditCard } from 'features/user-dashboard/wallet/cards/credit-card';
 import { EmptyCardContainer } from './empty-transaction/card';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { SideBar } from './side-bar';
 import { TransactionListContainer } from './transaction-list-container';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { useDashboardStyles, StyledBadge } from './classes';
 import WalletContainer from './wallet/wallet-container';
 
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
+import { fetchWallet } from './mock';
+import { formatFirstName } from 'libs';
+
+import { useDashboardStyles, StyledBadge } from './classes';
+
+enum Filter {
+    ALL = 'ALL',
+    PENDING = 'PENDING',
+    PAID = 'PAID'
+}
 
 export default function Dashboard() {
-    const [openSpeedDial, setOpenSpeedDial] = useState(false);
-    const [isSendingLink, setLoading] = useState(false);
     const [hidden, setHidden] = useState(false);
-    const [verificationEmailSent, setSent] = useState('');
-    const [openSnackBar, setOpenSnackBar] = useState(false);
+    const [isSendingLink, setLoading] = useState(false);
     const [openCreditCardModal, setOpenCreditCardModal] = useState(false);
-    const handleOpenCreditCardModal = () => setOpenCreditCardModal(true);
+    const [openSnackBar, setOpenSnackBar] = useState(false);
+    const [openSpeedDial, setOpenSpeedDial] = useState(false);
+    const [verificationEmailSent, setSent] = useState('');
     const handleCloseCreditCardModal = () => setOpenCreditCardModal(false);
+    const handleOpenCreditCardModal = () => setOpenCreditCardModal(true);
 
     const {
         authState: { user }
@@ -86,8 +97,12 @@ export default function Dashboard() {
     const alertSeverity = verificationEmailSent.includes('Error') ? 'error' : 'success';
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
 
+    useEffect(() => {
+        fetchWallet();
+    }, []);
+
     return (
-        <>
+        <div className={classes.dashboard_container}>
             <DefaultSnackbar
                 severity={alertSeverity}
                 open={openSnackBar}
@@ -104,28 +119,33 @@ export default function Dashboard() {
             >
                 <CreditCard />
             </Modal>
-            <div className={classes.main}>
+            <Grid container>
                 <Hidden mdDown>
-                    <SideBar />
+                    <Grid item md={2}>
+                        <SideBar />
+                    </Grid>
                 </Hidden>
-                <div className={classes.dashboard_container}>
+                <Grid item md={10} className={classes.data__section}>
+                    <Typography color={'textSecondary'} className={classes.name}>
+                        Hey 👋🏾 {formatFirstName(userData?.users[0]?.display_name ?? '')}!
+                    </Typography>{' '}
                     <WalletContainer handleOpen={handleOpenCreditCardModal} />
-                    {!transactionData && (
-                        <Box sx={{ width: '100%', display: 'flex' }}>
-                            <ThreeDots styles={{ backgroundColor: '#4990A4' }} />
-                        </Box>
-                    )}
-                    {transactionData && Boolean(transactions?.length) && (
+                    <Typography className={'heading'}>Your Transactions</Typography>{' '}
+                    {loading || !transactionData ? (
                         <>
-                            <Typography className={classes.heading}>Your Transactions</Typography>
+                            <CardSkeleton />
+                            <CardSkeleton />
+                        </>
+                    ) : (
+                        <>
                             <TransactionListContainer classes={classes} transactions={transactions ?? []} />
                         </>
                     )}
                     {transactionData && !Boolean(transactions?.length) ? (
                         <EmptyCardContainer emailLink={emailLink} loading={loading} handleSendVerificationEmail={handleSendVerificationEmail} />
                     ) : null}
-                </div>
-            </div>
+                </Grid>
+            </Grid>
 
             <SpeedDialTooltip
                 handleOpenSpeedDial={handleOpenSpeedDial}
@@ -134,6 +154,6 @@ export default function Dashboard() {
                 hidden={hidden}
                 handleSpeedDialVisibility={handleSpeedDialVisibility}
             />
-        </>
+        </div>
     );
 }

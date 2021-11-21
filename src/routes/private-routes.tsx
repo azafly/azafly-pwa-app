@@ -1,5 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { NavBar } from 'features/user-dashboard/nav-bar';
+import { BottomNavBar } from 'features/user-dashboard/bottom-navbar';
 
 export function PrivateRoute({ children, ...rest }: PropsWithChildren<any>) {
     const token = localStorage.getItem('token');
@@ -9,7 +11,11 @@ export function PrivateRoute({ children, ...rest }: PropsWithChildren<any>) {
             {...rest}
             render={({ location }) => {
                 return token ? (
-                    children
+                    <>
+                        <NavBar />
+                        {children}
+                        <BottomNavBar />
+                    </>
                 ) : (
                     <Redirect
                         to={{

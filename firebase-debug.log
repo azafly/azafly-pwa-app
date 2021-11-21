@@ -1,0 +1,49 @@
+[debug] [2021-11-21T08:11:59.132Z] ----------------------------------------------------------------------
+[debug] [2021-11-21T08:11:59.133Z] Command:       /Users/temporaryadmin/.nvm/versions/node/v14.15.0/bin/node /Users/temporaryadmin/.nvm/versions/node/v14.15.0/bin/firebase emulators:start --project pick-safe
+[debug] [2021-11-21T08:11:59.134Z] CLI Version:   9.14.0
+[debug] [2021-11-21T08:11:59.134Z] Platform:      darwin
+[debug] [2021-11-21T08:11:59.134Z] Node Version:  v14.15.0
+[debug] [2021-11-21T08:11:59.135Z] Time:          Sun Nov 21 2021 09:11:59 GMT+0100 (Central European Standard Time)
+[debug] [2021-11-21T08:11:59.136Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-11-21T08:11:59.141Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-11-21T08:11:59.141Z] > authorizing via signed-in user (ajiboye.o.john@gmail.com)
+[info] i  emulators: Starting emulators: auth, hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, hosting"}}
+[debug] [2021-11-21T08:11:59.165Z] [hub] writing locator at /var/folders/t5/qkwdlkln3gx1hl0l_7wcszh80000gp/T/hub-pick-safe.json
+[debug] [2021-11-21T08:12:01.571Z] > refreshing access token with scopes: []
+[debug] [2021-11-21T08:12:01.572Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-11-21T08:12:01.682Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","date":"Sun, 21 Nov 2021 08:12:01 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-11-21T08:12:01.732Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/pick-safe/sites 
+[debug] [2021-11-21T08:12:02.548Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/pick-safe/sites 200
+[debug] [2021-11-21T08:12:02.549Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/pick-safe/sites {"sites":[{"name":"projects/328749435709/sites/pick-safe","defaultUrl":"https://pick-safe.web.app","appId":"1:328749435709:web:eb35f811d0d41431f61354","type":"DEFAULT_SITE"}]}
+[debug] [2021-11-21T08:12:02.549Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/pick-safe/webApps/1:328749435709:web:eb35f811d0d41431f61354/config [none]
+[debug] [2021-11-21T08:12:03.403Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/pick-safe/webApps/1:328749435709:web:eb35f811d0d41431f61354/config 200
+[debug] [2021-11-21T08:12:03.404Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/pick-safe/webApps/1:328749435709:web:eb35f811d0d41431f61354/config {"projectId":"pick-safe","appId":"1:328749435709:web:eb35f811d0d41431f61354","databaseURL":"https://pick-safe-default-rtdb.europe-west1.firebasedatabase.app","storageBucket":"pick-safe.appspot.com","locationId":"europe-west","apiKey":"AIzaSyAOf2HX1Dha9St5MVKutzO5-P7JKM-KOCs","authDomain":"pick-safe.firebaseapp.com","messagingSenderId":"328749435709","measurementId":"G-9NHZ288KLF"}
+[info] i  hosting: Serving hosting files from: build {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mbuild\u001b[22m"}}
+[info] ✔  hosting: Local server: http://localhost:3007 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:3007\u001b[22m\u001b[24m"}}
+[debug] [2021-11-21T08:12:03.718Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2021-11-21T08:12:03.719Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2021-11-21T08:12:03.719Z] Starting Emulator UI with command {"binary":"node","args":["/Users/temporaryadmin/.cache/firebase/emulators/ui-v1.5.0/server.bundle.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/Users/temporaryadmin/.cache/firebase/emulators/ui-v1.5.0/server.bundle.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2021-11-21T08:12:03.817Z] Web / API server started at http://localhost:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at http://localhost:4000\n"}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4000                │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI        │
+├────────────────┼────────────────┼────────────────────────────┤
+│ Authentication │ localhost:9099 │ http://localhost:4000/auth │
+├────────────────┼────────────────┼────────────────────────────┤
+│ Hosting        │ localhost:3007 │ n/a                        │
+└────────────────┴────────────────┴────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[warn] ⚠  Received a signed JWT. Auth Emulator does not validate JWTs and IS NOT SECURE {"metadata":{"emulator":{"name":"auth"},"message":"Received a signed JWT. Auth Emulator does not validate JWTs and IS NOT SECURE"}}

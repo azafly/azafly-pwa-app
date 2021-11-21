@@ -4,7 +4,7 @@ import { TextField, InputLabel } from '@material-ui/core';
 
 import { Country, State, City } from 'country-state-city';
 import { transformCase } from 'libs';
-import { Key } from 'react';
+
 interface PaymentInfo {
     label: string;
     name: string;
@@ -137,8 +137,6 @@ interface generateInput {
 }
 
 export const generateInputType = ({ props, option, isError, handler }: generateInput) => {
-    console.log(handler);
-
     if (option?.type === 'select') {
         const label = option.name === 'by' ? `Who's making payment` : `Select Purpose`;
         const defaultValue: PURPOSE | BY_WHOM = option.name === 'by' ? 'self' : 'education';
@@ -168,8 +166,8 @@ export const generateInputType = ({ props, option, isError, handler }: generateI
                         </option>
 
                         {Country.getAllCountries()?.map((item: any) => (
-                            <option key={item.isoCode} value={item.isoCode}>
-                                {transformCase(item.name)}
+                            <option key={item.isoCode} value={item.isoCode} className={'option-label'}>
+                                {item.flag} {transformCase(item.name)}
                             </option>
                         ))}
                     </NativeSelect>

@@ -1,19 +1,19 @@
 import { Box, Card, CardContent, Chip, Collapse, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
-import { useCardStyles } from './classes';
+import { useCardStyles } from '.././classes';
 import React, { memo } from 'react';
 
 import { dashboard as data } from 'mocks/dashboard';
 import { formatCurrency } from 'libs';
-import { InfoText } from './info-text';
-import { ProgressStatusSteppers } from './status-stepper';
+import { InfoText } from '.././info-text';
+import { ProgressStatusSteppers } from '.././status-stepper';
 // import TaskList from './task-list';
 
 interface CardProps {
     transactionData: any;
 }
 
-export const CardContainer = memo(function CardContainer({ transactionData }: CardProps) {
+export const SendFromNaija = memo(function CardContainer({ transactionData }: CardProps) {
     const [expanded, setExpanded] = React.useState(!transactionData.is_success_done);
 
     const handleExpandClick = () => {

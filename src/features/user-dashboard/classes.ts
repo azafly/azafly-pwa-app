@@ -135,11 +135,11 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
         },
         name: {
             marginTop: 50,
-            fontWeight: 900,
+            fontWeight: 600,
             fontSize: '1.5rem',
-            maxWidth: 600,
+            maxWidth: 900,
             margin: 'auto',
-            color: '#0D324D',
+            color: theme.colors.base,
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
             [theme.breakpoints.only('xs')]: { marginTop: 20 },
             textTransform: 'capitalize'

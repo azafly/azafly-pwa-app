@@ -1,7 +1,7 @@
 import { Card, CardContent, Chip, Collapse, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
 import React, { memo } from 'react';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import Skeleton from 'react-loading-skeleton';
 
 import { dashboard as data } from 'mocks/dashboard';
 import { formatCurrency } from 'libs';
@@ -30,38 +30,36 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
     const classes = useCardStyles();
     const formattedAmount = formatCurrency({ currency, amount, countryCode: 'DE' });
     return (
-        <SkeletonTheme baseColor='' highlightColor='#4990A4' borderRadius='0.5rem' duration={4}>
-            <Card elevation={0} className={classes.dashboardCard__root} onClick={handleExpandClick}>
-                <CardContent>
-                    <div className={classes.starter}>
-                        <div className={classes.serviceName}>
-                            <h1 className='name'>{formattedAmount} </h1>
+        <Card elevation={0} className={classes.dashboardCard__root} onClick={handleExpandClick}>
+            <CardContent>
+                <div className={classes.starter}>
+                    <div className={classes.serviceName}>
+                        <h1 className='name'>{formattedAmount} </h1>
 
-                            <Typography className='date' paragraph color='secondary' style={{ fontWeight: 600 }}>
-                                {/* TODO: UPDATE WHEN DETAILS CHANGES IN SERVER */}
-                                {/* {name} */}
-                                Reference: Birmingham School Fees
-                            </Typography>
+                        <Typography className='date' paragraph color='secondary' style={{ fontWeight: 600 }}>
+                            {/* TODO: UPDATE WHEN DETAILS CHANGES IN SERVER */}
+                            {/* {name} */}
+                            Reference: Birmingham School Fees
+                        </Typography>
 
-                            <Typography className='date' paragraph color='secondary'>
-                                {date}
-                            </Typography>
-                        </div>
-
-                        <Chip className={classes.serviceInitiated} label={is_success_done ? 'Completed' : 'In Progress'} />
+                        <Typography className='date' paragraph color='secondary'>
+                            {date}
+                        </Typography>
                     </div>
 
-                    <InfoText text={data.infoText} />
+                    <Chip className={classes.serviceInitiated} label={is_success_done ? 'Completed' : 'In Progress'} />
+                </div>
 
-                    <Collapse in={expanded} timeout='auto' unmountOnExit>
-                        <Typography variant='h6' color='textSecondary' align={'center'} className={classes.summary_heading}>
-                            Your progress summary
-                        </Typography>
-                        <ProgressStatusSteppers />
-                        {/* <TaskList taskList={tasks} /> */}
-                    </Collapse>
-                </CardContent>
-            </Card>
-        </SkeletonTheme>
+                <InfoText text={data.infoText} />
+
+                <Collapse in={expanded} timeout='auto' unmountOnExit>
+                    <Typography variant='h6' color='textSecondary' align={'center'} className={classes.summary_heading}>
+                        Your progress summary
+                    </Typography>
+                    <ProgressStatusSteppers />
+                    {/* <TaskList taskList={tasks} /> */}
+                </Collapse>
+            </CardContent>
+        </Card>
     );
 });

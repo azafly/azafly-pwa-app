@@ -26,7 +26,6 @@ enum Filter {
 }
 
 export default function Dashboard() {
-    const [filteredTransaction, setTransaction] = useState([]);
     const [hidden, setHidden] = useState(false);
     const [isSendingLink, setLoading] = useState(false);
     const [openCreditCardModal, setOpenCreditCardModal] = useState(false);
@@ -62,7 +61,6 @@ export default function Dashboard() {
         setOpenSpeedDial(false);
     };
 
-    const handleFilterTransactions = (filter: Filter) => {};
     const classes = useDashboardStyles();
     const ripples = StyledBadge();
 

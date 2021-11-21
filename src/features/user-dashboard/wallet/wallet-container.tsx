@@ -1,11 +1,13 @@
 import { Grid, Typography } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
+import Slider from 'react-slick';
+
+import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
 
 import LocalWalletCard from './cards/local-wallet';
 import ResidenceWalletCard from './cards/residence-wallet';
-
-import Slider from 'react-slick';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -58,6 +60,19 @@ const WalletContainer = ({ handleOpen }: WalletContainerProps) => {
         centerPadding: '60px'
     };
 
+    const {
+        authState: { user }
+    } = useFirebaseAuthContext();
+
+    const { data: userData } = useGetCurrentUserByEmailQuery({
+        variables: {
+            email: user?.email ?? ''
+        }
+    });
+
+    const id = userData?.users[0]?.id;
+    const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id } });
+
     return (
         <div className={classes.reviewSlider_container}>
             <Typography className={classes.heading}> Balances </Typography>
@@ -65,19 +80,19 @@ const WalletContainer = ({ handleOpen }: WalletContainerProps) => {
             {isSmallScreen ? (
                 <Slider {...settings}>
                     <div>
-                        <ResidenceWalletCard />
+                        <ResidenceWalletCard loading={loading || !transactionData} handleOpen={handleOpen} />
                     </div>
                     <div>
-                        <LocalWalletCard handleOpen={handleOpen} />
+                        <LocalWalletCard loading={loading || !transactionData} handleOpen={handleOpen} />
                     </div>
                 </Slider>
             ) : (
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                        <ResidenceWalletCard />
+                        <ResidenceWalletCard loading={loading || !transactionData} handleOpen={handleOpen} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <LocalWalletCard handleOpen={handleOpen} />
+                        <LocalWalletCard loading={loading || !transactionData} handleOpen={handleOpen} />
                     </Grid>
                 </Grid>
             )}

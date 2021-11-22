@@ -57,12 +57,20 @@ export default function ResidenceWalletCard({ loading }: ResidenceCardProps) {
                 </CardContent>
                 <CardActions>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                        <Button endIcon={<AddIcon />} size='small' className={classes.action}>
-                            Fund Account
-                        </Button>
-                        <Button endIcon={<FlipCameraAndroidIcon />} size='small' className={classes.action}>
-                            convert
-                        </Button>
+                        {loading ? (
+                            <Skeleton width={'10ch'} />
+                        ) : (
+                            <Button endIcon={<AddIcon />} size='small' className={classes.action}>
+                                Fund Account
+                            </Button>
+                        )}
+                        {loading ? (
+                            <Skeleton width={'10ch'} />
+                        ) : (
+                            <Button endIcon={<FlipCameraAndroidIcon />} size='small' className={classes.action}>
+                                convert
+                            </Button>
+                        )}
                     </Box>
                 </CardActions>
             </Card>

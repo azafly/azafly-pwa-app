@@ -25,12 +25,6 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
         payment_offer: { source_currency: currency, source_amount: amount, payment_status }
     } = transactionData;
 
-    const statusMapping = {
-        is_success_done: ['Completed', ''],
-        in_progress: ['In Progress'],
-        payment_status: ['Pending']
-    };
-
     const date = `${format(new Date(created_at), 'dd, MMMM yyyy')}`;
     const classes = useCardStyles();
     const formattedAmount = formatCurrency({ currency, amount, countryCode: 'DE' });

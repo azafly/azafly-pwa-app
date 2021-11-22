@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { NavBar } from 'features/user-dashboard/nav-bar';
+import { NavBar } from 'components/nav-bar';
 import { BottomNavBar } from 'features/user-dashboard/bottom-navbar';
 
 export function PrivateRoute({ children, ...rest }: PropsWithChildren<any>) {

@@ -21,8 +21,8 @@ export const formatCurrency = ({ countryCode, amount, currency }: IFormatCurrenc
     return new Intl.NumberFormat(`en-${countryCode}`, { style: 'currency', currency }).format(amount);
 };
 
-export function timeout(delay: number) {
-    return new Promise(res => setTimeout(res, delay));
+export function delay(delayTime: number) {
+    return new Promise(res => setTimeout(res, delayTime));
 }
 
 export const formatFirstName = (name: string) => {

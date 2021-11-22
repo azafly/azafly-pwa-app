@@ -1,4 +1,4 @@
-import { NavBar } from 'features/user-dashboard/nav-bar';
+import { NavBar } from 'components/nav-bar';
 import { Svg404Component } from 'components/illustrations';
 
 import { Button, Box } from '@material-ui/core';

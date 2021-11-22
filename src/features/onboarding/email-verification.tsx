@@ -4,7 +4,7 @@ import { styled } from '@mui/system';
 import { useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 
-import { timeout } from 'libs';
+import { delay } from 'libs';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useURLParams } from '../../hooks/use-url-params';
 
@@ -27,14 +27,14 @@ export const EmailVerification = () => {
             .then(() => {
                 setOpenSnackBar(true);
                 setSuccess('Your Email was successfully Verified');
-                timeout(1500).then(() => location.replace('/dashboard'));
+                delay(1500).then(() => location.replace('/dashboard'));
             })
             .catch(() => {
                 setOpenSnackBar(true);
                 setError('Error verifying your email. Try again by opening your email');
             })
             .finally(() => {
-                timeout(2000).then(() => {
+                delay(2000).then(() => {
                     setOpenSnackBar(false);
                     setSuccess('');
                     setError('');

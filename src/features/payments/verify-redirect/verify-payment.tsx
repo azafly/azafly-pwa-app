@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
-import { NavBar } from 'features/user-dashboard/nav-bar';
+import { NavBar } from 'components/nav-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useVerifyPaymentSuccess } from 'features/payments/hooks';
 

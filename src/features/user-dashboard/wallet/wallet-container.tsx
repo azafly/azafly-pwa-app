@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         heading: {
-            fontWeight: 600,
+            fontWeight: 650,
             marginBottom: 10,
             [theme.breakpoints.only('xs')]: {
                 textAlign: 'center'

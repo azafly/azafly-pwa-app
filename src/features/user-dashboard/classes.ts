@@ -126,7 +126,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             '& .heading': {
                 marginBottom: 10,
                 fontFamily: 'Nunito',
-                fontWeight: 600,
+                fontWeight: 650,
                 marginTop: '4em',
                 display: 'block',
                 maxWidth: 900,

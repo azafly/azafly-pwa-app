@@ -119,9 +119,11 @@ export default function Dashboard() {
                     </Grid>
                 </Hidden>
                 <Grid item md={10} className={classes.data__section}>
-                    <Typography color={'textSecondary'} className={classes.name}>
-                        Hey 👋🏾 {formatFirstName(userData?.users[0]?.display_name ?? '')}!
-                    </Typography>{' '}
+                    <Hidden xsDown>
+                        <Typography color={'textSecondary'} className={classes.name}>
+                            Hey 👋🏾 {formatFirstName(userData?.users[0]?.display_name ?? '')}!
+                        </Typography>{' '}
+                    </Hidden>
                     <WalletContainer handleOpen={handleOpenCreditCardModal} />
                     <Typography className={'heading'}>Recent Activities</Typography>{' '}
                     {loading || !transactionData ? (

@@ -55,12 +55,20 @@ export default function LocalWalletCard({ handleOpen, loading }: LocalWalletCard
                 </CardContent>
                 <CardActions>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                        <Button endIcon={<AddIcon />} size='small' className={classes.action}>
-                            Fund Account
-                        </Button>
-                        <Button endIcon={<PaymentsIcon />} size='small' className={classes.action} onClick={handleOpen}>
-                            Withdraw
-                        </Button>
+                        {loading ? (
+                            <Skeleton width={'10ch'} />
+                        ) : (
+                            <Button endIcon={<AddIcon />} size='small' className={classes.action}>
+                                Fund Account
+                            </Button>
+                        )}
+                        {loading ? (
+                            <Skeleton width={'10ch'} />
+                        ) : (
+                            <Button endIcon={<PaymentsIcon />} size='small' className={classes.action} onClick={handleOpen}>
+                                Withdraw
+                            </Button>
+                        )}
                     </Box>
                 </CardActions>
             </Card>

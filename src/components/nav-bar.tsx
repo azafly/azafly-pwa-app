@@ -1,163 +1,267 @@
-import { AppBar, Toolbar, Button, IconButton, useMediaQuery } from '@material-ui/core';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import { Logo1SvgComponent } from 'components/icons';
-import MenuIcon from '@material-ui/icons/Menu';
-
+import { Avatar, Box, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Badge from '@material-ui/core/Badge';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuIcon from '@material-ui/icons/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import React, { memo, ReactElement } from 'react';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
-interface NavbarProps {
-    handleDrawerOpen?: () => void;
-    classNames?: string;
-    open?: boolean;
-}
-
-const drawerWidth = 180;
+import { DashboardSvgComponent, SignOutSvgComponent, ProfileSvgComponent, HelpSvgComponent } from 'components/icons';
+import { Logo2SvgComponent } from 'components/icons/logo-style-2';
+import { useFirebaseAuthContext } from 'providers/auth/firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        navbarContainer: {
-            width: '100vw',
-            overflowX: 'hidden'
-        },
-        appBar: {
-            transition: theme.transitions.create(['margin', 'width'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen
-            }),
-            background: 'white',
-            color: theme.colors.textPrimary
-        },
-        appBarShift: {
-            width: `calc(100% - ${drawerWidth}px)`,
-            transition: theme.transitions.create(['margin', 'width'], {
-                easing: theme.transitions.easing.easeOut,
-                duration: theme.transitions.duration.enteringScreen
-            }),
-            marginRight: drawerWidth
-        },
-        toolBar: {
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignContent: 'center',
-            width: '80vw',
-            margin: 'auto',
-            height: 70
-        },
-        logo: {
+        grow: {
             flexGrow: 1,
-            textDecoration: 'none',
-            display: 'flex',
-            width: 100
-        },
-        links: {
-            color: theme.palette.secondary.main,
-            display: 'flex',
-            fontWeight: 400,
-            fontSize: '0.85rem',
-            marginRight: 15,
-            justifyContent: 'space-around'
-        },
-        active: {
-            display: 'inline-block',
-            borderBottom: '2px solid #4990A4',
-            color: theme.colors.base,
-            paddingRight: 0
-        },
-        title: {
-            flexGrow: 1,
-            fontWeight: 900,
-            opacity: 0.7,
-            color: theme.colors.textPrimary
-        },
-        hide: {
-            display: 'none'
-        },
-        menuIcon: {
-            color: theme.colors.textPrimary,
-            position: 'absolute',
-            right: 0,
-            justifySelf: 'flex-end'
-        },
-        downloadLink: {
-            flexGrow: 1,
-            marginLeft: 70,
-            fontWeight: 500,
-            justifyContent: 'flex-end',
-            display: 'flex'
-        },
-        register: {
-            background: theme.palette.primary.main,
-            textTransform: 'capitalize',
-            color: 'white',
-            fontWeight: 500,
-            paddingRight: 25,
-            paddingLeft: 25,
-            transition: 'background .25s ease-in -out, transform .15s ease,- webkit - transform .15s ease',
-            '&:hover': {
-                opacity: 0.9,
-                background: theme.palette.primary.main,
-                transform: 'scale(1.01)',
-                borderRadius: 6
+            '& .MuiToolbar-regular': {
+                height: 50
             }
         },
-        signin: {
-            textTransform: 'capitalize',
-            marginRight: '2vw',
-            fontWeight: 500,
-            color: theme.palette.secondary.main
+        menuButton: {
+            marginRight: theme.spacing(2)
         },
-        underline: {
-            border: '3px solid #4990A4'
+        title: {
+            display: 'flex',
+            height: 60
+        },
+        sectionDesktop: {
+            display: 'none',
+            [theme.breakpoints.up('md')]: {
+                display: 'flex'
+            },
+            '& .name': {
+                textTransform: 'capitalize'
+            },
+            '& .link': {
+                textDecoration: 'none',
+                fontWeight: 700
+            },
+            '& .payment_button': {
+                fontWeight: 550,
+                background: 'white',
+                color: theme.colors.textPrimary,
+                textTransform: 'capitalize'
+            }
+        },
+        sectionMobile: {
+            display: 'flex',
+            [theme.breakpoints.up('md')]: {
+                display: 'none'
+            }
+        },
+        menuItem_text: {
+            color: theme.colors.textPrimary,
+            fontWeight: 450
         }
     })
 );
 
-export const NavBar = ({ handleDrawerOpen, open }: NavbarProps) => {
-    const classes = useStyles();
+interface NavBarProps {
+    callToAction?: {
+        text: string;
+        icon?: ReactElement;
+        link: string;
+    };
+}
 
-    const isSmallScreen = useMediaQuery('(max-width:950px)');
+const defaultCallToAction: NavBarProps['callToAction'] = {
+    text: 'Dashboard',
+    icon: <DashboardSvgComponent />,
+    link: '/dashboard'
+};
+
+export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction }: NavBarProps) {
+    const classes = useStyles();
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+
+    const {
+        authState: { user },
+        signout
+    } = useFirebaseAuthContext();
+
+    const isMenuOpen = Boolean(anchorEl);
+    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMobileMenuClose = () => {
+        setMobileMoreAnchorEl(null);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+        handleMobileMenuClose();
+    };
+
+    const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setMobileMoreAnchorEl(event.currentTarget);
+    };
+
+    const profileSrc = user?.photoURL;
+
+    const menuId = 'primary-account-menu';
+    const renderMenu = (
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            id={menuId}
+            keepMounted
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+        >
+            <MenuItem component={Link} to={'/account'}>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                    <ProfileSvgComponent />
+                </IconButton>
+                <Typography className={classes.menuItem_text}>Profile</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => location.replace('https://www.lucqax.com/faq')}>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                    <HelpSvgComponent />
+                </IconButton>
+                <Typography className={classes.menuItem_text}>Help</Typography>
+            </MenuItem>
+            <MenuItem component={Link} to={'/dashboard'}>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                    <DashboardSvgComponent />
+                </IconButton>
+                <Typography className={classes.menuItem_text}>Dashboard</Typography>
+            </MenuItem>
+            <MenuItem />
+            <MenuItem /> <MenuItem /> <MenuItem /> <MenuItem />
+            <MenuItem />
+            <MenuItem onClick={() => signout()}>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                    <SignOutSvgComponent />
+                </IconButton>
+                <Typography className={classes.menuItem_text}>Signout</Typography>
+            </MenuItem>
+        </Menu>
+    );
+
+    const mobileMenuId = 'menu-mobile';
+    const renderMobileMenu = (
+        <Menu
+            anchorEl={mobileMoreAnchorEl}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            id={mobileMenuId}
+            keepMounted
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={isMobileMenuOpen}
+            onClose={handleMobileMenuClose}
+        >
+            <MenuItem component={Link} to={'/account'}>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                    <ProfileSvgComponent />
+                </IconButton>
+                <Typography>Profile</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => location.replace('https://www.lucqax.com/faq')}>
+                <IconButton aria-label='help' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                    <HelpSvgComponent />
+                </IconButton>
+                <Typography>Help</Typography>
+            </MenuItem>
+            <MenuItem component={Link} to={'/payment'}>
+                <IconButton aria-label='help' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                    <PaymentsIcon />
+                </IconButton>
+                <Typography>New Payment</Typography>
+            </MenuItem>
+            <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
+                <IconButton aria-label='dashboard' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
+                    <DashboardSvgComponent />
+                </IconButton>
+                <Typography className={classes.menuItem_text}>Dashboard</Typography>
+            </MenuItem>
+            <MenuItem />
+            <MenuItem /> <MenuItem />
+            <MenuItem />
+            <MenuItem onClick={() => signout()}>
+                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                    <SignOutSvgComponent />
+                </IconButton>
+                <Typography className={classes.menuItem_text}>Signout</Typography>
+            </MenuItem>
+        </Menu>
+    );
 
     return (
-        <div className={`${classes.navbarContainer}`}>
-            {isSmallScreen ? (
-                <AppBar
-                    elevation={0}
-                    position='fixed'
-                    className={clsx(classes.appBar, {
-                        [classes.appBarShift]: open
-                    })}
-                >
-                    <Toolbar>
-                        <Link to='/dashboard' className={`${classes.logo}`}>
-                            <Logo1SvgComponent />{' '}
-                        </Link>
+        <div className={classes.grow}>
+            <AppBar position='fixed' elevation={0}>
+                <Toolbar>
+                    <Link to='/dashboard' className={classes.title}>
+                        {' '}
+                        <Logo2SvgComponent />{' '}
+                    </Link>
+                    <div className={classes.grow} />
+                    <div className={classes.sectionDesktop}>
                         <IconButton
-                            color='secondary'
-                            aria-label='open drawer'
                             edge='end'
-                            onClick={handleDrawerOpen}
-                            className={clsx(open && classes.hide)}
+                            aria-label='account of current user'
+                            aria-controls={menuId}
+                            aria-haspopup='true'
+                            onClick={handleProfileMenuOpen}
+                            color='inherit'
                         >
-                            <MenuIcon className={classes.menuIcon} />
+                            <Avatar src={profileSrc ?? ''} />
                         </IconButton>
-                    </Toolbar>
-                </AppBar>
-            ) : (
-                <AppBar className={classes.appBar} elevation={0}>
-                    <Toolbar className={classes.toolBar}>
-                        <Link to='/dashboard' className={`${classes.logo}`}>
-                            <Logo1SvgComponent />{' '}
-                        </Link>
-                        <section className={classes.links}></section>
-                        <section className={classes.downloadLink}>
-                            <Button className={classes.register} component={Link} to='/dashboard'>
-                                Go to Dashboard{' '}
-                            </Button>
-                        </section>
-                    </Toolbar>
-                </AppBar>
-            )}
+                        <IconButton
+                            edge='end'
+                            aria-label='account of current user'
+                            aria-controls={menuId}
+                            aria-haspopup='true'
+                            onClick={handleProfileMenuOpen}
+                            color='inherit'
+                        />
+                        <IconButton aria-label='notifications' color='inherit'>
+                            <Badge badgeContent={3} color='secondary'>
+                                <NotificationsIcon />
+                            </Badge>
+                        </IconButton>
+                        <IconButton
+                            edge='end'
+                            aria-label='account of current user'
+                            aria-controls={menuId}
+                            aria-haspopup='true'
+                            onClick={handleProfileMenuOpen}
+                            color='inherit'
+                        >
+                            <Link to={callToAction.link} className='link'>
+                                {' '}
+                                <Button variant='contained' className='payment_button' endIcon={callToAction.icon}>
+                                    {callToAction.text}
+                                </Button>
+                            </Link>
+                        </IconButton>
+                    </div>
+                    <div className={classes.sectionMobile}>
+                        <IconButton
+                            aria-label='show more'
+                            aria-controls={mobileMenuId}
+                            aria-haspopup='true'
+                            onClick={handleMobileMenuOpen}
+                            color='inherit'
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </div>
+                </Toolbar>
+            </AppBar>
+            {renderMobileMenu}
+            {renderMenu}
         </div>
     );
-};
+});

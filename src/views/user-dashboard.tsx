@@ -2,7 +2,7 @@ import { Box } from '@mui/system';
 import { lazy, Suspense } from 'react';
 import PaymentsIcon from '@mui/icons-material/Payments';
 
-import { NavBar } from 'features/user-dashboard/nav-bar';
+import { NavBar } from 'components/nav-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots';
 
 const LazyDashBoard = lazy(() => import('features/user-dashboard/dashboard'));

@@ -7743,6 +7743,25 @@ export type GetUserPendingOffersQuery = (
   )> }
 );
 
+export type FilterTransactionsByDateRangeQueryVariables = Exact<{
+  id: Scalars['uuid'];
+  start_date: Scalars['timestamptz'];
+  end_date: Scalars['timestamptz'];
+}>;
+
+
+export type FilterTransactionsByDateRangeQuery = (
+  { readonly __typename?: 'query_root' }
+  & { readonly transaction: ReadonlyArray<(
+    { readonly __typename?: 'transaction' }
+    & Pick<Transaction, 'amount' | 'created_at' | 'id' | 'is_success_done' | 'name' | 'updated_at'>
+    & { readonly payment_offer?: Maybe<(
+      { readonly __typename?: 'payment_offer' }
+      & Pick<Payment_Offer, 'payment_status' | 'source_amount' | 'source_currency' | 'target_currency' | 'total_in_target_with_charges' | 'total_to_pay_in_source_currency'>
+    )> }
+  )> }
+);
+
 export type GetCurrentUserQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
@@ -7953,6 +7972,59 @@ export function useGetUserPendingOffersLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetUserPendingOffersQueryHookResult = ReturnType<typeof useGetUserPendingOffersQuery>;
 export type GetUserPendingOffersLazyQueryHookResult = ReturnType<typeof useGetUserPendingOffersLazyQuery>;
 export type GetUserPendingOffersQueryResult = Apollo.QueryResult<GetUserPendingOffersQuery, GetUserPendingOffersQueryVariables>;
+export const FilterTransactionsByDateRangeDocument = gql`
+    query filterTransactionsByDateRange($id: uuid!, $start_date: timestamptz!, $end_date: timestamptz!) {
+  transaction(
+    where: {user_id: {_eq: $id}, created_at: {_gte: $start_date, _lte: $end_date}}
+    order_by: {is_success_done: asc, updated_at: desc}
+  ) {
+    amount
+    created_at
+    id
+    is_success_done
+    name
+    updated_at
+    payment_offer {
+      payment_status
+      source_amount
+      source_currency
+      target_currency
+      total_in_target_with_charges
+      total_to_pay_in_source_currency
+    }
+  }
+}
+    `;
+
+/**
+ * __useFilterTransactionsByDateRangeQuery__
+ *
+ * To run a query within a React component, call `useFilterTransactionsByDateRangeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFilterTransactionsByDateRangeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFilterTransactionsByDateRangeQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      start_date: // value for 'start_date'
+ *      end_date: // value for 'end_date'
+ *   },
+ * });
+ */
+export function useFilterTransactionsByDateRangeQuery(baseOptions: Apollo.QueryHookOptions<FilterTransactionsByDateRangeQuery, FilterTransactionsByDateRangeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FilterTransactionsByDateRangeQuery, FilterTransactionsByDateRangeQueryVariables>(FilterTransactionsByDateRangeDocument, options);
+      }
+export function useFilterTransactionsByDateRangeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FilterTransactionsByDateRangeQuery, FilterTransactionsByDateRangeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FilterTransactionsByDateRangeQuery, FilterTransactionsByDateRangeQueryVariables>(FilterTransactionsByDateRangeDocument, options);
+        }
+export type FilterTransactionsByDateRangeQueryHookResult = ReturnType<typeof useFilterTransactionsByDateRangeQuery>;
+export type FilterTransactionsByDateRangeLazyQueryHookResult = ReturnType<typeof useFilterTransactionsByDateRangeLazyQuery>;
+export type FilterTransactionsByDateRangeQueryResult = Apollo.QueryResult<FilterTransactionsByDateRangeQuery, FilterTransactionsByDateRangeQueryVariables>;
 export const GetCurrentUserDocument = gql`
     query getCurrentUser($id: uuid!) {
   users_by_pk(id: $id) {

@@ -6,7 +6,7 @@ import { DefaultSnackbar } from 'components';
 import { FilesContainer } from './files-container';
 import { ProfilePicture } from './profile-picture';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { timeout } from 'libs';
+import { delay } from 'libs';
 import { UploadIconText } from './upload-icon-text';
 import { useFirebaseAuthContext, storage } from 'providers/auth/firebase';
 import { useGetCurrentUserByEmailQuery, useUpdateUserMutation } from 'api/generated/graphql';
@@ -53,7 +53,7 @@ const UserAccount = () => {
             })
             .catch(() => setError('Error updating your profile. Try again later'))
             .finally(async () => {
-                await timeout(6000);
+                await delay(6000);
                 setError('');
                 setSuccess('');
             });

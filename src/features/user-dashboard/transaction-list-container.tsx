@@ -1,13 +1,15 @@
-import { memo, ReactNode } from 'react';
-
-import { CardContainer } from './card';
+import { Box, Typography } from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { memo, ReactNode, useEffect, useState } from 'react';
 import { TransactionFilterTab } from './filter/tab';
-import { Typography } from '@material-ui/core';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
-import { useGetUserPendingOffersQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
+import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
+import TextField from '@mui/material/TextField';
 
-import { PendingOfferCardContainer } from './pending-offer/index';
+import { CardContainer, CardSkeleton } from './card';
 import { EmptyCardContainer } from './empty-transaction/card';
+import { PendingOfferCardContainer } from './pending-offer/index';
+import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { useGetUserPendingOffersQuery, useGetCurrentUserByEmailQuery, useFilterTransactionsByDateRangeLazyQuery } from 'api/generated/graphql';
 
 interface TransactionListContainerProps {
     transactions: readonly any[];
@@ -17,12 +19,27 @@ interface TransactionListContainerProps {
     handleSendVerificationEmail: () => void;
 }
 
+export const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        datePicker__container: {
+            margin: 'auto',
+            marginTop: 20,
+            marginBottom: 20,
+            display: 'flex'
+        }
+    })
+);
 export const TransactionListContainer = memo(function TransactionListContainer({
     transactions,
     emailLink,
     loading,
     handleSendVerificationEmail
 }: TransactionListContainerProps) {
+    const [dateValue, setDateValue] = useState<DateRange<Date>>([null, null]);
+    const [openDatePicker, setOpenDatePicker] = useState(false);
+    const [filterTransactionByDate, { data: filteredTransactions, loading: isLoadingFilter }] = useFilterTransactionsByDateRangeLazyQuery();
+    const classes = useStyles();
+
     const {
         authState: { user }
     } = useFirebaseAuthContext();
@@ -32,6 +49,23 @@ export const TransactionListContainer = memo(function TransactionListContainer({
             email: user?.email ?? ''
         }
     });
+
+    useEffect(() => {
+        const handleDateRangeSelect = async (startEnd: [Date | null, Date | null]) => {
+            const [startDate, endDate] = startEnd;
+            if (startDate && endDate) {
+                const id = userData?.users[0]?.id ?? '',
+                    start_date = startDate.toUTCString(),
+                    end_date = endDate.toUTCString();
+                filterTransactionByDate({ variables: { id, start_date, end_date } });
+                // delay(3500).then(() => setOpenDatePicker(false));
+            }
+            if (filteredTransactions) {
+                setOpenDatePicker(false);
+            }
+        };
+        handleDateRangeSelect(dateValue);
+    }, [dateValue, filterTransactionByDate, userData, filteredTransactions]);
 
     const id = userData?.users[0]?.id;
     const { data: offerData } = useGetUserPendingOffersQuery({ variables: { id } });
@@ -55,5 +89,54 @@ export const TransactionListContainer = memo(function TransactionListContainer({
         </Typography>
     );
 
-    return <TransactionFilterTab tabViews={[allOffers, pendingTransactions]} />;
+    const transactionsByDate = () => {
+        if (isLoadingFilter) {
+            return (
+                <>
+                    <CardSkeleton />
+                    <CardSkeleton />
+                </>
+            );
+        }
+        return (
+            <>
+                <DateRangePicker
+                    startText='start date'
+                    endText='end date'
+                    value={dateValue}
+                    className={classes.datePicker__container}
+                    onChange={(newValue: any) => {
+                        setDateValue(newValue);
+                    }}
+                    renderInput={(startProps, endProps) => (
+                        <div className={classes.datePicker__container}>
+                            <TextField {...startProps} />
+                            <Box sx={{ mx: 2 }}> to </Box>
+                            <TextField {...endProps} />
+                        </div>
+                    )}
+                />
+                {filteredTransactions?.transaction?.map((transaction: any) => (
+                    <CardContainer transactionData={transaction} key={transaction.id} />
+                ))}
+
+                {filteredTransactions?.transaction && !filteredTransactions?.transaction.length && (
+                    <Typography align={'center'} style={{ maxWidth: 900, margin: 'auto' }}>
+                        {' '}
+                        You have no transactions during this time period
+                    </Typography>
+                )}
+            </>
+        );
+    };
+
+    return (
+        <TransactionFilterTab
+            tabViews={[allOffers, pendingTransactions, transactionsByDate()]}
+            handleSetDateValue={setDateValue}
+            dateValue={dateValue}
+            openDatePicker={openDatePicker}
+            setOpenDatePicker={setOpenDatePicker}
+        />
+    );
 });

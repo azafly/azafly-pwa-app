@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
-import { Box, Tabs, Tab, Typography } from '@material-ui/core';
+import { Box, Tab, Tabs, Typography } from '@material-ui/core';
+
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import { DateRange } from '@mui/lab/DateRangePicker';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -51,8 +54,12 @@ function a11yProps(index: any) {
 }
 interface TransactionFilterTabProps {
     tabViews: React.ReactNode[];
+    handleSetDateValue: Dispatch<SetStateAction<DateRange<Date>>>;
+    dateValue: any;
+    openDatePicker: boolean;
+    setOpenDatePicker: Dispatch<SetStateAction<boolean>>;
 }
-export const TransactionFilterTab = ({ tabViews }: TransactionFilterTabProps) => {
+export const TransactionFilterTab = ({ setOpenDatePicker, tabViews }: TransactionFilterTabProps) => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (_: React.ChangeEvent<unknown>, newValue: number) => {
@@ -65,6 +72,13 @@ export const TransactionFilterTab = ({ tabViews }: TransactionFilterTabProps) =>
             <Tabs value={value} onChange={handleChange} aria-label='onboarding tab' className={classes.filter_tab__container}>
                 <Tab label='Transactions' {...a11yProps(0)} />
                 <Tab label='Pending Offers' {...a11yProps(1)} />
+                <Tab
+                    aria-label='Filter'
+                    {...a11yProps(2)}
+                    style={{ justifySelf: 'flex-end' }}
+                    icon={<DateRangeIcon />}
+                    onClick={() => setOpenDatePicker(true)}
+                />
             </Tabs>
             {tabViews.map((transactionCards, index) => {
                 return (

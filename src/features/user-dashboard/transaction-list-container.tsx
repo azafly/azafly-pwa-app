@@ -1,11 +1,12 @@
 import { Box, Typography } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
-import { memo, ReactNode, useEffect, useState } from 'react';
+import { memo, ReactNode, useState } from 'react';
 import { TransactionFilterTab } from './filter/tab';
 import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
 import TextField from '@mui/material/TextField';
 
 import { CardContainer, CardSkeleton } from './card';
+import { debounce } from 'libs';
 import { EmptyCardContainer } from './empty-transaction/card';
 import { PendingOfferCardContainer } from './pending-offer/index';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
@@ -50,22 +51,14 @@ export const TransactionListContainer = memo(function TransactionListContainer({
         }
     });
 
-    useEffect(() => {
-        const handleDateRangeSelect = async (startEnd: [Date | null, Date | null]) => {
-            const [startDate, endDate] = startEnd;
-            if (startDate && endDate) {
-                const id = userData?.users[0]?.id ?? '',
-                    start_date = startDate.toUTCString(),
-                    end_date = endDate.toUTCString();
-                filterTransactionByDate({ variables: { id, start_date, end_date } });
-                // delay(3500).then(() => setOpenDatePicker(false));
-            }
-            if (filteredTransactions) {
-                setOpenDatePicker(false);
-            }
-        };
-        handleDateRangeSelect(dateValue);
-    }, [dateValue, filterTransactionByDate, userData, filteredTransactions]);
+    const handleDateRangeSelect = async (startEnd: any) => {
+        const [startDate, endDate] = startEnd;
+
+        const id = userData?.users[0]?.id ?? '',
+            start_date = startDate.toUTCString(),
+            end_date = endDate.toUTCString();
+        filterTransactionByDate({ variables: { id, start_date, end_date } });
+    };
 
     const id = userData?.users[0]?.id;
     const { data: offerData } = useGetUserPendingOffersQuery({ variables: { id } });
@@ -101,18 +94,20 @@ export const TransactionListContainer = memo(function TransactionListContainer({
         return (
             <>
                 <DateRangePicker
-                    startText='start date'
-                    endText='end date'
+                    startText='Starting Date'
+                    endText='End Date'
                     value={dateValue}
+                    maxDate={new Date()}
                     className={classes.datePicker__container}
                     onChange={(newValue: any) => {
                         setDateValue(newValue);
                     }}
+                    onAccept={date => handleDateRangeSelect(date)}
                     renderInput={(startProps, endProps) => (
                         <div className={classes.datePicker__container}>
-                            <TextField {...startProps} />
-                            <Box sx={{ mx: 2 }}> to </Box>
-                            <TextField {...endProps} />
+                            <TextField {...startProps} variant='standard' />
+                            <Box sx={{ mx: 2 }}> </Box>
+                            <TextField {...endProps} variant='standard' />
                         </div>
                     )}
                 />

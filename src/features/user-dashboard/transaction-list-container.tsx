@@ -58,6 +58,7 @@ export const TransactionListContainer = memo(function TransactionListContainer({
             start_date = startDate.toUTCString(),
             end_date = endDate.toUTCString();
         filterTransactionByDate({ variables: { id, start_date, end_date } });
+        setOpenDatePicker(false);
     };
 
     const id = userData?.users[0]?.id;

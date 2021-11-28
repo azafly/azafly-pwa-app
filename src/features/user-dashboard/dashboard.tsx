@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Grid, Hidden, Modal, Typography } from '@material-ui/core';
 import ErrorIcon from '@mui/icons-material/Error';
 
-import { CardSkeleton } from './card';
+import { CardSkeleton } from './transaction-card';
 import { CreditCard } from 'features/user-dashboard/wallet/cards/credit-card';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { SideBar } from './side-bar';
@@ -128,13 +128,15 @@ export default function Dashboard() {
                     <Typography className={'heading'}>Recent Activities</Typography>{' '}
                     {loading || !transactionData ? (
                         <>
-                            <CardSkeleton />
-                            <CardSkeleton />
+                            {Array(5)
+                                .fill('')
+                                .map((_, index) => (
+                                    <CardSkeleton key={index} />
+                                ))}
                         </>
                     ) : (
                         <>
                             <TransactionListContainer
-                                classes={classes}
                                 transactions={transactions ?? []}
                                 emailLink={emailLink}
                                 loading={loading}

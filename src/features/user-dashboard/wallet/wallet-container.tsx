@@ -18,15 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: 900,
             margin: 'auto',
             marginBottom: 20,
-            [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
-            '& .slick-dots li.slick-active': {
-                '& button::before': {
-                    color: theme.colors.base
-                }
-            },
-            '& .slick-prev::before, .slick-next::before': {
-                color: theme.colors.base
-            }
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         },
         heading: {
             fontWeight: 650,

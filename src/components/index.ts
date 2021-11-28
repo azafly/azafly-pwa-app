@@ -1,5 +1,7 @@
+export { AsyncPhoneNumberList } from './phone-numbers-auto-complete';
 export { DefaultSnackbar } from './snackbar';
 export { GenericButton } from './button';
+export { GoogleAddressAutoComplete } from './google-address-autocomplete';
 export { MenuListItem } from './menuListItem';
 export { MobileBackButton } from './mobile-back-button';
 export { NavBar } from './nav-bar';

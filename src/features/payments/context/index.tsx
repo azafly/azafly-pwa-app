@@ -1,4 +1,5 @@
 import React, { createContext, PropsWithChildren, useContext, useState } from 'react';
+
 import { Country, NIGERIA } from './../hooks/use-country-list';
 import {
     createPaymentIntent,
@@ -7,7 +8,9 @@ import {
     LocalStorageInitialOffer
 } from 'services/rest-client/user-payment';
 import { IPaymentContext, PaymentContext, IRateInfo, UK } from './constants';
-import { LOCAL_STORAGE_KEY } from 'libs/local-storage-keys';
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
+import { useGetPendingOfferByIdQuery } from 'api/generated/graphql';
+import { useURLParams } from 'hooks/use-url-params';
 
 const paymentContext = createContext<IPaymentContext>(PaymentContext);
 
@@ -17,12 +20,18 @@ function usePaymentProvider() {
     const [canGoNext, setCanGoNext] = useState(false);
     const [paymentLink, setPaymentLink] = useState('');
     const [paymentError, setPaymentError] = useState('');
-    const [initialOffer, setInitialOffer] = useState<IPaymentContext['initialOffer']>(null);
+    const [initialOffer, setInitialOffer] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [activeStep, setActiveStep] = useState<IPaymentContext['activeStep']>(0);
 
     const [targetCountry, setTargetCountry] = React.useState<Country>(UK);
     const [sourceCountry, setSourceCountry] = React.useState<Country>(NIGERIA);
+
+    // pending offer
+    const urlParamOfferId = useURLParams('offer_id');
+    const { loading: loadingPendingOffer } = useGetPendingOfferByIdQuery({
+        variables: { offer_id: urlParamOfferId }
+    });
 
     const handleSourceCountryChange = (_: React.ChangeEvent<unknown>, value: Country) => {
         setSourceCountry(value);
@@ -66,6 +75,7 @@ function usePaymentProvider() {
         getInitialOffer({ source_currency: targetCountry?.currency?.code, source_amount: amount, target_currency: sourceCountry?.currency?.code })
             .then(({ data }) => {
                 setInitialOffer(data.data);
+                console.log(data);
                 localStorage.setItem(LOCAL_STORAGE_KEY.INITIAL_OFFER, JSON.stringify(data.data));
                 setPaymentError('');
                 setActiveStep(1);
@@ -113,12 +123,13 @@ function usePaymentProvider() {
         handleGetInitialOffer,
         initialOffer,
         isErrorState,
-        isLoading,
+        isLoading: isLoading || loadingPendingOffer,
         paymentError,
         paymentLink,
         rateInfoProps,
         setActiveStep,
-        setErrorState
+        setErrorState,
+        setInitialOffer
     };
 }
 

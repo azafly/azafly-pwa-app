@@ -1,4 +1,3 @@
-import React from 'react';
 import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
@@ -10,9 +9,9 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PaymentIcon from '@mui/icons-material/Payment';
 import PaymentsIcon from '@mui/icons-material/Payments';
+import React from 'react';
 
 import { DashboardSvgComponent } from 'components/icons/dashboard';
-import { usePrevious } from '../../hooks/use-previous';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -130,24 +129,21 @@ export function BottomNavBar() {
         </Menu>
     );
 
-    const previousLinkValue = usePrevious(value);
     const currentHistory = useHistory();
 
     const goToLink = (key: number) => {
-        setValue(key);
-        const isKeyChanged = previousLinkValue !== key;
         switch (key) {
             case 0:
-                isKeyChanged && currentHistory.push('/dashboard');
+                currentHistory.push('/dashboard');
                 break;
             case 1:
-                isKeyChanged && currentHistory.push('/dashboard');
+                currentHistory.push('/dashboard');
                 break;
             case 2:
-                isKeyChanged && currentHistory.push('/payment');
+                currentHistory.push('/payment');
                 break;
             case 3:
-                isKeyChanged && currentHistory.push('/account');
+                currentHistory.push('/account');
                 break;
             default:
                 break;

@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useState, useContext, useEffect } fro
 
 import { AuthContext, AuthState, defaultAuthState, defaultAuhContext, FirebaseUser } from './constants';
 import { firebaseApp, firebaseConfig } from './firebase-config';
-import { LOCAL_STORAGE_KEY } from 'libs/local-storage-keys';
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 
 import 'firebase/auth';
 import 'firebase/database';

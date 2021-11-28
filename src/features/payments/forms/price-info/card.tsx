@@ -3,8 +3,11 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { formatCurrency } from 'libs';
 import { GuaranteeTag } from './guarantee-tag';
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
+import { ThreeDots } from '../../../../components/css-loaders/three-dots/three-dots';
 import { usePaymentContext } from '../../context';
 import InfoIcon from '@mui/icons-material/Info';
+import { LocalStorageInitialOffer } from 'services/rest-client/user-payment';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -12,6 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: 675,
             boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important',
             padding: 50,
+
             borderRadius: 4,
             margin: 50,
             [theme.breakpoints.only('xs')]: {
@@ -63,17 +67,34 @@ export function PriceCard() {
         isLoading
     } = usePaymentContext();
 
-    const formattedOffer = formatCurrency({
-        currency: sourceCountry.currency.code,
-        amount: initialOffer?.total_in_target_with_charges ?? 0,
-        countryCode: sourceCountry.code
-    });
+    const getFormattedCurrency = () => {
+        const localStoragePaymentOffer = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string) as LocalStorageInitialOffer;
+        if (!initialOffer && localStoragePaymentOffer) {
+            return formatCurrency({
+                currency: localStoragePaymentOffer.target_currency,
+                amount: localStoragePaymentOffer.total_in_target_with_charges || 0,
+                countryCode: 'NG'
+            });
+        } else {
+            return formatCurrency({
+                currency: sourceCountry.currency.code,
+                amount: initialOffer?.total_in_target_with_charges || 0,
+                countryCode: sourceCountry.code
+            });
+        }
+    };
 
     return (
         <div className={classes.root}>
             <GuaranteeTag isLoading={isLoading} />
             <div className={classes.card}>
-                <div>{initialOffer && <h5 className={classes.price}> {formattedOffer}</h5>}</div>
+                {isLoading ? (
+                    <ThreeDots variantColor={'base'} />
+                ) : (
+                    <div>
+                        <h5 className={classes.price}> {getFormattedCurrency()}</h5>
+                    </div>
+                )}
                 <Box sx={{ display: 'flex' }}>
                     <InfoIcon color={'info'} />
                     <Typography paragraph className={'paragraph'} sx={{ fontSize: '0.7rem', padding: '0px 10px' }} align={'justify'}>

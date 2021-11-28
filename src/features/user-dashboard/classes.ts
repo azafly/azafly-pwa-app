@@ -4,11 +4,11 @@ export const useCardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboardCard__root: {
             cursor: 'pointer',
-            border: '1px solid #DCDCDC',
             borderRadius: 8,
             marginBottom: 10,
             maxWidth: 900,
             margin: 'auto',
+            border: '1px solid #DCDCDC',
             padding: 0,
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
@@ -94,7 +94,6 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
             borderRadius: 4,
             position: 'fixed',
             background: 'white',
-            border: '1px solid #DCDCDC',
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             width: 250,
             flexGrow: 1,

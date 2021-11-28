@@ -1204,6 +1204,10 @@ export type Mutation_Root = {
   readonly delete_currencies?: Maybe<Currencies_Mutation_Response>;
   /** delete single row from the table: "currencies" */
   readonly delete_currencies_by_pk?: Maybe<Currencies>;
+  /** delete data from the table: "payment_intent_failures" */
+  readonly delete_payment_intent_failures?: Maybe<Payment_Intent_Failures_Mutation_Response>;
+  /** delete single row from the table: "payment_intent_failures" */
+  readonly delete_payment_intent_failures_by_pk?: Maybe<Payment_Intent_Failures>;
   /** delete data from the table: "payment_offer" */
   readonly delete_payment_offer?: Maybe<Payment_Offer_Mutation_Response>;
   /** delete single row from the table: "payment_offer" */
@@ -1260,6 +1264,10 @@ export type Mutation_Root = {
   readonly delete_verification_requests?: Maybe<Verification_Requests_Mutation_Response>;
   /** delete single row from the table: "verification_requests" */
   readonly delete_verification_requests_by_pk?: Maybe<Verification_Requests>;
+  /** delete data from the table: "virtual_cards" */
+  readonly delete_virtual_cards?: Maybe<Virtual_Cards_Mutation_Response>;
+  /** delete single row from the table: "virtual_cards" */
+  readonly delete_virtual_cards_by_pk?: Maybe<Virtual_Cards>;
   /** insert data into the table: "accounts" */
   readonly insert_accounts?: Maybe<Accounts_Mutation_Response>;
   /** insert a single row into the table: "accounts" */
@@ -1276,6 +1284,10 @@ export type Mutation_Root = {
   readonly insert_currencies?: Maybe<Currencies_Mutation_Response>;
   /** insert a single row into the table: "currencies" */
   readonly insert_currencies_one?: Maybe<Currencies>;
+  /** insert data into the table: "payment_intent_failures" */
+  readonly insert_payment_intent_failures?: Maybe<Payment_Intent_Failures_Mutation_Response>;
+  /** insert a single row into the table: "payment_intent_failures" */
+  readonly insert_payment_intent_failures_one?: Maybe<Payment_Intent_Failures>;
   /** insert data into the table: "payment_offer" */
   readonly insert_payment_offer?: Maybe<Payment_Offer_Mutation_Response>;
   /** insert a single row into the table: "payment_offer" */
@@ -1332,6 +1344,10 @@ export type Mutation_Root = {
   readonly insert_verification_requests?: Maybe<Verification_Requests_Mutation_Response>;
   /** insert a single row into the table: "verification_requests" */
   readonly insert_verification_requests_one?: Maybe<Verification_Requests>;
+  /** insert data into the table: "virtual_cards" */
+  readonly insert_virtual_cards?: Maybe<Virtual_Cards_Mutation_Response>;
+  /** insert a single row into the table: "virtual_cards" */
+  readonly insert_virtual_cards_one?: Maybe<Virtual_Cards>;
   /** update data of the table: "accounts" */
   readonly update_accounts?: Maybe<Accounts_Mutation_Response>;
   /** update data of the table: "cities" */
@@ -1346,6 +1362,10 @@ export type Mutation_Root = {
   readonly update_currencies?: Maybe<Currencies_Mutation_Response>;
   /** update single row of the table: "currencies" */
   readonly update_currencies_by_pk?: Maybe<Currencies>;
+  /** update data of the table: "payment_intent_failures" */
+  readonly update_payment_intent_failures?: Maybe<Payment_Intent_Failures_Mutation_Response>;
+  /** update single row of the table: "payment_intent_failures" */
+  readonly update_payment_intent_failures_by_pk?: Maybe<Payment_Intent_Failures>;
   /** update data of the table: "payment_offer" */
   readonly update_payment_offer?: Maybe<Payment_Offer_Mutation_Response>;
   /** update single row of the table: "payment_offer" */
@@ -1402,6 +1422,10 @@ export type Mutation_Root = {
   readonly update_verification_requests?: Maybe<Verification_Requests_Mutation_Response>;
   /** update single row of the table: "verification_requests" */
   readonly update_verification_requests_by_pk?: Maybe<Verification_Requests>;
+  /** update data of the table: "virtual_cards" */
+  readonly update_virtual_cards?: Maybe<Virtual_Cards_Mutation_Response>;
+  /** update single row of the table: "virtual_cards" */
+  readonly update_virtual_cards_by_pk?: Maybe<Virtual_Cards>;
 };
 
 
@@ -1449,6 +1473,18 @@ export type Mutation_RootDelete_CurrenciesArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Currencies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Payment_Intent_FailuresArgs = {
+  where: Payment_Intent_Failures_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Payment_Intent_Failures_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1622,6 +1658,18 @@ export type Mutation_RootDelete_Verification_Requests_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Virtual_CardsArgs = {
+  where: Virtual_Cards_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Virtual_Cards_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_AccountsArgs = {
   objects: ReadonlyArray<Accounts_Insert_Input>;
 };
@@ -1672,6 +1720,20 @@ export type Mutation_RootInsert_CurrenciesArgs = {
 export type Mutation_RootInsert_Currencies_OneArgs = {
   object: Currencies_Insert_Input;
   on_conflict?: Maybe<Currencies_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Payment_Intent_FailuresArgs = {
+  objects: ReadonlyArray<Payment_Intent_Failures_Insert_Input>;
+  on_conflict?: Maybe<Payment_Intent_Failures_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Payment_Intent_Failures_OneArgs = {
+  object: Payment_Intent_Failures_Insert_Input;
+  on_conflict?: Maybe<Payment_Intent_Failures_On_Conflict>;
 };
 
 
@@ -1872,6 +1934,20 @@ export type Mutation_RootInsert_Verification_Requests_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Virtual_CardsArgs = {
+  objects: ReadonlyArray<Virtual_Cards_Insert_Input>;
+  on_conflict?: Maybe<Virtual_Cards_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Virtual_Cards_OneArgs = {
+  object: Virtual_Cards_Insert_Input;
+  on_conflict?: Maybe<Virtual_Cards_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_AccountsArgs = {
   _set?: Maybe<Accounts_Set_Input>;
   where: Accounts_Bool_Exp;
@@ -1921,6 +1997,20 @@ export type Mutation_RootUpdate_CurrenciesArgs = {
 export type Mutation_RootUpdate_Currencies_By_PkArgs = {
   _set?: Maybe<Currencies_Set_Input>;
   pk_columns: Currencies_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Payment_Intent_FailuresArgs = {
+  _set?: Maybe<Payment_Intent_Failures_Set_Input>;
+  where: Payment_Intent_Failures_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Payment_Intent_Failures_By_PkArgs = {
+  _set?: Maybe<Payment_Intent_Failures_Set_Input>;
+  pk_columns: Payment_Intent_Failures_Pk_Columns_Input;
 };
 
 
@@ -2128,6 +2218,22 @@ export type Mutation_RootUpdate_Verification_Requests_By_PkArgs = {
 };
 
 
+/** mutation root */
+export type Mutation_RootUpdate_Virtual_CardsArgs = {
+  _inc?: Maybe<Virtual_Cards_Inc_Input>;
+  _set?: Maybe<Virtual_Cards_Set_Input>;
+  where: Virtual_Cards_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Virtual_Cards_By_PkArgs = {
+  _inc?: Maybe<Virtual_Cards_Inc_Input>;
+  _set?: Maybe<Virtual_Cards_Set_Input>;
+  pk_columns: Virtual_Cards_Pk_Columns_Input;
+};
+
+
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
 export type Numeric_Comparison_Exp = {
   readonly _eq?: Maybe<Scalars['numeric']>;
@@ -2157,6 +2263,233 @@ export enum Order_By {
   DescNullsLast = 'desc_nulls_last'
 }
 
+/** columns and relationships of "payment_intent_failures" */
+export type Payment_Intent_Failures = {
+  readonly __typename?: 'payment_intent_failures';
+  readonly created_at: Scalars['timestamptz'];
+  readonly failed_reason?: Maybe<Scalars['String']>;
+  readonly id: Scalars['uuid'];
+  readonly payload?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  readonly payment_offer?: Maybe<Payment_Offer>;
+  readonly payment_offer_id?: Maybe<Scalars['uuid']>;
+  readonly status?: Maybe<Scalars['String']>;
+  readonly updated_at: Scalars['timestamptz'];
+  /** An object relationship */
+  readonly user?: Maybe<Users>;
+  readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** aggregated selection of "payment_intent_failures" */
+export type Payment_Intent_Failures_Aggregate = {
+  readonly __typename?: 'payment_intent_failures_aggregate';
+  readonly aggregate?: Maybe<Payment_Intent_Failures_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<Payment_Intent_Failures>;
+};
+
+/** aggregate fields of "payment_intent_failures" */
+export type Payment_Intent_Failures_Aggregate_Fields = {
+  readonly __typename?: 'payment_intent_failures_aggregate_fields';
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<Payment_Intent_Failures_Max_Fields>;
+  readonly min?: Maybe<Payment_Intent_Failures_Min_Fields>;
+};
+
+
+/** aggregate fields of "payment_intent_failures" */
+export type Payment_Intent_Failures_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<Payment_Intent_Failures_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "payment_intent_failures" */
+export type Payment_Intent_Failures_Aggregate_Order_By = {
+  readonly count?: Maybe<Order_By>;
+  readonly max?: Maybe<Payment_Intent_Failures_Max_Order_By>;
+  readonly min?: Maybe<Payment_Intent_Failures_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "payment_intent_failures" */
+export type Payment_Intent_Failures_Arr_Rel_Insert_Input = {
+  readonly data: ReadonlyArray<Payment_Intent_Failures_Insert_Input>;
+  /** on conflict condition */
+  readonly on_conflict?: Maybe<Payment_Intent_Failures_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "payment_intent_failures". All fields are combined with a logical 'AND'. */
+export type Payment_Intent_Failures_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<Payment_Intent_Failures_Bool_Exp>>;
+  readonly _not?: Maybe<Payment_Intent_Failures_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<Payment_Intent_Failures_Bool_Exp>>;
+  readonly created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  readonly failed_reason?: Maybe<String_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly payload?: Maybe<String_Comparison_Exp>;
+  readonly payment_offer?: Maybe<Payment_Offer_Bool_Exp>;
+  readonly payment_offer_id?: Maybe<Uuid_Comparison_Exp>;
+  readonly status?: Maybe<String_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  readonly user?: Maybe<Users_Bool_Exp>;
+  readonly user_id?: Maybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "payment_intent_failures" */
+export enum Payment_Intent_Failures_Constraint {
+  /** unique or primary key constraint */
+  PaymentIntentFailuresPkey = 'payment_intent_failures_pkey'
+}
+
+/** input type for inserting data into table "payment_intent_failures" */
+export type Payment_Intent_Failures_Insert_Input = {
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly failed_reason?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly payload?: Maybe<Scalars['String']>;
+  readonly payment_offer?: Maybe<Payment_Offer_Obj_Rel_Insert_Input>;
+  readonly payment_offer_id?: Maybe<Scalars['uuid']>;
+  readonly status?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+  readonly user?: Maybe<Users_Obj_Rel_Insert_Input>;
+  readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type Payment_Intent_Failures_Max_Fields = {
+  readonly __typename?: 'payment_intent_failures_max_fields';
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly failed_reason?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly payload?: Maybe<Scalars['String']>;
+  readonly payment_offer_id?: Maybe<Scalars['uuid']>;
+  readonly status?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+  readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** order by max() on columns of table "payment_intent_failures" */
+export type Payment_Intent_Failures_Max_Order_By = {
+  readonly created_at?: Maybe<Order_By>;
+  readonly failed_reason?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly payload?: Maybe<Order_By>;
+  readonly payment_offer_id?: Maybe<Order_By>;
+  readonly status?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+  readonly user_id?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Payment_Intent_Failures_Min_Fields = {
+  readonly __typename?: 'payment_intent_failures_min_fields';
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly failed_reason?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly payload?: Maybe<Scalars['String']>;
+  readonly payment_offer_id?: Maybe<Scalars['uuid']>;
+  readonly status?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+  readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** order by min() on columns of table "payment_intent_failures" */
+export type Payment_Intent_Failures_Min_Order_By = {
+  readonly created_at?: Maybe<Order_By>;
+  readonly failed_reason?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly payload?: Maybe<Order_By>;
+  readonly payment_offer_id?: Maybe<Order_By>;
+  readonly status?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+  readonly user_id?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "payment_intent_failures" */
+export type Payment_Intent_Failures_Mutation_Response = {
+  readonly __typename?: 'payment_intent_failures_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<Payment_Intent_Failures>;
+};
+
+/** on conflict condition type for table "payment_intent_failures" */
+export type Payment_Intent_Failures_On_Conflict = {
+  readonly constraint: Payment_Intent_Failures_Constraint;
+  readonly update_columns?: ReadonlyArray<Payment_Intent_Failures_Update_Column>;
+  readonly where?: Maybe<Payment_Intent_Failures_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "payment_intent_failures". */
+export type Payment_Intent_Failures_Order_By = {
+  readonly created_at?: Maybe<Order_By>;
+  readonly failed_reason?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly payload?: Maybe<Order_By>;
+  readonly payment_offer?: Maybe<Payment_Offer_Order_By>;
+  readonly payment_offer_id?: Maybe<Order_By>;
+  readonly status?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+  readonly user?: Maybe<Users_Order_By>;
+  readonly user_id?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: payment_intent_failures */
+export type Payment_Intent_Failures_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "payment_intent_failures" */
+export enum Payment_Intent_Failures_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  FailedReason = 'failed_reason',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Payload = 'payload',
+  /** column name */
+  PaymentOfferId = 'payment_offer_id',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "payment_intent_failures" */
+export type Payment_Intent_Failures_Set_Input = {
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly failed_reason?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly payload?: Maybe<Scalars['String']>;
+  readonly payment_offer_id?: Maybe<Scalars['uuid']>;
+  readonly status?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+  readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** update columns of table "payment_intent_failures" */
+export enum Payment_Intent_Failures_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  FailedReason = 'failed_reason',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Payload = 'payload',
+  /** column name */
+  PaymentOfferId = 'payment_offer_id',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
 /** columns and relationships of "payment_offer" */
 export type Payment_Offer = {
   readonly __typename?: 'payment_offer';
@@ -2166,6 +2499,11 @@ export type Payment_Offer = {
   readonly id: Scalars['uuid'];
   readonly metadata?: Maybe<Scalars['String']>;
   readonly our_fee: Scalars['numeric'];
+  /** An array relationship */
+  readonly payment_intent_failures: ReadonlyArray<Payment_Intent_Failures>;
+  /** An aggregate relationship */
+  readonly payment_intent_failures_aggregate: Payment_Intent_Failures_Aggregate;
+  readonly payment_intent_payload?: Maybe<Scalars['String']>;
   readonly payment_intent_request?: Maybe<Scalars['String']>;
   readonly payment_intent_response?: Maybe<Scalars['String']>;
   readonly payment_mode?: Maybe<Scalars['String']>;
@@ -2185,6 +2523,26 @@ export type Payment_Offer = {
   /** An object relationship */
   readonly user?: Maybe<Users>;
   readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+
+/** columns and relationships of "payment_offer" */
+export type Payment_OfferPayment_Intent_FailuresArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Intent_Failures_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Intent_Failures_Order_By>>;
+  where?: Maybe<Payment_Intent_Failures_Bool_Exp>;
+};
+
+
+/** columns and relationships of "payment_offer" */
+export type Payment_OfferPayment_Intent_Failures_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Intent_Failures_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Intent_Failures_Order_By>>;
+  where?: Maybe<Payment_Intent_Failures_Bool_Exp>;
 };
 
 
@@ -2293,6 +2651,8 @@ export type Payment_Offer_Bool_Exp = {
   readonly id?: Maybe<Uuid_Comparison_Exp>;
   readonly metadata?: Maybe<String_Comparison_Exp>;
   readonly our_fee?: Maybe<Numeric_Comparison_Exp>;
+  readonly payment_intent_failures?: Maybe<Payment_Intent_Failures_Bool_Exp>;
+  readonly payment_intent_payload?: Maybe<String_Comparison_Exp>;
   readonly payment_intent_request?: Maybe<String_Comparison_Exp>;
   readonly payment_intent_response?: Maybe<String_Comparison_Exp>;
   readonly payment_mode?: Maybe<String_Comparison_Exp>;
@@ -2335,6 +2695,8 @@ export type Payment_Offer_Insert_Input = {
   readonly id?: Maybe<Scalars['uuid']>;
   readonly metadata?: Maybe<Scalars['String']>;
   readonly our_fee?: Maybe<Scalars['numeric']>;
+  readonly payment_intent_failures?: Maybe<Payment_Intent_Failures_Arr_Rel_Insert_Input>;
+  readonly payment_intent_payload?: Maybe<Scalars['String']>;
   readonly payment_intent_request?: Maybe<Scalars['String']>;
   readonly payment_intent_response?: Maybe<Scalars['String']>;
   readonly payment_mode?: Maybe<Scalars['String']>;
@@ -2361,6 +2723,7 @@ export type Payment_Offer_Max_Fields = {
   readonly id?: Maybe<Scalars['uuid']>;
   readonly metadata?: Maybe<Scalars['String']>;
   readonly our_fee?: Maybe<Scalars['numeric']>;
+  readonly payment_intent_payload?: Maybe<Scalars['String']>;
   readonly payment_intent_request?: Maybe<Scalars['String']>;
   readonly payment_intent_response?: Maybe<Scalars['String']>;
   readonly payment_mode?: Maybe<Scalars['String']>;
@@ -2384,6 +2747,7 @@ export type Payment_Offer_Max_Order_By = {
   readonly id?: Maybe<Order_By>;
   readonly metadata?: Maybe<Order_By>;
   readonly our_fee?: Maybe<Order_By>;
+  readonly payment_intent_payload?: Maybe<Order_By>;
   readonly payment_intent_request?: Maybe<Order_By>;
   readonly payment_intent_response?: Maybe<Order_By>;
   readonly payment_mode?: Maybe<Order_By>;
@@ -2408,6 +2772,7 @@ export type Payment_Offer_Min_Fields = {
   readonly id?: Maybe<Scalars['uuid']>;
   readonly metadata?: Maybe<Scalars['String']>;
   readonly our_fee?: Maybe<Scalars['numeric']>;
+  readonly payment_intent_payload?: Maybe<Scalars['String']>;
   readonly payment_intent_request?: Maybe<Scalars['String']>;
   readonly payment_intent_response?: Maybe<Scalars['String']>;
   readonly payment_mode?: Maybe<Scalars['String']>;
@@ -2431,6 +2796,7 @@ export type Payment_Offer_Min_Order_By = {
   readonly id?: Maybe<Order_By>;
   readonly metadata?: Maybe<Order_By>;
   readonly our_fee?: Maybe<Order_By>;
+  readonly payment_intent_payload?: Maybe<Order_By>;
   readonly payment_intent_request?: Maybe<Order_By>;
   readonly payment_intent_response?: Maybe<Order_By>;
   readonly payment_mode?: Maybe<Order_By>;
@@ -2477,6 +2843,8 @@ export type Payment_Offer_Order_By = {
   readonly id?: Maybe<Order_By>;
   readonly metadata?: Maybe<Order_By>;
   readonly our_fee?: Maybe<Order_By>;
+  readonly payment_intent_failures_aggregate?: Maybe<Payment_Intent_Failures_Aggregate_Order_By>;
+  readonly payment_intent_payload?: Maybe<Order_By>;
   readonly payment_intent_request?: Maybe<Order_By>;
   readonly payment_intent_response?: Maybe<Order_By>;
   readonly payment_mode?: Maybe<Order_By>;
@@ -2514,6 +2882,8 @@ export enum Payment_Offer_Select_Column {
   /** column name */
   OurFee = 'our_fee',
   /** column name */
+  PaymentIntentPayload = 'payment_intent_payload',
+  /** column name */
   PaymentIntentRequest = 'payment_intent_request',
   /** column name */
   PaymentIntentResponse = 'payment_intent_response',
@@ -2549,6 +2919,7 @@ export type Payment_Offer_Set_Input = {
   readonly id?: Maybe<Scalars['uuid']>;
   readonly metadata?: Maybe<Scalars['String']>;
   readonly our_fee?: Maybe<Scalars['numeric']>;
+  readonly payment_intent_payload?: Maybe<Scalars['String']>;
   readonly payment_intent_request?: Maybe<Scalars['String']>;
   readonly payment_intent_response?: Maybe<Scalars['String']>;
   readonly payment_mode?: Maybe<Scalars['String']>;
@@ -2670,6 +3041,8 @@ export enum Payment_Offer_Update_Column {
   Metadata = 'metadata',
   /** column name */
   OurFee = 'our_fee',
+  /** column name */
+  PaymentIntentPayload = 'payment_intent_payload',
   /** column name */
   PaymentIntentRequest = 'payment_intent_request',
   /** column name */
@@ -3803,6 +4176,12 @@ export type Query_Root = {
   readonly currencies_aggregate: Currencies_Aggregate;
   /** fetch data from the table: "currencies" using primary key columns */
   readonly currencies_by_pk?: Maybe<Currencies>;
+  /** An array relationship */
+  readonly payment_intent_failures: ReadonlyArray<Payment_Intent_Failures>;
+  /** An aggregate relationship */
+  readonly payment_intent_failures_aggregate: Payment_Intent_Failures_Aggregate;
+  /** fetch data from the table: "payment_intent_failures" using primary key columns */
+  readonly payment_intent_failures_by_pk?: Maybe<Payment_Intent_Failures>;
   /** fetch data from the table: "payment_offer" */
   readonly payment_offer: ReadonlyArray<Payment_Offer>;
   /** fetch aggregated fields from the table: "payment_offer" */
@@ -3887,6 +4266,12 @@ export type Query_Root = {
   readonly verification_requests_aggregate: Verification_Requests_Aggregate;
   /** fetch data from the table: "verification_requests" using primary key columns */
   readonly verification_requests_by_pk?: Maybe<Verification_Requests>;
+  /** An array relationship */
+  readonly virtual_cards: ReadonlyArray<Virtual_Cards>;
+  /** An aggregate relationship */
+  readonly virtual_cards_aggregate: Virtual_Cards_Aggregate;
+  /** fetch data from the table: "virtual_cards" using primary key columns */
+  readonly virtual_cards_by_pk?: Maybe<Virtual_Cards>;
 };
 
 
@@ -3973,6 +4358,29 @@ export type Query_RootCurrencies_AggregateArgs = {
 
 
 export type Query_RootCurrencies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootPayment_Intent_FailuresArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Intent_Failures_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Intent_Failures_Order_By>>;
+  where?: Maybe<Payment_Intent_Failures_Bool_Exp>;
+};
+
+
+export type Query_RootPayment_Intent_Failures_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Intent_Failures_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Intent_Failures_Order_By>>;
+  where?: Maybe<Payment_Intent_Failures_Bool_Exp>;
+};
+
+
+export type Query_RootPayment_Intent_Failures_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -4295,6 +4703,29 @@ export type Query_RootVerification_Requests_AggregateArgs = {
 
 
 export type Query_RootVerification_Requests_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootVirtual_CardsArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Virtual_Cards_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Virtual_Cards_Order_By>>;
+  where?: Maybe<Virtual_Cards_Bool_Exp>;
+};
+
+
+export type Query_RootVirtual_Cards_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Virtual_Cards_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Virtual_Cards_Order_By>>;
+  where?: Maybe<Virtual_Cards_Bool_Exp>;
+};
+
+
+export type Query_RootVirtual_Cards_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -5126,6 +5557,12 @@ export type Subscription_Root = {
   readonly currencies_aggregate: Currencies_Aggregate;
   /** fetch data from the table: "currencies" using primary key columns */
   readonly currencies_by_pk?: Maybe<Currencies>;
+  /** An array relationship */
+  readonly payment_intent_failures: ReadonlyArray<Payment_Intent_Failures>;
+  /** An aggregate relationship */
+  readonly payment_intent_failures_aggregate: Payment_Intent_Failures_Aggregate;
+  /** fetch data from the table: "payment_intent_failures" using primary key columns */
+  readonly payment_intent_failures_by_pk?: Maybe<Payment_Intent_Failures>;
   /** fetch data from the table: "payment_offer" */
   readonly payment_offer: ReadonlyArray<Payment_Offer>;
   /** fetch aggregated fields from the table: "payment_offer" */
@@ -5210,6 +5647,12 @@ export type Subscription_Root = {
   readonly verification_requests_aggregate: Verification_Requests_Aggregate;
   /** fetch data from the table: "verification_requests" using primary key columns */
   readonly verification_requests_by_pk?: Maybe<Verification_Requests>;
+  /** An array relationship */
+  readonly virtual_cards: ReadonlyArray<Virtual_Cards>;
+  /** An aggregate relationship */
+  readonly virtual_cards_aggregate: Virtual_Cards_Aggregate;
+  /** fetch data from the table: "virtual_cards" using primary key columns */
+  readonly virtual_cards_by_pk?: Maybe<Virtual_Cards>;
 };
 
 
@@ -5296,6 +5739,29 @@ export type Subscription_RootCurrencies_AggregateArgs = {
 
 
 export type Subscription_RootCurrencies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootPayment_Intent_FailuresArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Intent_Failures_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Intent_Failures_Order_By>>;
+  where?: Maybe<Payment_Intent_Failures_Bool_Exp>;
+};
+
+
+export type Subscription_RootPayment_Intent_Failures_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Intent_Failures_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Intent_Failures_Order_By>>;
+  where?: Maybe<Payment_Intent_Failures_Bool_Exp>;
+};
+
+
+export type Subscription_RootPayment_Intent_Failures_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -5618,6 +6084,29 @@ export type Subscription_RootVerification_Requests_AggregateArgs = {
 
 
 export type Subscription_RootVerification_Requests_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootVirtual_CardsArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Virtual_Cards_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Virtual_Cards_Order_By>>;
+  where?: Maybe<Virtual_Cards_Bool_Exp>;
+};
+
+
+export type Subscription_RootVirtual_Cards_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Virtual_Cards_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Virtual_Cards_Order_By>>;
+  where?: Maybe<Virtual_Cards_Bool_Exp>;
+};
+
+
+export type Subscription_RootVirtual_Cards_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -7053,6 +7542,10 @@ export type Users = {
   readonly id: Scalars['uuid'];
   readonly image_url?: Maybe<Scalars['String']>;
   /** An array relationship */
+  readonly payment_intent_failures: ReadonlyArray<Payment_Intent_Failures>;
+  /** An aggregate relationship */
+  readonly payment_intent_failures_aggregate: Payment_Intent_Failures_Aggregate;
+  /** An array relationship */
   readonly payment_offers: ReadonlyArray<Payment_Offer>;
   /** An aggregate relationship */
   readonly payment_offers_aggregate: Payment_Offer_Aggregate;
@@ -7090,6 +7583,10 @@ export type Users = {
   readonly user_phones: ReadonlyArray<User_Phones>;
   /** An aggregate relationship */
   readonly user_phones_aggregate: User_Phones_Aggregate;
+  /** An array relationship */
+  readonly virtual_cards: ReadonlyArray<Virtual_Cards>;
+  /** An aggregate relationship */
+  readonly virtual_cards_aggregate: Virtual_Cards_Aggregate;
 };
 
 
@@ -7110,6 +7607,26 @@ export type UsersAccounts_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<ReadonlyArray<Accounts_Order_By>>;
   where?: Maybe<Accounts_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersPayment_Intent_FailuresArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Intent_Failures_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Intent_Failures_Order_By>>;
+  where?: Maybe<Payment_Intent_Failures_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersPayment_Intent_Failures_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Payment_Intent_Failures_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Payment_Intent_Failures_Order_By>>;
+  where?: Maybe<Payment_Intent_Failures_Bool_Exp>;
 };
 
 
@@ -7292,6 +7809,26 @@ export type UsersUser_Phones_AggregateArgs = {
   where?: Maybe<User_Phones_Bool_Exp>;
 };
 
+
+/** columns and relationships of "users" */
+export type UsersVirtual_CardsArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Virtual_Cards_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Virtual_Cards_Order_By>>;
+  where?: Maybe<Virtual_Cards_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersVirtual_Cards_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Virtual_Cards_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Virtual_Cards_Order_By>>;
+  where?: Maybe<Virtual_Cards_Bool_Exp>;
+};
+
 /** aggregated selection of "users" */
 export type Users_Aggregate = {
   readonly __typename?: 'users_aggregate';
@@ -7327,6 +7864,7 @@ export type Users_Bool_Exp = {
   readonly firebase_id?: Maybe<String_Comparison_Exp>;
   readonly id?: Maybe<Uuid_Comparison_Exp>;
   readonly image_url?: Maybe<String_Comparison_Exp>;
+  readonly payment_intent_failures?: Maybe<Payment_Intent_Failures_Bool_Exp>;
   readonly payment_offers?: Maybe<Payment_Offer_Bool_Exp>;
   readonly payments?: Maybe<Payments_Bool_Exp>;
   readonly phone?: Maybe<String_Comparison_Exp>;
@@ -7338,6 +7876,7 @@ export type Users_Bool_Exp = {
   readonly user_email_verifications?: Maybe<User_Email_Verification_Bool_Exp>;
   readonly user_meta?: Maybe<User_Meta_Bool_Exp>;
   readonly user_phones?: Maybe<User_Phones_Bool_Exp>;
+  readonly virtual_cards?: Maybe<Virtual_Cards_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "users" */
@@ -7360,6 +7899,7 @@ export type Users_Insert_Input = {
   readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['uuid']>;
   readonly image_url?: Maybe<Scalars['String']>;
+  readonly payment_intent_failures?: Maybe<Payment_Intent_Failures_Arr_Rel_Insert_Input>;
   readonly payment_offers?: Maybe<Payment_Offer_Arr_Rel_Insert_Input>;
   readonly payments?: Maybe<Payments_Arr_Rel_Insert_Input>;
   readonly phone?: Maybe<Scalars['String']>;
@@ -7371,6 +7911,7 @@ export type Users_Insert_Input = {
   readonly user_email_verifications?: Maybe<User_Email_Verification_Arr_Rel_Insert_Input>;
   readonly user_meta?: Maybe<User_Meta_Arr_Rel_Insert_Input>;
   readonly user_phones?: Maybe<User_Phones_Arr_Rel_Insert_Input>;
+  readonly virtual_cards?: Maybe<Virtual_Cards_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -7432,6 +7973,7 @@ export type Users_Order_By = {
   readonly firebase_id?: Maybe<Order_By>;
   readonly id?: Maybe<Order_By>;
   readonly image_url?: Maybe<Order_By>;
+  readonly payment_intent_failures_aggregate?: Maybe<Payment_Intent_Failures_Aggregate_Order_By>;
   readonly payment_offers_aggregate?: Maybe<Payment_Offer_Aggregate_Order_By>;
   readonly payments_aggregate?: Maybe<Payments_Aggregate_Order_By>;
   readonly phone?: Maybe<Order_By>;
@@ -7443,6 +7985,7 @@ export type Users_Order_By = {
   readonly user_email_verifications_aggregate?: Maybe<User_Email_Verification_Aggregate_Order_By>;
   readonly user_meta_aggregate?: Maybe<User_Meta_Aggregate_Order_By>;
   readonly user_phones_aggregate?: Maybe<User_Phones_Aggregate_Order_By>;
+  readonly virtual_cards_aggregate?: Maybe<Virtual_Cards_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: users */
@@ -7678,6 +8221,346 @@ export enum Verification_Requests_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+/** columns and relationships of "virtual_cards" */
+export type Virtual_Cards = {
+  readonly __typename?: 'virtual_cards';
+  readonly balance: Scalars['numeric'];
+  readonly card_last_4digits?: Maybe<Scalars['String']>;
+  readonly created_at: Scalars['timestamptz'];
+  readonly currency?: Maybe<Scalars['String']>;
+  readonly id: Scalars['uuid'];
+  readonly is_active?: Maybe<Scalars['Boolean']>;
+  readonly issuer_virtual_card_id: Scalars['String'];
+  readonly updated_at: Scalars['timestamptz'];
+  /** An object relationship */
+  readonly user?: Maybe<Users>;
+  readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** aggregated selection of "virtual_cards" */
+export type Virtual_Cards_Aggregate = {
+  readonly __typename?: 'virtual_cards_aggregate';
+  readonly aggregate?: Maybe<Virtual_Cards_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<Virtual_Cards>;
+};
+
+/** aggregate fields of "virtual_cards" */
+export type Virtual_Cards_Aggregate_Fields = {
+  readonly __typename?: 'virtual_cards_aggregate_fields';
+  readonly avg?: Maybe<Virtual_Cards_Avg_Fields>;
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<Virtual_Cards_Max_Fields>;
+  readonly min?: Maybe<Virtual_Cards_Min_Fields>;
+  readonly stddev?: Maybe<Virtual_Cards_Stddev_Fields>;
+  readonly stddev_pop?: Maybe<Virtual_Cards_Stddev_Pop_Fields>;
+  readonly stddev_samp?: Maybe<Virtual_Cards_Stddev_Samp_Fields>;
+  readonly sum?: Maybe<Virtual_Cards_Sum_Fields>;
+  readonly var_pop?: Maybe<Virtual_Cards_Var_Pop_Fields>;
+  readonly var_samp?: Maybe<Virtual_Cards_Var_Samp_Fields>;
+  readonly variance?: Maybe<Virtual_Cards_Variance_Fields>;
+};
+
+
+/** aggregate fields of "virtual_cards" */
+export type Virtual_Cards_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<Virtual_Cards_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "virtual_cards" */
+export type Virtual_Cards_Aggregate_Order_By = {
+  readonly avg?: Maybe<Virtual_Cards_Avg_Order_By>;
+  readonly count?: Maybe<Order_By>;
+  readonly max?: Maybe<Virtual_Cards_Max_Order_By>;
+  readonly min?: Maybe<Virtual_Cards_Min_Order_By>;
+  readonly stddev?: Maybe<Virtual_Cards_Stddev_Order_By>;
+  readonly stddev_pop?: Maybe<Virtual_Cards_Stddev_Pop_Order_By>;
+  readonly stddev_samp?: Maybe<Virtual_Cards_Stddev_Samp_Order_By>;
+  readonly sum?: Maybe<Virtual_Cards_Sum_Order_By>;
+  readonly var_pop?: Maybe<Virtual_Cards_Var_Pop_Order_By>;
+  readonly var_samp?: Maybe<Virtual_Cards_Var_Samp_Order_By>;
+  readonly variance?: Maybe<Virtual_Cards_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "virtual_cards" */
+export type Virtual_Cards_Arr_Rel_Insert_Input = {
+  readonly data: ReadonlyArray<Virtual_Cards_Insert_Input>;
+  /** on conflict condition */
+  readonly on_conflict?: Maybe<Virtual_Cards_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Virtual_Cards_Avg_Fields = {
+  readonly __typename?: 'virtual_cards_avg_fields';
+  readonly balance?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "virtual_cards" */
+export type Virtual_Cards_Avg_Order_By = {
+  readonly balance?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "virtual_cards". All fields are combined with a logical 'AND'. */
+export type Virtual_Cards_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<Virtual_Cards_Bool_Exp>>;
+  readonly _not?: Maybe<Virtual_Cards_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<Virtual_Cards_Bool_Exp>>;
+  readonly balance?: Maybe<Numeric_Comparison_Exp>;
+  readonly card_last_4digits?: Maybe<String_Comparison_Exp>;
+  readonly created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  readonly currency?: Maybe<String_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly is_active?: Maybe<Boolean_Comparison_Exp>;
+  readonly issuer_virtual_card_id?: Maybe<String_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  readonly user?: Maybe<Users_Bool_Exp>;
+  readonly user_id?: Maybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "virtual_cards" */
+export enum Virtual_Cards_Constraint {
+  /** unique or primary key constraint */
+  VirtualCardsPkey = 'virtual_cards_pkey'
+}
+
+/** input type for incrementing numeric columns in table "virtual_cards" */
+export type Virtual_Cards_Inc_Input = {
+  readonly balance?: Maybe<Scalars['numeric']>;
+};
+
+/** input type for inserting data into table "virtual_cards" */
+export type Virtual_Cards_Insert_Input = {
+  readonly balance?: Maybe<Scalars['numeric']>;
+  readonly card_last_4digits?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly currency?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly is_active?: Maybe<Scalars['Boolean']>;
+  readonly issuer_virtual_card_id?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+  readonly user?: Maybe<Users_Obj_Rel_Insert_Input>;
+  readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type Virtual_Cards_Max_Fields = {
+  readonly __typename?: 'virtual_cards_max_fields';
+  readonly balance?: Maybe<Scalars['numeric']>;
+  readonly card_last_4digits?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly currency?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly issuer_virtual_card_id?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+  readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** order by max() on columns of table "virtual_cards" */
+export type Virtual_Cards_Max_Order_By = {
+  readonly balance?: Maybe<Order_By>;
+  readonly card_last_4digits?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly currency?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly issuer_virtual_card_id?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+  readonly user_id?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Virtual_Cards_Min_Fields = {
+  readonly __typename?: 'virtual_cards_min_fields';
+  readonly balance?: Maybe<Scalars['numeric']>;
+  readonly card_last_4digits?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly currency?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly issuer_virtual_card_id?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+  readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** order by min() on columns of table "virtual_cards" */
+export type Virtual_Cards_Min_Order_By = {
+  readonly balance?: Maybe<Order_By>;
+  readonly card_last_4digits?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly currency?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly issuer_virtual_card_id?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+  readonly user_id?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "virtual_cards" */
+export type Virtual_Cards_Mutation_Response = {
+  readonly __typename?: 'virtual_cards_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<Virtual_Cards>;
+};
+
+/** on conflict condition type for table "virtual_cards" */
+export type Virtual_Cards_On_Conflict = {
+  readonly constraint: Virtual_Cards_Constraint;
+  readonly update_columns?: ReadonlyArray<Virtual_Cards_Update_Column>;
+  readonly where?: Maybe<Virtual_Cards_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "virtual_cards". */
+export type Virtual_Cards_Order_By = {
+  readonly balance?: Maybe<Order_By>;
+  readonly card_last_4digits?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly currency?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly is_active?: Maybe<Order_By>;
+  readonly issuer_virtual_card_id?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+  readonly user?: Maybe<Users_Order_By>;
+  readonly user_id?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: virtual_cards */
+export type Virtual_Cards_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "virtual_cards" */
+export enum Virtual_Cards_Select_Column {
+  /** column name */
+  Balance = 'balance',
+  /** column name */
+  CardLast_4digits = 'card_last_4digits',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Currency = 'currency',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsActive = 'is_active',
+  /** column name */
+  IssuerVirtualCardId = 'issuer_virtual_card_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "virtual_cards" */
+export type Virtual_Cards_Set_Input = {
+  readonly balance?: Maybe<Scalars['numeric']>;
+  readonly card_last_4digits?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly currency?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly is_active?: Maybe<Scalars['Boolean']>;
+  readonly issuer_virtual_card_id?: Maybe<Scalars['String']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+  readonly user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate stddev on columns */
+export type Virtual_Cards_Stddev_Fields = {
+  readonly __typename?: 'virtual_cards_stddev_fields';
+  readonly balance?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "virtual_cards" */
+export type Virtual_Cards_Stddev_Order_By = {
+  readonly balance?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Virtual_Cards_Stddev_Pop_Fields = {
+  readonly __typename?: 'virtual_cards_stddev_pop_fields';
+  readonly balance?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "virtual_cards" */
+export type Virtual_Cards_Stddev_Pop_Order_By = {
+  readonly balance?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Virtual_Cards_Stddev_Samp_Fields = {
+  readonly __typename?: 'virtual_cards_stddev_samp_fields';
+  readonly balance?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "virtual_cards" */
+export type Virtual_Cards_Stddev_Samp_Order_By = {
+  readonly balance?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Virtual_Cards_Sum_Fields = {
+  readonly __typename?: 'virtual_cards_sum_fields';
+  readonly balance?: Maybe<Scalars['numeric']>;
+};
+
+/** order by sum() on columns of table "virtual_cards" */
+export type Virtual_Cards_Sum_Order_By = {
+  readonly balance?: Maybe<Order_By>;
+};
+
+/** update columns of table "virtual_cards" */
+export enum Virtual_Cards_Update_Column {
+  /** column name */
+  Balance = 'balance',
+  /** column name */
+  CardLast_4digits = 'card_last_4digits',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Currency = 'currency',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsActive = 'is_active',
+  /** column name */
+  IssuerVirtualCardId = 'issuer_virtual_card_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** aggregate var_pop on columns */
+export type Virtual_Cards_Var_Pop_Fields = {
+  readonly __typename?: 'virtual_cards_var_pop_fields';
+  readonly balance?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "virtual_cards" */
+export type Virtual_Cards_Var_Pop_Order_By = {
+  readonly balance?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Virtual_Cards_Var_Samp_Fields = {
+  readonly __typename?: 'virtual_cards_var_samp_fields';
+  readonly balance?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "virtual_cards" */
+export type Virtual_Cards_Var_Samp_Order_By = {
+  readonly balance?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Virtual_Cards_Variance_Fields = {
+  readonly __typename?: 'virtual_cards_variance_fields';
+  readonly balance?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "virtual_cards" */
+export type Virtual_Cards_Variance_Order_By = {
+  readonly balance?: Maybe<Order_By>;
+};
+
 export type InsertNewUserMutationVariables = Exact<{
   id: Scalars['uuid'];
   email: Scalars['String'];
@@ -7713,6 +8596,17 @@ export type UpdateUserMutation = (
   )> }
 );
 
+export type GetCountriesPhonesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCountriesPhonesQuery = (
+  { readonly __typename?: 'query_root' }
+  & { readonly countries: ReadonlyArray<(
+    { readonly __typename?: 'countries' }
+    & Pick<Countries, 'code' | 'name' | 'phone_code'>
+  )> }
+);
+
 export type GetUserTransactionsQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
@@ -7739,7 +8633,20 @@ export type GetUserPendingOffersQuery = (
   { readonly __typename?: 'query_root' }
   & { readonly payment_offer: ReadonlyArray<(
     { readonly __typename?: 'payment_offer' }
-    & Pick<Payment_Offer, 'id' | 'created_at' | 'payment_status' | 'source_amount' | 'source_currency' | 'target_currency' | 'total_in_target_with_charges' | 'total_to_pay_in_source_currency'>
+    & Pick<Payment_Offer, 'id' | 'created_at' | 'payment_status' | 'source_amount' | 'source_currency' | 'target_currency' | 'total_in_target_with_charges' | 'total_to_pay_in_source_currency' | 'metadata' | 'payment_intent_payload'>
+  )> }
+);
+
+export type GetPendingOfferByIdQueryVariables = Exact<{
+  offer_id: Scalars['uuid'];
+}>;
+
+
+export type GetPendingOfferByIdQuery = (
+  { readonly __typename?: 'query_root' }
+  & { readonly payment_offer: ReadonlyArray<(
+    { readonly __typename?: 'payment_offer' }
+    & Pick<Payment_Offer, 'id' | 'created_at' | 'payment_status' | 'source_amount' | 'source_currency' | 'target_currency' | 'total_in_target_with_charges' | 'total_to_pay_in_source_currency' | 'metadata' | 'payment_intent_payload'>
   )> }
 );
 
@@ -7876,6 +8783,42 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const GetCountriesPhonesDocument = gql`
+    query getCountriesPhones {
+  countries {
+    code
+    name
+    phone_code
+  }
+}
+    `;
+
+/**
+ * __useGetCountriesPhonesQuery__
+ *
+ * To run a query within a React component, call `useGetCountriesPhonesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCountriesPhonesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCountriesPhonesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCountriesPhonesQuery(baseOptions?: Apollo.QueryHookOptions<GetCountriesPhonesQuery, GetCountriesPhonesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCountriesPhonesQuery, GetCountriesPhonesQueryVariables>(GetCountriesPhonesDocument, options);
+      }
+export function useGetCountriesPhonesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCountriesPhonesQuery, GetCountriesPhonesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCountriesPhonesQuery, GetCountriesPhonesQueryVariables>(GetCountriesPhonesDocument, options);
+        }
+export type GetCountriesPhonesQueryHookResult = ReturnType<typeof useGetCountriesPhonesQuery>;
+export type GetCountriesPhonesLazyQueryHookResult = ReturnType<typeof useGetCountriesPhonesLazyQuery>;
+export type GetCountriesPhonesQueryResult = Apollo.QueryResult<GetCountriesPhonesQuery, GetCountriesPhonesQueryVariables>;
 export const GetUserTransactionsDocument = gql`
     query getUserTransactions($id: uuid!) {
   transaction(
@@ -7930,7 +8873,7 @@ export type GetUserTransactionsQueryResult = Apollo.QueryResult<GetUserTransacti
 export const GetUserPendingOffersDocument = gql`
     query getUserPendingOffers($id: uuid!) {
   payment_offer(
-    where: {user_id: {_eq: $id}, payment_status: {_eq: "PENDING"}}
+    where: {user_id: {_eq: $id}, payment_status: {_neq: "PAID"}}
     order_by: {updated_at: desc}
   ) {
     id
@@ -7941,6 +8884,8 @@ export const GetUserPendingOffersDocument = gql`
     target_currency
     total_in_target_with_charges
     total_to_pay_in_source_currency
+    metadata
+    payment_intent_payload
   }
 }
     `;
@@ -7972,6 +8917,50 @@ export function useGetUserPendingOffersLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetUserPendingOffersQueryHookResult = ReturnType<typeof useGetUserPendingOffersQuery>;
 export type GetUserPendingOffersLazyQueryHookResult = ReturnType<typeof useGetUserPendingOffersLazyQuery>;
 export type GetUserPendingOffersQueryResult = Apollo.QueryResult<GetUserPendingOffersQuery, GetUserPendingOffersQueryVariables>;
+export const GetPendingOfferByIdDocument = gql`
+    query getPendingOfferById($offer_id: uuid!) {
+  payment_offer(where: {id: {_eq: $offer_id}}) {
+    id
+    created_at
+    payment_status
+    source_amount
+    source_currency
+    target_currency
+    total_in_target_with_charges
+    total_to_pay_in_source_currency
+    metadata
+    payment_intent_payload
+  }
+}
+    `;
+
+/**
+ * __useGetPendingOfferByIdQuery__
+ *
+ * To run a query within a React component, call `useGetPendingOfferByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPendingOfferByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPendingOfferByIdQuery({
+ *   variables: {
+ *      offer_id: // value for 'offer_id'
+ *   },
+ * });
+ */
+export function useGetPendingOfferByIdQuery(baseOptions: Apollo.QueryHookOptions<GetPendingOfferByIdQuery, GetPendingOfferByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPendingOfferByIdQuery, GetPendingOfferByIdQueryVariables>(GetPendingOfferByIdDocument, options);
+      }
+export function useGetPendingOfferByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPendingOfferByIdQuery, GetPendingOfferByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPendingOfferByIdQuery, GetPendingOfferByIdQueryVariables>(GetPendingOfferByIdDocument, options);
+        }
+export type GetPendingOfferByIdQueryHookResult = ReturnType<typeof useGetPendingOfferByIdQuery>;
+export type GetPendingOfferByIdLazyQueryHookResult = ReturnType<typeof useGetPendingOfferByIdLazyQuery>;
+export type GetPendingOfferByIdQueryResult = Apollo.QueryResult<GetPendingOfferByIdQuery, GetPendingOfferByIdQueryVariables>;
 export const FilterTransactionsByDateRangeDocument = gql`
     query filterTransactionsByDateRange($id: uuid!, $start_date: timestamptz!, $end_date: timestamptz!) {
   transaction(

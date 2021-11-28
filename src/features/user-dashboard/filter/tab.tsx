@@ -15,12 +15,10 @@ export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         filter_tab__container: {
             cursor: 'pointer',
-            border: '1px solid #DCDCDC',
             borderRadius: 8,
-            background: 'white',
+
             maxWidth: 900,
             margin: 'auto',
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
             '& .MuiTabs-flexContainer': {
                 justifyContent: 'center',
@@ -67,8 +65,10 @@ export const TransactionFilterTab = ({ setOpenDatePicker, tabViews }: Transactio
     };
 
     const classes = useStyles();
+
     return (
         <>
+            {' '}
             <Tabs value={value} onChange={handleChange} aria-label='onboarding tab' className={classes.filter_tab__container}>
                 <Tab label='Transactions' {...a11yProps(0)} />
                 <Tab label='Pending Offers' {...a11yProps(1)} />

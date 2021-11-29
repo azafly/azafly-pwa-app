@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         card_container: {
             padding: 10,
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             border: '1px solid #DCDCDC',
             [theme.breakpoints.only('xs')]: {
                 marginRight: 10
@@ -37,7 +36,7 @@ export default function ResidenceWalletCard({ loading }: ResidenceCardProps) {
     const classes = useStyles();
     return (
         <SkeletonTheme baseColor='' highlightColor='#eef5f7' borderRadius='0.5rem' duration={4}>
-            <Card elevation={0} className={classes.card_container}>
+            <Card elevation={1} className={classes.card_container}>
                 <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         {loading ? (

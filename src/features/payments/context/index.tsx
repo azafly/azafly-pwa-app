@@ -11,6 +11,7 @@ import { IPaymentContext, PaymentContext, IRateInfo, UK } from './constants';
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { useGetPendingOfferByIdQuery } from 'api/generated/graphql';
 import { useURLParams } from 'hooks/use-url-params';
+import client from 'libs/apollo-client';
 
 const paymentContext = createContext<IPaymentContext>(PaymentContext);
 
@@ -79,7 +80,11 @@ function usePaymentProvider() {
                 localStorage.setItem(LOCAL_STORAGE_KEY.INITIAL_OFFER, JSON.stringify(data.data));
                 setPaymentError('');
                 setActiveStep(1);
+                client.refetchQueries({
+                    include: ['GetUsersPendingOffers']
+                });
             })
+
             .catch(() => {
                 setCanGoNext(false);
                 setPaymentError('😩 Error getting you the best offers. Try again');

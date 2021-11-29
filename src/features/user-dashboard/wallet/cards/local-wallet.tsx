@@ -8,9 +8,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 const useStyles = makeStyles(() =>
     createStyles({
         card__container: {
-            padding: 10,
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
-            border: '1px solid #DCDCDC'
+            padding: 10
         },
         action: {
             fontSize: '0.85em',
@@ -35,7 +33,7 @@ export default function LocalWalletCard({ handleOpen, loading }: LocalWalletCard
 
     return (
         <SkeletonTheme baseColor='' highlightColor='#eef5f7' borderRadius='0.5rem' duration={4}>
-            <Card elevation={0} className={classes.card__container}>
+            <Card elevation={1} className={classes.card__container}>
                 <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         {loading ? (

@@ -66,10 +66,8 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
         initialValues: initialValues(),
         validationSchema,
         onSubmit: values => {
-            console.log(values);
             localStorage.setItem(LOCAL_STORAGE_KEY.PAYMENT_INFO, JSON.stringify(values));
             gotToNextStep();
-            localStorage.setItem(LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, `3`);
         }
     });
 

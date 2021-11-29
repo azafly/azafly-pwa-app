@@ -10,7 +10,7 @@ export const useCardStyles = makeStyles((theme: Theme) =>
             margin: 'auto',
             border: '1px solid #DCDCDC',
             padding: 0,
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
+
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
             [theme.breakpoints.down('md')]: {
                 width: '90vw'
@@ -117,7 +117,8 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
 export const useDashboardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboard_container: {
-            marginTop: '10vh'
+            backgroundColor: '#f2f5f7',
+            minHeight: '100vh'
         },
         data__section: {
             margin: 'auto',
@@ -137,7 +138,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.down('sm')]: { width: '90vw' }
         },
         name: {
-            marginTop: 50,
+            paddingTop: '10vh',
             fontWeight: 600,
             fontSize: '1.5rem',
             maxWidth: 900,

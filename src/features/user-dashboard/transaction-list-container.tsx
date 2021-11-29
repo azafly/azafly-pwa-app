@@ -1,4 +1,4 @@
-import { Box, Typography, useMediaQuery } from '@material-ui/core';
+import { Box, Paper, Typography, useMediaQuery } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core';
 import { memo, ReactNode, useState } from 'react';
 import { TransactionFilterTab } from './filter/tab';
@@ -33,6 +33,25 @@ export const useStyles = makeStyles(() =>
             display: 'flex',
             margin: 'auto',
             justifyContent: 'center',
+            marginTop: 20,
+            marginBottom: 20,
+            maxWidth: 900,
+
+            '& input': {
+                fontSize: '0.65rem',
+                fontFamily: 'Nunito',
+                fontWeight: 600
+            },
+            '& label': {
+                fontSize: '0.65rem',
+                fontFamily: 'Nunito',
+                fontWeight: 600
+            }
+        },
+        picker_card: {
+            display: 'flex',
+            justifyContent: 'center',
+            margin: 'auto',
             marginTop: 20,
             marginBottom: 20,
             maxWidth: 900
@@ -105,46 +124,48 @@ export const TransactionListContainer = memo(function TransactionListContainer({
                 <Typography align={'center'} style={{ maxWidth: 900, margin: 'auto', marginTop: 20, fontWeight: 600 }}>
                     Filter your transactions by date range
                 </Typography>
-                {isMobile ? (
-                    <MobileDateRangePicker
-                        startText='Starting Date'
-                        endText='End Date'
-                        value={dateValue}
-                        maxDate={new Date()}
-                        onChange={(newValue: any) => {
-                            setDateValue(newValue);
-                        }}
-                        onAccept={date => {
-                            console.log(date);
-                            handleDateRangeSelect(date);
-                        }}
-                        renderInput={(startProps, endProps) => (
-                            <div className={classes.datePicker__mobile}>
-                                <TextField {...startProps} variant='standard' />
-                                <Box sx={{ mx: 2 }}> </Box>
-                                <TextField {...endProps} variant='standard' />
-                            </div>
-                        )}
-                    />
-                ) : (
-                    <DateRangePicker
-                        startText='Starting Date'
-                        endText='End Date'
-                        value={dateValue}
-                        maxDate={new Date()}
-                        onChange={(newValue: any) => {
-                            setDateValue(newValue);
-                        }}
-                        onAccept={date => handleDateRangeSelect(date)}
-                        renderInput={(startProps, endProps) => (
-                            <div className={classes.datePicker__container}>
-                                <TextField {...startProps} variant='standard' />
-                                <Box sx={{ mx: 2 }}> </Box>
-                                <TextField {...endProps} variant='standard' />
-                            </div>
-                        )}
-                    />
-                )}
+                <Paper className={classes.picker_card}>
+                    {isMobile ? (
+                        <MobileDateRangePicker
+                            startText='Starting Date'
+                            endText='End Date'
+                            value={dateValue}
+                            maxDate={new Date()}
+                            onChange={(newValue: any) => {
+                                setDateValue(newValue);
+                            }}
+                            onAccept={date => {
+                                console.log(date);
+                                handleDateRangeSelect(date);
+                            }}
+                            renderInput={(startProps, endProps) => (
+                                <div className={classes.datePicker__mobile}>
+                                    <TextField {...startProps} variant='standard' />
+                                    <Box sx={{ mx: 2 }}> </Box>
+                                    <TextField {...endProps} variant='standard' />
+                                </div>
+                            )}
+                        />
+                    ) : (
+                        <DateRangePicker
+                            startText='Starting Date'
+                            endText='End Date'
+                            value={dateValue}
+                            maxDate={new Date()}
+                            onChange={(newValue: any) => {
+                                setDateValue(newValue);
+                            }}
+                            onAccept={date => handleDateRangeSelect(date)}
+                            renderInput={(startProps, endProps) => (
+                                <div className={classes.datePicker__container}>
+                                    <TextField {...startProps} variant='standard' />
+                                    <Box sx={{ mx: 2 }}> </Box>
+                                    <TextField {...endProps} variant='standard' />
+                                </div>
+                            )}
+                        />
+                    )}
+                </Paper>
 
                 {filteredTransactions?.transaction?.map((transaction: any) => (
                     <CardContainer transactionData={transaction} key={transaction.id} />

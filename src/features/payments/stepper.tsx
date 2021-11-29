@@ -2,6 +2,7 @@ import { Button, Stepper, Step, StepContent, StepLabel, Slide } from '@material-
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import FeedIcon from '@mui/icons-material/Feed';
 
 import { localStorageClient, LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { PaymentInfo } from './forms/payment-info/payment-info';
@@ -122,14 +123,22 @@ export function VerticalPaymentStepper() {
     useEffect(() => {
         const computeStepToNavigateTo = () => {
             const localStorageActiveStep = Number(localStorage.getItem(LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP));
-            if (localStorageActiveStep) {
+            if (localStorageActiveStep && !urlParamOfferId && !urlParamStep) {
                 setActiveStep(localStorageActiveStep);
-            } else if (urlParamOfferId && urlParamStep) {
+            }
+            if (urlParamOfferId && urlParamStep) {
                 Promise.resolve(handleGetPendingOffer()).then(() => {
                     setInitialOffer(pendingOffer?.payment_offer[0]);
-                    localStorage.setItem(LOCAL_STORAGE_KEY.INITIAL_OFFER, JSON.stringify(pendingOffer?.payment_offer[0]));
+                    const { source_amount, source_currency, target_currency, total_in_target_with_charges } = pendingOffer?.payment_offer[0] ?? {};
+                    localStorage.setItem(
+                        LOCAL_STORAGE_KEY.INITIAL_OFFER,
+                        JSON.stringify({ source_amount, source_currency, target_currency, total_in_target_with_charges })
+                    );
                     setActiveStep(Number(urlParamStep));
                 });
+            }
+            if (urlParamStep && !urlParamOfferId) {
+                setActiveStep(0);
             }
         };
         computeStepToNavigateTo();

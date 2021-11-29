@@ -56,6 +56,7 @@ export const PAYMENT_INFO: PaymentInfo[] = [
         label: 'Phone number',
         name: 'phone',
         errorMessage: 'Please enter a valid phone number',
+        helperText: 'Phone number with area code e.g +4912345678',
         isOptional: false,
         type: 'text'
     },
@@ -98,8 +99,8 @@ const phoneRegExp = /^\+(?:[0-9] ?){6,14}[0-9]$/;
 export const validationSchema = yup.object().shape({
     fullname: yup.string().required('Enter a your family name'),
     address: yup.string().required('Enter your Address '),
-    phone: yup.string().matches(phoneRegExp, 'Phone number is not valid').required('Enter a valid phone number.'),
-    references: yup.string().required('This is where you enter details about the payment'),
+    phone: yup.string().matches(phoneRegExp, 'Phone number is not valid').required('This is not a valid phone number.'),
+    references: yup.string().required('Reference is necessary to track your payment'),
     by: yup.string().oneOf(['self', 'others'], 'Please select one'),
     purpose: yup
         .string()

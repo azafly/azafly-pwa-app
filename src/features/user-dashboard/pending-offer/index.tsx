@@ -36,7 +36,7 @@ export const PendingOfferCardContainer = memo(function CardContainer({ transacti
     };
 
     const stepToNavigateTo = transactionData.payment_intent_payload ? 3 : 1;
-    const link = isError ? '/payment' : `/payment?offer_id=${transactionData.id}&step=${stepToNavigateTo}`;
+    const link = isError ? '/payment?step=1' : `/payment?offer_id=${transactionData.id}&step=${stepToNavigateTo}`;
 
     const date = `${format(new Date(created_at), 'dd, MMMM yyyy')}`;
     const classes = useCardStyles();

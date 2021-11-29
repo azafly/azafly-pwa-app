@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 
+import { localStorageClient, LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
+
 function loadScript(src: string, position: HTMLElement | null, id: string) {
     if (!position) {
         return;
@@ -40,10 +42,11 @@ interface GoogleAddressAutoCompleteProps {
     label?: string;
     helperText?: string;
     isError?: boolean;
-    setAddressValue: any;
+    setAddressValue?: (key: string, value?: string) => void;
+    storeValueInLocalStorage?: boolean;
 }
 
-export function GoogleAddressAutoComplete({ label, helperText, isError, setAddressValue }: GoogleAddressAutoCompleteProps) {
+export function GoogleAddressAutoComplete({ setAddressValue, storeValueInLocalStorage = false }: GoogleAddressAutoCompleteProps) {
     const [value, setValue] = React.useState<PlaceType | null>(null);
     const [inputValue, setInputValue] = React.useState('');
     const [options, setOptions] = React.useState<readonly PlaceType[]>([]);
@@ -52,7 +55,7 @@ export function GoogleAddressAutoComplete({ label, helperText, isError, setAddre
     if (typeof window !== 'undefined' && !loaded.current) {
         if (!document.querySelector('#google-maps')) {
             loadScript(
-                `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places`,
+                `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_FIREBASE_API_KEY}&libraries=places`,
                 document.querySelector('head'),
                 'google-maps'
             );
@@ -119,9 +122,11 @@ export function GoogleAddressAutoComplete({ label, helperText, isError, setAddre
             onChange={(_: any, newValue: PlaceType | null) => {
                 setOptions(newValue ? [newValue, ...options] : options);
                 setValue(newValue);
-                setAddressValue('address', newValue?.description);
+                storeValueInLocalStorage &&
+                    localStorageClient({ method: 'SET', key: LOCAL_STORAGE_KEY.ONBOARDING_ADDRESS, data: newValue?.description });
+                setAddressValue && setAddressValue('address', newValue?.description);
             }}
-            onInputChange={(event, newInputValue) => {
+            onInputChange={(_, newInputValue) => {
                 setInputValue(newInputValue);
             }}
             noOptionsText={'Start typing your address'}

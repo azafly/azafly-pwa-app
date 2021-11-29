@@ -5,7 +5,9 @@ export enum LOCAL_STORAGE_KEY {
     USER = 'user',
     IS_EMAIL_SIGNUP_SENT = 'is_email_sign_up',
     IS_PAYMENT_LINK_OPENED = 'is_lo',
-    PAYMENT_ACTIVE_STEP = 'payment_active_step'
+    PAYMENT_ACTIVE_STEP = 'payment_active_step',
+    ONBOARDING_ADDRESS = 'onboarding_address',
+    ONBOARDING_COUNTRY = 'onboarding_country'
 }
 
 // discriminated union for Local storage arguments

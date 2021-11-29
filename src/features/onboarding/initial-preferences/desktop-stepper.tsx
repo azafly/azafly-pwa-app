@@ -2,32 +2,14 @@ import { Button, Stepper, Step, StepContent, StepLabel, Slide } from '@material-
 import { useState } from 'react';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
+import { steps } from './steps';
+
 // classes
 import { useStepperStyles } from '../../account/classes';
 
-const getSteps = ['Payment Info', 'Payment method', 'Payment Information', 'Review & Confirm'];
-export type Steps = typeof getSteps[number];
-
-function getStepContent(step: number) {
-    switch (step) {
-        case 0:
-            return <div />;
-        case 1:
-            return <div />;
-        case 2:
-            return <div />;
-        case 3:
-            return <div />;
-        default:
-            return <div> Unknown step</div>;
-    }
-}
-
-export function InitialPreferences() {
+export default function DesktopOnboardingStepper() {
     const classes = useStepperStyles();
     const [activeStep, setActiveStep] = useState(0);
-
-    const steps = getSteps;
 
     const handleNext = () => {
         setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -88,16 +70,17 @@ export function InitialPreferences() {
     };
 
     return (
-        <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
-            <div className={classes.root}>
-                <Stepper activeStep={activeStep} orientation='vertical'>
-                    {steps.map((label, index) => (
-                        <Step key={label}>
-                            <StepLabel className={classes.stepperLabel} onClick={() => setActiveStep(index)}>
-                                {label}
-                            </StepLabel>
+        <div className={classes.root}>
+            <Stepper activeStep={activeStep} orientation='vertical'>
+                {steps.map(({ component, label }, step) => (
+                    <Step key={label}>
+                        <StepLabel className={classes.stepperLabel} onClick={() => setActiveStep(step)}>
+                            {label}
+                        </StepLabel>
+                        <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
                             <StepContent>
-                                {getStepContent(index)}
+                                {component}
+
                                 <div className={classes.actionsContainer}>
                                     <Button
                                         disabled={activeStep === 0}
@@ -108,13 +91,14 @@ export function InitialPreferences() {
                                     >
                                         Back
                                     </Button>
-                                    {handleStepper(index)}
+
+                                    {handleStepper(step)}
                                 </div>
                             </StepContent>
-                        </Step>
-                    ))}
-                </Stepper>
-            </div>
-        </Slide>
+                        </Slide>
+                    </Step>
+                ))}
+            </Stepper>
+        </div>
     );
 }

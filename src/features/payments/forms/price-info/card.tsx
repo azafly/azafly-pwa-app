@@ -13,9 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             maxWidth: 675,
-            boxShadow: '0 2px 20px 0 rgba(0,0,0,.05) !important',
             padding: 50,
-
             borderRadius: 4,
             margin: 50,
             [theme.breakpoints.only('xs')]: {
@@ -69,10 +67,11 @@ export function PriceCard() {
 
     const getFormattedCurrency = () => {
         const localStoragePaymentOffer = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string) as LocalStorageInitialOffer;
+
         if (!initialOffer && localStoragePaymentOffer) {
             return formatCurrency({
-                currency: localStoragePaymentOffer.target_currency,
-                amount: localStoragePaymentOffer.total_in_target_with_charges || 0,
+                currency: localStoragePaymentOffer?.target_currency ?? 'NGN',
+                amount: localStoragePaymentOffer?.total_in_target_with_charges || 0,
                 countryCode: 'NG'
             });
         } else {

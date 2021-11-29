@@ -10,7 +10,7 @@ import UserDashboard from 'views/user-dashboard';
 import Payments from 'views/payments';
 import { UserAccount } from 'views/user-account';
 import { PaymentsCallback } from 'views/payments-callback';
-import { InitialPreferences } from 'features/onboarding/preferences/initial-preferences';
+import { OnboardingPreferences } from 'features/onboarding/initial-preferences';
 
 export const Routes = () => {
     return (
@@ -29,7 +29,7 @@ export const Routes = () => {
                     <Payments />
                 </PrivateRoute>
                 <PrivateRoute exact path='/onboarding-update'>
-                    <InitialPreferences />
+                    <OnboardingPreferences />
                 </PrivateRoute>
                 <PrivateRoute exact path='/payments-callback'>
                     <PaymentsCallback />

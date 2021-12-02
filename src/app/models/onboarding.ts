@@ -4,6 +4,7 @@ import { createModel } from '@rematch/core';
 import { Country } from 'features/payments/hooks/use-country-list';
 import { CountryListData, defaultCountryListData } from 'types/country-data';
 import { RootModel } from './index';
+import { StepLabel } from 'features/onboarding/initial-preferences/steps/index';
 import { UK } from 'features/payments/context/constants';
 
 interface OnboardingPreference {
@@ -13,6 +14,7 @@ interface OnboardingPreference {
     address: string;
     countryList: CountryListData;
     userGeolocation: any;
+    activeStep: StepLabel;
 }
 
 const initialState: OnboardingPreference = {
@@ -21,12 +23,16 @@ const initialState: OnboardingPreference = {
     country: UK,
     address: '1 Waffle street, Nigeria',
     countryList: defaultCountryListData,
-    userGeolocation: {}
+    userGeolocation: {},
+    activeStep: 'phone'
 };
 
 export const onboarding = createModel<RootModel>()({
     state: initialState,
     reducers: {
+        setActiveStep(state, payload: StepLabel) {
+            return { ...state, activeStep: payload };
+        },
         setPhoneNumber(state, payload: string) {
             return { ...state, phoneNumber: payload };
         },

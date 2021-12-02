@@ -16,11 +16,11 @@ const useStyles = makeStyles((theme: Theme) => ({
         maxWidth: 400,
         marginBottom: 30,
         marginRight: 20,
-        padding: '5px 20px',
+        padding: '10px 20px',
         borderRadius: 8,
-        height: '4.5rem',
         backgroundColor: theme.palette.background.paper,
         boxShadow: '0 0 7px 0 #bac4cf',
+
         [theme.breakpoints.only('xs')]: {
             width: '100%'
         },
@@ -68,16 +68,17 @@ export type CountrySelectProps = {
     getOptionDisabled?: (option: Country) => boolean;
     getOptionLabel?: (option: Country) => string;
     renderOption?: (option: Country) => ReactElement;
+    optionVariant?: 'local' | 'foreign';
 };
 
-export const AfricaCountriesSelect = ({
+export const CountrySelect = ({
     handleCountryChange,
     classKeys,
-    options,
     defaultOption,
     getOptionLabel,
     getOptionDisabled,
-    renderOption
+    renderOption,
+    optionVariant = 'local'
 }: CountrySelectProps) => {
     const classes = useStyles();
     const classOverrides: typeof classKeys = {
@@ -85,12 +86,12 @@ export const AfricaCountriesSelect = ({
         ...classKeys
     };
 
-    const { popularSourceCountries } = useSelector((state: RootState) => state.onboarding.countryList);
+    const { popularSourceCountries, formattedCountries } = useSelector((state: RootState) => state.onboarding.countryList);
 
     const optionRenderer = (optionData: Country) => (renderOption ? renderOption : <RenderOptions option={optionData} />);
-    const optionLabel = getOptionLabel ? getOptionLabel : (option: Country) => `${option.emoji ?? ''} ${' '}${option.name}`;
+    const optionLabel = getOptionLabel ? getOptionLabel : (option: Country) => `${option.name}`;
     const optionDisabled = getOptionDisabled ? getOptionDisabled : (option: Country) => option.isComingSoon || option.isNotSupported;
-    const _options = options ? options : [NIGERIA, ...popularSourceCountries];
+    const _options = optionVariant === 'local' ? [NIGERIA, ...popularSourceCountries] : formattedCountries;
     const _defaultOption = defaultOption ? defaultOption : NIGERIA;
     const dispatch = useDispatch<Dispatch>();
 
@@ -117,7 +118,6 @@ export const AfricaCountriesSelect = ({
                     return (
                         <TextField
                             {...params}
-                            label='Send From'
                             inputProps={{
                                 ...params.inputProps,
                                 className: classes.input

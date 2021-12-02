@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Box } from '@mui/system';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
-import { Stack, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { Stack } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 
 import Button from '@mui/material/Button';
@@ -10,9 +10,9 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import MobileStepper from '@mui/material/MobileStepper';
 
-import { RootState, Dispatch } from 'app/store';
+import { Dispatch, RootState } from 'app/store';
 
-import { steps } from './steps';
+import { steps, StepLabel } from './steps';
 
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -31,17 +31,22 @@ export const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
+const totalNumberOfSteps = Object.keys(steps).length;
 export default function MobileOnboardingStepper() {
     const theme = useTheme();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const dispatch = useDispatch<Dispatch>();
 
+    const dispatch = useDispatch<Dispatch>();
+    const { activeStep = 'phone' } = useSelector((state: RootState) => state.onboarding);
+
+    const step = steps[activeStep]?.index;
+    const next = steps[activeStep]?.next;
+    const prev = steps[activeStep]?.prev;
     const handleNext = () => {
-        setActiveStep(prevActiveStep => prevActiveStep + 1);
+        dispatch.onboarding.setActiveStep(steps[next as StepLabel].name as StepLabel);
     };
 
     const handleBack = () => {
-        setActiveStep(prevActiveStep => prevActiveStep - 1);
+        dispatch.onboarding.setActiveStep(steps[(prev as StepLabel) ?? 'phone'].name as StepLabel);
     };
 
     React.useEffect(() => {
@@ -50,30 +55,31 @@ export default function MobileOnboardingStepper() {
     }, []);
 
     const classes = useStyles();
+
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: '40vh' }}>
             <Stack sx={{ maxWidth: 800, width: '90vw', margin: 'auto', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                <Typography>{steps[activeStep].label}</Typography>
-                <Box>{steps[activeStep].text}</Box>
+                <Box>{steps[activeStep as StepLabel]?.text}</Box>
+
                 {steps[activeStep]['component']}
             </Stack>
 
             <MobileStepper
                 variant='progress'
-                steps={steps.length}
+                steps={totalNumberOfSteps}
                 position='top'
                 classes={{ root: classes.stepper__root }}
-                activeStep={activeStep}
+                activeStep={steps[activeStep]?.index ?? 0}
                 nextButton={
-                    <Button size='small' onClick={handleNext} disabled={activeStep === steps.length - 1}>
-                        {activeStep === steps.length - 1 ? 'Done' : steps[activeStep + 1]['label']}
+                    <Button size='small' onClick={handleNext} disabled={step === totalNumberOfSteps - 1}>
+                        {step === totalNumberOfSteps - 1 ? 'Done' : steps[next as StepLabel]?.name}
                         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
                     </Button>
                 }
                 backButton={
-                    <Button size='small' onClick={handleBack} disabled={activeStep === 0}>
+                    <Button size='small' onClick={handleBack} disabled={step === 0}>
                         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-                        Back
+                        {prev ? prev : 'Back'}
                     </Button>
                 }
             />

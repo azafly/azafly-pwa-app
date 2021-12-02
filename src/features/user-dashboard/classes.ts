@@ -10,7 +10,6 @@ export const useCardStyles = makeStyles((theme: Theme) =>
             margin: 'auto',
             border: '1px solid #DCDCDC',
             padding: 0,
-
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
             [theme.breakpoints.down('md')]: {
                 width: '90vw'
@@ -90,7 +89,7 @@ export const StyledBadge = makeStyles(() =>
 export const useSidebarStyles = makeStyles((theme: Theme) =>
     createStyles({
         sidebar__root: {
-            height: '100vh',
+            height: '120vh',
             borderRadius: 4,
             position: 'fixed',
             background: 'white',
@@ -118,11 +117,11 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboard_container: {
             backgroundColor: '#f2f5f7',
-            minHeight: '100vh'
+            minHeight: '100vh',
+            height: 'auto'
         },
         data__section: {
             margin: 'auto',
-            backgroundColor: 'rgb(248, 251, 255) none repeat scroll 0% 0%',
             '& .heading': {
                 marginBottom: 10,
                 fontFamily: 'Nunito',
@@ -138,14 +137,13 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.down('sm')]: { width: '90vw' }
         },
         name: {
-            paddingTop: '10vh',
-            fontWeight: 600,
+            paddingTop: '15vh',
+            fontWeight: 700,
             fontSize: '1.5rem',
             maxWidth: 900,
             margin: 'auto',
             color: theme.colors.textPrimary,
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
-            [theme.breakpoints.only('xs')]: { marginTop: 20 },
             textTransform: 'capitalize'
         }
     })

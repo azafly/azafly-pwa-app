@@ -12,13 +12,14 @@ import ResidenceWalletCard from './cards/residence-wallet';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         reviewSlider_container: {
-            marginTop: 40,
             cursor: 'pointer',
             borderRadius: 12,
             maxWidth: 900,
             margin: 'auto',
             marginBottom: 20,
-            [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
+            marginTop: '3vh',
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
+            [theme.breakpoints.only('xs')]: { marginTop: '12vh' }
         },
         heading: {
             fontWeight: 650,

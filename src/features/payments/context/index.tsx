@@ -25,7 +25,7 @@ function usePaymentProvider() {
     const [isLoading, setIsLoading] = useState(false);
     const [activeStep, setActiveStep] = useState<IPaymentContext['activeStep']>(0);
 
-    const [targetCountry, setTargetCountry] = React.useState<Country>(UK);
+    const [targetCountry, setTargetCountry] = React.useState<Country | null>(UK);
     const [sourceCountry, setSourceCountry] = React.useState<Country>(NIGERIA);
 
     // pending offer
@@ -34,11 +34,11 @@ function usePaymentProvider() {
         variables: { offer_id: urlParamOfferId }
     });
 
-    const handleSourceCountryChange = (_: React.ChangeEvent<unknown>, value: Country) => {
-        setSourceCountry(value);
+    const handleSourceCountryChange = (value: Country | null) => {
+        value && setSourceCountry(value);
     };
 
-    const handleTargetCountryChange = (_: React.ChangeEvent<unknown>, value: Country) => {
+    const handleTargetCountryChange = (_: React.ChangeEvent<unknown>, value: Country | null) => {
         setTargetCountry(value);
     };
 

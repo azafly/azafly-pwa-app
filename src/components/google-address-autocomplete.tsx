@@ -8,8 +8,6 @@ import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 
-import { localStorageClient, LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
-
 function loadScript(src: string, position: HTMLElement | null, id: string) {
     if (!position) {
         return;
@@ -43,10 +41,10 @@ interface GoogleAddressAutoCompleteProps {
     helperText?: string;
     isError?: boolean;
     setAddressValue?: (key: string, value?: string) => void;
-    storeValueInLocalStorage?: boolean;
+    reduxSetAddressValue?: (value: string) => void;
 }
 
-export function GoogleAddressAutoComplete({ setAddressValue, storeValueInLocalStorage = false }: GoogleAddressAutoCompleteProps) {
+export function GoogleAddressAutoComplete({ setAddressValue, reduxSetAddressValue }: GoogleAddressAutoCompleteProps) {
     const [value, setValue] = React.useState<PlaceType | null>(null);
     const [inputValue, setInputValue] = React.useState('');
     const [options, setOptions] = React.useState<readonly PlaceType[]>([]);
@@ -119,12 +117,11 @@ export function GoogleAddressAutoComplete({ setAddressValue, storeValueInLocalSt
             includeInputInList
             filterSelectedOptions
             value={value}
-            onChange={(_: any, newValue: PlaceType | null) => {
+            onChange={(_: any, newValue: PlaceType | null, reason) => {
                 setOptions(newValue ? [newValue, ...options] : options);
                 setValue(newValue);
-                storeValueInLocalStorage &&
-                    localStorageClient({ method: 'SET', key: LOCAL_STORAGE_KEY.ONBOARDING_ADDRESS, data: newValue?.description });
                 setAddressValue && setAddressValue('address', newValue?.description);
+                reduxSetAddressValue && reason === 'selectOption' && reduxSetAddressValue(newValue?.description ?? '');
             }}
             onInputChange={(_, newInputValue) => {
                 setInputValue(newInputValue);

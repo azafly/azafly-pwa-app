@@ -1,5 +1,5 @@
 import { Address } from './address';
-import { CurrencyPair } from './currency-pair';
+import { CurrencyPair } from './currency-pair/currency-pair';
 import { KYCDocs } from './kyc-docs-upload';
 import { PhoneNumber } from './phone-number';
 

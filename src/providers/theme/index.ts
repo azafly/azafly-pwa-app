@@ -19,6 +19,27 @@ declare module '@material-ui/core/styles/createTheme' {
     }
 }
 
+declare module '@mui/material/styles' {
+    interface Theme {
+        colors: {
+            base: string;
+            white: string;
+            textPrimary: string;
+        };
+    }
+    // allow configuration using `createMuiTheme`
+    interface ThemeOptions {
+        status?: {
+            danger?: string;
+        };
+        colors: {
+            base: string;
+            white: string;
+            textPrimary: string;
+        };
+    }
+}
+
 export const theme = {
     palette: {
         primary: {

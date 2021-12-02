@@ -55,11 +55,6 @@ export function AsyncPhoneNumberList() {
     const [open, setOpen] = React.useState(false);
     const { currentlySupportedCountries, isLoadingCountryList } = useCountryList();
 
-    const optionRenderer = (optionData: any) => {
-        console.log(optionData);
-        return <RenderOptions option={optionData} />;
-    };
-    console.log('hey', currentlySupportedCountries);
     const classes = useStyles();
     return (
         <Autocomplete

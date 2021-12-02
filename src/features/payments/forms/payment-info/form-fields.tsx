@@ -169,6 +169,6 @@ export const generateInputType = ({ props, option, isError, setAddressValue }: g
             />
         );
     } else if (option.type === 'autocomplete') {
-        return <GoogleAddressAutoComplete setAddressValue={setAddressValue} />;
+        return <GoogleAddressAutoComplete />;
     }
 };

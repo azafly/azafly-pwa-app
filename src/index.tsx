@@ -1,27 +1,38 @@
-import { ApolloProvider } from '@apollo/client';
-import { ErrorBoundary } from 'components/error-boundary';
-import { FirebaseAuthProvider } from 'providers/auth/firebase';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ApolloProvider } from '@apollo/client';
+
+import { Provider as ReduxProvider } from 'react-redux';
+
+import { getPersistor } from '@rematch/persist';
+import { PersistGate } from 'redux-persist/es/integration/react';
+
+import { store } from 'app/store';
 
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { ErrorBoundary } from 'components/error-boundary';
+import { FirebaseAuthProvider } from 'providers/auth/firebase';
 import App from './App';
 import client from 'libs/apollo-client';
-import reportWebVitals from './reportWebVitals';
 
 // stylings
 import './index.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { ThreeDots } from './features/user-dashboard/loader-skeleton';
 
 ReactDOM.render(
     <React.StrictMode>
         <ErrorBoundary>
             <FirebaseAuthProvider>
-                <ApolloProvider client={client}>
-                    <App />
-                </ApolloProvider>
+                <ReduxProvider store={store}>
+                    <PersistGate loading={<ThreeDots />} persistor={getPersistor()}>
+                        <ApolloProvider client={client}>
+                            <App />
+                        </ApolloProvider>
+                    </PersistGate>
+                </ReduxProvider>
             </FirebaseAuthProvider>
         </ErrorBoundary>
     </React.StrictMode>,

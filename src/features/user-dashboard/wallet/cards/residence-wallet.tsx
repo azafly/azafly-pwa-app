@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         card_container: {
             padding: 10,
-            border: '1px solid #DCDCDC',
             [theme.breakpoints.only('xs')]: {
                 marginRight: 10
             }

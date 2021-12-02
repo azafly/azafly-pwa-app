@@ -1,13 +1,16 @@
-import { Box, Paper, Typography, useMediaQuery } from '@material-ui/core';
+import { Box, Typography, useMediaQuery } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core';
-import { memo, ReactNode, useState } from 'react';
+import { memo, ReactNode, useCallback, useState } from 'react';
 import { TransactionFilterTab } from './filter/tab';
 import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
 import MobileDateRangePicker from '@mui/lab/MobileDateRangePicker';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import { CardContainer, CardSkeleton } from './transaction-card';
 import { EmptyCardContainer } from './empty-transaction/card';
+import { EmptyDataSvgComponent } from 'components';
 import { PendingOfferCardContainer } from './pending-offer/index';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetUserPendingOffersQuery, useGetCurrentUserByEmailQuery, useFilterTransactionsByDateRangeLazyQuery } from 'api/generated/graphql';
@@ -79,15 +82,18 @@ export const TransactionListContainer = memo(function TransactionListContainer({
         }
     });
 
-    const handleDateRangeSelect = async (startEnd: any) => {
-        const [startDate, endDate] = startEnd;
+    const handleDateRangeSelect = useCallback(
+        (startEnd: any) => {
+            const [startDate, endDate] = startEnd;
 
-        const id = userData?.users[0]?.id ?? '',
-            start_date = startDate.toUTCString(),
-            end_date = endDate.toUTCString();
-        filterTransactionByDate({ variables: { id, start_date, end_date } });
-        setOpenDatePicker(false);
-    };
+            const id = userData?.users[0]?.id ?? '',
+                start_date = startDate.toUTCString(),
+                end_date = endDate.toUTCString();
+            filterTransactionByDate({ variables: { id, start_date, end_date } });
+            setOpenDatePicker(false);
+        },
+        [filterTransactionByDate, userData?.users]
+    );
 
     const id = userData?.users[0]?.id;
     const { data: offerData } = useGetUserPendingOffersQuery({ variables: { id } });
@@ -124,7 +130,7 @@ export const TransactionListContainer = memo(function TransactionListContainer({
                 <Typography align={'center'} style={{ maxWidth: 900, margin: 'auto', marginTop: 20, fontWeight: 600 }}>
                     Filter your transactions by date range
                 </Typography>
-                <Paper className={classes.picker_card}>
+                <Paper className={classes.picker_card} sx={{ boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)' }}>
                     {isMobile ? (
                         <MobileDateRangePicker
                             startText='Starting Date'
@@ -174,7 +180,12 @@ export const TransactionListContainer = memo(function TransactionListContainer({
                 {filteredTransactions?.transaction && !filteredTransactions?.transaction.length && (
                     <Typography align={'center'} style={{ maxWidth: 900, margin: 'auto' }}>
                         {' '}
-                        You have no transactions during this time period
+                        <Paper sx={{ p: 10, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)' }}>
+                            <Stack justifyContent={'center'} width={'100%'} alignItems={'center'} mt={10}>
+                                You have no transactions during this time period
+                                <EmptyDataSvgComponent />
+                            </Stack>
+                        </Paper>
                     </Typography>
                 )}
             </>

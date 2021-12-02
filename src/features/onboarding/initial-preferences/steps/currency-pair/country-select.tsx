@@ -2,11 +2,14 @@
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { ReactElement } from 'react';
 import { TextField } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete, { AutocompleteClassKey } from '@material-ui/lab/Autocomplete';
 
-import { Country, NIGERIA, useCountryList } from '../../../hooks/use-country-list';
-import { RenderOptions } from './render-option-label';
+import { Country, NIGERIA } from 'features/payments/hooks/use-country-list';
+import { RenderOptions } from 'features/payments/forms/rates-info/source-country/render-option-label';
+import { Dispatch, RootState } from 'app/store';
 import { UK } from 'features/payments/context/constants';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -82,13 +85,18 @@ export const AfricaCountriesSelect = ({
         ...classKeys
     };
 
-    const { popularSourceCountries } = useCountryList();
+    const { popularSourceCountries } = useSelector((state: RootState) => state.onboarding.countryList);
 
     const optionRenderer = (optionData: Country) => (renderOption ? renderOption : <RenderOptions option={optionData} />);
-    const optionLabel = getOptionLabel ? getOptionLabel : (option: Country) => `${option.emoji ?? ''} ${' '}${option.currency.code}`;
+    const optionLabel = getOptionLabel ? getOptionLabel : (option: Country) => `${option.emoji ?? ''} ${' '}${option.name}`;
     const optionDisabled = getOptionDisabled ? getOptionDisabled : (option: Country) => option.isComingSoon || option.isNotSupported;
     const _options = options ? options : [NIGERIA, ...popularSourceCountries];
     const _defaultOption = defaultOption ? defaultOption : NIGERIA;
+    const dispatch = useDispatch<Dispatch>();
+
+    useEffect(() => {
+        dispatch.onboarding.fetchCountryList();
+    }, [dispatch]);
 
     return (
         <div className={classes.root}>
@@ -97,7 +105,9 @@ export const AfricaCountriesSelect = ({
                 options={_options}
                 loading={true}
                 classes={classOverrides}
-                onChange={(e, value) => handleCountryChange(value ?? UK)}
+                onChange={(_, value, reason) => {
+                    reason === 'select-option' && handleCountryChange(value ?? UK);
+                }}
                 defaultValue={_defaultOption}
                 autoComplete
                 getOptionDisabled={option => optionDisabled(option)}

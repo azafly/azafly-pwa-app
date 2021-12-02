@@ -4,9 +4,9 @@ import { Dispatch } from 'react';
 import { SetStateAction } from 'hoist-non-react-statics/node_modules/@types/react';
 
 export interface IRateInfo {
-    targetCountry: Country;
+    targetCountry: Country | null;
     sourceCountry: Country;
-    handleSourceCountryChange: (_: React.ChangeEvent<unknown>, value: Country) => void;
+    handleSourceCountryChange: (value: Country) => void;
     handleTargetCountryChange: (_: React.ChangeEvent<unknown>, value: Country) => void;
     amount: number;
     handleSetAmount: (event: React.ChangeEvent<HTMLInputElement>) => void;

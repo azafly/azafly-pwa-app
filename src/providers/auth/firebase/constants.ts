@@ -34,7 +34,6 @@ export interface AuthState {
     isLoading: boolean;
     isError: boolean;
     isAuth?: boolean;
-    token?: string;
 }
 
 export const defaultUser: User = {
@@ -61,12 +60,10 @@ export interface AuthContext {
     signout: any;
     signinWithEmailPassword: any;
     signupWithEmailPassword: (additionalInfo: EmailAndPasswordSignUp) => Promise<void>;
-    authState: AuthState;
     verifyPasswordCode: any;
     verifyEmail: any;
     setAuthError: Dispatch<SetStateAction<string>>;
     authError: string;
-    isFirstTimeUser: boolean;
     handleUpdateFirebaseProfile: any;
 }
 
@@ -78,11 +75,9 @@ export const defaultAuhContext: AuthContext = {
     signout: () => new Promise(() => {}),
     signinWithEmailPassword: () => new Promise(() => {}),
     signupWithEmailPassword: () => new Promise(() => {}),
-    authState: defaultAuthState,
     verifyPasswordCode: () => new Promise(() => {}),
     verifyEmail: () => new Promise(() => {}),
     setAuthError: () => {},
     authError: '',
-    isFirstTimeUser: false,
     handleUpdateFirebaseProfile: () => {}
 };

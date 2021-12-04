@@ -1,6 +1,8 @@
 import { createContext, PropsWithChildren, useState, useContext, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AuthContext, AuthState, defaultAuthState, defaultAuhContext, FirebaseUser } from './constants';
+import { RootState, Dispatch } from 'app/store';
 import { firebaseApp, firebaseConfig } from './firebase-config';
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 
@@ -48,10 +50,9 @@ export const updateFirebaseUser = (userId: string, user: Partial<FirebaseUser>) 
 };
 
 function useFirebaseProviderAuth() {
-    const [authState, setAuthState] = useState<AuthState>(defaultAuthState);
     const [authError, setAuthError] = useState('');
-    const [isFirstTimeUser, setFirstTimeUser] = useState(false);
-
+    const dispatch = useDispatch<Dispatch>();
+    const reduxAuthState = useSelector((state: RootState) => state.auth);
     const signinWithEmailPassword = async (email: string, password: string) => {
         return firebaseApp.auth().signInWithEmailAndPassword(email, password);
     };
@@ -59,7 +60,7 @@ function useFirebaseProviderAuth() {
     const handleUpdateFirebaseProfile = (user: any, profile: Partial<FirebaseUser>) => {
         user.updateProfile(profile)
             .then(() => {
-                setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
+                dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true });
             })
             .catch((error: unknown) => console.log(error));
     };
@@ -72,11 +73,9 @@ function useFirebaseProviderAuth() {
             user.updateProfile(profile)
 
                 .then(async () => {
-                    const token = await user.getIdToken(true);
                     const idTokenResult = await user.getIdTokenResult();
                     const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
-                    hasuraClaim && localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
-                    setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
+                    hasuraClaim && dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true });
                 })
                 .catch(error => console.log(error));
         }
@@ -87,7 +86,7 @@ function useFirebaseProviderAuth() {
             .auth()
             .signOut()
             .then(() => {
-                localStorage.removeItem(LOCAL_STORAGE_KEY.TOKEN);
+                dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, user: null });
                 location.replace('/signin');
             })
             .catch(error => console.log(error));
@@ -125,22 +124,13 @@ function useFirebaseProviderAuth() {
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
-                localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
-                localStorage.setItem(LOCAL_STORAGE_KEY.USER, JSON.stringify(user));
-
                 if (user.emailVerified) {
-                    setAuthState(prevState => {
-                        const newUser = { ...user, emailVerified: true };
-                        return {
-                            ...prevState,
-                            user: newUser
-                        };
-                    });
+                    const newUser = { ...user, emailVerified: true };
+                    dispatch.auth.updateAuthState({ ...reduxAuthState, user: newUser, isAuth: true });
                 }
                 if (hasuraClaim) {
-                    localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
-                    setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
-                    // TODO : CLEAR WHEN ACTION IS COMPLETED
+                    dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true });
+                    hasuraClaim && localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                 } else {
                     // Check if refresh is required.
                     const metadataRef = firebaseApp.database().ref('metadata/' + user.uid + '/refreshTime');
@@ -149,23 +139,21 @@ function useFirebaseProviderAuth() {
                         if (!data.exists) return;
                         // Force refresh to pick up the latest custom claims changes.
                         const newToken = await user.getIdToken(true);
-                        setAuthState(prevState => ({ ...prevState, isAuth: true, user }));
                         localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, newToken);
+                        dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true });
                     });
                 }
-                setFirstTimeUser(user.metadata.creationTime === user.metadata.lastSignInTime);
+                dispatch.onboarding.setIsFirstTimeUser(new Date(user.metadata.creationTime ?? '') === new Date(user.metadata.lastSignInTime ?? ''));
             } else {
-                localStorage.removeItem(LOCAL_STORAGE_KEY.TOKEN);
-                setAuthState(prevState => ({ ...prevState, isAuth: false, user: null }));
+                dispatch.auth.updateAuthState({ ...reduxAuthState, user: null, isAuth: false });
             }
         });
         return () => unsubscribe();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return {
         authError,
-        authState,
-        isFirstTimeUser,
         confirmPasswordReset,
         handleUpdateFirebaseProfile,
         sendPasswordResetEmail,

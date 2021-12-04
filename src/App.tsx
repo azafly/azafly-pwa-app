@@ -12,13 +12,16 @@ function App() {
     const preferredTheme = useMemo(() => createTheme(theme), []);
 
     return (
-        <LocalizationProvider dateAdapter={DateAdapter}>
-            {' '}
-            <ThemeProvider theme={preferredTheme}>
-                <CssBaseline />
-                <Routes />
-            </ThemeProvider>
-        </LocalizationProvider>
+        <>
+            <div id='recaptcha'></div>
+            <LocalizationProvider dateAdapter={DateAdapter}>
+                {' '}
+                <ThemeProvider theme={preferredTheme}>
+                    <CssBaseline />
+                    <Routes />
+                </ThemeProvider>
+            </LocalizationProvider>
+        </>
     );
 }
 

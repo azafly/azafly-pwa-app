@@ -3,6 +3,7 @@ import { Button, Checkbox, IconButton, InputAdornment, TextField } from '@materi
 import { useFormik } from 'formik';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import * as yup from 'yup';
@@ -10,6 +11,7 @@ import * as yup from 'yup';
 import { addUser } from 'providers/auth/firebase/firebase';
 import { DefaultSnackbar } from 'components';
 import { FacebookSvgComponent } from 'components/icons';
+import { RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useSignUpFormStyles } from './classes';
@@ -58,13 +60,10 @@ export const SignUpForm = () => {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-    const {
-        signupWithEmailPassword,
-        signInWithFacebook,
-        signInWithGoogle,
-        isFirstTimeUser,
-        authState: { user }
-    } = useFirebaseAuthContext();
+    const { isFirstTimeUser } = useSelector((state: RootState) => state.onboarding);
+    const { user } = useSelector((state: RootState) => state.auth);
+
+    const { signupWithEmailPassword, signInWithFacebook, signInWithGoogle } = useFirebaseAuthContext();
 
     const formik = useFormik({
         initialValues: {
@@ -84,6 +83,7 @@ export const SignUpForm = () => {
     });
 
     type FormValue = keyof typeof formik.initialValues;
+    const FROM = isFirstTimeUser ? '/onboarding-update' : '/dashboard';
 
     const location = useLocation();
 

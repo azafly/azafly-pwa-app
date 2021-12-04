@@ -1,7 +1,11 @@
 import { Box, Slide, TextField } from '@mui/material';
 import { Button } from '@material-ui/core';
 import { Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+
+import { RootState } from 'app/store';
+import { sendAuthSMS } from 'providers/auth/firebase/phone-verification';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -23,6 +27,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const PhoneVerification = () => {
+    const { phoneNumber, country } = useSelector((state: RootState) => state.onboarding);
+    const handleDispatchPhoneNumberUpdated = () => {
+        // sendAuthSMS(user, phoneNumber)
+        //     .then(data => {
+        //         console.log(data);
+        //     })
+        //     .catch(error => console.log(error));
+    };
     const classes = useStyles();
     return (
         <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>

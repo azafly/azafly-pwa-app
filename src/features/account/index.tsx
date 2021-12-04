@@ -1,6 +1,7 @@
 import { Button, Grid, Slide, TextField } from '@material-ui/core';
 import { useEffect, useState, useMemo, ChangeEvent } from 'react';
 import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
 
 import { DefaultSnackbar } from 'components';
 import { FilesContainer } from './files-container';
@@ -11,6 +12,7 @@ import { UploadIconText } from './upload-icon-text';
 import { useFirebaseAuthContext, storage } from 'providers/auth/firebase';
 import { useGetCurrentUserByEmailQuery, useUpdateUserMutation } from 'api/generated/graphql';
 import { USER_ACCOUNT_FORM_FIELDS } from './utils';
+import { RootState } from 'app/store';
 
 import { useStyles } from './classes';
 import client from '../../libs/apollo-client';
@@ -22,10 +24,8 @@ const UserAccount = () => {
     const [makeEditable, setEditable] = useState(false);
     const [success, setSuccess] = useState('');
 
-    const {
-        authState: { user },
-        handleUpdateFirebaseProfile
-    } = useFirebaseAuthContext();
+    const { handleUpdateFirebaseProfile } = useFirebaseAuthContext();
+    const { user } = useSelector((state: RootState) => state.auth);
 
     const { data: userData } = useGetCurrentUserByEmailQuery({
         variables: {
@@ -116,17 +116,20 @@ const UserAccount = () => {
 
     useEffect(() => {
         const fetchImages = async (): Promise<string[]> => {
-            const result = await storage.ref().child('/images/user-kyc').listAll();
+            const result = await storage.ref().child('/images/user-kyc/').listAll();
             const urlPromises = result.items.map(imageRef => imageRef.getDownloadURL());
             return Promise.all(urlPromises);
         };
 
         const loadImages = async () => {
             const urls = await fetchImages();
-            setFiles(urls);
+            if (user?.uid) {
+                const _urls = urls.filter(url => url.includes(`${user?.uid}-id`)) ?? [];
+                setFiles(_urls);
+            }
         };
         loadImages();
-    }, []);
+    }, [user?.uid]);
 
     /* TODO
     -  Make docs previewable

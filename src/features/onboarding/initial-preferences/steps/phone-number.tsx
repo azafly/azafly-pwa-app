@@ -1,21 +1,28 @@
 import { Slide, Stack, Typography } from '@mui/material';
 import { Button } from '@material-ui/core';
-import { Dispatch } from 'app/store';
 import { useDispatch, useSelector } from 'react-redux';
 import PhoneInput from 'react-phone-input-2';
 
-import { RootState } from 'app/store';
+import { Dispatch, RootState } from 'app/store';
+import { sendAuthSMS } from 'providers/auth/firebase/phone-verification';
 
 import 'react-phone-input-2/lib/style.css';
 
 export const PhoneNumber = () => {
     const dispatch = useDispatch<Dispatch>();
-    const { phoneNumber } = useSelector((state: RootState) => state.onboarding);
+    const { phoneNumber, country } = useSelector((state: RootState) => state.onboarding);
+    const { user } = useSelector((state: RootState) => state.auth);
 
     const handleDispatchPhoneNumberUpdated = () => {
-        dispatch.onboarding.setActiveStep('country');
+        sendAuthSMS(user, phoneNumber)
+            .then(data => {
+                console.log(data);
+                dispatch.onboarding.setActiveStep('verification');
+            })
+            .catch(error => console.log(error));
     };
 
+    const handleSendVerificationCode = () => {};
     return (
         <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
             <Stack sx={{ width: '100%' }}>
@@ -27,7 +34,12 @@ export const PhoneNumber = () => {
                     It helps us keep your account secure.
                 </Typography>
                 <PhoneInput
-                    country={'us'}
+                    inputProps={{
+                        name: 'phone',
+                        required: true,
+                        autoFocus: true
+                    }}
+                    country={country?.code.toLocaleLowerCase() ?? 'us'}
                     value={phoneNumber}
                     onChange={phone => dispatch.onboarding.setPhoneNumber(phone)}
                     regions={['america', 'europe', 'oceania', 'africa']}
@@ -40,7 +52,7 @@ export const PhoneNumber = () => {
                     style={{ marginTop: 20 }}
                     disabled={phoneNumber.length < 3}
                 >
-                    Continue
+                    Send verification code
                 </Button>
             </Stack>
         </Slide>

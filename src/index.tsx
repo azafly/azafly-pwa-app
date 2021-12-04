@@ -25,15 +25,15 @@ import { ThreeDots } from './features/user-dashboard/loader-skeleton';
 ReactDOM.render(
     <React.StrictMode>
         <ErrorBoundary>
-            <FirebaseAuthProvider>
-                <ReduxProvider store={store}>
+            <ReduxProvider store={store}>
+                <FirebaseAuthProvider>
                     <PersistGate loading={<ThreeDots />} persistor={getPersistor()}>
                         <ApolloProvider client={client}>
                             <App />
                         </ApolloProvider>
                     </PersistGate>
-                </ReduxProvider>
-            </FirebaseAuthProvider>
+                </FirebaseAuthProvider>
+            </ReduxProvider>
         </ErrorBoundary>
     </React.StrictMode>,
     document.getElementById('root')

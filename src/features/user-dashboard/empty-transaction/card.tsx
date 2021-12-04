@@ -4,10 +4,11 @@ import { memo, ReactNode } from 'react';
 import clsx from 'clsx';
 
 import { EmptyServiceSvgComponent } from 'components/illustrations';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { VerificationRequestBox } from './verification-request-box';
 
 import { useEmptyCardStyles } from '../classes';
+import { RootState } from 'app/store';
+import { useSelector } from 'react-redux';
 
 const services = ['WES', 'IELTS', 'School Fees', 'Medical Bills', 'Others'];
 
@@ -18,9 +19,7 @@ interface EmptyCardContainerProps {
 }
 export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, handleSendVerificationEmail, loading }: EmptyCardContainerProps) {
     const classes = useEmptyCardStyles();
-    const {
-        authState: { user }
-    } = useFirebaseAuthContext();
+    const { user } = useSelector((state: RootState) => state.auth);
 
     const emailVerified = user?.emailVerified;
 

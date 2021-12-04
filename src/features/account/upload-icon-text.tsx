@@ -3,7 +3,8 @@ import { Box, Grid, Typography } from '@material-ui/core';
 
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { UploadButton } from 'components';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { RootState } from 'app/store';
+import { useSelector } from 'react-redux';
 
 interface UploadIconTextProps {
     classes: Record<string, string>;
@@ -12,11 +13,10 @@ interface UploadIconTextProps {
     setIsEditable: Dispatch<SetStateAction<boolean>>;
     fileUploadIsLoading?: boolean;
 }
-export const UploadIconText = memo(function UploadIconText({ classes, isEditable, handleFileUpload, fileUploadIsLoading }: UploadIconTextProps) {
+export const UploadIconText = memo(function UploadIconText({ classes, handleFileUpload, fileUploadIsLoading }: UploadIconTextProps) {
     // TODO manage is editable
-    const {
-        authState: { user }
-    } = useFirebaseAuthContext();
+    const { user } = useSelector((state: RootState) => state.auth);
+
     return fileUploadIsLoading ? (
         <ThreeDots />
     ) : (

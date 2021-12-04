@@ -14,6 +14,8 @@ import { EmptyDataSvgComponent } from 'components';
 import { PendingOfferCardContainer } from './pending-offer/index';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useGetUserPendingOffersQuery, useGetCurrentUserByEmailQuery, useFilterTransactionsByDateRangeLazyQuery } from 'api/generated/graphql';
+import { RootState } from 'app/store';
+import { useSelector } from 'react-redux';
 
 interface TransactionListContainerProps {
     transactions: readonly any[];
@@ -72,9 +74,7 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     const [filterTransactionByDate, { data: filteredTransactions, loading: isLoadingFilter }] = useFilterTransactionsByDateRangeLazyQuery();
     const classes = useStyles();
 
-    const {
-        authState: { user }
-    } = useFirebaseAuthContext();
+    const { user } = useSelector((state: RootState) => state.auth);
 
     const { data: userData } = useGetCurrentUserByEmailQuery({
         variables: {

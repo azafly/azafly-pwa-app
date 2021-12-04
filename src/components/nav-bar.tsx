@@ -1,6 +1,7 @@
-import { Avatar, Box, Button } from '@material-ui/core';
+import { Avatar, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
@@ -15,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { DashboardSvgComponent, SignOutSvgComponent, ProfileSvgComponent, HelpSvgComponent } from 'components/icons';
 import { Logo2SvgComponent } from 'components/icons/logo-style-2';
+import { RootState } from 'app/store';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -83,10 +85,8 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const {
-        authState: { user },
-        signout
-    } = useFirebaseAuthContext();
+    const { signout } = useFirebaseAuthContext();
+    const { user } = useSelector((state: RootState) => state.auth);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);

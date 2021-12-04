@@ -1,11 +1,9 @@
 import { Box } from '@mui/system';
 import { useHistory } from 'react-router-dom';
-import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
-import { NavBar } from 'components/nav-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useVerifyPaymentSuccess } from 'features/payments/hooks';
 
@@ -35,7 +33,6 @@ export default function RedirectCallback() {
         history.replace('/payment');
     };
 
-    useEffect(() => {}, []);
     return (
         <Box sx={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center' }}>
             <Box sx={style} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>

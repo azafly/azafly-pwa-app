@@ -2,6 +2,7 @@ import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -9,6 +10,7 @@ import * as yup from 'yup';
 
 import { DefaultSnackbar } from 'components';
 import { FacebookSvgComponent } from 'components/icons';
+import { RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useFormStyles } from '../classes';
@@ -26,11 +28,14 @@ enum SignInMethod {
 }
 
 export const SignInForm = () => {
-    const { signInWithFacebook, signInWithGoogle, signinWithEmailPassword, isFirstTimeUser } = useFirebaseAuthContext();
+    const { signInWithFacebook, signInWithGoogle, signinWithEmailPassword } = useFirebaseAuthContext();
     const [isAuthStateIsLoading, setAuthLoadingState] = useState(false);
     const [authError, setAuthError] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
+    const { isFirstTimeUser } = useSelector((state: RootState) => state.onboarding);
+    const { isAuth } = useSelector((state: RootState) => state.auth);
 
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -38,9 +43,10 @@ export const SignInForm = () => {
     const history = useHistory();
     const location = useLocation();
 
+    const FROM = isFirstTimeUser ? '/onboarding-update' : '/dashboard';
+
     const handleSignin = (method: SignInMethod, email?: string, password?: string) => {
-        const DASHBOARD = isFirstTimeUser ? '/onboarding-update' : '/dashboard';
-        const from = location.state?.from?.pathname || DASHBOARD;
+        const from = location.state?.from?.pathname || FROM;
 
         setAuthLoadingState(true);
         switch (method) {
@@ -98,11 +104,10 @@ export const SignInForm = () => {
     });
 
     const { from } = location.state || {
-        from: { pathname: '/dashboard' }
+        from: { pathname: `${FROM}` }
     };
 
-    const token = localStorage.getItem('token');
-    if (token) {
+    if (isAuth) {
         history.replace(from);
     }
 

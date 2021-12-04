@@ -16,6 +16,7 @@ interface OnboardingPreference {
     userGeolocation: any;
     activeStep: StepLabel;
     disableNext: boolean;
+    isFirstTimeUser: boolean;
 }
 
 const initialState: OnboardingPreference = {
@@ -26,7 +27,8 @@ const initialState: OnboardingPreference = {
     countryList: defaultCountryListData,
     userGeolocation: {},
     activeStep: 'phone',
-    disableNext: true
+    disableNext: true,
+    isFirstTimeUser: true
 };
 
 export const onboarding = createModel<RootModel>()({
@@ -35,8 +37,11 @@ export const onboarding = createModel<RootModel>()({
         setActiveStep(state, payload: StepLabel) {
             return { ...state, activeStep: payload };
         },
+        setDisableNext(state, payload: boolean) {
+            return { ...state, disableNext: payload };
+        },
         setPhoneNumber(state, payload: string) {
-            return { ...state, phoneNumber: payload, disableNext: payload.length < 3 };
+            return { ...state, phoneNumber: `+${payload}`, disableNext: payload.length < 3 };
         },
         setAddress(state, payload: string) {
             return { ...state, address: payload };
@@ -55,6 +60,9 @@ export const onboarding = createModel<RootModel>()({
         },
         setDerivedCountryOfResidence(state, payload: OnboardingPreference['country']) {
             return { ...state, country: payload };
+        },
+        setIsFirstTimeUser(state, payload: boolean) {
+            return { ...state, isFirstTimeUser: payload };
         }
     }
 });

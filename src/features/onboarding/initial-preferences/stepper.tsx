@@ -80,11 +80,11 @@ export default function MobileOnboardingStepper() {
             const fetchCountryList = async () => axios.get(URL);
             try {
                 const [{ data: countryList }, { data: geoData }] = await Promise.all([fetchCountryList(), fetchGeoData()]);
-                const countryOfResidence = countryList.formattedCountries?.filter(({ code }: Country) => code === geoData.country_code)[0];
-                const isAfrica = countryOfResidence?.region === 'AF';
-
                 dispatch.onboarding.setCountryList(countryList);
                 dispatch.onboarding.setUserGeolocation(geoData);
+
+                const countryOfResidence = countryList.formattedCountries?.filter(({ code }: Country) => code === geoData.country_code)[0];
+                const isAfrica = countryOfResidence?.region === 'AF';
                 dispatch.onboarding.setDerivedCountryOfResidence({ ...countryOfResidence, isAfrica });
             } catch {}
         };

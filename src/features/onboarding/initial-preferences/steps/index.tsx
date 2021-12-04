@@ -1,6 +1,6 @@
 import { Address } from './address';
 import { CurrencyPair } from './currency-pair/currency-pair';
-import { KYCDocs } from './kyc-docs-upload';
+import { KYCDocuments } from './kyc-docs-upload';
 import { PhoneNumber } from './phone-number';
 import { CountryOfResidence } from './country';
 import { PhoneVerification } from './phone-verification';
@@ -49,11 +49,11 @@ export const steps = {
     },
     kyc: {
         name: 'kyc',
-        text: ' KYCDocs ',
+        text: ' KYCDocuments ',
         next: null,
         index: 5,
         prev: 'address',
-        component: <KYCDocs />
+        component: <KYCDocuments />
     }
 };
 

@@ -1,4 +1,5 @@
 import { Avatar, Box, Chip } from '@material-ui/core';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
@@ -12,12 +13,33 @@ import { africanCurrencies, foreignCurrencies, Currency } from 'libs/constants';
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        marginBottom: 30,
+        padding: '10px 20px',
+        borderRadius: 8,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: '0 0 7px 0 #bac4cf',
+        [theme.breakpoints.only('xs')]: {
+            width: '100%'
+        },
+        '& .MuiInput-underline::before': {
+            borderBottom: 'none'
+        },
+        '& .MuiInput-underline::after': {
+            borderBottom: 'none'
+        }
+    }
+}));
+
 interface MultiSelectCheckBoxProps {
     handleChange: (_: unknown, value: Currency[]) => void;
 }
 export default function MultiSelectCheckBox({ handleChange }: MultiSelectCheckBoxProps) {
     const { country } = useSelector((state: RootState) => state.onboarding);
     const options = country?.region === 'AF' ? foreignCurrencies : africanCurrencies;
+
+    const classes = useStyles();
     return (
         <Autocomplete
             multiple
@@ -40,7 +62,9 @@ export default function MultiSelectCheckBox({ handleChange }: MultiSelectCheckBo
                     )}
                 </li>
             )}
-            renderInput={params => <TextField {...params} label='Currencies' placeholder='Favorites' />}
+            renderInput={params => (
+                <TextField {...params} label='Select favorite currencies' placeholder='Favorites' classes={{ root: classes.root }} />
+            )}
         />
     );
 }

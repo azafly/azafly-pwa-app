@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -7,6 +8,25 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
+
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        marginBottom: 30,
+        padding: '10px 20px',
+        borderRadius: 8,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: '0 0 7px 0 #bac4cf',
+        [theme.breakpoints.only('xs')]: {
+            width: '100%'
+        },
+        '& .MuiInput-underline::before': {
+            borderBottom: 'none'
+        },
+        '& .MuiInput-underline::after': {
+            borderBottom: 'none'
+        }
+    }
+}));
 
 function loadScript(src: string, position: HTMLElement | null, id: string) {
     if (!position) {
@@ -43,7 +63,6 @@ interface GoogleAddressAutoCompleteProps {
     setAddressValue?: (key: string, value?: string) => void;
     reduxSetAddressValue?: (value: string) => void;
 }
-
 export function GoogleAddressAutoComplete({ setAddressValue, reduxSetAddressValue }: GoogleAddressAutoCompleteProps) {
     const [value, setValue] = React.useState<PlaceType | null>(null);
     const [inputValue, setInputValue] = React.useState('');
@@ -106,6 +125,7 @@ export function GoogleAddressAutoComplete({ setAddressValue, reduxSetAddressValu
         };
     }, [value, inputValue, fetch]);
 
+    const classes = useStyles();
     return (
         <Autocomplete
             id={'address'}
@@ -127,7 +147,7 @@ export function GoogleAddressAutoComplete({ setAddressValue, reduxSetAddressValu
                 setInputValue(newInputValue);
             }}
             noOptionsText={'Start typing your address'}
-            renderInput={params => <TextField {...params} label='Address' fullWidth />}
+            renderInput={params => <TextField {...params} label='Address' fullWidth classes={{ root: classes.root }} />}
             renderOption={(props, option) => {
                 const matches = option.structured_formatting.main_text_matched_substrings;
                 const parts = parse(

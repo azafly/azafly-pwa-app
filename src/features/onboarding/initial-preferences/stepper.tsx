@@ -19,15 +19,11 @@ export const useStyles = makeStyles((theme: Theme) =>
         stepper__root: {
             boxShadow: 'none !important',
             background: 'transparent  !important',
-            width: '90vw',
+            width: '98vw',
             maxWidth: 1000,
             padding: 0,
             margin: 'auto',
-            marginTop: '20vh',
-            [theme.breakpoints.only('xs')]: {
-                paddingTop: 0,
-                width: '98vw'
-            }
+            marginTop: '20vh'
         },
         progress: {
             backgroundColor: theme.colors.base
@@ -114,7 +110,7 @@ export default function MobileOnboardingStepper() {
                 nextButton={
                     <Button
                         style={{
-                            margin: '2ch',
+                            marginLeft: '2ch',
                             textTransform: 'capitalize',
                             fontWeight: 700,
                             fontFamily: 'Nunito',
@@ -140,7 +136,7 @@ export default function MobileOnboardingStepper() {
                         onClick={handleBack}
                         disabled={disableBack}
                         style={{
-                            margin: '2ch',
+                            marginRight: '2ch',
                             fontWeight: 700,
                             textTransform: 'capitalize',
                             color: '#0d324d',

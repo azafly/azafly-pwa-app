@@ -3,28 +3,37 @@ import { CurrencyPair } from './currency-pair/currency-pair';
 import { KYCDocs } from './kyc-docs-upload';
 import { PhoneNumber } from './phone-number';
 import { CountryOfResidence } from './country';
+import { PhoneVerification } from './phone-verification';
 
 export const steps = {
     phone: {
         name: 'phone',
         text: 'Enter Phone Number',
-        next: 'country',
+        next: 'verification',
         prev: null,
         index: 0,
         component: <PhoneNumber />
     },
+    verification: {
+        name: 'verification',
+        text: 'Enter Phone Number',
+        next: 'country',
+        prev: 'phone',
+        index: 1,
+        component: <PhoneVerification />
+    },
     country: {
         name: 'country',
-        index: 1,
-        prev: 'phone',
+        index: 2,
+        prev: 'verification',
         text: 'Country of primary residence',
-        next: 'currencyPair',
+        next: 'currencies',
         component: <CountryOfResidence />
     },
 
-    currencyPair: {
-        name: 'currencyPair',
-        text: 'CCurrencyPair',
+    currencies: {
+        name: 'currencies',
+        text: 'CurrencyPair',
         next: 'address',
         prev: 'country',
         index: 3,
@@ -34,15 +43,15 @@ export const steps = {
         name: 'address',
         text: 'Enter Address',
         next: 'kyc',
-        index: 2,
-        prev: 'currencyPair',
+        index: 4,
+        prev: 'currencies',
         component: <Address />
     },
     kyc: {
         name: 'kyc',
         text: ' KYCDocs ',
         next: null,
-        index: 4,
+        index: 5,
         prev: 'address',
         component: <KYCDocs />
     }

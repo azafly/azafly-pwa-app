@@ -1,4 +1,3 @@
-export { AsyncPhoneNumberList } from './phone-numbers-auto-complete';
 export { EmptyDataSvgComponent } from './empty-data';
 export { DefaultSnackbar } from './snackbar';
 export { GenericButton } from './button';

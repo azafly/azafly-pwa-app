@@ -117,7 +117,7 @@ export function GoogleAddressAutoComplete({ setAddressValue, reduxSetAddressValu
             includeInputInList
             filterSelectedOptions
             value={value}
-            onChange={(_: any, newValue: PlaceType | null, reason) => {
+            onChange={(_: unknown, newValue: PlaceType | null, reason) => {
                 setOptions(newValue ? [newValue, ...options] : options);
                 setValue(newValue);
                 setAddressValue && setAddressValue('address', newValue?.description);
@@ -127,7 +127,7 @@ export function GoogleAddressAutoComplete({ setAddressValue, reduxSetAddressValu
                 setInputValue(newInputValue);
             }}
             noOptionsText={'Start typing your address'}
-            renderInput={params => <TextField {...params} label='Address' fullWidth variant={'standard'} />}
+            renderInput={params => <TextField {...params} label='Address' fullWidth />}
             renderOption={(props, option) => {
                 const matches = option.structured_formatting.main_text_matched_substrings;
                 const parts = parse(

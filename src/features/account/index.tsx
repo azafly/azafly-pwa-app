@@ -136,7 +136,7 @@ const UserAccount = () => {
     */
 
     return (
-        <Slide direction='right' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+        <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
             <div className={classes.user_account__root}>
                 <DefaultSnackbar
                     open={showAlert}

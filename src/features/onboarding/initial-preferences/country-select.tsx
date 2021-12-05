@@ -59,20 +59,11 @@ export type CountrySelectProps = {
         [key in AutocompleteClassKey]?: string;
     };
     options?: Country[];
-    defaultOption?: Country;
     getOptionDisabled?: (option: Country) => boolean;
     getOptionLabel?: (option: Country) => string;
-    renderOption?: (option: Country) => ReactElement;
 };
 
-export const CountrySelect = ({
-    handleCountryChange,
-    classKeys,
-    defaultOption,
-    getOptionLabel,
-    getOptionDisabled,
-    renderOption
-}: CountrySelectProps) => {
+export const CountrySelect = ({ handleCountryChange, classKeys, getOptionLabel, getOptionDisabled }: CountrySelectProps) => {
     const classes = useStyles();
     const classOverrides: typeof classKeys = {
         option: classes.option,
@@ -88,7 +79,6 @@ export const CountrySelect = ({
     const optionLabel = getOptionLabel ? getOptionLabel : (option: Country) => `${option.name}`;
     const optionDisabled = getOptionDisabled ? getOptionDisabled : (option: Country) => option.isComingSoon || option.isNotSupported;
     const _options = country?.isAfrica ? [NIGERIA, ...popularSourceCountries] : formattedCountries;
-    const _defaultOption = defaultOption ? defaultOption : country;
 
     return (
         <div className={classes.root}>
@@ -100,7 +90,7 @@ export const CountrySelect = ({
                 onChange={(_, value, reason) => {
                     reason === 'select-option' && handleCountryChange(value ?? UK);
                 }}
-                defaultValue={_defaultOption}
+                defaultValue={country}
                 autoComplete
                 getOptionDisabled={option => optionDisabled(option)}
                 getOptionLabel={option => optionLabel(option)}

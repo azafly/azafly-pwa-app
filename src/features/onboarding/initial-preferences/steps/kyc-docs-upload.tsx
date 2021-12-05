@@ -3,6 +3,7 @@ import { Box, Slide, Stack } from '@mui/material';
 import { Button, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import PostAddIcon from '@mui/icons-material/PostAdd';
+import { Link } from 'react-router-dom';
 
 import client from 'libs/apollo-client';
 
@@ -82,15 +83,17 @@ export const KYCDocuments = () => {
                                     uploadCallback={e => handleFileUpload(e, `/images/user-kyc/${user?.uid}-id`)}
                                 />
 
-                                <Button
-                                    variant={'outlined'}
-                                    color={'primary'}
-                                    sx={{ textTransform: 'capitalize', width: 'max-content' }}
-                                    fullWidth
-                                    disabled={fileUploadLoading}
-                                >
-                                    Skip for Now
-                                </Button>
+                                <Link to={'/dashboard'} style={{ textDecoration: 'none' }}>
+                                    <Button
+                                        variant={'contained'}
+                                        color={'secondary'}
+                                        sx={{ textTransform: 'capitalize', width: 'max-content' }}
+                                        fullWidth
+                                        disabled={fileUploadLoading}
+                                    >
+                                        Skip for Now
+                                    </Button>
+                                </Link>
                             </Stack>
                         )}
                     </Box>

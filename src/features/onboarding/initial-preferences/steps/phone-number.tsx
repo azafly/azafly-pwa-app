@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Slide, Stack, Typography } from '@mui/material';
 import { Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +14,7 @@ import 'react-phone-input-2/lib/style.css';
 export const PhoneNumber = () => {
     const [_, setOpen] = useState(false);
     const dispatch = useDispatch<Dispatch>();
-    const { phoneNumber, country, apiFetchState } = useSelector((state: RootState) => state.onboarding);
+    const { phoneNumber, country, apiFetchState, disableNext } = useSelector((state: RootState) => state.onboarding);
 
     const handleSendVerificationCode = () => {
         dispatch.onboarding.setApiFetchState({
@@ -31,6 +31,7 @@ export const PhoneNumber = () => {
                     loading: false,
                     message: `We have successfully sent your verification code`
                 });
+                dispatch.onboarding.setDisableNext(false);
             })
             .catch(() => {
                 dispatch.onboarding.setApiFetchState({
@@ -48,6 +49,10 @@ export const PhoneNumber = () => {
         setOpen(false);
         dispatch.onboarding.setApiFetchState({});
     };
+
+    useEffect(() => {
+        dispatch.onboarding.setDisableNext(true);
+    }, [dispatch]);
 
     return (
         <>

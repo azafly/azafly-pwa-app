@@ -60,10 +60,11 @@ interface GoogleAddressAutoCompleteProps {
     label?: string;
     helperText?: string;
     isError?: boolean;
+    defaultValue?: PlaceType | null;
     setAddressValue?: (key: string, value?: string) => void;
     reduxSetAddressValue?: (value: string) => void;
 }
-export function GoogleAddressAutoComplete({ setAddressValue, reduxSetAddressValue }: GoogleAddressAutoCompleteProps) {
+export function GoogleAddressAutoComplete({ setAddressValue, reduxSetAddressValue, defaultValue }: GoogleAddressAutoCompleteProps) {
     const [value, setValue] = React.useState<PlaceType | null>(null);
     const [inputValue, setInputValue] = React.useState('');
     const [options, setOptions] = React.useState<readonly PlaceType[]>([]);
@@ -133,6 +134,7 @@ export function GoogleAddressAutoComplete({ setAddressValue, reduxSetAddressValu
             getOptionLabel={option => (typeof option === 'string' ? option : option.description)}
             filterOptions={option => option}
             options={options}
+            defaultValue={defaultValue}
             autoComplete
             includeInputInList
             filterSelectedOptions

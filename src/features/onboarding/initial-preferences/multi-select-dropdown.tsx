@@ -36,8 +36,14 @@ interface MultiSelectCheckBoxProps {
     handleChange: (_: unknown, value: Currency[]) => void;
 }
 export default function MultiSelectCheckBox({ handleChange }: MultiSelectCheckBoxProps) {
-    const { country } = useSelector((state: RootState) => state.onboarding);
+    const { country, currencies } = useSelector((state: RootState) => state.onboarding);
     const options = country?.region === 'AF' ? foreignCurrencies : africanCurrencies;
+
+    const transformCurrencies = () => {
+        const currencyMap: Record<string, boolean> = {};
+        currencies.forEach(it => (currencyMap[it.name] = true));
+        return currencyMap;
+    };
 
     const classes = useStyles();
     return (
@@ -46,12 +52,19 @@ export default function MultiSelectCheckBox({ handleChange }: MultiSelectCheckBo
             id='currency-multi-select'
             onChange={handleChange}
             options={options}
+            defaultValue={currencies}
             disableCloseOnSelect
             getOptionLabel={option => option.name}
-            getOptionDisabled={option => option.isComingSoon ?? false}
+            filterSelectedOptions
+            getOptionDisabled={option => (option.isComingSoon || transformCurrencies()[option.name]) ?? false}
             renderOption={(props, option, { selected }) => (
                 <li {...props}>
-                    <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                    <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected || transformCurrencies()[option.name]}
+                    />
                     <Box sx={{ marginRight: '1ch' }}>
                         {' '}
                         <Avatar sizes={'sm'} src={option.flag} alt={option.name} />{' '}

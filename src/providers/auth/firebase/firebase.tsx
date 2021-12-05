@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useState, useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AuthContext, AuthState, defaultAuthState, defaultAuhContext, FirebaseUser } from './constants';
+import { AuthContext, defaultAuhContext, FirebaseUser } from './constants';
 import { RootState, Dispatch } from 'app/store';
 import { firebaseApp, firebaseConfig } from './firebase-config';
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
@@ -126,11 +126,12 @@ function useFirebaseProviderAuth() {
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
                 if (user.emailVerified) {
                     const newUser = { ...user, emailVerified: true };
+                    localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                     dispatch.auth.updateAuthState({ ...reduxAuthState, user: newUser, isAuth: true });
                 }
                 if (hasuraClaim) {
                     dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true });
-                    hasuraClaim && localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
+                    localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                 } else {
                     // Check if refresh is required.
                     const metadataRef = firebaseApp.database().ref('metadata/' + user.uid + '/refreshTime');

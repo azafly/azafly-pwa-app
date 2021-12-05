@@ -1,11 +1,11 @@
 import { ChangeEvent, Dispatch, memo, SetStateAction } from 'react';
 import { Box, Typography } from '@material-ui/core';
-import { useSelector } from 'react-redux';
 
 import EditIcon from 'components/icons/edit.svg';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { RootState } from 'app/store';
 import { UploadButton } from 'components';
+import { RootState } from 'app/store';
+import { useSelector } from 'react-redux';
 
 interface ProfilePictureProps {
     classes: Record<string, string>;
@@ -23,6 +23,7 @@ export const ProfilePicture = memo(function ProfilePicture({
     fileUploadIsLoading
 }: ProfilePictureProps) {
     const { user } = useSelector((state: RootState) => state.auth);
+
     const style = user?.photoURL ? { backgroundImage: `url("${user?.photoURL}")`, backgroundSize: '100%', opacity: 1 } : {};
     return (
         <div>

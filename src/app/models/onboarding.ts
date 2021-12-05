@@ -7,6 +7,12 @@ import { RootModel } from './index';
 import { StepLabel } from 'features/onboarding/initial-preferences/steps/index';
 import { UK } from 'features/payments/context/constants';
 
+interface APIFetchState {
+    result?: 'error' | 'success';
+    type?: string;
+    message?: string;
+    loading?: boolean;
+}
 interface OnboardingPreference {
     phoneNumber: string;
     currencies: Currency[];
@@ -17,6 +23,8 @@ interface OnboardingPreference {
     activeStep: StepLabel;
     disableNext: boolean;
     isFirstTimeUser: boolean;
+    verificationId: string;
+    apiFetchState: APIFetchState;
 }
 
 const initialState: OnboardingPreference = {
@@ -28,7 +36,9 @@ const initialState: OnboardingPreference = {
     userGeolocation: {},
     activeStep: 'phone',
     disableNext: true,
-    isFirstTimeUser: true
+    isFirstTimeUser: true,
+    verificationId: '',
+    apiFetchState: {}
 };
 
 export const onboarding = createModel<RootModel>()({
@@ -63,6 +73,12 @@ export const onboarding = createModel<RootModel>()({
         },
         setIsFirstTimeUser(state, payload: boolean) {
             return { ...state, isFirstTimeUser: payload };
+        },
+        setVerificationId(state, payload: string) {
+            return { ...state, verificationId: payload };
+        },
+        setApiFetchState(state, payload: APIFetchState) {
+            return { ...state, apiFetchState: payload };
         }
     }
 });

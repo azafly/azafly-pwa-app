@@ -76,7 +76,6 @@ function usePaymentProvider() {
         getInitialOffer({ source_currency: targetCountry?.currency?.code, source_amount: amount, target_currency: sourceCountry?.currency?.code })
             .then(({ data }) => {
                 setInitialOffer(data.data);
-                console.log(data);
                 localStorage.setItem(LOCAL_STORAGE_KEY.INITIAL_OFFER, JSON.stringify(data.data));
                 setPaymentError('');
                 setActiveStep(1);

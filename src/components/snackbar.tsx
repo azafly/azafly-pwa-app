@@ -21,6 +21,7 @@ export const DefaultSnackbar = ({ open, handleClose, title, severity, info, clas
         <Snackbar
             className={className}
             open={open}
+            sx={{ width: '92vw', maxWidth: 1200 }}
             autoHideDuration={3000}
             onClose={handleClose}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

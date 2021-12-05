@@ -20,7 +20,7 @@ export default function ModalContent() {
     const history = useHistory();
 
     const goTDashboard = async () => {
-        history.replace('/dashboard');
+        history.push('/dashboard');
     };
 
     return (

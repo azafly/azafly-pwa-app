@@ -141,7 +141,6 @@ export const TransactionListContainer = memo(function TransactionListContainer({
                                 setDateValue(newValue);
                             }}
                             onAccept={date => {
-                                console.log(date);
                                 handleDateRangeSelect(date);
                             }}
                             renderInput={(startProps, endProps) => (

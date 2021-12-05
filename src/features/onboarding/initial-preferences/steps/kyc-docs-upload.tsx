@@ -1,22 +1,22 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Box, Slide, Stack } from '@mui/material';
 import { Button, Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 
+import client from 'libs/apollo-client';
+
 import { DefaultSnackbar, UploadButton } from 'components';
-import { Dispatch, RootState } from 'app/store';
+import { RootState } from 'app/store';
 import { storage } from 'providers/auth/firebase';
 import Modal from '../modal';
+import { ThreeDots } from 'components/css-loaders/three-dots';
 
 export const KYCDocuments = () => {
-    const [files, setFiles] = useState<string[]>([]);
     const [fileUploadLoading, setFileUploadLoading] = useState(false);
     const [alertState, setAlertState] = useState({ show: false, severity: '', title: '', text: '' });
 
-    const { phoneNumber } = useSelector((state: RootState) => state.onboarding);
     const { user } = useSelector((state: RootState) => state.auth);
-    const dispatch = useDispatch<Dispatch>();
 
     const handleCloseSnackBar = () => {
         setAlertState({ ...alertState, show: false });
@@ -37,17 +37,16 @@ export const KYCDocuments = () => {
                 setAlertState({ ...alertState, show: true, text: 'Error uploading your documents', severity: 'error', title: 'Error' });
             },
             () => {
-                storageRef.snapshot.ref.getDownloadURL().then(photoURL => {
+                storageRef.snapshot.ref.getDownloadURL().then(() => {
                     setAlertState({ ...alertState, show: true, text: 'Profile updated successfully 🎉', severity: 'success', title: 'Success' });
                     setFileUploadLoading(false);
+                    client.refetchQueries({
+                        include: ['getUserTransactions', 'getUserPendingOffers', 'getCurrentUserByEmail']
+                    });
                 });
             }
         );
     };
-
-    useEffect(() => {
-        dispatch.onboarding.setDisableNext(fileUploadLoading);
-    }, [dispatch, fileUploadLoading]);
 
     const { show, severity, text, title } = alertState;
 
@@ -73,24 +72,27 @@ export const KYCDocuments = () => {
                             {' '}
                             {'*You will not be able to perform operations above $1000 until you are verified'}{' '}
                         </Typography>
+                        {fileUploadLoading ? (
+                            <ThreeDots variantColor={'base'} />
+                        ) : (
+                            <Stack direction={'row'} spacing={2} justifyContent={'center'}>
+                                <UploadButton
+                                    label={'Upload document'}
+                                    icon={<PostAddIcon />}
+                                    uploadCallback={e => handleFileUpload(e, `/images/user-kyc/${user?.uid}-id`)}
+                                />
 
-                        <Stack direction={'row'} spacing={2} justifyContent={'center'}>
-                            <UploadButton
-                                label={'Upload document'}
-                                icon={<PostAddIcon />}
-                                uploadCallback={e => handleFileUpload(e, `/images/user-kyc/${user?.uid}-id`)}
-                            />
-
-                            <Button
-                                variant={'outlined'}
-                                color={'primary'}
-                                sx={{ textTransform: 'capitalize', width: 'max-content' }}
-                                fullWidth
-                                disabled={fileUploadLoading}
-                            >
-                                Skip for Now
-                            </Button>
-                        </Stack>
+                                <Button
+                                    variant={'outlined'}
+                                    color={'primary'}
+                                    sx={{ textTransform: 'capitalize', width: 'max-content' }}
+                                    fullWidth
+                                    disabled={fileUploadLoading}
+                                >
+                                    Skip for Now
+                                </Button>
+                            </Stack>
+                        )}
                     </Box>
                 </Slide>
             )}

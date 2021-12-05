@@ -84,7 +84,7 @@ export const CountrySelect = ({
         countryList: { popularSourceCountries, formattedCountries }
     } = useSelector((state: RootState) => state.onboarding);
 
-    const optionRenderer = (optionData: Country) => (renderOption ? renderOption : <RenderOptions option={optionData} />);
+    const optionRenderer = (optionData: Country) => <RenderOptions option={optionData} />;
     const optionLabel = getOptionLabel ? getOptionLabel : (option: Country) => `${option.name}`;
     const optionDisabled = getOptionDisabled ? getOptionDisabled : (option: Country) => option.isComingSoon || option.isNotSupported;
     const _options = country?.isAfrica ? [NIGERIA, ...popularSourceCountries] : formattedCountries;

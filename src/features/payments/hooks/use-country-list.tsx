@@ -55,7 +55,7 @@ export const NIGERIA: Country = {
     isComingSoon: false,
     isPopular: true,
     phone: '',
-    flag: ''
+    flag: 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NG.svg'
 };
 
 const defaultCountryListData: CountryListData = {

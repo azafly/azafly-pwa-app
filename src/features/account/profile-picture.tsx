@@ -45,7 +45,6 @@ export const ProfilePicture = memo(function ProfilePicture({
             <Box onClick={() => setIsEditable(!isEditable)} className={classes.edit} mt={1}>
                 <img src={EditIcon} alt={'edit'} />
             </Box>
-            ;
         </div>
     );
 });

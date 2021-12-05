@@ -51,7 +51,7 @@ export const onboarding = createModel<RootModel>()({
             return { ...state, disableNext: payload };
         },
         setPhoneNumber(state, payload: string) {
-            return { ...state, phoneNumber: `+${payload}`, disableNext: payload.length < 3 };
+            return { ...state, phoneNumber: `+${payload}` };
         },
         setAddress(state, payload: string) {
             return { ...state, address: payload };

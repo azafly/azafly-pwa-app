@@ -14,7 +14,7 @@ import 'react-phone-input-2/lib/style.css';
 export const PhoneNumber = () => {
     const [_, setOpen] = useState(false);
     const dispatch = useDispatch<Dispatch>();
-    const { phoneNumber, country, apiFetchState, disableNext } = useSelector((state: RootState) => state.onboarding);
+    const { phoneNumber, country, apiFetchState } = useSelector((state: RootState) => state.onboarding);
 
     const handleSendVerificationCode = () => {
         dispatch.onboarding.setApiFetchState({
@@ -40,7 +40,8 @@ export const PhoneNumber = () => {
                     loading: false,
                     message: 'There was an error sending verification code. Try again'
                 });
-            });
+            })
+            .finally(() => dispatch.onboarding.setDisableNext(true));
     };
 
     const { loading, result, message } = apiFetchState;
@@ -86,7 +87,7 @@ export const PhoneNumber = () => {
                             id={'recaptcha'}
                             color={'primary'}
                             style={{ marginTop: 20 }}
-                            disabled={phoneNumber.length < 3}
+                            disabled={phoneNumber.length < 7}
                         >
                             Send verification code
                         </Button>

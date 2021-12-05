@@ -13,3 +13,17 @@ body {
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+#tidio-chat-iframe {
+    bottom: 0px !important;
+}
+@media only screen and (max-width: 580px) {
+    #tidio-chat-iframe {
+        bottom: 50px !important;
+        margin-bottom: 10vh !important;
+    }
+}
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}

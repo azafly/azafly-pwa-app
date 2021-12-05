@@ -42,6 +42,7 @@ export const PhoneVerification = () => {
             ...apiFetchState,
             loading: true
         });
+        dispatch.onboarding.setDisableNext(true);
         verifyPhoneNumber(verificationCode, verificationId)
             .then(() => {
                 dispatch.onboarding.setApiFetchState({

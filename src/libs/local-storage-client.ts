@@ -23,3 +23,9 @@ export function localStorageClient<T>(args: LocalStorageArgs<T>) {
         return localStorage.getItem(args.key) as unknown as T;
     }
 }
+
+export const setToken = (data: unknown) => {
+    localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, JSON.stringify(data));
+};
+
+export const getToken = localStorage.getItem(LOCAL_STORAGE_KEY.TOKEN);

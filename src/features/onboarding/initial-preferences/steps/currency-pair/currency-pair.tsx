@@ -8,7 +8,7 @@ import MultiSelectCheckBox from '../../multi-select-dropdown';
 
 export const CurrencyPair = () => {
     const dispatch = useDispatch<Dispatch>();
-    const { currencies } = useSelector((state: RootState) => state.onboarding);
+    const { currencies, country } = useSelector((state: RootState) => state.onboarding);
     const disableNext = useMemo(() => !Boolean(currencies.length), [currencies]);
 
     useEffect(() => {
@@ -18,11 +18,15 @@ export const CurrencyPair = () => {
     return (
         <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
             <Stack sx={{ width: '100%' }}>
-                <Typography variant={'h6'} sx={{ fontWeight: 700, fontFamily: 'Nunito', color: '#0d324d' }} gutterBottom align={'center'}>
+                <Typography variant={'h6'} sx={{ fontWeight: 700, fontFamily: 'Nunito', color: '#0d324d', marginBottom: '10px' }} align={'center'}>
                     {' '}
-                    Select currencies you usually need to transact in.
+                    {country?.region === 'AF' ? 'Select currencies you usually need to transact in.' : 'Select the country you mostly send money to.'}
                 </Typography>
-                <Typography paragraph sx={{ fontWeight: 400, fontFamily: 'Nunito' }} gutterBottom align={'center'}>
+                <Typography
+                    align={'center'}
+                    paragraph
+                    style={{ fontWeight: 400, fontFamily: 'Nunito', color: '#0d324d', marginBottom: '30px', fontSize: '0.85rem' }}
+                >
                     We will create accounts for you in these currencies to get you started quickly.
                 </Typography>
                 <MultiSelectCheckBox handleChange={(_, currencies) => dispatch.onboarding.setCurrencies(currencies)} />

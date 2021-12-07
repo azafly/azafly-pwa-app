@@ -23,7 +23,7 @@ export const GetUserTransactions = gql`
 
 export const GetUsersPendingOffers = gql`
     query getUserPendingOffers($id: uuid!) {
-        payment_offer(where: { user_id: { _eq: $id }, payment_status: { _neq: "PAID" } }, order_by: { updated_at: desc }) {
+        payment_offer(where: { user_id: { _eq: $id }, payment_status: { _neq: "PAID" } }, order_by: { updated_at: desc }, limit: 10) {
             id
             created_at
             payment_status

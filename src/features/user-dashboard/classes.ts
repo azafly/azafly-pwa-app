@@ -97,8 +97,8 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
             width: 250,
             flexGrow: 1,
             marginRight: '3vw',
-            paddingTop: '10vh',
-            marginTop: '-10vh'
+            paddingTop: '25vh',
+            marginTop: '-5vh'
         },
         button: {
             textDecoration: 'none',

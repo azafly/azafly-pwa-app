@@ -62,10 +62,14 @@ export const PhoneNumber = () => {
                 <Stack sx={{ width: '100%' }}>
                     <Typography variant={'h6'} align={'center'} style={{ fontWeight: 700, fontFamily: 'Nunito', color: '#0d324d', marginBottom: 10 }}>
                         {' '}
-                        Verify your phone number with a code
+                        {`Let's verify your phone number. `}
                     </Typography>
-                    <Typography align={'center'} paragraph style={{ fontWeight: 400, fontFamily: 'Nunito', color: '#0d324d', marginBottom: 20 }}>
-                        It helps us keep your account secure.
+                    <Typography
+                        align={'center'}
+                        paragraph
+                        style={{ fontWeight: 400, fontFamily: 'Nunito', color: '#0d324d', marginBottom: 20, fontSize: '0.85rem' }}
+                    >
+                        We get to know you and helps us keep your account secure.
                     </Typography>
                     <PhoneInput
                         inputProps={{

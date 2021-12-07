@@ -15,11 +15,11 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         action: {
             fontSize: '0.85em',
-            fontWeight: 700,
+            fontWeight: 400,
             textTransform: 'capitalize'
         },
         typography: {
-            fontSize: '1.1rem',
+            fontSize: '1rem',
             fontWeight: 700,
             fontFamily: 'Nunito'
         }

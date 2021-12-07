@@ -113,10 +113,15 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     const pendingTransactions = pending?.length ? (
         pending
     ) : (
-        <Typography align={'center'} style={{ maxWidth: 900, margin: 'auto' }}>
+        <Stack justifyContent={'center'} sx={{ maxWidth: 900, margin: 'auto' }}>
             {' '}
-            You have no pending transactions
-        </Typography>
+            <Paper sx={{ p: 10, pt: 1, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)' }}>
+                <Stack justifyContent={'center'} width={'100%'} alignItems={'center'} mt={10}>
+                    <Typography gutterBottom> You have no pending offers</Typography>
+                    <EmptyDataSvgComponent />
+                </Stack>
+            </Paper>
+        </Stack>
     );
 
     const transactionsByDate = () => {
@@ -177,7 +182,7 @@ export const TransactionListContainer = memo(function TransactionListContainer({
                 ))}
 
                 {filteredTransactions?.transaction && !filteredTransactions?.transaction.length && (
-                    <Typography align={'center'} style={{ maxWidth: 900, margin: 'auto' }}>
+                    <Stack justifyContent={'center'} sx={{ maxWidth: 900, margin: 'auto' }}>
                         {' '}
                         <Paper sx={{ p: 10, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)' }}>
                             <Stack justifyContent={'center'} width={'100%'} alignItems={'center'} mt={10}>
@@ -185,7 +190,7 @@ export const TransactionListContainer = memo(function TransactionListContainer({
                                 <EmptyDataSvgComponent />
                             </Stack>
                         </Paper>
-                    </Typography>
+                    </Stack>
                 )}
             </>
         );

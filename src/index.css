@@ -19,7 +19,7 @@ code {
 @media only screen and (max-width: 580px) {
     #tidio-chat-iframe {
         bottom: 50px !important;
-        margin-bottom: 10vh !important;
+        display: block;
     }
 }
 *,

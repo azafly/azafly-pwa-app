@@ -97,6 +97,7 @@ export default function Dashboard() {
                 open={openSnackBar}
                 handleClose={() => setOpenSnackBar(false)}
                 title={alertTitle}
+                autoHideDuration={10000}
                 info={verificationEmailSent}
             />
             <Modal

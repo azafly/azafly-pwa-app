@@ -14,15 +14,16 @@ interface SnackBarProps {
     title: string;
     severity: 'error' | 'success';
     info: string;
+    autoHideDuration?: number;
     className?: string;
 }
-export const DefaultSnackbar = ({ open, handleClose, title, severity, info, className }: SnackBarProps) => {
+export const DefaultSnackbar = ({ autoHideDuration = 3000, open, handleClose, title, severity, info, className }: SnackBarProps) => {
     return (
         <Snackbar
             className={className}
             open={open}
             sx={{ width: '92vw', maxWidth: 1200 }}
-            autoHideDuration={3000}
+            autoHideDuration={autoHideDuration}
             onClose={handleClose}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         >

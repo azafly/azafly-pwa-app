@@ -3,15 +3,15 @@ import { Button, Checkbox, IconButton, InputAdornment, TextField } from '@materi
 import { useFormik } from 'formik';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import * as yup from 'yup';
 
 import { addUser } from 'providers/auth/firebase/firebase';
 import { DefaultSnackbar } from 'components';
+import { Dispatch, RootState } from 'app/store';
 import { FacebookSvgComponent } from 'components/icons';
-import { RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useSignUpFormStyles } from './classes';
@@ -29,12 +29,10 @@ const formFieldArray = [
         name: 'confirmPassword'
     }
 ];
-const phoneRegExp = /^\+(?:[0-9] ?){6,14}[0-9]$/;
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Enter a valid email').required('Email is required'),
     password: yup.string().required('Password is required'),
-    phone: yup.string().matches(phoneRegExp, 'Phone number is not valid'),
     confirmPassword: yup
         .string()
         .oneOf([yup.ref('password'), null], 'Needs to match password')
@@ -60,6 +58,8 @@ export const SignUpForm = () => {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
+    const dispatch = useDispatch<Dispatch>();
+
     const { isFirstTimeUser } = useSelector((state: RootState) => state.onboarding);
     const { user } = useSelector((state: RootState) => state.auth);
 
@@ -72,12 +72,10 @@ export const SignUpForm = () => {
             confirmPassword: '',
             firstName: '',
             lastName: '',
-            terms: '',
-            phone: ''
+            terms: ''
         },
         validationSchema: validationSchema,
         onSubmit: values => {
-            localStorage.setItem('user', JSON.stringify(values));
             handleSignUp(SignUpMethod.EMAIL_AND_PASSWORD, values.email, values.password, `${values.firstName} ${values.lastName}`);
         }
     });
@@ -86,10 +84,10 @@ export const SignUpForm = () => {
     const FROM = isFirstTimeUser ? '/onboarding-update' : '/dashboard';
 
     const location = useLocation();
+    const browserHistory = useHistory();
 
     const handleSignUp = (method: SignUpMethod, email?: string, password?: string, displayName?: string) => {
-        const DASHBOARD = isFirstTimeUser ? '/onboarding-update' : '/dashboard';
-        const from = location.state?.from?.pathname || DASHBOARD;
+        const from = location.state?.from?.pathname || FROM;
         setAuthLoadingState(true);
         switch (method) {
             case SignUpMethod.FACEBOOK:
@@ -129,6 +127,7 @@ export const SignUpForm = () => {
                             emailVerified: false,
                             photoURL: null
                         });
+                        browserHistory.push('/onboarding-update');
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setOpenSnackBar(true);
@@ -192,26 +191,10 @@ export const SignUpForm = () => {
                             name='email'
                             label='Email'
                             type='text'
-                            value={formik.values.firstName}
+                            value={formik.values.email}
                             onChange={formik.handleChange}
                             error={formik.touched.email && Boolean(formik.errors.email)}
                             helperText={formik.touched.email && formik.errors.email}
-                        />
-                        <TextField
-                            fullWidth
-                            id='phone'
-                            name='phone'
-                            label='Phone Number'
-                            type='text'
-                            placeholder='Phone Number'
-                            className={`lastname`}
-                            value={formik.values.phone}
-                            onChange={formik.handleChange}
-                            FormHelperTextProps={{
-                                className: Boolean(formik.errors.phone) ? '' : 'info'
-                            }}
-                            error={formik.touched.phone && Boolean(formik.errors.phone)}
-                            helperText={!formik.errors.phone ? 'Your phone number with the code' : formik.touched.phone && formik.errors.phone}
                         />
                     </div>
                     <div className={` ${classes.others}`}>

@@ -98,7 +98,6 @@ const phoneRegExp = /^\+(?:[0-9] ?){6,14}[0-9]$/;
 
 export const validationSchema = yup.object().shape({
     fullname: yup.string().required('Enter a your family name'),
-    address: yup.string().required('Enter your Address '),
     phone: yup.string().matches(phoneRegExp, 'Phone number is not valid').required('This is not a valid phone number.'),
     references: yup.string().required('Reference is necessary to track your payment'),
     by: yup.string().oneOf(['self', 'others'], 'Please select one'),

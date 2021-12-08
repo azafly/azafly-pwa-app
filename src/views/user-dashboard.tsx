@@ -9,7 +9,7 @@ const LazyDashBoard = lazy(() => import('features/user-dashboard/dashboard'));
 const SuspenseComponent = () => (
     <Box sx={{ width: '100vw', height: '100vh' }}>
         {' '}
-        <ThreeDots styles={{ backgroundColor: '#4990a4' }} />{' '}
+        <ThreeDots variantColor={'base'} />{' '}
     </Box>
 );
 

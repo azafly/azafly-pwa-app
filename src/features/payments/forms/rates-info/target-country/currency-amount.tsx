@@ -133,9 +133,7 @@ export function CurrencyAmount() {
                     }}
                     loading
                     autoComplete
-                    getOptionLabel={option => {
-                        return getOptionLabel(option);
-                    }}
+                    getOptionLabel={option => getOptionLabel(option)}
                     renderOption={optionData => optionRenderer(optionData)}
                     renderInput={params => {
                         return (

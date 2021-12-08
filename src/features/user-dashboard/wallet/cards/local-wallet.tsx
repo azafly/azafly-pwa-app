@@ -8,16 +8,15 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 const useStyles = makeStyles(() =>
     createStyles({
         card__container: {
-            padding: 10,
-            border: '1px solid #DCDCDC'
+            padding: 10
         },
         action: {
             fontSize: '0.85em',
-            fontWeight: 700,
+            fontWeight: 400,
             textTransform: 'capitalize'
         },
         typography: {
-            fontSize: '1.1rem',
+            fontSize: '1rem',
             fontWeight: 700,
             fontFamily: 'Nunito'
         }
@@ -34,7 +33,7 @@ export default function LocalWalletCard({ handleOpen, loading }: LocalWalletCard
 
     return (
         <SkeletonTheme baseColor='' highlightColor='#eef5f7' borderRadius='0.5rem' duration={4}>
-            <Card elevation={0} className={classes.card__container}>
+            <Card elevation={1} className={classes.card__container}>
                 <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         {loading ? (

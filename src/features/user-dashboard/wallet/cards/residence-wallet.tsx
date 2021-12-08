@@ -9,18 +9,17 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         card_container: {
             padding: 10,
-            border: '1px solid #DCDCDC',
             [theme.breakpoints.only('xs')]: {
                 marginRight: 10
             }
         },
         action: {
             fontSize: '0.85em',
-            fontWeight: 700,
+            fontWeight: 400,
             textTransform: 'capitalize'
         },
         typography: {
-            fontSize: '1.1rem',
+            fontSize: '1rem',
             fontWeight: 700,
             fontFamily: 'Nunito'
         }
@@ -36,7 +35,7 @@ export default function ResidenceWalletCard({ loading }: ResidenceCardProps) {
     const classes = useStyles();
     return (
         <SkeletonTheme baseColor='' highlightColor='#eef5f7' borderRadius='0.5rem' duration={4}>
-            <Card elevation={0} className={classes.card_container}>
+            <Card elevation={1} className={classes.card_container}>
                 <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         {loading ? (

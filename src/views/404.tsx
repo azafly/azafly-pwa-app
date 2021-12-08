@@ -3,12 +3,12 @@ import { Svg404Component } from 'components/illustrations';
 
 import { Button, Box } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
+
+import { RootState } from 'app/store';
+import { useSelector } from 'react-redux';
 
 const Page404 = () => {
-    const {
-        authState: { isAuth }
-    } = useFirebaseAuthContext();
+    const { isAuth } = useSelector((state: RootState) => state.auth);
     return (
         <>
             <Box marginBottom={15}>

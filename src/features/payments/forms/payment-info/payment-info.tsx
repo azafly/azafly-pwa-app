@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useFormik } from 'formik';
 
 import { PAYMENT_INFO, validationSchema, initialValues, generateInputType } from './form-fields';
-import { LOCAL_STORAGE_KEY } from 'libs/local-storage-keys';
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -87,7 +87,8 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
                                     },
                                     option,
                                     isError: formik.touched[name] && Boolean(formik.errors[name]),
-                                    handler: formik.values
+                                    handler: formik.values,
+                                    setAddressValue: formik.setFieldValue
                                 })}
                             </Grid>
                         );

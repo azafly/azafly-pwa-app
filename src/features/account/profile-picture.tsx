@@ -3,8 +3,9 @@ import { Box, Typography } from '@material-ui/core';
 
 import EditIcon from 'components/icons/edit.svg';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { UploadButton } from 'components';
+import { RootState } from 'app/store';
+import { useSelector } from 'react-redux';
 
 interface ProfilePictureProps {
     classes: Record<string, string>;
@@ -21,9 +22,7 @@ export const ProfilePicture = memo(function ProfilePicture({
     setIsEditable,
     fileUploadIsLoading
 }: ProfilePictureProps) {
-    const {
-        authState: { user }
-    } = useFirebaseAuthContext();
+    const { user } = useSelector((state: RootState) => state.auth);
 
     const style = user?.photoURL ? { backgroundImage: `url("${user?.photoURL}")`, backgroundSize: '100%', opacity: 1 } : {};
     return (
@@ -46,7 +45,6 @@ export const ProfilePicture = memo(function ProfilePicture({
             <Box onClick={() => setIsEditable(!isEditable)} className={classes.edit} mt={1}>
                 <img src={EditIcon} alt={'edit'} />
             </Box>
-            ;
         </div>
     );
 });

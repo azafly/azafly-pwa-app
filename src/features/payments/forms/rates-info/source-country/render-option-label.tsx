@@ -1,5 +1,6 @@
 import { Box, Chip } from '@mui/material';
 import { Country } from '../../../hooks/use-country-list';
+import { Avatar } from '@material-ui/core';
 
 export interface IRenderOptions {
     option?: Country;
@@ -30,8 +31,8 @@ export const RenderOptions = ({ option }: IRenderOptions) => {
                 }
             }}
         >
-            <span style={{ borderRadius: '50%', fontSize: '2rem', marginRight: '1ch' }}> {option?.emoji}</span>
-            <Box sx={{ width: '11ch', margin: 'auto', marginRight: 2 }}>
+            <Avatar style={{ borderRadius: '50%', fontSize: '2rem', marginRight: '1ch' }} src={option?.flag} />
+            <Box sx={{ width: 'max-content', margin: 'auto', marginRight: 2 }}>
                 <span className='name'> {option?.name} </span>
                 <span className='currency'> ({option?.currency.code}) </span>
             </Box>

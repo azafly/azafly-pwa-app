@@ -18,7 +18,8 @@
         "@mui/icons-material": "^5.0.0",
         "@mui/lab": "^5.0.0-alpha.55",
         "@mui/material": "^5.0.0",
-        "@reduxjs/toolkit": "^1.5.1",
+        "@rematch/core": "^2.2.0",
+        "@rematch/persist": "^2.1.2",
         "@testing-library/dom": "^8.1.0",
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.3.2",
@@ -32,9 +33,9 @@
         "@types/react-router-transition": "^2.1.0",
         "@types/uuid": "^8.3.1",
         "add": "^2.0.6",
+        "autosuggest-highlight": "^3.2.0",
         "axios": "^0.21.1",
         "clsx": "^1.1.1",
-        "country-state-city": "^3.0.1",
         "date-fns": "^2.23.0",
         "faker": "^5.5.3",
         "firebase": "^8.7.0",
@@ -62,6 +63,7 @@
         "react-swipeable-views": "^0.14.0",
         "react-transition-group": "^4.4.2",
         "react-window": "^1.8.6",
+        "redux-persist": "^6.0.0",
         "slick-carousel": "^1.8.1",
         "source-map-explorer": "^2.5.2",
         "subscriptions-transport-ws": "^0.9.19",
@@ -110,6 +112,7 @@
         ]
     },
     "devDependencies": {
+        "@types/autosuggest-highlight": "^3.2.0",
         "@types/faker": "^5.5.8",
         "@types/react-slick": "^0.23.7",
         "@types/react-swipeable-views-core": "^0.13.0",
@@ -121,6 +124,7 @@
         "husky": "^7.0.2",
         "lint-staged": "^11.1.2",
         "openapi-typescript": "^4.3.0",
-        "openapi-typescript-codegen": "^0.9.3"
+        "openapi-typescript-codegen": "^0.9.3",
+        "react-phone-input-2": "^2.14.0"
     }
 }

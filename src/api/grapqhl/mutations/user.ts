@@ -40,3 +40,14 @@ export const UPDATE_USER = gql`
         }
     }
 `;
+
+export const UPDATE_IS_NEW_USER = gql`
+    mutation updateNewUser($email: String!, $address: String!, $country: String!, $document_url: String, $phone: String!) {
+        update_users(
+            where: { email: { _eq: $email } }
+            _set: { is_new_user: false, address: $address, country: $country, document_url: $document_url, phone: $phone }
+        ) {
+            affected_rows
+        }
+    }
+`;

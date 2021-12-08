@@ -2,6 +2,7 @@ import { Card, CardContent, Typography } from '@material-ui/core';
 import { Chip } from '@mui/material';
 import { format } from 'date-fns';
 import React, { memo } from 'react';
+import { Link } from 'react-router-dom';
 
 import { formatCurrency } from 'libs';
 import { InfoText } from '../info-text';
@@ -12,6 +13,9 @@ interface CardProps {
     transactionData: any;
 }
 
+enum OFFER_STATUS {
+    ERROR = 'error'
+}
 export const PendingOfferCardContainer = memo(function CardContainer({ transactionData }: CardProps) {
     const [expanded, setExpanded] = React.useState(false);
 
@@ -19,6 +23,20 @@ export const PendingOfferCardContainer = memo(function CardContainer({ transacti
         setExpanded(!expanded);
     };
     const { created_at, source_currency: currency, source_amount: amount } = transactionData;
+
+    const { metadata } = transactionData;
+
+    const isError = JSON.parse(metadata).status === OFFER_STATUS.ERROR;
+
+    const chipInfo = {
+        color: isError ? 'error' : ('warning' as 'error' | 'warning'),
+        label: isError ? 'Error' : 'Pending',
+        text: isError ? 'Click to start new payment' : 'Click to continue payment',
+        variant: isError ? 'outlined' : ('filled' as 'outlined' | 'filled')
+    };
+
+    const stepToNavigateTo = transactionData.payment_intent_payload ? 3 : 1;
+    const link = isError ? '/payment?step=1' : `/payment?offer_id=${transactionData.id}&step=${stepToNavigateTo}`;
 
     const date = `${format(new Date(created_at), 'dd, MMMM yyyy')}`;
     const classes = useCardStyles();
@@ -41,10 +59,13 @@ export const PendingOfferCardContainer = memo(function CardContainer({ transacti
                         </Typography>
                     </div>
 
-                    <Chip className={classes.serviceInitiated} label={'Pending'} color={'warning'} />
+                    <Chip className={classes.serviceInitiated} label={chipInfo.label} color={chipInfo.color} variant={chipInfo.variant} />
                 </div>
 
-                <InfoText text={'Click to continue Payment'} />
+                <Link to={link} style={{ textDecoration: 'none' }}>
+                    {' '}
+                    <InfoText text={chipInfo.text} />
+                </Link>
             </CardContent>
         </Card>
     );

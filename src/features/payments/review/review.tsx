@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { styled, Box } from '@mui/system';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import ModalUnstyled from '@mui/core/ModalUnstyled';
+import { styled, Box } from '@mui/system';
+import { useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
+import ModalUnstyled from '@mui/core/ModalUnstyled';
 import Snackbar from '@mui/material/Snackbar';
 
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { PaymentInfo, GetOffersResponseData } from 'services/rest-client/user-payment';
+import { RootState } from 'app/store';
 import { usePaymentContext } from 'features/payments/context';
-import { LOCAL_STORAGE_KEY } from 'libs/local-storage-keys';
-import { User } from '../../../providers/auth/firebase/constants';
+import { useURLParams } from 'hooks/use-url-params';
 
 const StyledModal = styled(ModalUnstyled)`
     position: fixed;
@@ -50,25 +52,26 @@ const StyledAlert = styled(Alert)`
 export default function ReviewModal() {
     const [open, setOpen] = React.useState(false);
     const [openSnackBar, setOpenSnackBar] = React.useState(false);
+    const { user } = useSelector((state: RootState) => state.auth);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleCloseSnackBar = () => setOpenSnackBar(false);
 
     const { handleCreatePaymentIntent } = usePaymentContext();
+    const urlParamOfferId = useURLParams('offer_id');
 
     const goToPayment = async () => {
         const { fullname, references, purpose } = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.PAYMENT_INFO) as string) as PaymentInfo;
         const { payment_offer_id, source_currency } = JSON.parse(
             localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string
         ) as GetOffersResponseData;
-        const { email } = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.USER) as string) as User;
 
         handleCreatePaymentIntent({
-            payment_offer_id,
+            payment_offer_id: urlParamOfferId ?? payment_offer_id,
             payment_title: purpose,
             description: references,
-            email: email ?? '',
+            email: user?.email ?? '',
             name: fullname,
             currency: source_currency ?? 'NGN'
         });

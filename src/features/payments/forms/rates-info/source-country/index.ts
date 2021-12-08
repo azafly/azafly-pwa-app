@@ -1,1 +1,1 @@
-export { CountrySelect } from './country-select';
+export { AfricaCountriesSelect } from './country-select';

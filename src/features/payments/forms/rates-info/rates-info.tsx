@@ -2,7 +2,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Box, Grid } from '@material-ui/core';
 import Chip from '@mui/material/Chip';
 
-import { CountrySelect } from './source-country/country-select';
+import { AfricaCountriesSelect } from './source-country/country-select';
 import { CurrencyAmount } from './target-country/currency-amount';
 import { Country, NIGERIA, useCountryList } from '../../hooks/use-country-list';
 import { usePaymentContext } from '../../context';
@@ -68,7 +68,7 @@ export function RatesInfo() {
                         {paymentError && <Chip color={'error'} label={paymentError} size={'medium'} sx={{ marginBottom: 3 }} variant={'outlined'} />}
                     </Box>
                     <Grid item xs={12}>
-                        <CountrySelect
+                        <AfricaCountriesSelect
                             handleCountryChange={handleSourceCountryChange}
                             classKeys={{ option: classes.option }}
                             options={[NIGERIA, ...popularSourceCountries]}

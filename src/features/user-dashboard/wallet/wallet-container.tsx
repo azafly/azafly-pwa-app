@@ -3,8 +3,8 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import Slider from 'react-slick';
 
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
-import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
+import { useGetUserTransactionsQuery } from 'api/generated/graphql';
+import { useUserContext } from 'hooks/use-user-context';
 
 import LocalWalletCard from './cards/local-wallet';
 import ResidenceWalletCard from './cards/residence-wallet';
@@ -12,21 +12,14 @@ import ResidenceWalletCard from './cards/residence-wallet';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         reviewSlider_container: {
-            marginTop: 40,
             cursor: 'pointer',
             borderRadius: 12,
             maxWidth: 900,
             margin: 'auto',
             marginBottom: 20,
+            marginTop: '3vh',
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
-            '& .slick-dots li.slick-active': {
-                '& button::before': {
-                    color: theme.colors.base
-                }
-            },
-            '& .slick-prev::before, .slick-next::before': {
-                color: theme.colors.base
-            }
+            [theme.breakpoints.only('xs')]: { marginTop: '12vh' }
         },
         heading: {
             fontWeight: 650,
@@ -60,17 +53,9 @@ const WalletContainer = ({ handleOpen }: WalletContainerProps) => {
         infinite: false
     };
 
-    const {
-        authState: { user }
-    } = useFirebaseAuthContext();
+    const userData = useUserContext();
 
-    const { data: userData } = useGetCurrentUserByEmailQuery({
-        variables: {
-            email: user?.email ?? ''
-        }
-    });
-
-    const id = userData?.users[0]?.id;
+    const id = userData?.id;
     const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id } });
 
     return (

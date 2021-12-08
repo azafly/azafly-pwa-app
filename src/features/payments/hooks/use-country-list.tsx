@@ -17,6 +17,8 @@ export interface Country {
     isNotSupported: boolean;
     isPopular: boolean;
     symbol?: string;
+    phone?: string;
+    flag?: string;
 }
 
 export interface CountriesByRegion {
@@ -35,6 +37,8 @@ interface CountryListData {
     NIGERIA: Country;
     formattedCountries: Country[];
     countriesByRegion: CountriesByRegion;
+    currentlySupportedCountries: Country[];
+    isLoadingCountryList: boolean;
 }
 
 export const NIGERIA: Country = {
@@ -49,7 +53,9 @@ export const NIGERIA: Country = {
     region: 'AF',
     isNotSupported: false,
     isComingSoon: false,
-    isPopular: true
+    isPopular: true,
+    phone: '',
+    flag: 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NG.svg'
 };
 
 const defaultCountryListData: CountryListData = {
@@ -65,20 +71,29 @@ const defaultCountryListData: CountryListData = {
         Asia: [],
         Europe: [],
         South_America: []
-    }
+    },
+    currentlySupportedCountries: [],
+    isLoadingCountryList: false
 };
+
 export const useCountryList = (): CountryListData => {
     const [countryList, setCountryList] = useState<CountryListData>(defaultCountryListData);
+    const [isLoadingCountryList, setLoading] = useState(false);
     useEffect(() => {
+        setLoading(true);
         const URL = `${process.env.REACT_APP_FUNCTIONS_BASE_URL}/countryList`;
         axios
             .get(URL)
-            .then(({ data }) => setCountryList(data))
+            .then(({ data }) => {
+                setLoading(false);
+                setCountryList(data);
+            })
             .catch(error => {
                 console.warn(error);
-                setCountryList(defaultCountryListData);
+                setLoading(false);
+                return [];
             });
     }, []);
 
-    return countryList;
+    return { ...countryList, isLoadingCountryList };
 };

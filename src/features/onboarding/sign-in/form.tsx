@@ -1,7 +1,7 @@
 import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -9,6 +9,7 @@ import * as yup from 'yup';
 
 import { DefaultSnackbar } from 'components';
 import { FacebookSvgComponent } from 'components/icons';
+import { RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useFormStyles } from '../classes';
@@ -26,59 +27,26 @@ enum SignInMethod {
 }
 
 export const SignInForm = () => {
-    const { signInWithFacebook, signInWithGoogle, signinWithEmailPassword, isFirstTimeUser } = useFirebaseAuthContext();
-    const [isAuthStateIsLoading, setAuthLoadingState] = useState(false);
-    const [authError, setAuthError] = useState('');
-    const [openSnackBar, setOpenSnackBar] = useState(false);
+    const { signInWithFacebook, signInWithGoogle, signinWithEmailPassword } = useFirebaseAuthContext();
+
+    const { isLoading, isError } = useSelector((state: RootState) => state.auth);
+    const [openSnackBar, setOpenSnackBar] = useState(isError);
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-    const history = useHistory();
-    const location = useLocation();
-
     const handleSignin = (method: SignInMethod, email?: string, password?: string) => {
-        const DASHBOARD = isFirstTimeUser ? '/onboarding-update' : '/dashboard';
-        const from = location.state?.from?.pathname || DASHBOARD;
-
-        setAuthLoadingState(true);
         switch (method) {
             case SignInMethod.FACEBOOK:
-                signInWithFacebook()
-                    .then(() => {
-                        setAuthLoadingState(false);
-                        history.replace(from);
-                    })
-                    .catch(({ message }: Record<string, string>): void => {
-                        setAuthLoadingState(false);
-                        setOpenSnackBar(true);
-                        setAuthError(message);
-                    });
+                signInWithFacebook();
                 break;
             case SignInMethod.GOOGLE:
-                signInWithGoogle()
-                    .then(() => {
-                        setAuthLoadingState(false);
-                        history.replace(from);
-                    })
-                    .catch(({ message }: Record<string, string>): void => {
-                        setAuthLoadingState(false);
-                        setOpenSnackBar(true);
-                        setAuthError(message);
-                    });
+                signInWithGoogle();
+
                 break;
             case SignInMethod.EMAIL_AND_PASSWORD:
-                signinWithEmailPassword(email, password)
-                    .then(() => {
-                        setAuthLoadingState(false);
-                        history.replace(from);
-                    })
-                    .catch(({ message }: Record<string, string>): void => {
-                        setAuthLoadingState(false);
-                        setOpenSnackBar(true);
-                        setAuthError(message);
-                    });
+                signinWithEmailPassword(email, password);
                 break;
             default:
                 return null;
@@ -92,24 +60,20 @@ export const SignInForm = () => {
         },
         validationSchema,
         onSubmit: values => {
-            setAuthLoadingState(true);
             handleSignin(SignInMethod.EMAIL_AND_PASSWORD, values.email, values.password);
         }
     });
 
-    const { from } = location.state || {
-        from: { pathname: '/dashboard' }
-    };
-
-    const token = localStorage.getItem('token');
-    if (token) {
-        history.replace(from);
-    }
-
     const classes = useFormStyles();
     return (
         <div className={classes.signInformRoot}>
-            <DefaultSnackbar open={openSnackBar} handleClose={() => setOpenSnackBar(false)} severity={'error'} title={'Error'} info={authError} />
+            <DefaultSnackbar
+                open={openSnackBar}
+                handleClose={() => setOpenSnackBar(false)}
+                severity={'error'}
+                title={'Error'}
+                info={'Error with authentication'}
+            />
             <div className={classes.form_container}>
                 <div className={classes.facebook} onClick={() => handleSignin(SignInMethod.FACEBOOK)}>
                     <FacebookSvgComponent />
@@ -167,7 +131,7 @@ export const SignInForm = () => {
                         Forgot Password?
                     </Link>
                     <Button color='primary' variant='contained' fullWidth type='submit' style={{ height: '40px' }}>
-                        {isAuthStateIsLoading ? <ThreeDots /> : 'Submit'}
+                        {isLoading ? <ThreeDots /> : 'Submit'}
                     </Button>
                 </form>
             </div>

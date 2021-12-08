@@ -4,9 +4,9 @@ import { Dispatch } from 'react';
 import { SetStateAction } from 'hoist-non-react-statics/node_modules/@types/react';
 
 export interface IRateInfo {
-    targetCountry: Country;
+    targetCountry: Country | null;
     sourceCountry: Country;
-    handleSourceCountryChange: (_: React.ChangeEvent<unknown>, value: Country) => void;
+    handleSourceCountryChange: (value: Country) => void;
     handleTargetCountryChange: (_: React.ChangeEvent<unknown>, value: Country) => void;
     amount: number;
     handleSetAmount: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -21,6 +21,7 @@ export const UK = {
         symbol: '£'
     },
     emoji: '🇬🇧',
+    flag: 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GB.svg',
     code: 'GB',
     region: 'EU',
     isPopular: true,
@@ -41,6 +42,7 @@ export interface IPaymentContext {
     canGoNext: boolean;
     activeStep: number;
     setActiveStep: Dispatch<SetStateAction<number>>;
+    setInitialOffer: any;
 }
 
 export const PaymentContext: IPaymentContext = {
@@ -62,5 +64,6 @@ export const PaymentContext: IPaymentContext = {
     isLoading: false,
     canGoNext: false,
     activeStep: 0,
+    setInitialOffer: null,
     setActiveStep: () => {}
 };

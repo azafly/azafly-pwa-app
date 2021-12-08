@@ -1,9 +1,12 @@
-import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-export type ApiRequestMethods = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
+import { axiosClient } from './index';
 import { PURPOSE } from 'features/payments/forms/payment-info/form-fields';
 
+export type ApiRequestMethods = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
+
+const OFFERS_ENDPOINT = '/offers';
+const CREATE_INTENT_ENDPOINT = '/create-intent';
 export interface GetOffersRequestBody {
     source_currency: string;
     target_currency: string;
@@ -65,27 +68,6 @@ export interface PaymentInfo {
     terms: boolean;
     purpose: PURPOSE;
 }
-const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/payments`;
-const CLIENT_API_TOKEN = process.env.REACT_APP_CLIENT_API_TOKEN;
-const OFFERS_ENDPOINT = '/offers';
-const CREATE_INTENT_ENDPOINT = '/create-intent';
-
-export const axiosClient = <T = Record<string, string>>(method: ApiRequestMethods = 'GET', data?: T) => {
-    const instance = axios.create({
-        baseURL: BASE_URL,
-        method,
-        data,
-        timeout: 7000,
-        headers: { 'client-api-token': CLIENT_API_TOKEN }
-    });
-    instance.interceptors.request.use(function (config) {
-        const token = localStorage.getItem('token');
-        config.headers.Authorization = token ? `Bearer ${token}` : '';
-        return config;
-    });
-
-    return instance;
-};
 
 export const getInitialOffer = async ({ source_currency, source_amount, target_currency }: GetOffersRequestBody) => {
     return axiosClient().post<GetOffersResponse>(OFFERS_ENDPOINT, {

@@ -13,22 +13,15 @@ body {
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
-
-section {
-    overflow: hidden;
+#tidio-chat-iframe {
+    bottom: 0px !important;
 }
-
-@media only screen and (max-width: 599px) {
-    #tidio-chat iframe {
-        margin-bottom: 2em !important;
+@media only screen and (max-width: 580px) {
+    #tidio-chat-iframe {
+        bottom: 50px !important;
+        display: block;
     }
 }
-
-.text {
-    margin-left: 1rem;
-    text-transform: capitalize;
-}
-
 *,
 *::before,
 *::after {

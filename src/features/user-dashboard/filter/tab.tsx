@@ -15,8 +15,8 @@ export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         filter_tab__container: {
             cursor: 'pointer',
-            border: '1px solid #DCDCDC',
             borderRadius: 8,
+            border: '1px solid #DCDCDC',
             background: 'white',
             maxWidth: 900,
             margin: 'auto',
@@ -67,8 +67,10 @@ export const TransactionFilterTab = ({ setOpenDatePicker, tabViews }: Transactio
     };
 
     const classes = useStyles();
+
     return (
         <>
+            {' '}
             <Tabs value={value} onChange={handleChange} aria-label='onboarding tab' className={classes.filter_tab__container}>
                 <Tab label='Transactions' {...a11yProps(0)} />
                 <Tab label='Pending Offers' {...a11yProps(1)} />

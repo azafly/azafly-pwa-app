@@ -4,8 +4,9 @@ import { ReactElement } from 'react';
 import { TextField } from '@material-ui/core';
 import Autocomplete, { AutocompleteClassKey } from '@material-ui/lab/Autocomplete';
 
-import { Country } from '../../../hooks/use-country-list';
+import { Country, NIGERIA, useCountryList } from '../../../hooks/use-country-list';
 import { RenderOptions } from './render-option-label';
+import { UK } from 'features/payments/context/constants';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -55,18 +56,18 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export type CountrySelectProps = {
-    handleCountryChange: (event: React.ChangeEvent<unknown>, value: Country) => void;
+    handleCountryChange: (value: Country) => void;
     classKeys?: {
         [key in AutocompleteClassKey]?: string;
     };
-    options: Country[];
-    defaultOption: Country;
-    getOptionDisabled: (option: Country) => boolean;
-    getOptionLabel: (option: Country) => string;
+    options?: Country[];
+    defaultOption?: Country;
+    getOptionDisabled?: (option: Country) => boolean;
+    getOptionLabel?: (option: Country) => string;
     renderOption?: (option: Country) => ReactElement;
 };
 
-export const CountrySelect = ({
+export const AfricaCountriesSelect = ({
     handleCountryChange,
     classKeys,
     options,
@@ -81,20 +82,26 @@ export const CountrySelect = ({
         ...classKeys
     };
 
+    const { popularSourceCountries } = useCountryList();
+
     const optionRenderer = (optionData: Country) => (renderOption ? renderOption : <RenderOptions option={optionData} />);
+    const optionLabel = getOptionLabel ? getOptionLabel : (option: Country) => `${option.emoji ?? ''} ${' '}${option.currency.code}`;
+    const optionDisabled = getOptionDisabled ? getOptionDisabled : (option: Country) => option.isComingSoon || option.isNotSupported;
+    const _options = options ? options : [NIGERIA, ...popularSourceCountries];
+    const _defaultOption = defaultOption ? defaultOption : NIGERIA;
 
     return (
         <div className={classes.root}>
             <Autocomplete
                 id='country-select'
-                options={options}
+                options={_options}
                 loading={true}
                 classes={classOverrides}
-                onChange={() => handleCountryChange}
-                defaultValue={defaultOption}
+                onChange={(e, value) => handleCountryChange(value ?? UK)}
+                defaultValue={_defaultOption}
                 autoComplete
-                getOptionDisabled={option => getOptionDisabled(option)}
-                getOptionLabel={option => getOptionLabel(option)}
+                getOptionDisabled={option => optionDisabled(option)}
+                getOptionLabel={option => optionLabel(option)}
                 renderOption={optionData => optionRenderer(optionData)}
                 renderInput={params => {
                     return (

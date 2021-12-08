@@ -19,6 +19,7 @@ export const VerificationRequestBox = memo(function VerificationRequestBox({ ema
                 borderRadius: 3,
                 flexWrap: 'wrap',
                 padding: 10,
+                fontSize: '0.8rem',
                 border: '1px solid ',
                 cursor: 'pointer',
                 background: '#FFEBE9',

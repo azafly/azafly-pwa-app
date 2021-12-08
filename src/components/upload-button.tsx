@@ -12,15 +12,15 @@ interface UploadButtonProps {
     icon?: ReactElement;
     uploadCallback: (e: ChangeEvent<HTMLInputElement>) => void;
     className?: string;
-    type?: 'image' | 'pdf';
     label?: string;
 }
-export function UploadButton({ icon, className, uploadCallback, label, type = 'image' }: UploadButtonProps) {
+export function UploadButton({ icon, className, uploadCallback, label }: UploadButtonProps) {
+    const type = `image/*,application/pdf`;
     return (
         <Stack direction='row' alignItems='center' spacing={2} className={className}>
             <label htmlFor='icon-button-file'>
                 <span>{label}</span>
-                <Input accept={`${type}/*`} id='icon-button-file' type='file' onChange={uploadCallback} />
+                <Input accept={type} id='icon-button-file' type='file' onChange={uploadCallback} />
                 <IconButton color='primary' aria-label='upload picture' component='span'>
                     {icon ? icon : <CloudUploadIcon sx={{ fontSize: '3rem', color: '#0D324D' }} />}
                 </IconButton>

@@ -1,7 +1,6 @@
 import { Avatar, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,8 +15,8 @@ import Typography from '@material-ui/core/Typography';
 
 import { DashboardSvgComponent, SignOutSvgComponent, ProfileSvgComponent, HelpSvgComponent } from 'components/icons';
 import { Logo2SvgComponent } from 'components/icons/logo-style-2';
-import { RootState } from 'app/store';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { useUserContext } from 'hooks/use-user-context';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -86,7 +85,12 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const { signout } = useFirebaseAuthContext();
-    const { user } = useSelector((state: RootState) => state.auth);
+    const { pathname } = useLocation();
+    const userData = useUserContext();
+
+    const profileSrc = userData?.image_url;
+
+    const isOnboardingPage = pathname === '/onboarding-update';
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -107,8 +111,6 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
     const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
-
-    const profileSrc = user?.photoURL;
 
     const menuId = 'primary-account-menu';
     const renderMenu = (
@@ -133,12 +135,14 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
                 </IconButton>
                 <Typography className={classes.menuItem_text}>Help</Typography>
             </MenuItem>
-            <MenuItem component={Link} to={'/dashboard'}>
-                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
-                    <DashboardSvgComponent />
-                </IconButton>
-                <Typography className={classes.menuItem_text}>Dashboard</Typography>
-            </MenuItem>
+            {!isOnboardingPage && (
+                <MenuItem component={Link} to={'/dashboard'}>
+                    <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                        <DashboardSvgComponent />
+                    </IconButton>
+                    <Typography className={classes.menuItem_text}>Dashboard</Typography>
+                </MenuItem>
+            )}
             <MenuItem />
             <MenuItem /> <MenuItem /> <MenuItem /> <MenuItem />
             <MenuItem />
@@ -146,7 +150,7 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
                 <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
                     <SignOutSvgComponent />
                 </IconButton>
-                <Typography className={classes.menuItem_text}>Signout</Typography>
+                <Typography className={classes.menuItem_text}>Log Out</Typography>
             </MenuItem>
         </Menu>
     );
@@ -162,30 +166,36 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem component={Link} to={'/account'}>
-                <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
-                    <ProfileSvgComponent />
-                </IconButton>
-                <Typography>Profile</Typography>
-            </MenuItem>
+            {!isOnboardingPage && (
+                <MenuItem component={Link} to={'/account'}>
+                    <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                        <ProfileSvgComponent />
+                    </IconButton>
+                    <Typography>Profile</Typography>
+                </MenuItem>
+            )}
             <MenuItem onClick={() => location.replace('https://www.lucqax.com/faq')}>
                 <IconButton aria-label='help' aria-controls='menu' aria-haspopup='true' color='inherit'>
                     <HelpSvgComponent />
                 </IconButton>
                 <Typography>Help</Typography>
             </MenuItem>
-            <MenuItem component={Link} to={'/payment'}>
-                <IconButton aria-label='help' aria-controls='menu' aria-haspopup='true' color='inherit'>
-                    <PaymentsIcon />
-                </IconButton>
-                <Typography>New Payment</Typography>
-            </MenuItem>
-            <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
-                <IconButton aria-label='dashboard' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
-                    <DashboardSvgComponent />
-                </IconButton>
-                <Typography className={classes.menuItem_text}>Dashboard</Typography>
-            </MenuItem>
+            {!isOnboardingPage && (
+                <MenuItem component={Link} to={'/payment'}>
+                    <IconButton aria-label='help' aria-controls='menu' aria-haspopup='true' color='inherit'>
+                        <PaymentsIcon />
+                    </IconButton>
+                    <Typography>New Payment</Typography>
+                </MenuItem>
+            )}
+            {!isOnboardingPage && (
+                <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
+                    <IconButton aria-label='dashboard' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
+                        <DashboardSvgComponent />
+                    </IconButton>
+                    <Typography className={classes.menuItem_text}>Dashboard</Typography>
+                </MenuItem>
+            )}
             <MenuItem />
             <MenuItem /> <MenuItem />
             <MenuItem />
@@ -193,7 +203,7 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
                 <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
                     <SignOutSvgComponent />
                 </IconButton>
-                <Typography className={classes.menuItem_text}>Signout</Typography>
+                <Typography className={classes.menuItem_text}>Log out</Typography>
             </MenuItem>
         </Menu>
     );
@@ -202,50 +212,56 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
         <div className={classes.grow}>
             <AppBar position='fixed' elevation={0}>
                 <Toolbar>
-                    <Link to='/dashboard' className={classes.title}>
+                    <Link to={isOnboardingPage ? '' : '/dashboard'} className={classes.title}>
                         {' '}
                         <Logo2SvgComponent />{' '}
                     </Link>
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
-                        <IconButton
-                            edge='end'
-                            aria-label='account of current user'
-                            aria-controls={menuId}
-                            aria-haspopup='true'
-                            onClick={handleProfileMenuOpen}
-                            color='inherit'
-                        >
-                            <Avatar src={profileSrc ?? ''} />
-                        </IconButton>
-                        <IconButton
-                            edge='end'
-                            aria-label='account of current user'
-                            aria-controls={menuId}
-                            aria-haspopup='true'
-                            onClick={handleProfileMenuOpen}
-                            color='inherit'
-                        />
-                        <IconButton aria-label='notifications' color='inherit'>
-                            <Badge badgeContent={3} color='secondary'>
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton
-                            edge='end'
-                            aria-label='account of current user'
-                            aria-controls={menuId}
-                            aria-haspopup='true'
-                            onClick={handleProfileMenuOpen}
-                            color='inherit'
-                        >
-                            <Link to={callToAction.link} className='link'>
-                                {' '}
-                                <Button variant='contained' className='payment_button' endIcon={callToAction.icon}>
-                                    {callToAction.text}
-                                </Button>
-                            </Link>
-                        </IconButton>
+                        {!isOnboardingPage && (
+                            <>
+                                <IconButton
+                                    edge='end'
+                                    aria-label='account of current user'
+                                    aria-controls={menuId}
+                                    aria-haspopup='true'
+                                    onClick={handleProfileMenuOpen}
+                                    color='inherit'
+                                >
+                                    <Avatar src={profileSrc ?? ''} />
+                                </IconButton>
+                                <IconButton
+                                    edge='end'
+                                    aria-label='account of current user'
+                                    aria-controls={menuId}
+                                    aria-haspopup='true'
+                                    onClick={handleProfileMenuOpen}
+                                    color='inherit'
+                                />
+
+                                <IconButton aria-label='notifications' color='inherit'>
+                                    <Badge badgeContent={3} color='secondary'>
+                                        <NotificationsIcon />
+                                    </Badge>
+                                </IconButton>
+
+                                <IconButton
+                                    edge='end'
+                                    aria-label='account of current user'
+                                    aria-controls={menuId}
+                                    aria-haspopup='true'
+                                    onClick={handleProfileMenuOpen}
+                                    color='inherit'
+                                >
+                                    <Link to={callToAction.link} className='link'>
+                                        {' '}
+                                        <Button variant='contained' className='payment_button' endIcon={callToAction.icon}>
+                                            {callToAction.text}
+                                        </Button>
+                                    </Link>
+                                </IconButton>
+                            </>
+                        )}
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton

@@ -4,15 +4,16 @@ import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 
 import { DefaultSnackbar } from 'components';
+import { delay } from 'libs';
 import { FilesContainer } from './files-container';
 import { ProfilePicture } from './profile-picture';
+import { RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { delay } from 'libs';
 import { UploadIconText } from './upload-icon-text';
 import { useFirebaseAuthContext, storage } from 'providers/auth/firebase';
-import { useGetCurrentUserByEmailQuery, useUpdateUserMutation } from 'api/generated/graphql';
 import { USER_ACCOUNT_FORM_FIELDS } from './utils';
-import { RootState } from 'app/store';
+import { useUpdateUserMutation } from 'api/generated/graphql';
+import { useUserContext } from 'hooks/use-user-context';
 
 import { useStyles } from './classes';
 import client from '../../libs/apollo-client';
@@ -27,11 +28,7 @@ const UserAccount = () => {
     const { handleUpdateFirebaseProfile } = useFirebaseAuthContext();
     const { user } = useSelector((state: RootState) => state.auth);
 
-    const { data: userData } = useGetCurrentUserByEmailQuery({
-        variables: {
-            email: user?.email ?? ''
-        }
-    });
+    const userData = useUserContext();
 
     const [updateUserMutation] = useUpdateUserMutation();
     const handleUpdateUserProfile = ({ fullname: displayName, phone, photoURL }: ProfileData) => {
@@ -61,11 +58,11 @@ const UserAccount = () => {
 
     const formik = useFormik({
         initialValues: {
-            fullname: userData?.users[0]?.display_name,
+            fullname: userData?.display_name,
             address: '',
-            phone: userData?.users[0]?.phone,
+            phone: userData?.phone,
             dob: '2017-05-24',
-            photoURL: userData?.users[0]?.image_url
+            photoURL: userData?.image_url
         },
         enableReinitialize: true,
         onSubmit: values => {

@@ -34,7 +34,7 @@ export interface AuthState {
     isLoading: boolean;
     isError: boolean;
     isAuth: boolean;
-    token: string;
+    token: string | null;
 }
 
 export const defaultUser: User = {
@@ -49,10 +49,10 @@ export const defaultUser: User = {
 
 export const defaultAuthState: AuthState = {
     user: defaultUser,
-    isLoading: true,
+    isLoading: false,
     isError: false,
     isAuth: false,
-    token: ''
+    token: null
 };
 export interface AuthContext {
     signInWithGoogle: any;

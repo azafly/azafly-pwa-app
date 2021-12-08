@@ -2,7 +2,6 @@ import { Button, Stepper, Step, StepContent, StepLabel, Slide } from '@material-
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import FeedIcon from '@mui/icons-material/Feed';
 
 import { localStorageClient, LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { PaymentInfo } from './forms/payment-info/payment-info';

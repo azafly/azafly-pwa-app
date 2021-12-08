@@ -1,7 +1,6 @@
 import { ApolloClient, InMemoryCache, ApolloLink, HttpLink, from, NormalizedCacheObject, gql } from '@apollo/client';
 
 import { onError } from '@apollo/client/link/error';
-import { getToken as token } from './local-storage-client';
 
 const HTTPS_URL = process.env.REACT_APP_HASURA_GRAPHQL_HTTPS_URL as string;
 
@@ -19,10 +18,10 @@ const cache = new InMemoryCache();
 
 // pass authentication header when exists
 const authMiddleware = new ApolloLink((operation: any, forward: any) => {
-    if (token) {
+    if (localStorage.getItem('token')) {
         operation.setContext({
             headers: {
-                authorization: `Bearer ${JSON.parse(token)}`
+                authorization: `Bearer ${localStorage.getItem('token')}`
             }
         });
     }
@@ -33,7 +32,7 @@ const authMiddleware = new ApolloLink((operation: any, forward: any) => {
 const httpLink = new HttpLink({
     uri: HTTPS_URL,
     headers: {
-        Authorization: token ? `Bearer ${JSON.parse(token)}` : ''
+        Authorization: `Bearer ${localStorage.getItem('token')}`
     }
 });
 

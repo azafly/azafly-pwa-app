@@ -96,9 +96,7 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             width: 250,
             flexGrow: 1,
-            marginRight: '3vw',
-            paddingTop: '25vh',
-            marginTop: '-5vh'
+            marginRight: '3vw'
         },
         button: {
             textDecoration: 'none',

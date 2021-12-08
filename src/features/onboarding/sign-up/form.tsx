@@ -3,14 +3,14 @@ import { Button, Checkbox, IconButton, InputAdornment, TextField } from '@materi
 import { useFormik } from 'formik';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import * as yup from 'yup';
 
 import { addUser } from 'providers/auth/firebase/firebase';
 import { DefaultSnackbar } from 'components';
-import { Dispatch, RootState } from 'app/store';
+import { RootState } from 'app/store';
 import { FacebookSvgComponent } from 'components/icons';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
@@ -58,9 +58,6 @@ export const SignUpForm = () => {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-    const dispatch = useDispatch<Dispatch>();
-
-    const { isFirstTimeUser } = useSelector((state: RootState) => state.onboarding);
     const { user } = useSelector((state: RootState) => state.auth);
 
     const { signupWithEmailPassword, signInWithFacebook, signInWithGoogle } = useFirebaseAuthContext();
@@ -81,20 +78,14 @@ export const SignUpForm = () => {
     });
 
     type FormValue = keyof typeof formik.initialValues;
-    const FROM = isFirstTimeUser ? '/onboarding-update' : '/dashboard';
-
-    const location = useLocation();
-    const browserHistory = useHistory();
 
     const handleSignUp = (method: SignUpMethod, email?: string, password?: string, displayName?: string) => {
-        const from = location.state?.from?.pathname || FROM;
         setAuthLoadingState(true);
         switch (method) {
             case SignUpMethod.FACEBOOK:
                 return signInWithFacebook()
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace(from);
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setAuthLoadingState(false);
@@ -105,7 +96,6 @@ export const SignUpForm = () => {
                 return signInWithGoogle()
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace(from);
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setOpenSnackBar(true);
@@ -117,7 +107,6 @@ export const SignUpForm = () => {
                 return signupWithEmailPassword({ email, password, displayName })
                     .then(() => {
                         setAuthLoadingState(false);
-                        history.replace(from);
                         addUser({
                             email,
                             displayName,
@@ -127,7 +116,6 @@ export const SignUpForm = () => {
                             emailVerified: false,
                             photoURL: null
                         });
-                        browserHistory.push('/onboarding-update');
                     })
                     .catch(({ message }: Record<string, string>): void => {
                         setOpenSnackBar(true);

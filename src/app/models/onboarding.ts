@@ -16,15 +16,15 @@ interface APIFetchState {
 interface OnboardingPreference {
     phoneNumber: string;
     currencies: Currency[];
-    country: (Country & { isAfrica?: boolean }) | null;
+    country: Country & { isAfrica?: boolean };
     address: string;
     countryList: CountryListData;
     userGeolocation: any;
     activeStep: StepLabel;
     disableNext: boolean;
-    isFirstTimeUser: boolean;
     verificationId: string;
     apiFetchState: APIFetchState;
+    document_url: string | null;
 }
 
 const initialState: OnboardingPreference = {
@@ -36,9 +36,9 @@ const initialState: OnboardingPreference = {
     userGeolocation: {},
     activeStep: 'phone',
     disableNext: true,
-    isFirstTimeUser: true,
     verificationId: '',
-    apiFetchState: {}
+    apiFetchState: {},
+    document_url: null
 };
 
 export const onboarding = createModel<RootModel>()({
@@ -71,14 +71,14 @@ export const onboarding = createModel<RootModel>()({
         setDerivedCountryOfResidence(state, payload: OnboardingPreference['country']) {
             return { ...state, country: payload };
         },
-        setIsFirstTimeUser(state, payload: boolean) {
-            return { ...state, isFirstTimeUser: payload };
-        },
         setVerificationId(state, payload: string) {
             return { ...state, verificationId: payload };
         },
         setApiFetchState(state, payload: APIFetchState) {
             return { ...state, apiFetchState: payload };
+        },
+        setDocumentUrl(state, payload: string) {
+            return { ...state, document_url: payload };
         }
     }
 });

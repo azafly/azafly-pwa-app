@@ -12,8 +12,8 @@ import { CardContainer, CardSkeleton } from './transaction-card';
 import { EmptyCardContainer } from './empty-transaction/card';
 import { EmptyDataSvgComponent } from 'components';
 import { PendingOfferCardContainer } from './pending-offer/index';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
-import { useGetUserPendingOffersQuery, useGetCurrentUserByEmailQuery, useFilterTransactionsByDateRangeLazyQuery } from 'api/generated/graphql';
+import { useUserContext } from 'hooks/use-user-context';
+import { useGetUserPendingOffersQuery, useFilterTransactionsByDateRangeLazyQuery } from 'api/generated/graphql';
 import { RootState } from 'app/store';
 import { useSelector } from 'react-redux';
 
@@ -74,28 +74,22 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     const [filterTransactionByDate, { data: filteredTransactions, loading: isLoadingFilter }] = useFilterTransactionsByDateRangeLazyQuery();
     const classes = useStyles();
 
-    const { user } = useSelector((state: RootState) => state.auth);
-
-    const { data: userData } = useGetCurrentUserByEmailQuery({
-        variables: {
-            email: user?.email ?? ''
-        }
-    });
+    const userData = useUserContext();
 
     const handleDateRangeSelect = useCallback(
         (startEnd: any) => {
             const [startDate, endDate] = startEnd;
 
-            const id = userData?.users[0]?.id ?? '',
+            const id = userData?.id ?? '',
                 start_date = startDate.toUTCString(),
                 end_date = endDate.toUTCString();
             filterTransactionByDate({ variables: { id, start_date, end_date } });
             setOpenDatePicker(false);
         },
-        [filterTransactionByDate, userData?.users]
+        [filterTransactionByDate, userData]
     );
 
-    const id = userData?.users[0]?.id;
+    const id = userData?.id;
     const { data: offerData } = useGetUserPendingOffersQuery({ variables: { id } });
 
     const isMobile = useMediaQuery('(max-width:960px)');

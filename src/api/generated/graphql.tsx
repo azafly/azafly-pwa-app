@@ -1252,10 +1252,6 @@ export type Mutation_Root = {
   readonly delete_user_meta?: Maybe<User_Meta_Mutation_Response>;
   /** delete single row from the table: "user_meta" */
   readonly delete_user_meta_by_pk?: Maybe<User_Meta>;
-  /** delete data from the table: "user_phones" */
-  readonly delete_user_phones?: Maybe<User_Phones_Mutation_Response>;
-  /** delete single row from the table: "user_phones" */
-  readonly delete_user_phones_by_pk?: Maybe<User_Phones>;
   /** delete data from the table: "users" */
   readonly delete_users?: Maybe<Users_Mutation_Response>;
   /** delete single row from the table: "users" */
@@ -1332,10 +1328,6 @@ export type Mutation_Root = {
   readonly insert_user_meta?: Maybe<User_Meta_Mutation_Response>;
   /** insert a single row into the table: "user_meta" */
   readonly insert_user_meta_one?: Maybe<User_Meta>;
-  /** insert data into the table: "user_phones" */
-  readonly insert_user_phones?: Maybe<User_Phones_Mutation_Response>;
-  /** insert a single row into the table: "user_phones" */
-  readonly insert_user_phones_one?: Maybe<User_Phones>;
   /** insert data into the table: "users" */
   readonly insert_users?: Maybe<Users_Mutation_Response>;
   /** insert a single row into the table: "users" */
@@ -1410,10 +1402,6 @@ export type Mutation_Root = {
   readonly update_user_meta?: Maybe<User_Meta_Mutation_Response>;
   /** update single row of the table: "user_meta" */
   readonly update_user_meta_by_pk?: Maybe<User_Meta>;
-  /** update data of the table: "user_phones" */
-  readonly update_user_phones?: Maybe<User_Phones_Mutation_Response>;
-  /** update single row of the table: "user_phones" */
-  readonly update_user_phones_by_pk?: Maybe<User_Phones>;
   /** update data of the table: "users" */
   readonly update_users?: Maybe<Users_Mutation_Response>;
   /** update single row of the table: "users" */
@@ -1617,18 +1605,6 @@ export type Mutation_RootDelete_User_MetaArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_User_Meta_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_User_PhonesArgs = {
-  where: User_Phones_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_User_Phones_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1888,20 +1864,6 @@ export type Mutation_RootInsert_User_MetaArgs = {
 export type Mutation_RootInsert_User_Meta_OneArgs = {
   object: User_Meta_Insert_Input;
   on_conflict?: Maybe<User_Meta_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_User_PhonesArgs = {
-  objects: ReadonlyArray<User_Phones_Insert_Input>;
-  on_conflict?: Maybe<User_Phones_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_User_Phones_OneArgs = {
-  object: User_Phones_Insert_Input;
-  on_conflict?: Maybe<User_Phones_On_Conflict>;
 };
 
 
@@ -2171,22 +2133,6 @@ export type Mutation_RootUpdate_User_MetaArgs = {
 export type Mutation_RootUpdate_User_Meta_By_PkArgs = {
   _set?: Maybe<User_Meta_Set_Input>;
   pk_columns: User_Meta_Pk_Columns_Input;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_User_PhonesArgs = {
-  _inc?: Maybe<User_Phones_Inc_Input>;
-  _set?: Maybe<User_Phones_Set_Input>;
-  where: User_Phones_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_User_Phones_By_PkArgs = {
-  _inc?: Maybe<User_Phones_Inc_Input>;
-  _set?: Maybe<User_Phones_Set_Input>;
-  pk_columns: User_Phones_Pk_Columns_Input;
 };
 
 
@@ -4248,12 +4194,6 @@ export type Query_Root = {
   readonly user_meta_aggregate: User_Meta_Aggregate;
   /** fetch data from the table: "user_meta" using primary key columns */
   readonly user_meta_by_pk?: Maybe<User_Meta>;
-  /** An array relationship */
-  readonly user_phones: ReadonlyArray<User_Phones>;
-  /** An aggregate relationship */
-  readonly user_phones_aggregate: User_Phones_Aggregate;
-  /** fetch data from the table: "user_phones" using primary key columns */
-  readonly user_phones_by_pk?: Maybe<User_Phones>;
   /** fetch data from the table: "users" */
   readonly users: ReadonlyArray<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -4634,29 +4574,6 @@ export type Query_RootUser_Meta_AggregateArgs = {
 
 
 export type Query_RootUser_Meta_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
-
-export type Query_RootUser_PhonesArgs = {
-  distinct_on?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<ReadonlyArray<User_Phones_Order_By>>;
-  where?: Maybe<User_Phones_Bool_Exp>;
-};
-
-
-export type Query_RootUser_Phones_AggregateArgs = {
-  distinct_on?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<ReadonlyArray<User_Phones_Order_By>>;
-  where?: Maybe<User_Phones_Bool_Exp>;
-};
-
-
-export type Query_RootUser_Phones_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -5629,12 +5546,6 @@ export type Subscription_Root = {
   readonly user_meta_aggregate: User_Meta_Aggregate;
   /** fetch data from the table: "user_meta" using primary key columns */
   readonly user_meta_by_pk?: Maybe<User_Meta>;
-  /** An array relationship */
-  readonly user_phones: ReadonlyArray<User_Phones>;
-  /** An aggregate relationship */
-  readonly user_phones_aggregate: User_Phones_Aggregate;
-  /** fetch data from the table: "user_phones" using primary key columns */
-  readonly user_phones_by_pk?: Maybe<User_Phones>;
   /** fetch data from the table: "users" */
   readonly users: ReadonlyArray<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -6015,29 +5926,6 @@ export type Subscription_RootUser_Meta_AggregateArgs = {
 
 
 export type Subscription_RootUser_Meta_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
-
-export type Subscription_RootUser_PhonesArgs = {
-  distinct_on?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<ReadonlyArray<User_Phones_Order_By>>;
-  where?: Maybe<User_Phones_Bool_Exp>;
-};
-
-
-export type Subscription_RootUser_Phones_AggregateArgs = {
-  distinct_on?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<ReadonlyArray<User_Phones_Order_By>>;
-  where?: Maybe<User_Phones_Bool_Exp>;
-};
-
-
-export type Subscription_RootUser_Phones_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -7184,349 +7072,6 @@ export enum User_Meta_Update_Column {
   UserId = 'user_id'
 }
 
-/** columns and relationships of "user_phones" */
-export type User_Phones = {
-  readonly __typename?: 'user_phones';
-  /** This shows if the phone number is still an active one */
-  readonly active: Scalars['Boolean'];
-  readonly created_at?: Maybe<Scalars['timestamp']>;
-  readonly id: Scalars['uuid'];
-  readonly phone_number: Scalars['String'];
-  readonly updated_at?: Maybe<Scalars['timestamp']>;
-  /** An object relationship */
-  readonly user?: Maybe<Users>;
-  readonly user_id?: Maybe<Scalars['uuid']>;
-  readonly verification_code: Scalars['Int'];
-  readonly verification_code_use_date?: Maybe<Scalars['timestamp']>;
-  readonly verification_code_validity?: Maybe<Scalars['timestamp']>;
-};
-
-/** aggregated selection of "user_phones" */
-export type User_Phones_Aggregate = {
-  readonly __typename?: 'user_phones_aggregate';
-  readonly aggregate?: Maybe<User_Phones_Aggregate_Fields>;
-  readonly nodes: ReadonlyArray<User_Phones>;
-};
-
-/** aggregate fields of "user_phones" */
-export type User_Phones_Aggregate_Fields = {
-  readonly __typename?: 'user_phones_aggregate_fields';
-  readonly avg?: Maybe<User_Phones_Avg_Fields>;
-  readonly count: Scalars['Int'];
-  readonly max?: Maybe<User_Phones_Max_Fields>;
-  readonly min?: Maybe<User_Phones_Min_Fields>;
-  readonly stddev?: Maybe<User_Phones_Stddev_Fields>;
-  readonly stddev_pop?: Maybe<User_Phones_Stddev_Pop_Fields>;
-  readonly stddev_samp?: Maybe<User_Phones_Stddev_Samp_Fields>;
-  readonly sum?: Maybe<User_Phones_Sum_Fields>;
-  readonly var_pop?: Maybe<User_Phones_Var_Pop_Fields>;
-  readonly var_samp?: Maybe<User_Phones_Var_Samp_Fields>;
-  readonly variance?: Maybe<User_Phones_Variance_Fields>;
-};
-
-
-/** aggregate fields of "user_phones" */
-export type User_Phones_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "user_phones" */
-export type User_Phones_Aggregate_Order_By = {
-  readonly avg?: Maybe<User_Phones_Avg_Order_By>;
-  readonly count?: Maybe<Order_By>;
-  readonly max?: Maybe<User_Phones_Max_Order_By>;
-  readonly min?: Maybe<User_Phones_Min_Order_By>;
-  readonly stddev?: Maybe<User_Phones_Stddev_Order_By>;
-  readonly stddev_pop?: Maybe<User_Phones_Stddev_Pop_Order_By>;
-  readonly stddev_samp?: Maybe<User_Phones_Stddev_Samp_Order_By>;
-  readonly sum?: Maybe<User_Phones_Sum_Order_By>;
-  readonly var_pop?: Maybe<User_Phones_Var_Pop_Order_By>;
-  readonly var_samp?: Maybe<User_Phones_Var_Samp_Order_By>;
-  readonly variance?: Maybe<User_Phones_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "user_phones" */
-export type User_Phones_Arr_Rel_Insert_Input = {
-  readonly data: ReadonlyArray<User_Phones_Insert_Input>;
-  /** on conflict condition */
-  readonly on_conflict?: Maybe<User_Phones_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type User_Phones_Avg_Fields = {
-  readonly __typename?: 'user_phones_avg_fields';
-  readonly verification_code?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "user_phones" */
-export type User_Phones_Avg_Order_By = {
-  readonly verification_code?: Maybe<Order_By>;
-};
-
-/** Boolean expression to filter rows from the table "user_phones". All fields are combined with a logical 'AND'. */
-export type User_Phones_Bool_Exp = {
-  readonly _and?: Maybe<ReadonlyArray<User_Phones_Bool_Exp>>;
-  readonly _not?: Maybe<User_Phones_Bool_Exp>;
-  readonly _or?: Maybe<ReadonlyArray<User_Phones_Bool_Exp>>;
-  readonly active?: Maybe<Boolean_Comparison_Exp>;
-  readonly created_at?: Maybe<Timestamp_Comparison_Exp>;
-  readonly id?: Maybe<Uuid_Comparison_Exp>;
-  readonly phone_number?: Maybe<String_Comparison_Exp>;
-  readonly updated_at?: Maybe<Timestamp_Comparison_Exp>;
-  readonly user?: Maybe<Users_Bool_Exp>;
-  readonly user_id?: Maybe<Uuid_Comparison_Exp>;
-  readonly verification_code?: Maybe<Int_Comparison_Exp>;
-  readonly verification_code_use_date?: Maybe<Timestamp_Comparison_Exp>;
-  readonly verification_code_validity?: Maybe<Timestamp_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "user_phones" */
-export enum User_Phones_Constraint {
-  /** unique or primary key constraint */
-  UserPhonesPkey = 'user_phones_pkey'
-}
-
-/** input type for incrementing numeric columns in table "user_phones" */
-export type User_Phones_Inc_Input = {
-  readonly verification_code?: Maybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "user_phones" */
-export type User_Phones_Insert_Input = {
-  /** This shows if the phone number is still an active one */
-  readonly active?: Maybe<Scalars['Boolean']>;
-  readonly created_at?: Maybe<Scalars['timestamp']>;
-  readonly id?: Maybe<Scalars['uuid']>;
-  readonly phone_number?: Maybe<Scalars['String']>;
-  readonly updated_at?: Maybe<Scalars['timestamp']>;
-  readonly user?: Maybe<Users_Obj_Rel_Insert_Input>;
-  readonly user_id?: Maybe<Scalars['uuid']>;
-  readonly verification_code?: Maybe<Scalars['Int']>;
-  readonly verification_code_use_date?: Maybe<Scalars['timestamp']>;
-  readonly verification_code_validity?: Maybe<Scalars['timestamp']>;
-};
-
-/** aggregate max on columns */
-export type User_Phones_Max_Fields = {
-  readonly __typename?: 'user_phones_max_fields';
-  readonly created_at?: Maybe<Scalars['timestamp']>;
-  readonly id?: Maybe<Scalars['uuid']>;
-  readonly phone_number?: Maybe<Scalars['String']>;
-  readonly updated_at?: Maybe<Scalars['timestamp']>;
-  readonly user_id?: Maybe<Scalars['uuid']>;
-  readonly verification_code?: Maybe<Scalars['Int']>;
-  readonly verification_code_use_date?: Maybe<Scalars['timestamp']>;
-  readonly verification_code_validity?: Maybe<Scalars['timestamp']>;
-};
-
-/** order by max() on columns of table "user_phones" */
-export type User_Phones_Max_Order_By = {
-  readonly created_at?: Maybe<Order_By>;
-  readonly id?: Maybe<Order_By>;
-  readonly phone_number?: Maybe<Order_By>;
-  readonly updated_at?: Maybe<Order_By>;
-  readonly user_id?: Maybe<Order_By>;
-  readonly verification_code?: Maybe<Order_By>;
-  readonly verification_code_use_date?: Maybe<Order_By>;
-  readonly verification_code_validity?: Maybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type User_Phones_Min_Fields = {
-  readonly __typename?: 'user_phones_min_fields';
-  readonly created_at?: Maybe<Scalars['timestamp']>;
-  readonly id?: Maybe<Scalars['uuid']>;
-  readonly phone_number?: Maybe<Scalars['String']>;
-  readonly updated_at?: Maybe<Scalars['timestamp']>;
-  readonly user_id?: Maybe<Scalars['uuid']>;
-  readonly verification_code?: Maybe<Scalars['Int']>;
-  readonly verification_code_use_date?: Maybe<Scalars['timestamp']>;
-  readonly verification_code_validity?: Maybe<Scalars['timestamp']>;
-};
-
-/** order by min() on columns of table "user_phones" */
-export type User_Phones_Min_Order_By = {
-  readonly created_at?: Maybe<Order_By>;
-  readonly id?: Maybe<Order_By>;
-  readonly phone_number?: Maybe<Order_By>;
-  readonly updated_at?: Maybe<Order_By>;
-  readonly user_id?: Maybe<Order_By>;
-  readonly verification_code?: Maybe<Order_By>;
-  readonly verification_code_use_date?: Maybe<Order_By>;
-  readonly verification_code_validity?: Maybe<Order_By>;
-};
-
-/** response of any mutation on the table "user_phones" */
-export type User_Phones_Mutation_Response = {
-  readonly __typename?: 'user_phones_mutation_response';
-  /** number of rows affected by the mutation */
-  readonly affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  readonly returning: ReadonlyArray<User_Phones>;
-};
-
-/** on conflict condition type for table "user_phones" */
-export type User_Phones_On_Conflict = {
-  readonly constraint: User_Phones_Constraint;
-  readonly update_columns?: ReadonlyArray<User_Phones_Update_Column>;
-  readonly where?: Maybe<User_Phones_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "user_phones". */
-export type User_Phones_Order_By = {
-  readonly active?: Maybe<Order_By>;
-  readonly created_at?: Maybe<Order_By>;
-  readonly id?: Maybe<Order_By>;
-  readonly phone_number?: Maybe<Order_By>;
-  readonly updated_at?: Maybe<Order_By>;
-  readonly user?: Maybe<Users_Order_By>;
-  readonly user_id?: Maybe<Order_By>;
-  readonly verification_code?: Maybe<Order_By>;
-  readonly verification_code_use_date?: Maybe<Order_By>;
-  readonly verification_code_validity?: Maybe<Order_By>;
-};
-
-/** primary key columns input for table: user_phones */
-export type User_Phones_Pk_Columns_Input = {
-  readonly id: Scalars['uuid'];
-};
-
-/** select columns of table "user_phones" */
-export enum User_Phones_Select_Column {
-  /** column name */
-  Active = 'active',
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  PhoneNumber = 'phone_number',
-  /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  UserId = 'user_id',
-  /** column name */
-  VerificationCode = 'verification_code',
-  /** column name */
-  VerificationCodeUseDate = 'verification_code_use_date',
-  /** column name */
-  VerificationCodeValidity = 'verification_code_validity'
-}
-
-/** input type for updating data in table "user_phones" */
-export type User_Phones_Set_Input = {
-  /** This shows if the phone number is still an active one */
-  readonly active?: Maybe<Scalars['Boolean']>;
-  readonly created_at?: Maybe<Scalars['timestamp']>;
-  readonly id?: Maybe<Scalars['uuid']>;
-  readonly phone_number?: Maybe<Scalars['String']>;
-  readonly updated_at?: Maybe<Scalars['timestamp']>;
-  readonly user_id?: Maybe<Scalars['uuid']>;
-  readonly verification_code?: Maybe<Scalars['Int']>;
-  readonly verification_code_use_date?: Maybe<Scalars['timestamp']>;
-  readonly verification_code_validity?: Maybe<Scalars['timestamp']>;
-};
-
-/** aggregate stddev on columns */
-export type User_Phones_Stddev_Fields = {
-  readonly __typename?: 'user_phones_stddev_fields';
-  readonly verification_code?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "user_phones" */
-export type User_Phones_Stddev_Order_By = {
-  readonly verification_code?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type User_Phones_Stddev_Pop_Fields = {
-  readonly __typename?: 'user_phones_stddev_pop_fields';
-  readonly verification_code?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "user_phones" */
-export type User_Phones_Stddev_Pop_Order_By = {
-  readonly verification_code?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type User_Phones_Stddev_Samp_Fields = {
-  readonly __typename?: 'user_phones_stddev_samp_fields';
-  readonly verification_code?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "user_phones" */
-export type User_Phones_Stddev_Samp_Order_By = {
-  readonly verification_code?: Maybe<Order_By>;
-};
-
-/** aggregate sum on columns */
-export type User_Phones_Sum_Fields = {
-  readonly __typename?: 'user_phones_sum_fields';
-  readonly verification_code?: Maybe<Scalars['Int']>;
-};
-
-/** order by sum() on columns of table "user_phones" */
-export type User_Phones_Sum_Order_By = {
-  readonly verification_code?: Maybe<Order_By>;
-};
-
-/** update columns of table "user_phones" */
-export enum User_Phones_Update_Column {
-  /** column name */
-  Active = 'active',
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  PhoneNumber = 'phone_number',
-  /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  UserId = 'user_id',
-  /** column name */
-  VerificationCode = 'verification_code',
-  /** column name */
-  VerificationCodeUseDate = 'verification_code_use_date',
-  /** column name */
-  VerificationCodeValidity = 'verification_code_validity'
-}
-
-/** aggregate var_pop on columns */
-export type User_Phones_Var_Pop_Fields = {
-  readonly __typename?: 'user_phones_var_pop_fields';
-  readonly verification_code?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "user_phones" */
-export type User_Phones_Var_Pop_Order_By = {
-  readonly verification_code?: Maybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type User_Phones_Var_Samp_Fields = {
-  readonly __typename?: 'user_phones_var_samp_fields';
-  readonly verification_code?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "user_phones" */
-export type User_Phones_Var_Samp_Order_By = {
-  readonly verification_code?: Maybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type User_Phones_Variance_Fields = {
-  readonly __typename?: 'user_phones_variance_fields';
-  readonly verification_code?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "user_phones" */
-export type User_Phones_Variance_Order_By = {
-  readonly verification_code?: Maybe<Order_By>;
-};
-
 /** columns and relationships of "users" */
 export type Users = {
   readonly __typename?: 'users';
@@ -7534,13 +7079,17 @@ export type Users = {
   readonly accounts: ReadonlyArray<Accounts>;
   /** An aggregate relationship */
   readonly accounts_aggregate: Accounts_Aggregate;
+  readonly address?: Maybe<Scalars['String']>;
+  readonly country: Scalars['String'];
   readonly created_at: Scalars['timestamptz'];
-  readonly display_name?: Maybe<Scalars['String']>;
+  readonly display_name: Scalars['String'];
+  readonly document_url?: Maybe<Scalars['String']>;
   readonly email: Scalars['String'];
   readonly email_verified?: Maybe<Scalars['Boolean']>;
   readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id: Scalars['uuid'];
   readonly image_url?: Maybe<Scalars['String']>;
+  readonly is_new_user: Scalars['Boolean'];
   /** An array relationship */
   readonly payment_intent_failures: ReadonlyArray<Payment_Intent_Failures>;
   /** An aggregate relationship */
@@ -7579,10 +7128,6 @@ export type Users = {
   readonly user_meta: ReadonlyArray<User_Meta>;
   /** An aggregate relationship */
   readonly user_meta_aggregate: User_Meta_Aggregate;
-  /** An array relationship */
-  readonly user_phones: ReadonlyArray<User_Phones>;
-  /** An aggregate relationship */
-  readonly user_phones_aggregate: User_Phones_Aggregate;
   /** An array relationship */
   readonly virtual_cards: ReadonlyArray<Virtual_Cards>;
   /** An aggregate relationship */
@@ -7791,26 +7336,6 @@ export type UsersUser_Meta_AggregateArgs = {
 
 
 /** columns and relationships of "users" */
-export type UsersUser_PhonesArgs = {
-  distinct_on?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<ReadonlyArray<User_Phones_Order_By>>;
-  where?: Maybe<User_Phones_Bool_Exp>;
-};
-
-
-/** columns and relationships of "users" */
-export type UsersUser_Phones_AggregateArgs = {
-  distinct_on?: Maybe<ReadonlyArray<User_Phones_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<ReadonlyArray<User_Phones_Order_By>>;
-  where?: Maybe<User_Phones_Bool_Exp>;
-};
-
-
-/** columns and relationships of "users" */
 export type UsersVirtual_CardsArgs = {
   distinct_on?: Maybe<ReadonlyArray<Virtual_Cards_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -7857,13 +7382,17 @@ export type Users_Bool_Exp = {
   readonly _not?: Maybe<Users_Bool_Exp>;
   readonly _or?: Maybe<ReadonlyArray<Users_Bool_Exp>>;
   readonly accounts?: Maybe<Accounts_Bool_Exp>;
+  readonly address?: Maybe<String_Comparison_Exp>;
+  readonly country?: Maybe<String_Comparison_Exp>;
   readonly created_at?: Maybe<Timestamptz_Comparison_Exp>;
   readonly display_name?: Maybe<String_Comparison_Exp>;
+  readonly document_url?: Maybe<String_Comparison_Exp>;
   readonly email?: Maybe<String_Comparison_Exp>;
   readonly email_verified?: Maybe<Boolean_Comparison_Exp>;
   readonly firebase_id?: Maybe<String_Comparison_Exp>;
   readonly id?: Maybe<Uuid_Comparison_Exp>;
   readonly image_url?: Maybe<String_Comparison_Exp>;
+  readonly is_new_user?: Maybe<Boolean_Comparison_Exp>;
   readonly payment_intent_failures?: Maybe<Payment_Intent_Failures_Bool_Exp>;
   readonly payment_offers?: Maybe<Payment_Offer_Bool_Exp>;
   readonly payments?: Maybe<Payments_Bool_Exp>;
@@ -7875,7 +7404,6 @@ export type Users_Bool_Exp = {
   readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   readonly user_email_verifications?: Maybe<User_Email_Verification_Bool_Exp>;
   readonly user_meta?: Maybe<User_Meta_Bool_Exp>;
-  readonly user_phones?: Maybe<User_Phones_Bool_Exp>;
   readonly virtual_cards?: Maybe<Virtual_Cards_Bool_Exp>;
 };
 
@@ -7892,13 +7420,17 @@ export enum Users_Constraint {
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
   readonly accounts?: Maybe<Accounts_Arr_Rel_Insert_Input>;
+  readonly address?: Maybe<Scalars['String']>;
+  readonly country?: Maybe<Scalars['String']>;
   readonly created_at?: Maybe<Scalars['timestamptz']>;
   readonly display_name?: Maybe<Scalars['String']>;
+  readonly document_url?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
   readonly email_verified?: Maybe<Scalars['Boolean']>;
   readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['uuid']>;
   readonly image_url?: Maybe<Scalars['String']>;
+  readonly is_new_user?: Maybe<Scalars['Boolean']>;
   readonly payment_intent_failures?: Maybe<Payment_Intent_Failures_Arr_Rel_Insert_Input>;
   readonly payment_offers?: Maybe<Payment_Offer_Arr_Rel_Insert_Input>;
   readonly payments?: Maybe<Payments_Arr_Rel_Insert_Input>;
@@ -7910,15 +7442,17 @@ export type Users_Insert_Input = {
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
   readonly user_email_verifications?: Maybe<User_Email_Verification_Arr_Rel_Insert_Input>;
   readonly user_meta?: Maybe<User_Meta_Arr_Rel_Insert_Input>;
-  readonly user_phones?: Maybe<User_Phones_Arr_Rel_Insert_Input>;
   readonly virtual_cards?: Maybe<Virtual_Cards_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
 export type Users_Max_Fields = {
   readonly __typename?: 'users_max_fields';
+  readonly address?: Maybe<Scalars['String']>;
+  readonly country?: Maybe<Scalars['String']>;
   readonly created_at?: Maybe<Scalars['timestamptz']>;
   readonly display_name?: Maybe<Scalars['String']>;
+  readonly document_url?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
   readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['uuid']>;
@@ -7930,8 +7464,11 @@ export type Users_Max_Fields = {
 /** aggregate min on columns */
 export type Users_Min_Fields = {
   readonly __typename?: 'users_min_fields';
+  readonly address?: Maybe<Scalars['String']>;
+  readonly country?: Maybe<Scalars['String']>;
   readonly created_at?: Maybe<Scalars['timestamptz']>;
   readonly display_name?: Maybe<Scalars['String']>;
+  readonly document_url?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
   readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['uuid']>;
@@ -7966,13 +7503,17 @@ export type Users_On_Conflict = {
 /** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
   readonly accounts_aggregate?: Maybe<Accounts_Aggregate_Order_By>;
+  readonly address?: Maybe<Order_By>;
+  readonly country?: Maybe<Order_By>;
   readonly created_at?: Maybe<Order_By>;
   readonly display_name?: Maybe<Order_By>;
+  readonly document_url?: Maybe<Order_By>;
   readonly email?: Maybe<Order_By>;
   readonly email_verified?: Maybe<Order_By>;
   readonly firebase_id?: Maybe<Order_By>;
   readonly id?: Maybe<Order_By>;
   readonly image_url?: Maybe<Order_By>;
+  readonly is_new_user?: Maybe<Order_By>;
   readonly payment_intent_failures_aggregate?: Maybe<Payment_Intent_Failures_Aggregate_Order_By>;
   readonly payment_offers_aggregate?: Maybe<Payment_Offer_Aggregate_Order_By>;
   readonly payments_aggregate?: Maybe<Payments_Aggregate_Order_By>;
@@ -7984,7 +7525,6 @@ export type Users_Order_By = {
   readonly updated_at?: Maybe<Order_By>;
   readonly user_email_verifications_aggregate?: Maybe<User_Email_Verification_Aggregate_Order_By>;
   readonly user_meta_aggregate?: Maybe<User_Meta_Aggregate_Order_By>;
-  readonly user_phones_aggregate?: Maybe<User_Phones_Aggregate_Order_By>;
   readonly virtual_cards_aggregate?: Maybe<Virtual_Cards_Aggregate_Order_By>;
 };
 
@@ -7996,9 +7536,15 @@ export type Users_Pk_Columns_Input = {
 /** select columns of table "users" */
 export enum Users_Select_Column {
   /** column name */
+  Address = 'address',
+  /** column name */
+  Country = 'country',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   DisplayName = 'display_name',
+  /** column name */
+  DocumentUrl = 'document_url',
   /** column name */
   Email = 'email',
   /** column name */
@@ -8009,6 +7555,8 @@ export enum Users_Select_Column {
   Id = 'id',
   /** column name */
   ImageUrl = 'image_url',
+  /** column name */
+  IsNewUser = 'is_new_user',
   /** column name */
   Phone = 'phone',
   /** column name */
@@ -8017,13 +7565,17 @@ export enum Users_Select_Column {
 
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
+  readonly address?: Maybe<Scalars['String']>;
+  readonly country?: Maybe<Scalars['String']>;
   readonly created_at?: Maybe<Scalars['timestamptz']>;
   readonly display_name?: Maybe<Scalars['String']>;
+  readonly document_url?: Maybe<Scalars['String']>;
   readonly email?: Maybe<Scalars['String']>;
   readonly email_verified?: Maybe<Scalars['Boolean']>;
   readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['uuid']>;
   readonly image_url?: Maybe<Scalars['String']>;
+  readonly is_new_user?: Maybe<Scalars['Boolean']>;
   readonly phone?: Maybe<Scalars['String']>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -8031,9 +7583,15 @@ export type Users_Set_Input = {
 /** update columns of table "users" */
 export enum Users_Update_Column {
   /** column name */
+  Address = 'address',
+  /** column name */
+  Country = 'country',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   DisplayName = 'display_name',
+  /** column name */
+  DocumentUrl = 'document_url',
   /** column name */
   Email = 'email',
   /** column name */
@@ -8044,6 +7602,8 @@ export enum Users_Update_Column {
   Id = 'id',
   /** column name */
   ImageUrl = 'image_url',
+  /** column name */
+  IsNewUser = 'is_new_user',
   /** column name */
   Phone = 'phone',
   /** column name */
@@ -8596,6 +8156,23 @@ export type UpdateUserMutation = (
   )> }
 );
 
+export type UpdateNewUserMutationVariables = Exact<{
+  email: Scalars['String'];
+  address: Scalars['String'];
+  country: Scalars['String'];
+  document_url?: Maybe<Scalars['String']>;
+  phone: Scalars['String'];
+}>;
+
+
+export type UpdateNewUserMutation = (
+  { readonly __typename?: 'mutation_root' }
+  & { readonly update_users?: Maybe<(
+    { readonly __typename?: 'users_mutation_response' }
+    & Pick<Users_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type GetCountriesPhonesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -8670,15 +8247,15 @@ export type FilterTransactionsByDateRangeQuery = (
 );
 
 export type GetCurrentUserQueryVariables = Exact<{
-  id: Scalars['uuid'];
+  id: Scalars['String'];
 }>;
 
 
 export type GetCurrentUserQuery = (
   { readonly __typename?: 'query_root' }
-  & { readonly users_by_pk?: Maybe<(
+  & { readonly users: ReadonlyArray<(
     { readonly __typename?: 'users' }
-    & Pick<Users, 'display_name' | 'email' | 'email_verified' | 'id' | 'image_url' | 'phone'>
+    & Pick<Users, 'display_name' | 'email' | 'email_verified' | 'firebase_id' | 'id' | 'image_url' | 'phone' | 'is_new_user' | 'address' | 'country'>
   )> }
 );
 
@@ -8691,7 +8268,7 @@ export type GetCurrentUserByEmailQuery = (
   { readonly __typename?: 'query_root' }
   & { readonly users: ReadonlyArray<(
     { readonly __typename?: 'users' }
-    & Pick<Users, 'display_name' | 'email' | 'email_verified' | 'firebase_id' | 'id' | 'image_url' | 'phone'>
+    & Pick<Users, 'display_name' | 'email' | 'email_verified' | 'firebase_id' | 'id' | 'image_url' | 'phone' | 'is_new_user' | 'address' | 'country'>
   )> }
 );
 
@@ -8783,6 +8360,46 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const UpdateNewUserDocument = gql`
+    mutation updateNewUser($email: String!, $address: String!, $country: String!, $document_url: String, $phone: String!) {
+  update_users(
+    where: {email: {_eq: $email}}
+    _set: {is_new_user: false, address: $address, country: $country, document_url: $document_url, phone: $phone}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type UpdateNewUserMutationFn = Apollo.MutationFunction<UpdateNewUserMutation, UpdateNewUserMutationVariables>;
+
+/**
+ * __useUpdateNewUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateNewUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateNewUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateNewUserMutation, { data, loading, error }] = useUpdateNewUserMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      address: // value for 'address'
+ *      country: // value for 'country'
+ *      document_url: // value for 'document_url'
+ *      phone: // value for 'phone'
+ *   },
+ * });
+ */
+export function useUpdateNewUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateNewUserMutation, UpdateNewUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateNewUserMutation, UpdateNewUserMutationVariables>(UpdateNewUserDocument, options);
+      }
+export type UpdateNewUserMutationHookResult = ReturnType<typeof useUpdateNewUserMutation>;
+export type UpdateNewUserMutationResult = Apollo.MutationResult<UpdateNewUserMutation>;
+export type UpdateNewUserMutationOptions = Apollo.BaseMutationOptions<UpdateNewUserMutation, UpdateNewUserMutationVariables>;
 export const GetCountriesPhonesDocument = gql`
     query getCountriesPhones {
   countries {
@@ -8875,7 +8492,7 @@ export const GetUserPendingOffersDocument = gql`
   payment_offer(
     where: {user_id: {_eq: $id}, payment_status: {_neq: "PAID"}}
     order_by: {updated_at: desc}
-    limit: 2
+    limit: 10
   ) {
     id
     created_at
@@ -9016,14 +8633,19 @@ export type FilterTransactionsByDateRangeQueryHookResult = ReturnType<typeof use
 export type FilterTransactionsByDateRangeLazyQueryHookResult = ReturnType<typeof useFilterTransactionsByDateRangeLazyQuery>;
 export type FilterTransactionsByDateRangeQueryResult = Apollo.QueryResult<FilterTransactionsByDateRangeQuery, FilterTransactionsByDateRangeQueryVariables>;
 export const GetCurrentUserDocument = gql`
-    query getCurrentUser($id: uuid!) {
-  users_by_pk(id: $id) {
+    query getCurrentUser($id: String!) {
+  users(where: {firebase_id: {_eq: $id}}) {
     display_name
     email
     email_verified
+    firebase_id
     id
     image_url
     phone
+    image_url
+    is_new_user
+    address
+    country
   }
 }
     `;
@@ -9066,6 +8688,9 @@ export const GetCurrentUserByEmailDocument = gql`
     image_url
     phone
     image_url
+    is_new_user
+    address
+    country
   }
 }
     `;

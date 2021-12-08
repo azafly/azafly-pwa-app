@@ -11,7 +11,12 @@ const persistPlugin = createPersistPlugin<RematchRootState<RootModel>, RootModel
 
 export const store = init<RootModel>({
     models,
-    plugins: [persistPlugin]
+    plugins: [persistPlugin],
+    redux: {
+        devtoolOptions: {
+            trace: true
+        }
+    }
 });
 
 export type Store = typeof store;

@@ -3,13 +3,12 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import Slider from 'react-slick';
 
-import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
+import { useGetUserTransactionsQuery } from 'api/generated/graphql';
+import { useUserContext } from 'hooks/use-user-context';
 
 import LocalWalletCard from './cards/local-wallet';
 import ResidenceWalletCard from './cards/residence-wallet';
 
-import { RootState } from 'app/store';
-import { useSelector } from 'react-redux';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         reviewSlider_container: {
@@ -54,15 +53,9 @@ const WalletContainer = ({ handleOpen }: WalletContainerProps) => {
         infinite: false
     };
 
-    const { user } = useSelector((state: RootState) => state.auth);
+    const userData = useUserContext();
 
-    const { data: userData } = useGetCurrentUserByEmailQuery({
-        variables: {
-            email: user?.email ?? ''
-        }
-    });
-
-    const id = userData?.users[0]?.id;
+    const id = userData?.id;
     const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id } });
 
     return (

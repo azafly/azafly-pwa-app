@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { styled, Box } from '@mui/system';
-import { useHistory } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ModalUnstyled from '@mui/core/ModalUnstyled';
@@ -16,13 +15,10 @@ const style = {
     pb: 3
 };
 
-export default function ModalContent() {
-    const history = useHistory();
-
-    const goTDashboard = async () => {
-        history.push('/dashboard');
-    };
-
+interface ModalContentProps {
+    successCallBack: () => void;
+}
+export default function ModalContent({ successCallBack }: ModalContentProps) {
     return (
         <Box sx={{ width: '100vw', display: 'flex', alignItems: 'center' }}>
             <Box sx={style} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
@@ -37,7 +33,7 @@ export default function ModalContent() {
                 </p>
 
                 <Box sx={{ margin: 1 }}>
-                    <Button variant={'contained'} onClick={goTDashboard} color={'success'}>
+                    <Button variant={'contained'} onClick={() => successCallBack()} color={'success'}>
                         {'Go to dashboard'}
                     </Button>
                 </Box>
@@ -72,8 +68,9 @@ const Backdrop = styled('div')`
 interface ModalProps {
     open: boolean;
     handleClose: () => void;
+    successCallBack: () => void;
 }
-export function Modal({ open, handleClose }: ModalProps) {
+export function Modal({ open, handleClose, successCallBack }: ModalProps) {
     return (
         <div>
             <StyledModal
@@ -83,7 +80,7 @@ export function Modal({ open, handleClose }: ModalProps) {
                 onClose={handleClose}
                 BackdropComponent={Backdrop}
             >
-                <ModalContent />
+                <ModalContent successCallBack={successCallBack} />
             </StyledModal>
         </div>
     );

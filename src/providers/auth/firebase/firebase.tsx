@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AuthContext, defaultAuhContext, FirebaseUser } from './constants';
 import { RootState, Dispatch } from 'app/store';
 import { firebaseApp, firebaseConfig } from './firebase-config';
-import { LOCAL_STORAGE_KEY, setToken } from 'libs/local-storage-client';
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 
 import 'firebase/auth';
 import 'firebase/database';
@@ -53,12 +53,7 @@ function useFirebaseProviderAuth() {
     const [authError, setAuthError] = useState('');
 
     const dispatch = useDispatch<Dispatch>();
-
     const reduxAuthState = useSelector((state: RootState) => state.auth);
-
-    const signinWithEmailPassword = async (email: string, password: string) => {
-        return firebaseApp.auth().signInWithEmailAndPassword(email, password);
-    };
 
     const handleUpdateFirebaseProfile = (user: any, profile: Partial<FirebaseUser>) => {
         user.updateProfile(profile)
@@ -93,9 +88,9 @@ function useFirebaseProviderAuth() {
             .auth()
             .signOut()
             .then(() => {
-                localStorage.clear();
-                dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, user: null, token: '' });
+                dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, user: null, token: null });
                 location.replace('/signin');
+                localStorage.clear();
             })
             .catch(error => console.log(error));
     };
@@ -112,14 +107,54 @@ function useFirebaseProviderAuth() {
         return firebaseApp.auth().confirmPasswordReset(code, password);
     };
 
+    const handleSignIn = async (data: any) => {
+        const isNewUser = data.additionalUserInfo?.isNewUser;
+        const token = await data?.user?.getIdToken(true);
+        const to = isNewUser ? '/onboarding-update' : '/dashboard';
+        localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
+        dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: true, isError: false, isLoading: false });
+        location.replace(to);
+    };
+
     const signInWithGoogle = async () => {
         const googleProvider = new firebaseApp.auth.GoogleAuthProvider();
-        return firebaseApp.auth().signInWithPopup(googleProvider);
+        return firebaseApp
+            .auth()
+            .signInWithPopup(googleProvider)
+            .then(async data => {
+                handleSignIn(data);
+            })
+            .catch(({ message }: Record<string, string>): void => {
+                dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, isError: true, isLoading: false });
+                setAuthError(message);
+            });
     };
 
     const signInWithFacebook = async () => {
         const FacebookAuthProvider = new firebaseApp.auth.FacebookAuthProvider();
-        return firebaseApp.auth().signInWithPopup(FacebookAuthProvider);
+        return firebaseApp
+            .auth()
+            .signInWithPopup(FacebookAuthProvider)
+            .then(async data => {
+                handleSignIn(data);
+            })
+            .catch(({ message }: Record<string, string>): void => {
+                dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, isError: true, isLoading: false });
+                setAuthError(message);
+            });
+    };
+
+    const signinWithEmailPassword = async (email: string, password: string) => {
+        return firebaseApp
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(async data => {
+                handleSignIn(data);
+            })
+            .catch(({ message }: Record<string, string>): void => {
+                dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, isError: true, isLoading: false });
+                setAuthError(message);
+            });
     };
 
     const verifyEmail = async (actionCode: string) => {
@@ -132,14 +167,10 @@ function useFirebaseProviderAuth() {
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
-                if (user.emailVerified) {
-                    const newUser = { ...user, emailVerified: true };
-                    dispatch.auth.updateAuthState({ ...reduxAuthState, user: newUser, isAuth: true, token });
-                    setToken(token);
-                }
+
                 if (hasuraClaim) {
-                    dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true, token });
-                    setToken(token);
+                    dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true });
+                    localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                 } else {
                     // Check if refresh is required.
                     const metadataRef = firebaseApp.database().ref('metadata/' + user.uid + '/refreshTime');
@@ -148,15 +179,13 @@ function useFirebaseProviderAuth() {
                         if (!data.exists) return;
                         // Force refresh to pick up the latest custom claims changes.
                         const newToken = await user.getIdToken(true);
-                        setToken(newToken);
-                        dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true, token: newToken });
+                        dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true });
+                        localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, newToken);
                     });
                 }
-                dispatch.onboarding.setIsFirstTimeUser(new Date(user.metadata.creationTime ?? '') === new Date(user.metadata.lastSignInTime ?? ''));
-                setToken(token);
             } else {
-                dispatch.auth.updateAuthState({ ...reduxAuthState, user: null, isAuth: false, token: '' });
-                localStorage.clear();
+                dispatch.auth.updateAuthState({ ...reduxAuthState, user: null, isAuth: false, token: null });
+                localStorage.removeItem(LOCAL_STORAGE_KEY.TOKEN);
             }
         });
         return () => unsubscribe();

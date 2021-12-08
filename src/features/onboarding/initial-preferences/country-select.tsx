@@ -1,5 +1,4 @@
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { ReactElement } from 'react';
 import { TextField } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import Autocomplete, { AutocompleteClassKey } from '@material-ui/lab/Autocomplete';

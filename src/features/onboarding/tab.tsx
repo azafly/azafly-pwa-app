@@ -83,7 +83,7 @@ export function OnboardingTab() {
             </Typography>
             <Tabs value={value} onChange={handleChange} aria-label='onboarding tab'>
                 <Tab label='Create Account' {...a11yProps(0)} />
-                <Tab label='Sign In' {...a11yProps(1)} />
+                <Tab label='Log in' {...a11yProps(1)} />
             </Tabs>
             <TabPanel value={value} index={0}>
                 <SignUpForm />

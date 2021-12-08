@@ -1,4 +1,5 @@
 import { Grid, Hidden, Modal, Typography } from '@material-ui/core';
+import { Redirect } from 'react-router';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -12,7 +13,8 @@ import { RootState } from 'app/store';
 import { SideBar } from './side-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { TransactionListContainer } from './transaction-list-container';
-import { useGetUserTransactionsQuery, useGetCurrentUserByEmailQuery } from 'api/generated/graphql';
+import { useGetUserTransactionsQuery } from 'api/generated/graphql';
+import { useUserContext } from 'hooks/use-user-context';
 import WalletContainer from './wallet/wallet-container';
 
 import { useDashboardStyles, StyledBadge } from './classes';
@@ -28,13 +30,10 @@ export default function Dashboard() {
     const handleOpenCreditCardModal = () => setOpenCreditCardModal(true);
 
     const { user } = useSelector((state: RootState) => state.auth);
-    const { data: userData } = useGetCurrentUserByEmailQuery({
-        variables: {
-            email: user?.email ?? ''
-        }
-    });
+    const userData = useUserContext();
 
-    const id = userData?.users[0]?.id;
+    const id = userData?.id;
+
     const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id } });
     const transactions = transactionData?.transaction;
 
@@ -90,6 +89,16 @@ export default function Dashboard() {
         fetchWallet();
     }, []);
 
+    if (userData?.is_new_user) {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/onboarding-update',
+                    state: { referrer: '/dashboard' }
+                }}
+            />
+        );
+    }
     return (
         <div className={classes.dashboard_container}>
             <DefaultSnackbar
@@ -118,7 +127,7 @@ export default function Dashboard() {
                 <Grid item md={10} className={classes.data__section}>
                     <Hidden xsDown>
                         <Typography color={'textSecondary'} className={classes.name}>
-                            Hey 👋🏾 {formatFirstName(userData?.users[0]?.display_name ?? '')}!
+                            Hey 👋🏾 {formatFirstName(userData?.display_name ?? '')}!
                         </Typography>{' '}
                     </Hidden>
                     <WalletContainer handleOpen={handleOpenCreditCardModal} />

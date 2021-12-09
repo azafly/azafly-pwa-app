@@ -24,11 +24,10 @@ const useStyles = makeStyles(() =>
 );
 
 interface LocalWalletCardProps {
-    handleOpen: () => void;
     loading: boolean;
 }
 
-export default function LocalWalletCard({ handleOpen, loading }: LocalWalletCardProps) {
+export default function LocalWalletCard({ loading }: LocalWalletCardProps) {
     const classes = useStyles();
 
     return (
@@ -64,7 +63,7 @@ export default function LocalWalletCard({ handleOpen, loading }: LocalWalletCard
                         {loading ? (
                             <Skeleton width={'10ch'} />
                         ) : (
-                            <Button endIcon={<PaymentsIcon />} size='small' className={classes.action} onClick={handleOpen}>
+                            <Button endIcon={<PaymentsIcon />} size='small' className={classes.action}>
                                 Withdraw
                             </Button>
                         )}

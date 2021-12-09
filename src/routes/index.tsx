@@ -11,6 +11,7 @@ import Payments from 'views/payments';
 import { UserAccount } from 'views/user-account';
 import { PaymentsCallback } from 'views/payments-callback';
 import { OnboardingPreferences } from 'features/onboarding/initial-preferences';
+import { CardsPage } from 'views/cards';
 
 export const Routes = () => {
     return (
@@ -40,7 +41,7 @@ export const Routes = () => {
                 <Route exact path='/auth-verify'>
                     <VerifyUser />
                 </Route>
-                <PrivateRoute path='/dashboard'>
+                <PrivateRoute exact path='/dashboard'>
                     <UserDashboard />
                 </PrivateRoute>
                 <PrivateRoute path='/account'>

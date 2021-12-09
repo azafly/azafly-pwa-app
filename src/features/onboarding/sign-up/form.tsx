@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { Button, Checkbox, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -53,7 +53,6 @@ export const SignUpForm = () => {
     const [isAuthStateLoading, setAuthLoadingState] = useState(false);
     const [authError, setAuthError] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
-    const history = useHistory();
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -83,25 +82,9 @@ export const SignUpForm = () => {
         setAuthLoadingState(true);
         switch (method) {
             case SignUpMethod.FACEBOOK:
-                return signInWithFacebook()
-                    .then(() => {
-                        setAuthLoadingState(false);
-                    })
-                    .catch(({ message }: Record<string, string>): void => {
-                        setAuthLoadingState(false);
-                        setOpenSnackBar(true);
-                        setAuthError(message);
-                    });
+                return signInWithFacebook();
             case SignUpMethod.GOOGLE:
-                return signInWithGoogle()
-                    .then(() => {
-                        setAuthLoadingState(false);
-                    })
-                    .catch(({ message }: Record<string, string>): void => {
-                        setOpenSnackBar(true);
-                        setAuthError(message);
-                        setAuthLoadingState(false);
-                    });
+                return signInWithGoogle();
             case SignUpMethod.EMAIL_AND_PASSWORD:
                 if (!email || !password || !displayName) return;
                 return signupWithEmailPassword({ email, password, displayName })

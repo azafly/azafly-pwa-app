@@ -62,25 +62,34 @@ function useFirebaseProviderAuth() {
             })
             .catch((error: unknown) => console.log(error));
     };
+    const handleSignIn = async (user: any) => {
+        const isNewUser = user?.additionalUserInfo?.isNewUser;
+        const token = await user?.user?.getIdToken(true);
+        const to = isNewUser ? '/onboarding-update' : '/dashboard';
+        localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
+        dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: true, isError: false, isLoading: false });
+        location.replace(to);
+    };
 
     const signupWithEmailPassword = async ({ email, password, displayName }: EmailAndPasswordSignUp) => {
-        const { user } = await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
-        if (user) {
-            const profile = { displayName };
-            localStorage.setItem(LOCAL_STORAGE_KEY.IS_EMAIL_SIGNUP_SENT, 'true');
-            user.updateProfile(profile)
-                .then(async () => {
+        firebaseApp
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(({ user }) => {
+                const profile = { displayName };
+                localStorage.setItem(LOCAL_STORAGE_KEY.IS_EMAIL_SIGNUP_SENT, 'true');
+                user?.updateProfile(profile).then(async () => {
                     const token = await user.getIdToken(true);
                     const idTokenResult = await user.getIdTokenResult();
                     const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
                     if (hasuraClaim) {
                         dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true, token });
-                    } else {
-                        throw Error('Signup Failed');
                     }
-                })
-                .catch(error => console.log(error));
-        }
+                });
+                return user;
+            })
+            .then(updatedUser => handleSignIn(updatedUser))
+            .catch(error => console.log(error));
     };
 
     const signout = async () => {
@@ -107,22 +116,13 @@ function useFirebaseProviderAuth() {
         return firebaseApp.auth().confirmPasswordReset(code, password);
     };
 
-    const handleSignIn = async (data: any) => {
-        const isNewUser = data.additionalUserInfo?.isNewUser;
-        const token = await data?.user?.getIdToken(true);
-        const to = isNewUser ? '/onboarding-update' : '/dashboard';
-        localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
-        dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: true, isError: false, isLoading: false });
-        location.replace(to);
-    };
-
     const signInWithGoogle = async () => {
         const googleProvider = new firebaseApp.auth.GoogleAuthProvider();
         return firebaseApp
             .auth()
             .signInWithPopup(googleProvider)
-            .then(async data => {
-                handleSignIn(data);
+            .then(async ({ user }) => {
+                handleSignIn(user);
             })
             .catch(({ message }: Record<string, string>): void => {
                 dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, isError: true, isLoading: false });
@@ -135,8 +135,8 @@ function useFirebaseProviderAuth() {
         return firebaseApp
             .auth()
             .signInWithPopup(FacebookAuthProvider)
-            .then(async data => {
-                handleSignIn(data);
+            .then(async ({ user }) => {
+                handleSignIn(user);
             })
             .catch(({ message }: Record<string, string>): void => {
                 dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, isError: true, isLoading: false });
@@ -148,8 +148,8 @@ function useFirebaseProviderAuth() {
         return firebaseApp
             .auth()
             .signInWithEmailAndPassword(email, password)
-            .then(async data => {
-                handleSignIn(data);
+            .then(async ({ user }) => {
+                handleSignIn(user);
             })
             .catch(({ message }: Record<string, string>): void => {
                 dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, isError: true, isLoading: false });

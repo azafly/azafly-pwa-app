@@ -137,7 +137,7 @@ export function BottomNavBar() {
                 currentHistory.push('/dashboard');
                 break;
             case 1:
-                currentHistory.push('/dashboard');
+                currentHistory.push('/dashboard/cards');
                 break;
             case 2:
                 currentHistory.push('/payment');

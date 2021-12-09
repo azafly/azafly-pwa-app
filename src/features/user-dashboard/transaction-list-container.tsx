@@ -1,21 +1,21 @@
 import { Box, Typography, useMediaQuery } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core';
 import { memo, ReactNode, useCallback, useState } from 'react';
-import { TransactionFilterTab } from './filter/tab';
+import { FilterTab } from './tab';
+import DateRangeIcon from '@mui/icons-material/DateRange';
 import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
 import MobileDateRangePicker from '@mui/lab/MobileDateRangePicker';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
-import { CardContainer, CardSkeleton } from './transaction-card';
+import { CardContainer } from './transactions/card-container';
+import { CardSkeleton } from './transactions/card-skeleton';
 import { EmptyCardContainer } from './empty-transaction/card';
 import { EmptyDataSvgComponent } from 'components';
 import { PendingOfferCardContainer } from './pending-offer/index';
 import { useUserContext } from 'hooks/use-user-context';
 import { useGetUserPendingOffersQuery, useFilterTransactionsByDateRangeLazyQuery } from 'api/generated/graphql';
-import { RootState } from 'app/store';
-import { useSelector } from 'react-redux';
 
 interface TransactionListContainerProps {
     transactions: readonly any[];
@@ -109,9 +109,12 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     ) : (
         <Stack justifyContent={'center'} sx={{ maxWidth: 900, margin: 'auto' }}>
             {' '}
-            <Paper sx={{ p: 10, pt: 1, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)' }}>
-                <Stack justifyContent={'center'} width={'100%'} alignItems={'center'} mt={10}>
-                    <Typography gutterBottom> You have no pending offers</Typography>
+            <Paper sx={{ p: 8, pt: 0, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)' }}>
+                <Stack justifyContent={'center'} width={'100%'} alignItems={'center'} mt={4}>
+                    <Typography gutterBottom style={{ marginBottom: 20 }}>
+                        {' '}
+                        You have no pending offers
+                    </Typography>
                     <EmptyDataSvgComponent />
                 </Stack>
             </Paper>
@@ -178,9 +181,12 @@ export const TransactionListContainer = memo(function TransactionListContainer({
                 {filteredTransactions?.transaction && !filteredTransactions?.transaction.length && (
                     <Stack justifyContent={'center'} sx={{ maxWidth: 900, margin: 'auto' }}>
                         {' '}
-                        <Paper sx={{ p: 10, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)' }}>
-                            <Stack justifyContent={'center'} width={'100%'} alignItems={'center'} mt={10}>
-                                You have no transactions during this time period
+                        <Paper sx={{ p: 8, pt: 0, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)' }}>
+                            <Stack justifyContent={'center'} width={'100%'} alignItems={'center'} mt={4}>
+                                <Typography gutterBottom style={{ marginBottom: 20 }}>
+                                    {' '}
+                                    You have no transactions during this time period
+                                </Typography>
                                 <EmptyDataSvgComponent />
                             </Stack>
                         </Paper>
@@ -191,12 +197,26 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     };
 
     return (
-        <TransactionFilterTab
-            tabViews={[allOffers, pendingTransactions, transactionsByDate()]}
+        <FilterTab
+            tabViews={[
+                {
+                    heading: 'Transactions',
+                    component: allOffers
+                },
+                {
+                    heading: 'Pending Offers',
+                    component: pendingTransactions
+                },
+                {
+                    heading: '',
+                    component: transactionsByDate(),
+                    headingIcon: <DateRangeIcon />,
+                    headingClickHandler: setOpenDatePicker
+                }
+            ]}
             handleSetDateValue={setDateValue}
             dateValue={dateValue}
             openDatePicker={openDatePicker}
-            setOpenDatePicker={setOpenDatePicker}
         />
     );
 });

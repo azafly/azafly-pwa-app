@@ -1,14 +1,14 @@
+import { createStyles, makeStyles } from '@material-ui/core';
+import AcUnitIcon from '@mui/icons-material/AcUnit';
+import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import AcUnitIcon from '@mui/icons-material/AcUnit';
+import ListItemText from '@mui/material/ListItemText';
 import SecurityIcon from '@mui/icons-material/Security';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         listItem__root: {
             '& span': {
@@ -65,7 +65,7 @@ export function VirtualCardActions() {
                 </ListItemAvatar>
                 <ListItemText
                     primary='Settings'
-                    secondary={`Remove or rename cards & more`}
+                    secondary={`Share, Set card limit & more`}
                     classes={{
                         root: classes.listItem__root
                     }}

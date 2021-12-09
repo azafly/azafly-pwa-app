@@ -44,6 +44,9 @@ export const Routes = () => {
                 <PrivateRoute exact path='/dashboard'>
                     <UserDashboard />
                 </PrivateRoute>
+                <PrivateRoute exact path='/dashboard/cards'>
+                    <CardsPage />
+                </PrivateRoute>
                 <PrivateRoute path='/account'>
                     <UserAccount />
                 </PrivateRoute>

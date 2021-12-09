@@ -1,7 +1,7 @@
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
 import { createStyles, makeStyles, Theme, lighten } from '@material-ui/core/styles';
 import { Stack } from '@mui/material';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { formatCurrency } from 'libs';
@@ -58,7 +58,7 @@ interface VirtualCardProps {
     countryCode: string;
 }
 
-export const CreditCard = ({ amount, currency, cardNumber, countryCode, last4digits, expiry, cvv }: VirtualCardProps) => {
+export const CreditCard = memo(function CreditCard({ amount, currency, cardNumber, countryCode, last4digits, expiry, cvv }: VirtualCardProps) {
     const classes = useStyles();
     const [show, setShow] = useState(false);
 
@@ -107,4 +107,4 @@ export const CreditCard = ({ amount, currency, cardNumber, countryCode, last4dig
             <VisibilityIcon className={classes.visible} onClick={() => setShow(!show)} />
         </div>
     );
-};
+});

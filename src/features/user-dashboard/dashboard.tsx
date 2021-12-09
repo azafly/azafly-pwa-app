@@ -1,19 +1,20 @@
 import { Grid, Hidden } from '@material-ui/core';
-import { Redirect, useLocation } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { fetchWallet } from './mock';
-
 import { RootState } from 'app/store';
 import { SideBar } from './side-bar';
+import { UserAccount } from 'views/user-account';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import { Transactions as TransactionView } from './transactions';
 import { useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { useUserContext } from 'hooks/use-user-context';
-import { Transactions as TransactionView } from './transactions';
 import CardList from './virtual-cards/card-list';
+import Payments from 'views/payments';
 
 import { useDashboardStyles, StyledBadge } from './classes';
 
@@ -24,9 +25,8 @@ export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
 
-    const { state } = useLocation();
-
-    const { user } = useSelector((state: RootState) => state.auth);
+    const { user } = useSelector((rootState: RootState) => rootState.auth);
+    const { currentSideBarTab } = useSelector((rootState: RootState) => rootState.dashboard);
     const userData = useUserContext();
 
     const id = userData?.id;
@@ -113,7 +113,8 @@ export default function Dashboard() {
                         <SideBar />
                     </Grid>
                 </Hidden>
-                {!state?.dashboardSubRoute && (
+
+                {(currentSideBarTab === 'transactions' || currentSideBarTab === 'dashboard') && (
                     <TransactionView
                         loading={loading}
                         emailLink={emailLink}
@@ -123,17 +124,9 @@ export default function Dashboard() {
                         userData={userData}
                     />
                 )}
-                {state?.dashboardSubRoute === 'transactions' && (
-                    <TransactionView
-                        loading={loading}
-                        emailLink={emailLink}
-                        transactionData={transactionData}
-                        handleSendVerificationEmail={handleSendVerificationEmail}
-                        transactions={transactions}
-                        userData={userData}
-                    />
-                )}
-                {state?.dashboardSubRoute === 'cards' && <CardList />}
+                {currentSideBarTab === 'cards' && <CardList />}
+                {currentSideBarTab === 'payment' && <Payments />}
+                {currentSideBarTab === 'account' && <UserAccount />}
             </Grid>
 
             <SpeedDialTooltip

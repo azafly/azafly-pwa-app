@@ -84,7 +84,6 @@ export const FilterTab = ({ tabViews }: TransactionFilterTabProps) => {
                 onChange={handleChange}
                 aria-label='onboarding tab'
                 variant='scrollable'
-                scrollButtons='auto'
                 allowScrollButtonsMobile
                 className={classes.filter_tab__container}
             >

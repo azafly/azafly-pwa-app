@@ -6,7 +6,6 @@ import { SideBarTabs } from 'app/models/dashboard';
 import { TransactionSvgComponent } from 'components/icons';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import PaymentIcon from '@mui/icons-material/Payment';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import Stack from '@mui/material/Stack';
 
@@ -22,11 +21,6 @@ const sideMenu = [
         label: 'Cards',
         route: 'cards',
         icon: <PaymentsIcon sx={{ fill: '#0D324D' }} style={{ marginRight: '16px' }} />
-    },
-    {
-        label: 'New Payment',
-        route: 'payment',
-        icon: <PaymentIcon sx={{ fill: '#0D324D' }} style={{ marginRight: '16px' }} />
     },
     {
         label: 'Transactions',

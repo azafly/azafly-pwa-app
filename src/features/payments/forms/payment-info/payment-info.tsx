@@ -72,7 +72,7 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
     });
 
     return (
-        <form className={classes.root} noValidate autoComplete='off' onSubmit={formik.handleSubmit}>
+        <form className={classes.root} autoComplete='off' onSubmit={formik.handleSubmit}>
             <div>
                 <Grid container spacing={3}>
                     {PAYMENT_INFO.map(option => {

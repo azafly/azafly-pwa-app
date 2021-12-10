@@ -125,7 +125,6 @@ export default function Dashboard() {
                     />
                 )}
                 {currentSideBarTab === 'cards' && <CardList />}
-                {currentSideBarTab === 'payment' && <Payments />}
                 {currentSideBarTab === 'account' && <UserAccount />}
             </Grid>
 

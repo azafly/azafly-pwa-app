@@ -196,21 +196,27 @@ export const TransactionListContainer = memo(function TransactionListContainer({
         );
     };
 
+    const heading = (text: string, icon?: any) => (
+        <div style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} key={text}>
+            {' '}
+            {icon}
+            <Typography style={{ textTransform: 'capitalize', fontWeight: 600, fontSize: '0.95em', color: '#0d324d' }}> {text}</Typography>
+        </div>
+    );
     return (
         <FilterTab
             tabViews={[
                 {
-                    heading: 'Transactions',
+                    heading: heading('Transactions'),
                     component: allOffers
                 },
                 {
-                    heading: 'Pending Offers',
+                    heading: heading('Pending Offers'),
                     component: pendingTransactions
                 },
                 {
-                    heading: '',
+                    heading: heading('', <DateRangeIcon />),
                     component: transactionsByDate(),
-                    headingIcon: <DateRangeIcon />,
                     headingClickHandler: setOpenDatePicker
                 }
             ]}

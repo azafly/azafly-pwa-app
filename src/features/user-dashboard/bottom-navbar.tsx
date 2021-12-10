@@ -162,6 +162,7 @@ export function BottomNavBar() {
             <BottomNavigation
                 value={value}
                 onChange={(_, newValue) => {
+                    setValue(newValue);
                     goToLink(newValue);
                 }}
                 className={classes.bottomNavRoot}

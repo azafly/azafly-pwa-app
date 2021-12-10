@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Card, Typography } from '@mui/material';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { formatCurrency } from 'libs';
@@ -13,9 +13,8 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             maxWidth: 675,
-            padding: 50,
             borderRadius: 4,
-            margin: 50,
+            margin: '10px 0px',
             [theme.breakpoints.only('xs')]: {
                 width: '100%',
                 margin: '10px 0px',
@@ -35,7 +34,6 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         card: {
-            boxShadow: '0 0 7px 0 #bac4cf',
             borderRadius: 7,
             padding: 10,
             marginBottom: 20,
@@ -86,7 +84,7 @@ export function PriceCard() {
     return (
         <div className={classes.root}>
             <GuaranteeTag isLoading={isLoading} />
-            <div className={classes.card}>
+            <Card elevation={0} className={classes.card}>
                 {isLoading ? (
                     <ThreeDots variantColor={'base'} />
                 ) : (
@@ -103,7 +101,7 @@ export function PriceCard() {
                                 `}
                     </Typography>
                 </Box>
-            </div>
+            </Card>
         </div>
     );
 }

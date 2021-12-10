@@ -87,16 +87,8 @@ export const FilterTab = ({ tabViews }: TransactionFilterTabProps) => {
                 allowScrollButtonsMobile
                 className={classes.filter_tab__container}
             >
-                {tabViews.map(({ heading, headingClickHandler, headingIcon }, index) => {
-                    return (
-                        <Tab
-                            key={index}
-                            label={heading}
-                            {...a11yProps(index)}
-                            icon={headingIcon ? headingIcon : ''}
-                            onClick={() => headingClickHandler && headingClickHandler(true)}
-                        />
-                    );
+                {tabViews.map(({ heading, headingClickHandler }, index) => {
+                    return <Tab key={index} label={heading} {...a11yProps(index)} onClick={() => headingClickHandler && headingClickHandler(true)} />;
                 })}
             </Tabs>
             {tabViews.map(({ component }, index) => {

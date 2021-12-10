@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { Button, Checkbox, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import VisibilityIcon from '@mui/icons-material/Visibility';

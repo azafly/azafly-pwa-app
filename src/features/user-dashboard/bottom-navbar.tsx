@@ -2,7 +2,7 @@ import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -12,7 +12,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import React from 'react';
 
-import { Dispatch, RootState } from 'app/store';
+import { Dispatch } from 'app/store';
 import { DashboardSvgComponent } from 'components/icons/dashboard';
 
 const useStyles = makeStyles((theme: Theme) =>

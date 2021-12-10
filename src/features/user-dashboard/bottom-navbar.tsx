@@ -2,6 +2,7 @@ import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -11,6 +12,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import React from 'react';
 
+import { Dispatch } from 'app/store';
 import { DashboardSvgComponent } from 'components/icons/dashboard';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -87,6 +89,7 @@ export function BottomNavBar() {
     const classes = useStyles();
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const dispatch = useDispatch<Dispatch>();
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
@@ -135,15 +138,19 @@ export function BottomNavBar() {
         switch (key) {
             case 0:
                 currentHistory.push('/dashboard');
+                dispatch.dashboard.setCurrentDashboardTab('dashboard');
                 break;
             case 1:
-                currentHistory.push('/dashboard');
+                currentHistory.push('/dashboard/cards');
+                dispatch.dashboard.setCurrentDashboardTab('cards');
                 break;
             case 2:
                 currentHistory.push('/payment');
+                dispatch.dashboard.setCurrentDashboardTab('payment');
                 break;
             case 3:
                 currentHistory.push('/account');
+                dispatch.dashboard.setCurrentDashboardTab('account');
                 break;
             default:
                 break;
@@ -155,6 +162,7 @@ export function BottomNavBar() {
             <BottomNavigation
                 value={value}
                 onChange={(_, newValue) => {
+                    setValue(newValue);
                     goToLink(newValue);
                 }}
                 className={classes.bottomNavRoot}

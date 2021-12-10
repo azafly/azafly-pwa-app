@@ -1,8 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
-import { Box, Tab, Tabs, Typography } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
-import DateRangeIcon from '@mui/icons-material/DateRange';
 import { DateRange } from '@mui/lab/DateRangePicker';
 
 interface TabPanelProps {
@@ -19,6 +20,7 @@ export const useStyles = makeStyles((theme: Theme) =>
             border: '1px solid #DCDCDC',
             background: 'white',
             maxWidth: 900,
+            width: '100%',
             margin: 'auto',
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
@@ -27,6 +29,13 @@ export const useStyles = makeStyles((theme: Theme) =>
                 '& span': {
                     textTransform: 'none'
                 }
+            }
+        },
+        tabHeader: {
+            fontSize: '0.8em',
+            fontWeight: 800,
+            '& button': {
+                fontSize: '0.6em'
             }
         }
     })
@@ -53,13 +62,12 @@ function a11yProps(index: any) {
     };
 }
 interface TransactionFilterTabProps {
-    tabViews: React.ReactNode[];
-    handleSetDateValue: Dispatch<SetStateAction<DateRange<Date>>>;
-    dateValue: any;
-    openDatePicker: boolean;
-    setOpenDatePicker: Dispatch<SetStateAction<boolean>>;
+    tabViews: any[];
+    handleSetDateValue?: Dispatch<SetStateAction<DateRange<Date>>>;
+    dateValue?: any;
+    openDatePicker?: boolean;
 }
-export const TransactionFilterTab = ({ setOpenDatePicker, tabViews }: TransactionFilterTabProps) => {
+export const FilterTab = ({ tabViews }: TransactionFilterTabProps) => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (_: React.ChangeEvent<unknown>, newValue: number) => {
@@ -69,26 +77,27 @@ export const TransactionFilterTab = ({ setOpenDatePicker, tabViews }: Transactio
     const classes = useStyles();
 
     return (
-        <>
+        <div style={{ width: '100%' }}>
             {' '}
-            <Tabs value={value} onChange={handleChange} aria-label='onboarding tab' className={classes.filter_tab__container}>
-                <Tab label='Transactions' {...a11yProps(0)} />
-                <Tab label='Pending Offers' {...a11yProps(1)} />
-                <Tab
-                    aria-label='Filter'
-                    {...a11yProps(2)}
-                    style={{ justifySelf: 'flex-end' }}
-                    icon={<DateRangeIcon />}
-                    onClick={() => setOpenDatePicker(true)}
-                />
+            <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label='onboarding tab'
+                variant='scrollable'
+                allowScrollButtonsMobile
+                className={classes.filter_tab__container}
+            >
+                {tabViews.map(({ heading, headingClickHandler }, index) => {
+                    return <Tab key={index} label={heading} {...a11yProps(index)} onClick={() => headingClickHandler && headingClickHandler(true)} />;
+                })}
             </Tabs>
-            {tabViews.map((transactionCards, index) => {
+            {tabViews.map(({ component }, index) => {
                 return (
                     <TabPanel value={value} index={index} key={index}>
-                        {transactionCards}
+                        {component}
                     </TabPanel>
                 );
             })}
-        </>
+        </div>
     );
 };

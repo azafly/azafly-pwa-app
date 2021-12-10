@@ -1,13 +1,22 @@
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme, lighten } from '@material-ui/core/styles';
 import { Stack } from '@mui/material';
+import { memo, useState } from 'react';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
-const useStyles = makeStyles(() =>
+import { formatCurrency } from 'libs';
+import { Logo2SvgComponent } from 'components/icons';
+
+const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         credit_card__container: {
             padding: 10,
             width: 350,
-            border: '.01px solid grey'
+            position: 'relative',
+            [theme.breakpoints.only('xs')]: {
+                width: '100%',
+                margin: 'auto'
+            }
         },
         action: {
             fontSize: 14,
@@ -22,34 +31,56 @@ const useStyles = makeStyles(() =>
             color: 'white'
         },
         cardNumber: {
-            fontSize: '1.3rem',
+            fontSize: '1.1rem',
             paddingTop: 15,
             color: 'white'
         },
         card: {
-            background:
-                'radial-gradient(circle, rgba(73,149,164,0.6880953064819677) 0%, rgba(13,50,77,1) 94%, rgba(255,255,255,1) 100%, rgba(73,149,164,0.6880953064819677) 100%);'
+            borderRadius: 12,
+            backgroundColor: lighten(theme.colors.base, 0.3)
         },
-        expiryDate: {}
+        visible: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            cursor: 'pointer'
+        }
     })
 );
 
-export const CreditCard = () => {
+interface VirtualCardProps {
+    amount: number;
+    currency: string;
+    cardNumber: string;
+    last4digits: string;
+    expiry: string;
+    cvv: string;
+    countryCode: string;
+}
+
+export const CreditCard = memo(function CreditCard({ amount, currency, cardNumber, countryCode, last4digits, expiry, cvv }: VirtualCardProps) {
     const classes = useStyles();
+    const [show, setShow] = useState(false);
+
+    const balance = formatCurrency({
+        currency,
+        amount,
+        countryCode
+    });
     return (
         <div className={classes.credit_card__container}>
             <Card elevation={0} className={classes.card}>
                 <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography className={classes.typography} gutterBottom>
-                            {'Olasunkanmi Ajiboye'}
-                        </Typography>
                         <Typography variant='body2' className={classes.typography}>
-                            {'₦750,789'}
+                            {balance}
                         </Typography>
+                        <Box sx={{ marginTop: -5 }}>
+                            <Logo2SvgComponent height={30} />
+                        </Box>
                     </Box>
-                    <Typography variant='body2' className={classes.cardNumber} align={'center'}>
-                        {'5335 6677 8989 7373'}
+                    <Typography variant='h5' className={classes.cardNumber} align={'center'}>
+                        {show ? cardNumber : '**** **** ****'} {last4digits}
                     </Typography>
                 </CardContent>
                 <CardActions>
@@ -59,7 +90,7 @@ export const CreditCard = () => {
                                 {'Valid Thru'}
                             </Typography>
                             <Button size='small' className={classes.action}>
-                                08/25
+                                {show ? expiry : '**/**'}
                             </Button>
                         </Stack>
                         <Stack>
@@ -67,12 +98,13 @@ export const CreditCard = () => {
                                 {'CVV'}
                             </Typography>
                             <Button size='small' className={classes.action}>
-                                857
+                                {show ? cvv : '***'}
                             </Button>
                         </Stack>
                     </Box>
                 </CardActions>
             </Card>
+            <VisibilityIcon className={classes.visible} onClick={() => setShow(!show)} />
         </div>
     );
-};
+});

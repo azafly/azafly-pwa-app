@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface ResidenceCardProps {
-    handleOpen: () => void;
     loading: boolean;
 }
 

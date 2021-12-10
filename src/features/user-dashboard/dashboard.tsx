@@ -1,35 +1,32 @@
-import { Grid, Hidden, Modal, Typography } from '@material-ui/core';
-import { Redirect } from 'react-router';
+import { Grid, Hidden } from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
-import { CardSkeleton } from './transaction-card';
-import { CreditCard } from 'features/user-dashboard/wallet/cards/credit-card';
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { fetchWallet } from './mock';
-import { formatFirstName } from 'libs';
 import { RootState } from 'app/store';
 import { SideBar } from './side-bar';
+import { UserAccount } from 'views/user-account';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { TransactionListContainer } from './transaction-list-container';
+import { Transactions as TransactionView } from './transactions';
 import { useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { useUserContext } from 'hooks/use-user-context';
-import WalletContainer from './wallet/wallet-container';
+import CardList from './virtual-cards/card-list';
+import Payments from 'views/payments';
 
 import { useDashboardStyles, StyledBadge } from './classes';
 
 export default function Dashboard() {
     const [hidden, setHidden] = useState(false);
     const [isSendingLink, setLoading] = useState(false);
-    const [openCreditCardModal, setOpenCreditCardModal] = useState(false);
     const [openSnackBar, setOpenSnackBar] = useState(false);
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
-    const handleCloseCreditCardModal = () => setOpenCreditCardModal(false);
-    const handleOpenCreditCardModal = () => setOpenCreditCardModal(true);
 
-    const { user } = useSelector((state: RootState) => state.auth);
+    const { user } = useSelector((rootState: RootState) => rootState.auth);
+    const { currentSideBarTab } = useSelector((rootState: RootState) => rootState.dashboard);
     const userData = useUserContext();
 
     const id = userData?.id;
@@ -109,48 +106,25 @@ export default function Dashboard() {
                 autoHideDuration={10000}
                 info={verificationEmailSent}
             />
-            <Modal
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                open={openCreditCardModal}
-                onClose={handleCloseCreditCardModal}
-                aria-labelledby='credit-card'
-                aria-describedby='credit-card-payment'
-            >
-                <CreditCard />
-            </Modal>
             <Grid container>
                 <Hidden mdDown>
                     <Grid item md={2}>
                         <SideBar />
                     </Grid>
                 </Hidden>
-                <Grid item md={10} className={classes.data__section}>
-                    <Hidden xsDown>
-                        <Typography color={'textSecondary'} className={classes.name}>
-                            Hey 👋🏾 {formatFirstName(userData?.display_name ?? '')}!
-                        </Typography>{' '}
-                    </Hidden>
-                    <WalletContainer handleOpen={handleOpenCreditCardModal} />
-                    <Typography className={'heading'}>Recent Activities</Typography>{' '}
-                    {loading || !transactionData ? (
-                        <>
-                            {Array(5)
-                                .fill('')
-                                .map((_, index) => (
-                                    <CardSkeleton key={index} />
-                                ))}
-                        </>
-                    ) : (
-                        <>
-                            <TransactionListContainer
-                                transactions={transactions ?? []}
-                                emailLink={emailLink}
-                                loading={loading}
-                                handleSendVerificationEmail={handleSendVerificationEmail}
-                            />
-                        </>
-                    )}
-                </Grid>
+
+                {(currentSideBarTab === 'transactions' || currentSideBarTab === 'dashboard') && (
+                    <TransactionView
+                        loading={loading}
+                        emailLink={emailLink}
+                        transactionData={transactionData}
+                        handleSendVerificationEmail={handleSendVerificationEmail}
+                        transactions={transactions}
+                        userData={userData}
+                    />
+                )}
+                {currentSideBarTab === 'cards' && <CardList />}
+                {currentSideBarTab === 'account' && <UserAccount />}
             </Grid>
 
             <SpeedDialTooltip

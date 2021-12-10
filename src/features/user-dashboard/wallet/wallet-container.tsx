@@ -37,10 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-interface WalletContainerProps {
-    handleOpen: () => void;
-}
-const WalletContainer = ({ handleOpen }: WalletContainerProps) => {
+const WalletContainer = () => {
     const classes = useStyles();
     const isSmallScreen = useMediaQuery('(max-width:620px)');
 
@@ -65,19 +62,19 @@ const WalletContainer = ({ handleOpen }: WalletContainerProps) => {
             {isSmallScreen ? (
                 <Slider {...settings}>
                     <div>
-                        <ResidenceWalletCard loading={loading || !transactionData} handleOpen={handleOpen} />
+                        <ResidenceWalletCard loading={loading || !transactionData} />
                     </div>
                     <div>
-                        <LocalWalletCard loading={loading || !transactionData} handleOpen={handleOpen} />
+                        <LocalWalletCard loading={loading || !transactionData} />
                     </div>
                 </Slider>
             ) : (
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                        <ResidenceWalletCard loading={loading || !transactionData} handleOpen={handleOpen} />
+                        <ResidenceWalletCard loading={loading || !transactionData} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <LocalWalletCard loading={loading || !transactionData} handleOpen={handleOpen} />
+                        <LocalWalletCard loading={loading || !transactionData} />
                     </Grid>
                 </Grid>
             )}

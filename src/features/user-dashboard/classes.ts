@@ -107,6 +107,9 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
                 fontWeight: 600,
                 fontSize: '0.9rem'
             }
+        },
+        active: {
+            background: '#F0F8FF'
         }
     })
 );

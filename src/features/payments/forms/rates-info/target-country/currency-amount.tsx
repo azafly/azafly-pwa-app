@@ -1,12 +1,13 @@
-import React from 'react';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import React from 'react';
 
 import { Country, useCountryList } from '../../../hooks/use-country-list';
+import { Dispatch, RootState } from 'app/store';
 import { RenderOptions } from './render-option-label';
 import { UK } from 'features/payments/context/constants';
-import { usePaymentContext } from '../../../context';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -90,11 +91,10 @@ export function CurrencyAmount() {
     const [showCountryList, setShowCountryList] = React.useState(false);
 
     const { popularTargetCountries } = useCountryList();
+    const dispatch = useDispatch<Dispatch>();
+    const { amount } = useSelector((state: RootState) => state.payment.rateInfo);
 
     const options = popularTargetCountries?.map(it => ({ ...it, label: it.name }));
-    const {
-        rateInfoProps: { amount, handleSetAmount, handleTargetCountryChange }
-    } = usePaymentContext();
 
     const handleShow = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -112,7 +112,7 @@ export function CurrencyAmount() {
                 type='number'
                 label={'Amount'}
                 className={classes.input}
-                onChange={handleSetAmount}
+                onChange={event => dispatch.payment.setRatesInfoAmount(parseInt(event.target.value))}
                 InputProps={{
                     className: classes.input
                 }}
@@ -120,7 +120,7 @@ export function CurrencyAmount() {
             <div>
                 <Autocomplete
                     onChange={(_, country) => {
-                        country && handleTargetCountryChange(_, country);
+                        country && dispatch.payment.setRatesInfoTargetCountry(country);
                     }}
                     className={classes.toggle__section}
                     disablePortal

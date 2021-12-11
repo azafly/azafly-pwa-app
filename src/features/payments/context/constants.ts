@@ -30,40 +30,25 @@ export const UK = {
 };
 
 export interface IPaymentContext {
-    rateInfoProps: IRateInfo;
     isErrorState: boolean;
     setErrorState: (c: boolean) => void;
     paymentLink: string;
-    handleGetInitialOffer: () => Promise<void>;
     handleCreatePaymentIntent: (params: CreatePaymentIntentBody) => void;
     paymentError: string;
-    initialOffer: GetOffersResponse['data'] | null;
     isLoading: boolean;
     canGoNext: boolean;
     activeStep: number;
     setActiveStep: Dispatch<SetStateAction<number>>;
-    setInitialOffer: any;
 }
 
 export const PaymentContext: IPaymentContext = {
-    rateInfoProps: {
-        targetCountry: NIGERIA,
-        sourceCountry: NIGERIA,
-        handleSourceCountryChange: () => null,
-        handleTargetCountryChange: () => null,
-        amount: 100,
-        handleSetAmount: () => null
-    },
     isErrorState: false,
     setErrorState: () => null,
     paymentLink: '',
-    handleGetInitialOffer: () => new Promise(() => {}),
     handleCreatePaymentIntent: () => new Promise(() => {}),
     paymentError: '',
-    initialOffer: null,
     isLoading: false,
     canGoNext: false,
     activeStep: 0,
-    setInitialOffer: null,
     setActiveStep: () => {}
 };

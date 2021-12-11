@@ -15,6 +15,24 @@ const mockData = [
         cvv: '123'
     },
     {
+        currency: 'GBP',
+        countryCode: 'GB',
+        amount: 100,
+        cardNumber: '5344 5464 4474',
+        last4digits: '5895',
+        expiry: '02/27',
+        cvv: '890'
+    },
+    {
+        currency: 'NGN',
+        countryCode: 'NG',
+        amount: 780000,
+        cardNumber: '5344 5464 0474',
+        last4digits: '5805',
+        expiry: '02/24',
+        cvv: '576'
+    },
+    {
         currency: 'USD',
         countryCode: 'US',
         amount: 1100,

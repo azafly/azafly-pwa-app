@@ -1,12 +1,12 @@
 import { Grid, Hidden } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
+import { Dispatch, RootState } from 'app/store';
 import { fetchWallet } from './mock';
-import { RootState } from 'app/store';
 import { SideBar } from './side-bar';
 import { UserAccount } from 'views/user-account';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
@@ -14,7 +14,6 @@ import { Transactions as TransactionView } from './transactions';
 import { useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { useUserContext } from 'hooks/use-user-context';
 import CardList from './virtual-cards/card-list';
-import Payments from 'views/payments';
 
 import { useDashboardStyles, StyledBadge } from './classes';
 
@@ -26,8 +25,11 @@ export default function Dashboard() {
     const [verificationEmailSent, setSent] = useState('');
 
     const { user } = useSelector((rootState: RootState) => rootState.auth);
-    const { currentSideBarTab } = useSelector((rootState: RootState) => rootState.dashboard);
     const userData = useUserContext();
+
+    const { currentSideBarTab } = useSelector((rootState: RootState) => rootState.dashboard);
+
+    const dispatch = useDispatch<Dispatch>();
 
     const id = userData?.id;
 
@@ -83,6 +85,10 @@ export default function Dashboard() {
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
 
     useEffect(() => {
+        dispatch.dashboard.setCurrentDashboardTab('dashboard');
+    }, [dispatch]);
+
+    useEffect(() => {
         fetchWallet();
     }, []);
 
@@ -96,6 +102,7 @@ export default function Dashboard() {
             />
         );
     }
+
     return (
         <div className={classes.dashboard_container}>
             <DefaultSnackbar

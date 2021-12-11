@@ -5,9 +5,10 @@ import { formatCurrency } from 'libs';
 import { GuaranteeTag } from './guarantee-tag';
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { ThreeDots } from '../../../../components/css-loaders/three-dots/three-dots';
-import { usePaymentContext } from '../../context';
 import InfoIcon from '@mui/icons-material/Info';
 import { LocalStorageInitialOffer } from 'services/rest-client/user-payment';
+import { RootState } from 'app/store';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -59,9 +60,8 @@ export function PriceCard() {
     const classes = useStyles();
     const {
         initialOffer,
-        rateInfoProps: { sourceCountry },
-        isLoading
-    } = usePaymentContext();
+        rateInfo: { sourceCountry }
+    } = useSelector((state: RootState) => state.payment);
 
     const getFormattedCurrency = () => {
         const localStoragePaymentOffer = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string) as LocalStorageInitialOffer;
@@ -83,9 +83,9 @@ export function PriceCard() {
 
     return (
         <div className={classes.root}>
-            <GuaranteeTag isLoading={isLoading} />
+            <GuaranteeTag isLoading={false} />
             <Card elevation={0} className={classes.card}>
-                {isLoading ? (
+                {false ? (
                     <ThreeDots variantColor={'base'} />
                 ) : (
                     <div>

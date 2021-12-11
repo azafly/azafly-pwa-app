@@ -1,8 +1,10 @@
 import { Button, Stepper, Step, StepContent, StepLabel, Slide } from '@material-ui/core';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
+import { Dispatch, RootState } from 'app/store';
 import { localStorageClient, LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { PaymentInfo } from './forms/payment-info/payment-info';
 import { PriceInfo } from './forms/price-info';
@@ -35,10 +37,11 @@ function getStepContent(step: number, handleNext: () => void) {
 export function VerticalPaymentStepper() {
     const classes = useStepperStyles();
     const history = useHistory();
+    const dispatch = useDispatch<Dispatch>();
 
     const steps = getSteps;
-    const { activeStep, canGoNext, isErrorState, paymentLink, handleGetInitialOffer, isLoading, setActiveStep, setInitialOffer } =
-        usePaymentContext();
+    const { activeStep, canGoNext, paymentLink, setActiveStep } = usePaymentContext();
+    const { apiFetchState } = useSelector((state: RootState) => state.payment);
 
     const handleNext = () => {
         localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: activeStep + 1 });
@@ -63,11 +66,11 @@ export function VerticalPaymentStepper() {
                         className={classes.next}
                         onClick={() => {
                             localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: 1 });
-                            handleGetInitialOffer();
+                            dispatch.payment.setInitialOffer('');
                         }}
-                        disabled={isErrorState}
+                        disabled={apiFetchState?.result === 'error'}
                     >
-                        {isLoading ? <ThreeDots style={{ height: 30 }} /> : 'Get offer'}
+                        {apiFetchState?.loading ? <ThreeDots style={{ height: 30 }} /> : 'Get offer'}
                         <NavigateNextIcon />
                     </button>
                 );
@@ -78,7 +81,7 @@ export function VerticalPaymentStepper() {
                         className={classes.next}
                         variant={'contained'}
                         color={'primary'}
-                        disabled={isErrorState}
+                        disabled={apiFetchState?.result === 'error'}
                         classes={{
                             disabled: classes.disabled
                         }}
@@ -101,9 +104,9 @@ export function VerticalPaymentStepper() {
                         classes={{
                             disabled: classes.disabled
                         }}
-                        disabled={isErrorState || !paymentLink}
+                        disabled={apiFetchState?.result === 'error' || !paymentLink}
                     >
-                        {isLoading ? <ThreeDots style={{ height: 30 }} /> : 'Pay'}
+                        {apiFetchState?.loading ? <ThreeDots style={{ height: 30 }} /> : 'Pay'}
                         <NavigateNextIcon />
                     </Button>
                 );
@@ -127,7 +130,7 @@ export function VerticalPaymentStepper() {
             }
             if (urlParamOfferId && urlParamStep) {
                 Promise.resolve(handleGetPendingOffer()).then(() => {
-                    setInitialOffer(pendingOffer?.payment_offer[0]);
+                    dispatch.payment.setRatesInfoInitialOffer(pendingOffer?.payment_offer[0]);
                     const { source_amount, source_currency, target_currency, total_in_target_with_charges } = pendingOffer?.payment_offer[0] ?? {};
                     localStorage.setItem(
                         LOCAL_STORAGE_KEY.INITIAL_OFFER,
@@ -141,7 +144,7 @@ export function VerticalPaymentStepper() {
             }
         };
         computeStepToNavigateTo();
-    }, [handleGetPendingOffer, urlParamOfferId, urlParamStep, pendingOffer, setActiveStep, setInitialOffer]);
+    }, [handleGetPendingOffer, urlParamOfferId, urlParamStep, pendingOffer, setActiveStep, dispatch.payment]);
 
     return (
         <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>

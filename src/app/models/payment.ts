@@ -47,18 +47,10 @@ export const payment = createModel<RootModel>()({
             return { ...state, ...rateInfo };
         },
         setRatesInfoSourceCountry(state, payload: Country) {
-            const source = {
-                ...state.rateInfo,
-                sourceCountry: payload
-            };
-            return { ...state, ...source };
+            return { ...state, sourceCountry: { ...payload } };
         },
         setRatesInfoTargetCountry(state, payload: Country) {
-            const target = {
-                ...state.rateInfo,
-                targetCountry: payload
-            };
-            return { ...state, ...target };
+            return { ...state, targetCountry: { ...payload } };
         },
         setRatesInfoInitialOffer(state, payload) {
             return { ...state, initialOffer: payload };

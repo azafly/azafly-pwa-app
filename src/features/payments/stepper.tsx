@@ -41,7 +41,7 @@ export function VerticalPaymentStepper() {
 
     const steps = getSteps;
     const { activeStep, canGoNext, paymentLink, setActiveStep } = usePaymentContext();
-    const { apiFetchState } = useSelector((state: RootState) => state.payment);
+    const { apiFetchState, initialOffer } = useSelector((state: RootState) => state.payment);
 
     const handleNext = () => {
         localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: activeStep + 1 });
@@ -66,7 +66,7 @@ export function VerticalPaymentStepper() {
                         className={classes.next}
                         onClick={() => {
                             localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: 1 });
-                            dispatch.payment.setInitialOffer('');
+                            dispatch.payment.setInitialOffer('').then(() => handleNext());
                         }}
                         disabled={apiFetchState?.result === 'error'}
                     >

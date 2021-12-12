@@ -8,7 +8,6 @@ import Autocomplete, { AutocompleteClassKey } from '@material-ui/lab/Autocomplet
 import { Country, NIGERIA, useCountryList } from '../../../hooks/use-country-list';
 import { Dispatch } from 'app/store';
 import { RenderOptions } from './render-option-label';
-import { UK } from 'features/payments/context/constants';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {

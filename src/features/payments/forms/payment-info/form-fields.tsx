@@ -38,29 +38,6 @@ export const purpose: Record<string, PURPOSE> = {
 
 export const PAYMENT_INFO: PaymentInfo[] = [
     {
-        label: 'Full Name',
-        name: 'fullname',
-        errorMessage: 'Enter your full name',
-        isOptional: false,
-        type: 'text'
-    },
-    {
-        label: 'Address',
-        name: 'address',
-        errorMessage: 'Please Enter your a valid Address',
-        isOptional: false,
-        type: 'autocomplete'
-    },
-
-    {
-        label: 'Phone number',
-        name: 'phone',
-        errorMessage: 'Please enter a valid phone number',
-        helperText: 'Phone number with area code e.g +4912345678',
-        isOptional: false,
-        type: 'text'
-    },
-    {
         label: 'References',
         name: 'references',
         type: 'text',
@@ -94,12 +71,8 @@ export const initialValues = () => {
     });
     return values;
 };
-const phoneRegExp = /^\+(?:[0-9] ?){6,14}[0-9]$/;
 
 export const validationSchema = yup.object().shape({
-    fullname: yup.string().required('Enter a your family name'),
-    phone: yup.string().matches(phoneRegExp, 'Phone number is not valid').required('This is not a valid phone number.'),
-    references: yup.string().required('Reference is necessary to track your payment'),
     by: yup.string().oneOf(['self', 'others'], 'Please select one'),
     purpose: yup
         .string()

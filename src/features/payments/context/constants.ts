@@ -1,4 +1,4 @@
-import { CreatePaymentIntentBody, GetOffersResponse } from 'services/rest-client/user-payment';
+import { CreatePaymentIntentBody, GetOffersResponse } from 'services/rest-clients/user-payment';
 import { Country, NIGERIA } from '../hooks/use-country-list';
 import { Dispatch } from 'react';
 import { SetStateAction } from 'hoist-non-react-statics/node_modules/@types/react';

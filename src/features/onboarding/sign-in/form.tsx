@@ -2,7 +2,7 @@ import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import * as yup from 'yup';
@@ -23,8 +23,8 @@ const validationSchema = yup.object().shape({
 export const SignInForm = () => {
     const { signInWithFacebook, signInWithGoogle, signinWithEmailPassword } = useFirebaseAuthContext();
 
-    const { isLoading, isError } = useSelector((state: RootState) => state.auth);
-    const [_, setOpenSnackBar] = useState(false);
+    const { isLoading, isError, errorMessage = 'An Authentication has occurred' } = useSelector((state: RootState) => state.auth);
+    const [openSnackBar, setOpenSnackBar] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -42,14 +42,21 @@ export const SignInForm = () => {
     });
 
     const classes = useFormStyles();
+    useEffect(() => {
+        if (isError && !isLoading) {
+            setOpenSnackBar(true);
+        }
+    }, [isLoading, isError]);
+
     return (
         <div className={classes.signInformRoot}>
             <DefaultSnackbar
-                open={isError && !isLoading}
+                open={isError && !isLoading && openSnackBar}
                 handleClose={() => setOpenSnackBar(false)}
                 severity={'error'}
                 title={'Error'}
-                info={'Error with authentication'}
+                info={errorMessage}
+                autoHideDuration={4000}
             />
             <div className={classes.form_container}>
                 <div className={classes.facebook} onClick={signInWithFacebook}>

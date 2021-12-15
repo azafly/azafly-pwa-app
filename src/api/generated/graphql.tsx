@@ -8247,26 +8247,13 @@ export type FilterTransactionsByDateRangeQuery = (
 );
 
 export type GetCurrentUserQueryVariables = Exact<{
-  id: Scalars['String'];
+  id: Scalars['uuid'];
 }>;
 
 
 export type GetCurrentUserQuery = (
   { readonly __typename?: 'query_root' }
-  & { readonly users: ReadonlyArray<(
-    { readonly __typename?: 'users' }
-    & Pick<Users, 'display_name' | 'email' | 'email_verified' | 'firebase_id' | 'id' | 'image_url' | 'phone' | 'is_new_user' | 'address' | 'country'>
-  )> }
-);
-
-export type GetCurrentUserByEmailQueryVariables = Exact<{
-  email: Scalars['String'];
-}>;
-
-
-export type GetCurrentUserByEmailQuery = (
-  { readonly __typename?: 'query_root' }
-  & { readonly users: ReadonlyArray<(
+  & { readonly users_by_pk?: Maybe<(
     { readonly __typename?: 'users' }
     & Pick<Users, 'display_name' | 'email' | 'email_verified' | 'firebase_id' | 'id' | 'image_url' | 'phone' | 'is_new_user' | 'address' | 'country'>
   )> }
@@ -8633,8 +8620,8 @@ export type FilterTransactionsByDateRangeQueryHookResult = ReturnType<typeof use
 export type FilterTransactionsByDateRangeLazyQueryHookResult = ReturnType<typeof useFilterTransactionsByDateRangeLazyQuery>;
 export type FilterTransactionsByDateRangeQueryResult = Apollo.QueryResult<FilterTransactionsByDateRangeQuery, FilterTransactionsByDateRangeQueryVariables>;
 export const GetCurrentUserDocument = gql`
-    query getCurrentUser($id: String!) {
-  users(where: {firebase_id: {_eq: $id}}) {
+    query getCurrentUser($id: uuid!) {
+  users_by_pk(id: $id) {
     display_name
     email
     email_verified
@@ -8677,48 +8664,3 @@ export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
-export const GetCurrentUserByEmailDocument = gql`
-    query getCurrentUserByEmail($email: String!) {
-  users(where: {email: {_eq: $email}}) {
-    display_name
-    email
-    email_verified
-    firebase_id
-    id
-    image_url
-    phone
-    image_url
-    is_new_user
-    address
-    country
-  }
-}
-    `;
-
-/**
- * __useGetCurrentUserByEmailQuery__
- *
- * To run a query within a React component, call `useGetCurrentUserByEmailQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCurrentUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCurrentUserByEmailQuery({
- *   variables: {
- *      email: // value for 'email'
- *   },
- * });
- */
-export function useGetCurrentUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>(GetCurrentUserByEmailDocument, options);
-      }
-export function useGetCurrentUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>(GetCurrentUserByEmailDocument, options);
-        }
-export type GetCurrentUserByEmailQueryHookResult = ReturnType<typeof useGetCurrentUserByEmailQuery>;
-export type GetCurrentUserByEmailLazyQueryHookResult = ReturnType<typeof useGetCurrentUserByEmailLazyQuery>;
-export type GetCurrentUserByEmailQueryResult = Apollo.QueryResult<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>;

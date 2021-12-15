@@ -6,7 +6,7 @@ import { GuaranteeTag } from './guarantee-tag';
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { ThreeDots } from '../../../../components/css-loaders/three-dots/three-dots';
 import InfoIcon from '@mui/icons-material/Info';
-import { LocalStorageInitialOffer } from 'services/rest-client/user-payment';
+import { LocalStorageInitialOffer } from 'services/rest-clients/user-payment';
 import { RootState } from 'app/store';
 import { useSelector } from 'react-redux';
 

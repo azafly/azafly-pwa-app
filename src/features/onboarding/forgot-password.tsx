@@ -1,7 +1,7 @@
-import { SyntheticEvent, useState } from 'react';
-import { Button, Input, Snackbar, SnackbarCloseReason, SnackbarOrigin } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import { Button, Input, Snackbar, SnackbarCloseReason, SnackbarOrigin, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { SyntheticEvent, useState } from 'react';
 
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useForgotPasswordStyles } from './classes';
@@ -52,7 +52,7 @@ const ForgotPassword = () => {
 
     return (
         <div className={classes.forgotPasswordRoot}>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
                 <Alert onClose={handleClose} className={`${classes.alert}`} severity={alertSeverity}>
                     <AlertTitle>
                         {' '}
@@ -63,7 +63,9 @@ const ForgotPassword = () => {
             </Snackbar>
 
             <div className={classes.form_container}>
-                <div>{resetState.success && ' We have sent a link to your email. Please follow the link to reset your password'}</div>
+                <Typography color={'secondary'} paragraph style={{ color: 'blue' }}>
+                    {resetState.success && ' We have sent a link to your email. Please follow the link to reset your password'}
+                </Typography>
                 <Input
                     classes={{ underline: classes.underline }}
                     type='text'
@@ -77,6 +79,13 @@ const ForgotPassword = () => {
                     <Button className={classes.submit} disabled={!email} onClick={handleSendResetEmail}>
                         Send Reset Link
                     </Button>
+                    <div>
+                        {resetState.success && (
+                            <Link component={Button} to={'/signin'} style={{ width: '100%', border: '1px solid grey' }}>
+                                Go to Login
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

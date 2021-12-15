@@ -13,8 +13,8 @@ import { RootState } from 'app/store';
 import { Routes } from 'routes';
 
 function App() {
-    const preferredTheme = useMemo(() => createTheme(theme), []);
     const { token } = useSelector((state: RootState) => state.auth);
+    const preferredTheme = useMemo(() => createTheme(theme), []);
     const client = useMemo(() => getApolloClient(token), [token]);
 
     return (

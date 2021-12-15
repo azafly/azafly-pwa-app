@@ -1,6 +1,6 @@
 import { Button, Checkbox, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import * as yup from 'yup';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -47,7 +47,7 @@ export const SignUpForm = () => {
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
     const { signupWithEmailPassword, signInWithFacebook, signInWithGoogle } = useFirebaseAuthContext();
-    const { errorMessage, isLoading } = useSelector((state: RootState) => state.auth);
+    const { errorMessage = 'An Authentication has occurred', isError, isLoading } = useSelector((state: RootState) => state.auth);
 
     const formik = useFormik({
         initialValues: {
@@ -66,15 +66,15 @@ export const SignUpForm = () => {
 
     type FormValue = keyof typeof formik.initialValues;
 
+    useEffect(() => {
+        if (isError && !isLoading) {
+            setOpenSnackBar(true);
+        }
+    }, [isLoading, isError]);
+
     return (
         <div className={classes.signUpformRoot}>
-            <DefaultSnackbar
-                open={openSnackBar}
-                handleClose={() => setOpenSnackBar(false)}
-                severity={'error'}
-                title={'Error'}
-                info={errorMessage ?? 'An Error occured'}
-            />
+            <DefaultSnackbar open={openSnackBar} handleClose={() => setOpenSnackBar(false)} severity={'error'} title={'Error'} info={errorMessage} />
             <div className={classes.form_container}>
                 <div className={`${classes.facebook}`} onClick={signInWithFacebook}>
                     <FacebookSvgComponent />

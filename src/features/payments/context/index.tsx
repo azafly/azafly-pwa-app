@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useContext, useState } from 'react';
-import { createPaymentIntent, CreatePaymentIntentBody as CreateIntentParams } from 'services/rest-client/user-payment';
+import { createPaymentIntent, CreatePaymentIntentBody as CreateIntentParams } from 'services/rest-clients/user-payment';
 import { IPaymentContext, PaymentContext } from './constants';
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { useGetPendingOfferByIdQuery } from 'api/generated/graphql';

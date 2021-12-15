@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { axiosClient } from 'services/rest-client';
+import { axiosClient } from 'services/rest-clients';
 import { useURLParams } from 'hooks/use-url-params';
 
 interface Status {

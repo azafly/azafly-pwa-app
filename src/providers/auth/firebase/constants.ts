@@ -1,7 +1,8 @@
 import { EmailAndPasswordSignUp } from './firebase';
+import { User as FirebaseUser } from 'firebase/auth';
 import 'firebase/firestore';
 
-export interface User {
+export interface LocalUser {
     displayName: string | null;
     email: string | null;
     photoURL: string | null;
@@ -9,6 +10,8 @@ export interface User {
     emailVerified: boolean;
     phone?: string | null;
 }
+
+export type User = LocalUser & Partial<FirebaseUser>;
 
 export type Action = 'sign-in' | 'sign-up' | 'verify-email' | 'reset-password' | 'sign-out' | 'auth-changed';
 
@@ -21,6 +24,7 @@ export interface AuthState {
     action?: Action;
     errorMessage?: string;
     successMessage?: string;
+    isNewUser: boolean;
 }
 
 export const defaultUser: User = {
@@ -37,7 +41,8 @@ export const defaultAuthState: AuthState = {
     isLoading: false,
     isError: false,
     isAuth: false,
-    token: null
+    token: null,
+    isNewUser: false
 };
 export interface AuthContext {
     signInWithGoogle: any;

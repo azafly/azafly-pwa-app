@@ -1,9 +1,10 @@
-import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect } from 'react';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { getStorage } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     applyActionCode,
+    browserSessionPersistence,
     confirmPasswordReset as confirmPassword,
     createUserWithEmailAndPassword,
     FacebookAuthProvider,
@@ -11,6 +12,7 @@ import {
     GoogleAuthProvider,
     onAuthStateChanged,
     sendPasswordResetEmail as sendPasswordReset,
+    setPersistence,
     signInWithEmailAndPassword as signInWithPass,
     signInWithPopup,
     UserCredential,
@@ -38,6 +40,8 @@ const authContext = createContext<AuthContext>(defaultAuhContext);
 function useFirebaseProviderAuth() {
     const dispatch = useDispatch<Dispatch>();
     const reduxAuthState = useSelector((state: RootState) => state.auth);
+    const setAuthPersistence = useCallback(() => setPersistence(firebaseAuth, browserSessionPersistence).catch(error => console.log(error)), []);
+    setAuthPersistence();
 
     const handleSignIn = async (signInCallback: Promise<UserCredential>) => {
         dispatch.auth.updateAuthState({ ...reduxAuthState, isLoading: true });
@@ -46,8 +50,18 @@ function useFirebaseProviderAuth() {
             const isNewUser = parseInt(user.metadata?.lastSignInTime ?? '0') - parseInt(user.metadata?.creationTime ?? '0') < 10;
             const token = await user.getIdToken(true);
             const to = isNewUser ? '/onboarding-update' : '/dashboard';
-            dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true, isError: false, isLoading: false, token, action: 'sign-in' });
+            dispatch.auth.updateAuthState({
+                ...reduxAuthState,
+                user,
+                isAuth: true,
+                isError: false,
+                isLoading: false,
+                token,
+                action: 'sign-in',
+                isNewUser
+            });
             location.replace(to);
+            dispatch.dashboard.setCurrentDashboardTab('dashboard');
         } catch ({ message }) {
             dispatch.auth.updateAuthState({
                 ...reduxAuthState,

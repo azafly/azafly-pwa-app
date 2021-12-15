@@ -1,5 +1,6 @@
 import { Grid, Hidden, Slide, Typography } from '@material-ui/core';
 import { formatFirstName } from 'libs';
+import Skeleton from 'react-loading-skeleton';
 
 import { TransactionListContainer } from '../transaction-list-container';
 import WalletContainer from '../wallet/wallet-container';
@@ -24,7 +25,7 @@ export const Transactions = ({ transactions, userData, loading, handleSendVerifi
             <Grid item md={10} className={classes.data__section}>
                 <Hidden xsDown>
                     <Typography color={'textSecondary'} className={classes.name}>
-                        Hey 👋🏾 {formatFirstName(userData?.display_name ?? '')}!
+                        Hey 👋🏾 {!userData?.display_name ? <Skeleton width={'10ch'} /> : `${formatFirstName(userData?.display_name)}!`}
                     </Typography>{' '}
                 </Hidden>
                 <WalletContainer />

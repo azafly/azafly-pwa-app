@@ -1,5 +1,4 @@
 import { Grid, Hidden } from '@material-ui/core';
-import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { sendEmailVerification } from 'firebase/auth';
@@ -12,7 +11,7 @@ import { firebaseAuth } from 'providers/auth/firebase/firebase';
 import { SideBar } from './side-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { Transactions as TransactionView } from './transactions';
-import { useGetUserTransactionsQuery } from 'api/generated/graphql';
+import { useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
 import { UserAccount } from 'views/user-account';
 import { useUserContext } from 'hooks/use-user-context';
 import CardList from './virtual-cards/card-list';
@@ -26,16 +25,13 @@ export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
 
-    const { user } = useSelector((rootState: RootState) => rootState.auth);
     const userData = useUserContext();
 
     const { currentSideBarTab } = useSelector((rootState: RootState) => rootState.dashboard);
 
     const dispatch = useDispatch<Dispatch>();
 
-    const id = userData?.id;
-
-    const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id } });
+    const [handleGetUserTransaction, { data: transactionData, loading }] = useGetUserTransactionsLazyQuery();
     const transactions = transactionData?.transaction;
 
     const handleSpeedDialVisibility = () => {
@@ -90,23 +86,13 @@ export default function Dashboard() {
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
 
     useEffect(() => {
-        dispatch.dashboard.setCurrentDashboardTab('dashboard');
-    }, [dispatch]);
+        const id = userData?.id;
+        handleGetUserTransaction({ variables: { id } });
+    }, [handleGetUserTransaction, userData]);
 
     useEffect(() => {
         fetchWallet();
     }, []);
-
-    if (userData?.is_new_user) {
-        return (
-            <Redirect
-                to={{
-                    pathname: '/onboarding-update',
-                    state: { referrer: '/dashboard' }
-                }}
-            />
-        );
-    }
 
     return (
         <div className={classes.dashboard_container}>

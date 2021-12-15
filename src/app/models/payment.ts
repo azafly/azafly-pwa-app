@@ -1,7 +1,7 @@
 import { Country, NIGERIA } from 'types/country-data';
 import { createModel } from '@rematch/core';
-import { getInitialOffer } from '../../services/rest-client/user-payment';
-import { GetOffersResponse } from 'services/rest-client/user-payment';
+import { getInitialOffer } from '../../services/rest-clients/user-payment';
+import { GetOffersResponse } from 'services/rest-clients/user-payment';
 import { RootModel } from './index';
 
 export interface RateInfo {

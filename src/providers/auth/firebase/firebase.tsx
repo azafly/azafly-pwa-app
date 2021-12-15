@@ -57,8 +57,7 @@ function useFirebaseProviderAuth() {
                 isError: false,
                 isLoading: false,
                 token,
-                action: 'sign-in',
-                isNewUser
+                action: 'sign-in'
             });
             location.replace(to);
             dispatch.dashboard.setCurrentDashboardTab('dashboard');

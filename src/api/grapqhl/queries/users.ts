@@ -14,6 +14,7 @@ export const GET_CURRENT_USER = gql`
             is_new_user
             address
             country
+            document_url
         }
     }
 `;

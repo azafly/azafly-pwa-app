@@ -1,11 +1,11 @@
 import { Grid, Hidden } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
 import { sendEmailVerification } from 'firebase/auth';
+import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
-import { Dispatch, RootState } from 'app/store';
+import { RootState } from 'app/store';
 import { fetchWallet } from './mock';
 import { firebaseAuth } from 'providers/auth/firebase/firebase';
 import { SideBar } from './side-bar';
@@ -28,8 +28,6 @@ export default function Dashboard() {
     const userData = useUserContext();
 
     const { currentSideBarTab } = useSelector((rootState: RootState) => rootState.dashboard);
-
-    const dispatch = useDispatch<Dispatch>();
 
     const [handleGetUserTransaction, { data: transactionData, loading }] = useGetUserTransactionsLazyQuery();
     const transactions = transactionData?.transaction;
@@ -87,7 +85,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         const id = userData?.id;
-        handleGetUserTransaction({ variables: { id } });
+        handleGetUserTransaction({ variables: { id } }).catch(error => console.log(error));
     }, [handleGetUserTransaction, userData]);
 
     useEffect(() => {

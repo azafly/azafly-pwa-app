@@ -41,6 +41,9 @@ export const useStyles = makeStyles((theme: Theme) =>
             }
         },
         edit: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             cursor: 'pointer',
             textAlign: 'center'
         },

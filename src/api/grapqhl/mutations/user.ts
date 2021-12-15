@@ -34,9 +34,32 @@ export const INSERT_NEW_USER = gql`
 `;
 
 export const UPDATE_USER = gql`
-    mutation updateUser($email: String!, $displayName: String!, $photoURL: String, $phone: String) {
-        update_users(where: { email: { _eq: $email } }, _set: { display_name: $displayName, image_url: $photoURL, phone: $phone }) {
+    mutation updateUser($email: String, $displayName: String, $photoURL: String, $phone: String, $document_url: String) {
+        update_users(
+            where: { email: { _eq: $email } }
+            _set: { display_name: $displayName, image_url: $photoURL, phone: $phone, document_url: $document_url }
+        ) {
             affected_rows
+        }
+    }
+`;
+
+export const UPDATE_USER_IMAGE_URL = gql`
+    mutation updateProfileImageUrl($id: uuid!, $photoURL: String!) {
+        update_users_by_pk(pk_columns: { id: $id }, _set: { image_url: $photoURL }) {
+            id
+            document_url
+            image_url
+        }
+    }
+`;
+
+export const UPDATE_USER_KYC_URL = gql`
+    mutation updateKYCDocUrl($id: uuid!, $document_url: String!) {
+        update_users_by_pk(pk_columns: { id: $id }, _set: { document_url: $document_url }) {
+            id
+            document_url
+            image_url
         }
     }
 `;

@@ -1,37 +1,38 @@
-import { ChangeEvent, Dispatch, memo, SetStateAction } from 'react';
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Button, Grid, Typography } from '@material-ui/core';
+import { memo } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 
-import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { UploadButton } from 'components';
-import { RootState } from 'app/store';
-import { useSelector } from 'react-redux';
+import { Dispatch as ReduxDispatch } from 'app/store';
 
 interface UploadIconTextProps {
     classes: Record<string, string>;
-    isEditable: boolean;
-    handleFileUpload: (e: ChangeEvent<HTMLInputElement>, ref: string) => void;
-    setIsEditable: Dispatch<SetStateAction<boolean>>;
-    fileUploadIsLoading?: boolean;
 }
-export const UploadIconText = memo(function UploadIconText({ classes, handleFileUpload, fileUploadIsLoading }: UploadIconTextProps) {
-    // TODO manage is editable
-    const { user } = useSelector((state: RootState) => state.auth);
+export const UploadIconText = memo(function UploadIconText({ classes }: UploadIconTextProps) {
+    const history = useHistory();
+    const dispatch = useDispatch<ReduxDispatch>();
 
-    return fileUploadIsLoading ? (
-        <ThreeDots />
-    ) : (
+    const handleGoToUpload = () => {
+        dispatch.onboarding.setActiveStep('kyc');
+        history.push({
+            pathname: '/onboarding-update',
+            state: {
+                referer: '/account'
+            }
+        });
+    };
+
+    return (
         <Grid item xs={12}>
-            <Box mt={5} textAlign={'center'} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                <Typography className={classes.kyc_title} variant={'h6'} align={'center'} gutterBottom>
+            <Box mt={5} sx={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ alignSelf: 'center' }}>
+                    <Button variant={'contained'} color={'primary'} onClick={handleGoToUpload} style={{ margin: 30 }}>
+                        Go to upload document
+                    </Button>
+                </div>
+                <Typography className={classes.kyc_title} variant={'h6'} gutterBottom>
                     My Identification Documents
                 </Typography>
-                <div>
-                    <UploadButton
-                        label={'Upload a new document'}
-                        className={`${classes.upload}`}
-                        uploadCallback={e => handleFileUpload(e, `/images/user-kyc/${user?.uid}-${new Date().toUTCString()}`)}
-                    />
-                </div>
             </Box>
         </Grid>
     );

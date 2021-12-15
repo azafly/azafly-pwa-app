@@ -2,7 +2,7 @@ import { Grid, Hidden, Slide, Typography } from '@material-ui/core';
 import { formatFirstName } from 'libs';
 import Skeleton from 'react-loading-skeleton';
 
-import { TransactionListContainer } from '../transaction-list-container';
+import { TransactionListContainer } from './transaction-list-container';
 import WalletContainer from '../wallet/wallet-container';
 import { CardSkeleton } from './card-skeleton';
 

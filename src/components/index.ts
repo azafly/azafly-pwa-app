@@ -1,7 +1,8 @@
-export { EmptyDataSvgComponent } from './empty-data';
 export { DefaultSnackbar } from './snackbar';
+export { EmptyDataSvgComponent } from './empty-data';
 export { GenericButton } from './button';
 export { GoogleAddressAutoComplete } from './google-address-autocomplete';
+export { LinearPercentageProgressBar } from './percentage-progress-bar';
 export { MenuListItem } from './menuListItem';
 export { MobileBackButton } from './mobile-back-button';
 export { NavBar } from './nav-bar';

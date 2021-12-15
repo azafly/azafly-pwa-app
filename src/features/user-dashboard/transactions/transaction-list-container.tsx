@@ -1,7 +1,7 @@
 import { Box, Typography, useMediaQuery } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core';
+import { FilterTab } from '../tab';
 import { memo, ReactNode, useCallback, useState } from 'react';
-import { FilterTab } from './tab';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
 import MobileDateRangePicker from '@mui/lab/MobileDateRangePicker';
@@ -9,13 +9,13 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
-import { CardContainer } from './transactions/card-container';
-import { CardSkeleton } from './transactions/card-skeleton';
-import { EmptyCardContainer } from './empty-transaction/card';
+import { CardContainer } from './card-container';
+import { CardSkeleton } from './card-skeleton';
+import { EmptyCardContainer } from '../empty-transaction/card';
 import { EmptyDataSvgComponent } from 'components';
-import { PendingOfferCardContainer } from './pending-offer/index';
-import { useUserContext } from 'hooks/use-user-context';
+import { PendingOfferCardContainer } from '../pending-offer/index';
 import { useGetUserPendingOffersQuery, useFilterTransactionsByDateRangeLazyQuery } from 'api/generated/graphql';
+import { useUserContext } from 'hooks/use-user-context';
 
 interface TransactionListContainerProps {
     transactions: readonly any[];
@@ -74,22 +74,19 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     const [filterTransactionByDate, { data: filteredTransactions, loading: isLoadingFilter }] = useFilterTransactionsByDateRangeLazyQuery();
     const classes = useStyles();
 
-    const userData = useUserContext();
+    const { id = '' } = useUserContext() ?? {};
 
     const handleDateRangeSelect = useCallback(
         (startEnd: any) => {
             const [startDate, endDate] = startEnd;
-
-            const id = userData?.id ?? '',
-                start_date = startDate.toUTCString(),
-                end_date = endDate.toUTCString();
+            const start_date = startDate.toUTCString();
+            const end_date = endDate.toUTCString();
             filterTransactionByDate({ variables: { id, start_date, end_date } });
             setOpenDatePicker(false);
         },
-        [filterTransactionByDate, userData]
+        [filterTransactionByDate, id]
     );
 
-    const id = userData?.id;
     const { data: offerData } = useGetUserPendingOffersQuery({ variables: { id } });
 
     const isMobile = useMediaQuery('(max-width:960px)');

@@ -8,7 +8,9 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 const useStyles = makeStyles(() =>
     createStyles({
         card__container: {
-            padding: 10
+            padding: 10,
+            border: '1px solid #DCDCDC',
+            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)'
         },
         action: {
             fontSize: '0.85em',

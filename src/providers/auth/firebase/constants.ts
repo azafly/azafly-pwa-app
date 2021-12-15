@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { EmailAndPasswordSignUp } from './firebase';
 import 'firebase/firestore';
 
@@ -9,32 +8,19 @@ export interface User {
     uid: string;
     emailVerified: boolean;
     phone?: string | null;
-    sendEmailVerification: Function;
 }
 
-export interface FirebaseUser {
-    displayName: string;
-    firebaseId: string;
-    email: string;
-    phone?: string | null;
-    emailVerified: boolean;
-    photoURL: string | null;
-}
+export type Action = 'sign-in' | 'sign-up' | 'verify-email' | 'reset-password' | 'sign-out' | 'auth-changed';
 
-export const defaultFirebaseUser: FirebaseUser = {
-    displayName: '',
-    firebaseId: '',
-    email: '',
-    phone: null,
-    emailVerified: false,
-    photoURL: null
-};
 export interface AuthState {
     user: User | null;
     isLoading: boolean;
     isError: boolean;
     isAuth: boolean;
     token: string | null;
+    action?: Action;
+    errorMessage?: string;
+    successMessage?: string;
 }
 
 export const defaultUser: User = {
@@ -43,7 +29,6 @@ export const defaultUser: User = {
     photoURL: '',
     uid: '',
     emailVerified: false,
-    sendEmailVerification: () => {},
     phone: null
 };
 
@@ -64,9 +49,6 @@ export interface AuthContext {
     signupWithEmailPassword: (additionalInfo: EmailAndPasswordSignUp) => Promise<void>;
     verifyPasswordCode: any;
     verifyEmail: any;
-    setAuthError: Dispatch<SetStateAction<string>>;
-    authError: string;
-    handleUpdateFirebaseProfile: any;
 }
 
 export const defaultAuhContext: AuthContext = {
@@ -78,8 +60,5 @@ export const defaultAuhContext: AuthContext = {
     signinWithEmailPassword: () => new Promise(() => {}),
     signupWithEmailPassword: () => new Promise(() => {}),
     verifyPasswordCode: () => new Promise(() => {}),
-    verifyEmail: () => new Promise(() => {}),
-    setAuthError: () => {},
-    authError: '',
-    handleUpdateFirebaseProfile: () => {}
+    verifyEmail: () => new Promise(() => {})
 };

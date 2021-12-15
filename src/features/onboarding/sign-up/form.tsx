@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Button, Checkbox, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import * as yup from 'yup';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import * as yup from 'yup';
 
-import { addUser } from 'providers/auth/firebase/firebase';
 import { DefaultSnackbar } from 'components';
-import { RootState } from 'app/store';
 import { FacebookSvgComponent } from 'components/icons';
+import { RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useSignUpFormStyles } from './classes';
@@ -41,24 +39,15 @@ const validationSchema = yup.object().shape({
     terms: yup.bool().oneOf([true], 'Accept Terms & Conditions is required').required('Accept Terms & Conditions is required')
 });
 
-enum SignUpMethod {
-    FACEBOOK = 'FACEBOOK',
-    GOOGLE = 'GOOGLE',
-    EMAIL_AND_PASSWORD = 'EMAIL_AND_PASSWORD '
-}
-
 export const SignUpForm = () => {
     const classes = useSignUpFormStyles();
-    const [isAuthStateLoading, setAuthLoadingState] = useState(false);
-    const [authError, setAuthError] = useState('');
     const [openSnackBar, setOpenSnackBar] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-    const { user } = useSelector((state: RootState) => state.auth);
-
     const { signupWithEmailPassword, signInWithFacebook, signInWithGoogle } = useFirebaseAuthContext();
+    const { errorMessage, isLoading } = useSelector((state: RootState) => state.auth);
 
     const formik = useFormik({
         initialValues: {
@@ -70,54 +59,28 @@ export const SignUpForm = () => {
             terms: ''
         },
         validationSchema: validationSchema,
-        onSubmit: values => {
-            handleSignUp(SignUpMethod.EMAIL_AND_PASSWORD, values.email, values.password, `${values.firstName} ${values.lastName}`);
+        onSubmit: ({ email, password }) => {
+            signupWithEmailPassword({ email, password });
         }
     });
 
     type FormValue = keyof typeof formik.initialValues;
 
-    const handleSignUp = (method: SignUpMethod, email?: string, password?: string, displayName?: string) => {
-        setAuthLoadingState(true);
-        switch (method) {
-            case SignUpMethod.FACEBOOK:
-                return signInWithFacebook();
-            case SignUpMethod.GOOGLE:
-                return signInWithGoogle();
-            case SignUpMethod.EMAIL_AND_PASSWORD:
-                if (!email || !password || !displayName) return;
-                return signupWithEmailPassword({ email, password, displayName })
-                    .then(() => {
-                        setAuthLoadingState(false);
-                        addUser({
-                            email,
-                            displayName,
-                            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                            firebaseId: user?.uid ?? '',
-                            phone: null,
-                            emailVerified: false,
-                            photoURL: null
-                        });
-                    })
-                    .catch(({ message }: Record<string, string>): void => {
-                        setOpenSnackBar(true);
-                        setAuthLoadingState(false);
-                        setAuthError(message);
-                    });
-            default:
-                return null;
-        }
-    };
-
     return (
         <div className={classes.signUpformRoot}>
-            <DefaultSnackbar open={openSnackBar} handleClose={() => setOpenSnackBar(false)} severity={'error'} title={'Error'} info={authError} />
+            <DefaultSnackbar
+                open={openSnackBar}
+                handleClose={() => setOpenSnackBar(false)}
+                severity={'error'}
+                title={'Error'}
+                info={errorMessage ?? 'An Error occured'}
+            />
             <div className={classes.form_container}>
-                <div className={`${classes.facebook}`} onClick={() => handleSignUp(SignUpMethod.FACEBOOK)}>
+                <div className={`${classes.facebook}`} onClick={signInWithFacebook}>
                     <FacebookSvgComponent />
                     <div className={'text'}>Facebook</div>
                 </div>
-                <div className={` ${classes.google}`} onClick={() => handleSignUp(SignUpMethod.GOOGLE)}>
+                <div className={` ${classes.google}`} onClick={signInWithGoogle}>
                     <img className='google-icon-svg' src={Logo} alt={'goggle-logo'} />
                     <div className={'text'}>Google</div>
                 </div>
@@ -208,7 +171,7 @@ export const SignUpForm = () => {
                         {formik.touched.terms && formik.errors.terms}
                     </p>
                     <Button color='primary' variant='contained' fullWidth type='submit' style={{ height: '40px' }}>
-                        {isAuthStateLoading ? <ThreeDots /> : ' Submit'}
+                        {isLoading ? <ThreeDots /> : ' Submit'}
                     </Button>
                 </form>
             </div>

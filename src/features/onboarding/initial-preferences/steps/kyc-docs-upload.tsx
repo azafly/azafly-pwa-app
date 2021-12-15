@@ -10,7 +10,7 @@ import { Dispatch, RootState } from 'app/store';
 import { storage } from 'providers/auth/firebase';
 import { ThreeDots } from 'components/css-loaders/three-dots';
 import { useUpdateNewUserMutation } from 'api/generated/graphql';
-import client from 'libs/apollo-client';
+import { getApolloClient } from 'libs/apollo-client';
 import Modal from '../modal';
 
 export const KYCDocuments = () => {
@@ -37,33 +37,33 @@ export const KYCDocuments = () => {
 
     const handleSetNoLongerNewUser = () => {
         updateNewUserMutation();
-        client.refetchQueries({
-            include: ['getUserTransactions', 'getUserPendingOffers', 'getCurrentUserByEmail']
-        });
+        // client.refetchQueries({
+        //     include: ['getUserTransactions', 'getUserPendingOffers', 'getCurrentUserByEmail']
+        // });
     };
     const handleFileUpload = (e: ChangeEvent<HTMLInputElement>, ref: string) => {
-        const file = e?.target?.files?.[0];
-        if (!file) return;
-        const storageRef = storage.ref(ref).put(file);
-        storageRef.on(
-            'state-changed',
-            snapshot => {
-                if (snapshot.state === 'running') {
-                    setFileUploadLoading(true);
-                }
-            },
-            () => {
-                setAlertState({ ...alertState, show: true, text: 'Error uploading your documents', severity: 'error', title: 'Error' });
-            },
-            () => {
-                storageRef.snapshot.ref.getDownloadURL().then(url => {
-                    dispatch.onboarding.setDocumentUrl(url);
-                    setAlertState({ ...alertState, show: true, text: 'Profile updated successfully 🎉', severity: 'success', title: 'Success' });
-                    setFileUploadLoading(false);
-                    handleSetNoLongerNewUser();
-                });
-            }
-        );
+        // const file = e?.target?.files?.[0];
+        // if (!file) return;
+        // const storageRef = storage.ref(ref).put(file);
+        // storageRef.on(
+        //     'state-changed',
+        //     snapshot => {
+        //         if (snapshot.state === 'running') {
+        //             setFileUploadLoading(true);
+        //         }
+        //     },
+        //     () => {
+        //         setAlertState({ ...alertState, show: true, text: 'Error uploading your documents', severity: 'error', title: 'Error' });
+        //     },
+        //     () => {
+        //         storageRef.snapshot.ref.getDownloadURL().then(url => {
+        //             dispatch.onboarding.setDocumentUrl(url);
+        //             setAlertState({ ...alertState, show: true, text: 'Profile updated successfully 🎉', severity: 'success', title: 'Success' });
+        //             setFileUploadLoading(false);
+        //             handleSetNoLongerNewUser();
+        //         });
+        //     }
+        // );
     };
 
     const { show, severity, text, title } = alertState;

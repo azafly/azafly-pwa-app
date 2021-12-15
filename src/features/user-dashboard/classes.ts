@@ -9,6 +9,7 @@ export const useCardStyles = makeStyles((theme: Theme) =>
             maxWidth: 900,
             margin: 'auto',
             border: '1px solid #DCDCDC',
+            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             padding: 0,
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
             [theme.breakpoints.down('md')]: {

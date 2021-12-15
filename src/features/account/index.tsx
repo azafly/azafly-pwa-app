@@ -10,13 +10,13 @@ import { ProfilePicture } from './profile-picture';
 import { RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { UploadIconText } from './upload-icon-text';
-import { useFirebaseAuthContext, storage } from 'providers/auth/firebase';
+import { storage } from 'providers/auth/firebase';
 import { USER_ACCOUNT_FORM_FIELDS } from './utils';
 import { useUpdateUserMutation } from 'api/generated/graphql';
 import { useUserContext } from 'hooks/use-user-context';
 
 import { useStyles } from './classes';
-import client from '../../libs/apollo-client';
+import { getApolloClient } from '../../libs/apollo-client';
 const UserAccount = () => {
     const [error, setError] = useState('');
     const [files, setFiles] = useState<string[]>([]);
@@ -25,8 +25,7 @@ const UserAccount = () => {
     const [makeEditable, setEditable] = useState(false);
     const [success, setSuccess] = useState('');
 
-    const { handleUpdateFirebaseProfile } = useFirebaseAuthContext();
-    const { user } = useSelector((state: RootState) => state.auth);
+    const { user, token } = useSelector((state: RootState) => state.auth);
 
     const userData = useUserContext();
 
@@ -44,7 +43,7 @@ const UserAccount = () => {
             .then(() => {
                 setAuthLoadingState(false);
                 setSuccess('Profile updated successfully 🙌');
-                client.refetchQueries({
+                getApolloClient(token).refetchQueries({
                     include: ['getCurrentUserByEmail']
                 });
             })
@@ -87,43 +86,43 @@ const UserAccount = () => {
     const showAlert = useMemo(() => Boolean(success) || Boolean(error), [success, error]);
 
     const handleUpload = (e: ChangeEvent<HTMLInputElement>, ref: string) => {
-        const file = e?.target?.files?.[0];
-        if (!file) return;
-        const storageRef = storage.ref(ref).put(file);
-        storageRef.on(
-            'state-changed',
-            snapshot => {
-                if (snapshot.state === 'running') {
-                    setFileUploadLoading(true);
-                }
-            },
-            () => {
-                setError('Error uploading your documents');
-            },
-            () => {
-                storageRef.snapshot.ref.getDownloadURL().then(photoURL => {
-                    setSuccess('Profile updated successfully 🎉');
-                    setFileUploadLoading(false);
-                    handleUpdateFirebaseProfile(user, { photoURL });
-                    //TODO update in Hasura
-                });
-            }
-        );
+        // const file = e?.target?.files?.[0];
+        // if (!file) return;
+        // const storageRef = storage.ref(ref).put(file);
+        // storageRef.on(
+        //     'state-changed',
+        //     snapshot => {
+        //         if (snapshot.state === 'running') {
+        //             setFileUploadLoading(true);
+        //         }
+        //     },
+        //     () => {
+        //         setError('Error uploading your documents');
+        //     },
+        //     () => {
+        //         storageRef.snapshot.ref.getDownloadURL().then(photoURL => {
+        //             setSuccess('Profile updated successfully 🎉');
+        //             setFileUploadLoading(false);
+        //             handleUpdateFirebaseProfile(user, { photoURL });
+        //             //TODO update in Hasura
+        //         });
+        //     }
+        // );
     };
 
     useEffect(() => {
-        const fetchImages = async (): Promise<string[]> => {
-            const result = await storage.ref().child('/images/user-kyc/').listAll();
-            const urlPromises = result.items.map(imageRef => imageRef.getDownloadURL());
-            return Promise.all(urlPromises);
+        const fetchImages = async () => {
+            // const result = await storage.ref().child('/images/user-kyc/').listAll();
+            // const urlPromises = result.items.map(imageRef => imageRef.getDownloadURL());
+            // return Promise.all(urlPromises);
         };
 
         const loadImages = async () => {
-            const urls = await fetchImages();
-            if (user?.uid) {
-                const _urls = urls.filter(url => url.includes(`${user?.uid}-id`)) ?? [];
-                setFiles(_urls);
-            }
+            // const urls = await fetchImages();
+            // if (user?.uid) {
+            //     const _urls = urls.filter(url => url.includes(`${user?.uid}-id`)) ?? [];
+            //     setFiles(_urls);
+            // }
         };
         loadImages();
     }, [user?.uid]);

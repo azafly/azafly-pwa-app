@@ -2,16 +2,18 @@ import { Grid, Hidden } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { sendEmailVerification } from 'firebase/auth';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { Dispatch, RootState } from 'app/store';
 import { fetchWallet } from './mock';
+import { firebaseAuth } from 'providers/auth/firebase/firebase';
 import { SideBar } from './side-bar';
-import { UserAccount } from 'views/user-account';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { Transactions as TransactionView } from './transactions';
 import { useGetUserTransactionsQuery } from 'api/generated/graphql';
+import { UserAccount } from 'views/user-account';
 import { useUserContext } from 'hooks/use-user-context';
 import CardList from './virtual-cards/card-list';
 
@@ -58,18 +60,21 @@ export default function Dashboard() {
             return;
         }
         setLoading(true);
-        user?.sendEmailVerification()
-            .then(() => {
-                setOpenSnackBar(true);
-                setSent('Verification Link sent successfully. Check your email to verify');
-                localStorage.setItem('verification_email_sent', 'true');
-                setLoading(false);
-            })
-            .catch(() => {
-                setOpenSnackBar(true);
-                setSent('Error sending Verification Link');
-                setLoading(false);
-            });
+        const currentUser = firebaseAuth.currentUser;
+        if (currentUser) {
+            sendEmailVerification(currentUser)
+                .then(() => {
+                    setOpenSnackBar(true);
+                    setSent('Verification Link sent successfully. Check your email to verify');
+                    localStorage.setItem('verification_email_sent', 'true');
+                    setLoading(false);
+                })
+                .catch(() => {
+                    setOpenSnackBar(true);
+                    setSent('Error sending Verification Link');
+                    setLoading(false);
+                });
+        }
     };
 
     const emailLink = isSendingLink ? (

@@ -20,38 +20,15 @@ const validationSchema = yup.object().shape({
     password: yup.string().required('Password is required')
 });
 
-enum SignInMethod {
-    FACEBOOK = 'FACEBOOK',
-    GOOGLE = 'GOOGLE',
-    EMAIL_AND_PASSWORD = 'EMAIL_AND_PASSWORD '
-}
-
 export const SignInForm = () => {
     const { signInWithFacebook, signInWithGoogle, signinWithEmailPassword } = useFirebaseAuthContext();
 
     const { isLoading, isError } = useSelector((state: RootState) => state.auth);
-    const [openSnackBar, setOpenSnackBar] = useState(isError);
+    const [_, setOpenSnackBar] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
-
-    const handleSignin = (method: SignInMethod, email?: string, password?: string) => {
-        switch (method) {
-            case SignInMethod.FACEBOOK:
-                signInWithFacebook();
-                break;
-            case SignInMethod.GOOGLE:
-                signInWithGoogle();
-
-                break;
-            case SignInMethod.EMAIL_AND_PASSWORD:
-                signinWithEmailPassword(email, password);
-                break;
-            default:
-                return null;
-        }
-    };
 
     const formik = useFormik({
         initialValues: {
@@ -59,8 +36,8 @@ export const SignInForm = () => {
             password: ''
         },
         validationSchema,
-        onSubmit: values => {
-            handleSignin(SignInMethod.EMAIL_AND_PASSWORD, values.email, values.password);
+        onSubmit: (email, password) => {
+            signinWithEmailPassword({ email, password });
         }
     });
 
@@ -68,18 +45,18 @@ export const SignInForm = () => {
     return (
         <div className={classes.signInformRoot}>
             <DefaultSnackbar
-                open={openSnackBar}
+                open={isError && !isLoading}
                 handleClose={() => setOpenSnackBar(false)}
                 severity={'error'}
                 title={'Error'}
                 info={'Error with authentication'}
             />
             <div className={classes.form_container}>
-                <div className={classes.facebook} onClick={() => handleSignin(SignInMethod.FACEBOOK)}>
+                <div className={classes.facebook} onClick={signInWithFacebook}>
                     <FacebookSvgComponent />
                     <div className='text'>Facebook</div>
                 </div>
-                <div className={classes.google} onClick={() => handleSignin(SignInMethod.GOOGLE)}>
+                <div className={classes.google} onClick={signInWithGoogle}>
                     <img className='google-icon-svg' src={Logo} />
                     <div className='text'>Google</div>
                 </div>

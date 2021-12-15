@@ -17,29 +17,31 @@ const logErrors = onError(({ graphQLErrors, networkError }) => {
 const cache = new InMemoryCache();
 
 // pass authentication header when exists
-const authMiddleware = new ApolloLink((operation: any, forward: any) => {
-    if (localStorage.getItem('token')) {
-        operation.setContext({
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        });
-    }
-    return forward(operation);
-});
+const authMiddleware = (token: string | null) => {
+    return new ApolloLink((operation: any, forward: any) => {
+        if (token) {
+            operation.setContext({
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            });
+        }
+        return forward(operation);
+    });
+};
 
 // Set up http link
-const httpLink = new HttpLink({
-    uri: HTTPS_URL,
-    headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-});
+const httpLink = (token: string | null) =>
+    new HttpLink({
+        uri: HTTPS_URL,
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
 
 // Apollo
-const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-    link: from([logErrors, authMiddleware, httpLink]),
-    cache
-});
-
-export default client;
+export const getApolloClient = (token: string | null): ApolloClient<NormalizedCacheObject> =>
+    new ApolloClient({
+        link: from([logErrors, authMiddleware(token), httpLink(token)]),
+        cache
+    });

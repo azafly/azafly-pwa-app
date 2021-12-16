@@ -34,4 +34,4 @@ jobs:
           directory: './'
           file_name: .env.staging
       - name: Deploy
-        run: yarn install && yarn deploy:staging
+        run: npm install && npm run deploy:staging

@@ -58,13 +58,14 @@ export const useStyles = makeStyles((theme: Theme) =>
             WebkitAppearance: 'none',
             border: 'none',
             width: '100%',
-            padding: 10
+            padding: 10,
+            textTransform: 'capitalize'
         },
         picture: {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: theme.colors.base,
+            background: 'white',
             padding: '4rem',
             borderRadius: '50%',
             marginBottom: 10,

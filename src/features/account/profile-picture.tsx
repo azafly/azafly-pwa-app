@@ -68,7 +68,7 @@ export const ProfilePicture = memo(function ProfilePicture({ classes }: ProfileP
                 />
             }
         >
-            {fileUploadLoading && <ThreeDots />}
+            {fileUploadLoading && <ThreeDots variantColor={'base'} />}
         </Badge>
     );
 });

@@ -1,7 +1,7 @@
 import { Slide, Typography } from '@mui/material';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { CardContainer } from './card-container';
-import { FilterTab } from '../tab';
+import { FilterTab } from '../filter-tab-heading';
 import { Avatar, Stack } from '@mui/material';
 
 const mockData = [

@@ -1,6 +1,6 @@
 import { Box, Typography, useMediaQuery } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core';
-import { FilterTab } from '../tab';
+import { FilterTab } from '../filter-tab-heading';
 import { memo, ReactNode, useCallback, useState } from 'react';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';

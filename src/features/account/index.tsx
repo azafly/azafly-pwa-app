@@ -52,7 +52,7 @@ const UserAccount = () => {
     const formik = useFormik({
         initialValues: {
             fullname: userData?.display_name,
-            address: '',
+            address: userData?.address,
             phone: userData?.phone,
             dob: '2017-05-24',
             photoURL: userData?.image_url

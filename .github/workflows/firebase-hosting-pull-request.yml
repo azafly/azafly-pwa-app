@@ -37,4 +37,4 @@ jobs:
         with:
           firebase-token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Deploy
-        run: yarn && env-cmd -f .env.staging react-app-rewired build && firebase deploy -P staging
+        run: yarn && yarn deploy:staging

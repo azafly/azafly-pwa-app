@@ -1,50 +1,43 @@
-import { Button, Grid, Slide, TextField } from '@material-ui/core';
-import { useEffect, useState, useMemo, ChangeEvent } from 'react';
+import { Box, Grid, Slide, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
+import { useState, useMemo } from 'react';
+import EditIcon from 'components/icons/edit.svg';
 
 import { DefaultSnackbar } from 'components';
 import { delay } from 'libs';
 import { FilesContainer } from './files-container';
+import { getApolloClient } from '../../libs/apollo-client';
 import { ProfilePicture } from './profile-picture';
 import { RootState } from 'app/store';
-import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { UploadIconText } from './upload-icon-text';
-import { useFirebaseAuthContext, storage } from 'providers/auth/firebase';
 import { USER_ACCOUNT_FORM_FIELDS } from './utils';
 import { useUpdateUserMutation } from 'api/generated/graphql';
 import { useUserContext } from 'hooks/use-user-context';
 
 import { useStyles } from './classes';
-import client from '../../libs/apollo-client';
+
 const UserAccount = () => {
     const [error, setError] = useState('');
-    const [files, setFiles] = useState<string[]>([]);
-    const [fileUploadLoading, setFileUploadLoading] = useState(false);
-    const [isAuthStateIsLoading, setAuthLoadingState] = useState(false);
     const [makeEditable, setEditable] = useState(false);
     const [success, setSuccess] = useState('');
 
-    const { handleUpdateFirebaseProfile } = useFirebaseAuthContext();
-    const { user } = useSelector((state: RootState) => state.auth);
-
+    const { user, token } = useSelector((state: RootState) => state.auth);
     const userData = useUserContext();
 
     const [updateUserMutation] = useUpdateUserMutation();
-    const handleUpdateUserProfile = ({ fullname: displayName, phone, photoURL }: ProfileData) => {
-        setAuthLoadingState(true);
+
+    const handleUpdateUserProfile = ({ fullname: displayName, phone }: ProfileData) => {
         updateUserMutation({
             variables: {
                 email: user?.email ?? '',
                 displayName,
-                phone,
-                photoURL
+                phone
             }
         })
             .then(() => {
-                setAuthLoadingState(false);
                 setSuccess('Profile updated successfully 🙌');
-                client.refetchQueries({
+                getApolloClient(token).refetchQueries({
                     include: ['getCurrentUserByEmail']
                 });
             })
@@ -59,7 +52,7 @@ const UserAccount = () => {
     const formik = useFormik({
         initialValues: {
             fullname: userData?.display_name,
-            address: '',
+            address: userData?.address,
             phone: userData?.phone,
             dob: '2017-05-24',
             photoURL: userData?.image_url
@@ -86,55 +79,6 @@ const UserAccount = () => {
     const alertSeverity = success ? 'success' : 'error';
     const showAlert = useMemo(() => Boolean(success) || Boolean(error), [success, error]);
 
-    const handleUpload = (e: ChangeEvent<HTMLInputElement>, ref: string) => {
-        const file = e?.target?.files?.[0];
-        if (!file) return;
-        const storageRef = storage.ref(ref).put(file);
-        storageRef.on(
-            'state-changed',
-            snapshot => {
-                if (snapshot.state === 'running') {
-                    setFileUploadLoading(true);
-                }
-            },
-            () => {
-                setError('Error uploading your documents');
-            },
-            () => {
-                storageRef.snapshot.ref.getDownloadURL().then(photoURL => {
-                    setSuccess('Profile updated successfully 🎉');
-                    setFileUploadLoading(false);
-                    handleUpdateFirebaseProfile(user, { photoURL });
-                    //TODO update in Hasura
-                });
-            }
-        );
-    };
-
-    useEffect(() => {
-        const fetchImages = async (): Promise<string[]> => {
-            const result = await storage.ref().child('/images/user-kyc/').listAll();
-            const urlPromises = result.items.map(imageRef => imageRef.getDownloadURL());
-            return Promise.all(urlPromises);
-        };
-
-        const loadImages = async () => {
-            const urls = await fetchImages();
-            if (user?.uid) {
-                const _urls = urls.filter(url => url.includes(`${user?.uid}-id`)) ?? [];
-                setFiles(_urls);
-            }
-        };
-        loadImages();
-    }, [user?.uid]);
-
-    /* TODO
-    -  Make docs previewable
-    -  Disable everything until click is done
-    -  Immediately replace image across app with new profile pics. (update in FB and Hasura)
-    -  Handle error
-    */
-
     return (
         <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
             <div className={classes.user_account__root}>
@@ -145,13 +89,10 @@ const UserAccount = () => {
                     title={alertTitle}
                     info={success || error}
                 />
-                <ProfilePicture
-                    classes={classes}
-                    isEditable={makeEditable}
-                    handleFileUpload={handleUpload}
-                    setIsEditable={setEditable}
-                    fileUploadIsLoading={fileUploadLoading}
-                />
+                <ProfilePicture classes={classes} />
+                <Box onClick={() => setEditable(!makeEditable)} className={classes.edit} mt={1}>
+                    <img src={EditIcon} alt={'edit'} />
+                </Box>
                 <div className={classes.form_container}>
                     <form onSubmit={formik.handleSubmit}>
                         <Grid container spacing={3}>
@@ -181,21 +122,10 @@ const UserAccount = () => {
                                     </Grid>
                                 );
                             })}
-                            <UploadIconText
-                                classes={classes}
-                                isEditable={makeEditable}
-                                handleFileUpload={handleUpload}
-                                setIsEditable={setEditable}
-                                fileUploadIsLoading={fileUploadLoading}
-                            />
                         </Grid>
-                        <FilesContainer files={files} className={classes.files} />
-                        {makeEditable && (
-                            <Button color='primary' variant='contained' fullWidth type='submit' className={classes.submit}>
-                                {isAuthStateIsLoading ? <ThreeDots /> : 'Save Changes'}
-                            </Button>
-                        )}
                     </form>
+                    <UploadIconText classes={classes} />
+                    <FilesContainer files={[userData?.document_url ?? '']} className={classes.files} />
                 </div>
             </div>
         </Slide>

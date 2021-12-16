@@ -1,11 +1,12 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Box, Grid } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import Chip from '@mui/material/Chip';
 
 import { AfricaCountriesSelect } from './source-country/country-select';
 import { CurrencyAmount } from './target-country/currency-amount';
 import { Country, NIGERIA, useCountryList } from '../../hooks/use-country-list';
-import { usePaymentContext } from '../../context';
+import { RootState } from 'app/store';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -51,12 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export function RatesInfo() {
     const classes = useStyles();
     const { popularSourceCountries } = useCountryList();
-
-    const {
-        rateInfoProps: { sourceCountry, handleSourceCountryChange },
-        paymentError
-    } = usePaymentContext();
-
+    const { apiFetchState } = useSelector((state: RootState) => state.payment);
     const getOptionLabel = (option: Country) => `${option.emoji ?? ''} ${' '}${option.currency.code}`;
     const getOptionDisabled = (option: Country) => option.isComingSoon || option.isNotSupported;
 
@@ -65,14 +61,14 @@ export function RatesInfo() {
             <div>
                 <Grid container>
                     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                        {paymentError && <Chip color={'error'} label={paymentError} size={'medium'} sx={{ marginBottom: 3 }} variant={'outlined'} />}
+                        {apiFetchState?.result === 'error' && (
+                            <Chip color={'error'} label={''} size={'medium'} sx={{ marginBottom: 3 }} variant={'outlined'} />
+                        )}
                     </Box>
                     <Grid item xs={12}>
                         <AfricaCountriesSelect
-                            handleCountryChange={handleSourceCountryChange}
                             classKeys={{ option: classes.option }}
                             options={[NIGERIA, ...popularSourceCountries]}
-                            defaultOption={sourceCountry}
                             getOptionLabel={getOptionLabel}
                             getOptionDisabled={getOptionDisabled}
                         />

@@ -7,11 +7,12 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 
 import { DefaultSnackbar, UploadButton } from 'components';
 import { Dispatch, RootState } from 'app/store';
-import { storage } from 'providers/auth/firebase';
 import { ThreeDots } from 'components/css-loaders/three-dots';
-import { useUpdateNewUserMutation } from 'api/generated/graphql';
-import client from 'libs/apollo-client';
+import { UpdateKycDocUrlMutationVariables, useUpdateKycDocUrlMutation, useUpdateNewUserMutation } from 'api/generated/graphql';
 import Modal from '../modal';
+import { uploadBytesResumable, getDownloadURL, ref as fbStorageRef } from 'firebase/storage';
+import { storage } from 'providers/auth/firebase';
+import { useUserContext } from 'hooks/use-user-context';
 
 export const KYCDocuments = () => {
     const [fileUploadLoading, setFileUploadLoading] = useState(false);
@@ -25,6 +26,9 @@ export const KYCDocuments = () => {
         setAlertState({ ...alertState, show: false });
     };
 
+    const userData = useUserContext();
+
+    const [handleUpdateDocUrl] = useUpdateKycDocUrlMutation();
     const [updateNewUserMutation] = useUpdateNewUserMutation({
         variables: {
             email: user?.email ?? '',
@@ -37,30 +41,34 @@ export const KYCDocuments = () => {
 
     const handleSetNoLongerNewUser = () => {
         updateNewUserMutation();
-        client.refetchQueries({
-            include: ['getUserTransactions', 'getUserPendingOffers', 'getCurrentUserByEmail']
-        });
     };
     const handleFileUpload = (e: ChangeEvent<HTMLInputElement>, ref: string) => {
         const file = e?.target?.files?.[0];
         if (!file) return;
-        const storageRef = storage.ref(ref).put(file);
-        storageRef.on(
-            'state-changed',
+        const imagesRef = fbStorageRef(storage, ref);
+        const uploadTask = uploadBytesResumable(imagesRef, file);
+
+        uploadTask.on(
+            'state_changed',
             snapshot => {
                 if (snapshot.state === 'running') {
                     setFileUploadLoading(true);
                 }
             },
-            () => {
+            uploadingError => {
+                setFileUploadLoading(false);
                 setAlertState({ ...alertState, show: true, text: 'Error uploading your documents', severity: 'error', title: 'Error' });
+                console.log(uploadingError);
             },
             () => {
-                storageRef.snapshot.ref.getDownloadURL().then(url => {
+                setFileUploadLoading(false);
+                getDownloadURL(uploadTask.snapshot.ref).then(url => {
                     dispatch.onboarding.setDocumentUrl(url);
                     setAlertState({ ...alertState, show: true, text: 'Profile updated successfully 🎉', severity: 'success', title: 'Success' });
                     setFileUploadLoading(false);
                     handleSetNoLongerNewUser();
+                    const variables: UpdateKycDocUrlMutationVariables = { id: userData?.id ?? '', document_url: url };
+                    handleUpdateDocUrl({ variables }).catch(error => console.log(error));
                 });
             }
         );

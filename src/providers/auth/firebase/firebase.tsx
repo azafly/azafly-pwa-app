@@ -1,190 +1,172 @@
-import { createContext, PropsWithChildren, useState, useContext, useEffect } from 'react';
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect } from 'react';
+import { getDatabase, ref, onValue } from 'firebase/database';
+import { getStorage } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+    applyActionCode,
+    browserSessionPersistence,
+    confirmPasswordReset as confirmPassword,
+    createUserWithEmailAndPassword,
+    FacebookAuthProvider,
+    getAuth,
+    GoogleAuthProvider,
+    onAuthStateChanged,
+    sendPasswordResetEmail as sendPasswordReset,
+    setPersistence,
+    signInWithEmailAndPassword as signInWithPass,
+    signInWithPopup,
+    UserCredential,
+    verifyPasswordResetCode as verifyPassword
+} from 'firebase/auth';
 
-import { AuthContext, defaultAuhContext, FirebaseUser } from './constants';
-import { RootState, Dispatch } from 'app/store';
-import { firebaseApp, firebaseConfig } from './firebase-config';
+import { AuthContext, defaultAuhContext } from './constants';
+import { firebaseApp } from './firebase-config';
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
+import { RootState, Dispatch } from 'app/store';
 
-import 'firebase/auth';
-import 'firebase/database';
-import 'firebase/firestore';
-import 'firebase/storage';
-
-firebaseApp.initializeApp(firebaseConfig);
-const fireStore = firebaseApp.firestore();
-export const storage = firebaseApp.storage();
+export const database = getDatabase(firebaseApp);
+export const firebaseAuth = getAuth();
+export const storage = getStorage(firebaseApp);
 
 const HASURA_CLAIMS_URL = 'https://hasura.io/jwt/claims';
 
 export interface EmailAndPasswordSignUp {
     email: string;
     password: string;
-    displayName: string;
 }
 
 const authContext = createContext<AuthContext>(defaultAuhContext);
 
-export const getUserById = async (firebaseId: string) => {
-    return new Promise((resolve, reject) => {
-        fireStore.collection(LOCAL_STORAGE_KEY.USER).onSnapshot(snapshot => {
-            const updatedData = snapshot.docs.map(doc => doc.data());
-            const updatedUser = updatedData.filter(({ user }) => user.firebaseId === firebaseId);
-            resolve(updatedUser);
-        }, reject);
-    });
-};
-
-export const addUser = (user: FirebaseUser) => {
-    return fireStore.collection(LOCAL_STORAGE_KEY.USER).add({
-        user
-    });
-};
-
-export const updateUserVerification = (userId: string) => {
-    return fireStore.collection(LOCAL_STORAGE_KEY.USER).doc(userId).set({ emailVerified: true }, { merge: true });
-};
-
-export const updateFirebaseUser = (userId: string, user: Partial<FirebaseUser>) => {
-    return fireStore.collection(LOCAL_STORAGE_KEY.USER).doc(userId).set(user, { merge: true });
-};
-
 function useFirebaseProviderAuth() {
-    const [authError, setAuthError] = useState('');
-
     const dispatch = useDispatch<Dispatch>();
     const reduxAuthState = useSelector((state: RootState) => state.auth);
+    const setAuthPersistence = useCallback(() => setPersistence(firebaseAuth, browserSessionPersistence).catch(error => console.log(error)), []);
+    setAuthPersistence();
 
-    const handleUpdateFirebaseProfile = (user: any, profile: Partial<FirebaseUser>) => {
-        user.updateProfile(profile)
-            .then(() => {
-                dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true });
-            })
-            .catch((error: unknown) => console.log(error));
-    };
-    const handleSignIn = async (user: any) => {
-        const isNewUser = user?.additionalUserInfo?.isNewUser;
-        const token = await user?.user?.getIdToken(true);
-        const to = isNewUser ? '/onboarding-update' : '/dashboard';
-        localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
-        dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: true, isError: false, isLoading: false });
-        location.replace(to);
+    const handleSignIn = async (signInCallback: Promise<UserCredential>) => {
+        dispatch.auth.updateAuthState({ ...reduxAuthState, isLoading: true });
+        try {
+            const { user } = await signInCallback;
+            const isNewUser = parseInt(user.metadata?.lastSignInTime ?? '0') - parseInt(user.metadata?.creationTime ?? '0') < 10;
+            const token = await user.getIdToken(true);
+            const to = isNewUser ? '/onboarding-update' : '/dashboard';
+            dispatch.auth.updateAuthState({
+                ...reduxAuthState,
+                user,
+                isAuth: true,
+                isError: false,
+                isLoading: false,
+                token,
+                action: 'sign-in'
+            });
+            location.replace(to);
+            dispatch.dashboard.setCurrentDashboardTab('dashboard');
+        } catch ({ message }) {
+            dispatch.auth.updateAuthState({
+                ...reduxAuthState,
+                isAuth: false,
+                isError: true,
+                isLoading: false,
+                user: null,
+                action: 'sign-in',
+                errorMessage: `${message}`
+            });
+        }
     };
 
-    const signupWithEmailPassword = async ({ email, password, displayName }: EmailAndPasswordSignUp) => {
-        firebaseApp
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(({ user }) => {
-                const profile = { displayName };
-                localStorage.setItem(LOCAL_STORAGE_KEY.IS_EMAIL_SIGNUP_SENT, 'true');
-                user?.updateProfile(profile).then(async () => {
-                    const token = await user.getIdToken(true);
-                    const idTokenResult = await user.getIdTokenResult();
-                    const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
-                    if (hasuraClaim) {
-                        dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true, token });
-                    }
-                });
-                return user;
-            })
-            .then(updatedUser => handleSignIn(updatedUser))
-            .catch(error => console.log(error));
+    const signupWithEmailPassword = async ({ email, password }: EmailAndPasswordSignUp) => {
+        handleSignIn(createUserWithEmailAndPassword(firebaseAuth, email, password));
     };
 
     const signout = async () => {
-        return firebaseApp
-            .auth()
+        return firebaseAuth
             .signOut()
             .then(() => {
-                dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, user: null, token: null });
+                dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, user: null, token: null, isLoading: false });
                 location.replace('/signin');
-                localStorage.clear();
             })
-            .catch(error => console.log(error));
+            .catch(error => console.warn(error));
     };
 
     const sendPasswordResetEmail = async (email: string) => {
-        return firebaseApp.auth().sendPasswordResetEmail(email);
+        return sendPasswordReset(firebaseAuth, email);
     };
 
     const verifyPasswordCode = async (code: string) => {
-        return firebaseApp.auth().verifyPasswordResetCode(code);
+        return verifyPassword(firebaseAuth, code);
     };
 
     const confirmPasswordReset = async (code: string, password: string) => {
-        return firebaseApp.auth().confirmPasswordReset(code, password);
+        return confirmPassword(firebaseAuth, code, password);
     };
 
     const signInWithGoogle = async () => {
-        const googleProvider = new firebaseApp.auth.GoogleAuthProvider();
-        return firebaseApp
-            .auth()
-            .signInWithPopup(googleProvider)
-            .then(async ({ user }) => {
-                handleSignIn(user);
-            })
-            .catch(({ message }: Record<string, string>): void => {
-                dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, isError: true, isLoading: false });
-                setAuthError(message);
-            });
+        const googleProvider = new GoogleAuthProvider();
+        handleSignIn(signInWithPopup(firebaseAuth, googleProvider));
     };
 
     const signInWithFacebook = async () => {
-        const FacebookAuthProvider = new firebaseApp.auth.FacebookAuthProvider();
-        return firebaseApp
-            .auth()
-            .signInWithPopup(FacebookAuthProvider)
-            .then(async ({ user }) => {
-                handleSignIn(user);
-            })
-            .catch(({ message }: Record<string, string>): void => {
-                dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, isError: true, isLoading: false });
-                setAuthError(message);
-            });
+        handleSignIn(signInWithPopup(firebaseAuth, new FacebookAuthProvider()));
     };
 
     const signinWithEmailPassword = async (email: string, password: string) => {
-        return firebaseApp
-            .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then(async ({ user }) => {
-                handleSignIn(user);
-            })
-            .catch(({ message }: Record<string, string>): void => {
-                dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, isError: true, isLoading: false });
-                setAuthError(message);
-            });
+        handleSignIn(signInWithPass(firebaseAuth, email, password));
     };
 
     const verifyEmail = async (actionCode: string) => {
-        return firebaseApp.auth().applyActionCode(actionCode);
+        return applyActionCode(firebaseAuth, actionCode);
     };
 
     useEffect(() => {
-        const unsubscribe = firebaseApp.auth().onAuthStateChanged(async user => {
+        const unsubscribe = onAuthStateChanged(firebaseAuth, async user => {
             if (user) {
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
-
                 if (hasuraClaim) {
-                    dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true });
+                    dispatch.auth.updateAuthState({
+                        ...reduxAuthState,
+                        user,
+                        isAuth: true,
+                        isError: false,
+                        isLoading: false,
+                        token,
+                        action: 'auth-changed'
+                    });
                     localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                 } else {
                     // Check if refresh is required.
-                    const metadataRef = firebaseApp.database().ref('metadata/' + user.uid + '/refreshTime');
-
-                    metadataRef.on('value', async (data: any) => {
-                        if (!data.exists) return;
-                        // Force refresh to pick up the latest custom claims changes.
-                        const newToken = await user.getIdToken(true);
-                        dispatch.auth.updateAuthState({ ...reduxAuthState, user, isAuth: true });
-                        localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, newToken);
+                    const metadataRef = ref(database, 'metadata/' + user.uid + '/refreshTime');
+                    onValue(metadataRef, async snapshot => {
+                        const data = snapshot.val();
+                        if (data) {
+                            // Force refresh to pick up the latest custom claims changes.
+                            const newToken = await user.getIdToken(true);
+                            dispatch.auth.updateAuthState({
+                                ...reduxAuthState,
+                                user,
+                                isAuth: true,
+                                isError: false,
+                                isLoading: false,
+                                token: newToken,
+                                action: 'auth-changed'
+                            });
+                            localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, newToken);
+                        } else {
+                            return;
+                        }
                     });
                 }
             } else {
-                dispatch.auth.updateAuthState({ ...reduxAuthState, user: null, isAuth: false, token: null });
+                dispatch.auth.updateAuthState({
+                    ...reduxAuthState,
+                    user: null,
+                    isAuth: false,
+                    isError: false,
+                    isLoading: false,
+                    token: null,
+                    action: 'auth-changed'
+                });
                 localStorage.removeItem(LOCAL_STORAGE_KEY.TOKEN);
             }
         });
@@ -193,11 +175,8 @@ function useFirebaseProviderAuth() {
     }, []);
 
     return {
-        authError,
         confirmPasswordReset,
-        handleUpdateFirebaseProfile,
         sendPasswordResetEmail,
-        setAuthError,
         signinWithEmailPassword,
         signInWithFacebook,
         signInWithGoogle,

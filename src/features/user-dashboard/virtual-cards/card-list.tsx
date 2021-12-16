@@ -1,7 +1,7 @@
 import { Slide, Typography } from '@mui/material';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { CardContainer } from './card-container';
-import { FilterTab } from '../tab';
+import { FilterTab } from '../filter-tab-heading';
 import { Avatar, Stack } from '@mui/material';
 
 const mockData = [
@@ -13,6 +13,24 @@ const mockData = [
         last4digits: '7895',
         expiry: '08/24',
         cvv: '123'
+    },
+    {
+        currency: 'GBP',
+        countryCode: 'GB',
+        amount: 100,
+        cardNumber: '5344 5464 4474',
+        last4digits: '5895',
+        expiry: '02/27',
+        cvv: '890'
+    },
+    {
+        currency: 'NGN',
+        countryCode: 'NG',
+        amount: 780000,
+        cardNumber: '5344 5464 0474',
+        last4digits: '5805',
+        expiry: '02/24',
+        cvv: '576'
     },
     {
         currency: 'USD',

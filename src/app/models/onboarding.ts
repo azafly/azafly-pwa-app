@@ -25,6 +25,7 @@ interface OnboardingPreference {
     verificationId: string;
     apiFetchState: APIFetchState;
     document_url: string | null;
+    isNewUser: boolean;
 }
 
 const initialState: OnboardingPreference = {
@@ -38,7 +39,8 @@ const initialState: OnboardingPreference = {
     disableNext: true,
     verificationId: '',
     apiFetchState: {},
-    document_url: null
+    document_url: null,
+    isNewUser: false
 };
 
 export const onboarding = createModel<RootModel>()({
@@ -51,10 +53,10 @@ export const onboarding = createModel<RootModel>()({
             return { ...state, disableNext: payload };
         },
         setPhoneNumber(state, payload: string) {
-            return { ...state, phoneNumber: `+${payload}` };
+            return { ...state, phoneNumber: `+${payload}`, isNewUser: true };
         },
         setAddress(state, payload: string) {
-            return { ...state, address: payload };
+            return { ...state, address: payload, isNewUser: false };
         },
         setCurrencies(state, payload: OnboardingPreference['currencies']) {
             return { ...state, currencies: payload };

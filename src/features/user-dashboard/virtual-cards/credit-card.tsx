@@ -69,7 +69,7 @@ export const CreditCard = memo(function CreditCard({ amount, currency, cardNumbe
     });
     return (
         <div className={classes.credit_card__container}>
-            <Card elevation={0} className={classes.card}>
+            <Card elevation={3} className={classes.card}>
                 <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant='body2' className={classes.typography}>

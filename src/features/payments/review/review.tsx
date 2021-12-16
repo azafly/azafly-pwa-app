@@ -7,7 +7,7 @@ import ModalUnstyled from '@mui/core/ModalUnstyled';
 import Snackbar from '@mui/material/Snackbar';
 
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
-import { PaymentInfo, GetOffersResponseData } from 'services/rest-client/user-payment';
+import { PaymentInfo, GetOffersResponseData } from 'services/rest-clients/user-payment';
 import { RootState } from 'app/store';
 import { usePaymentContext } from 'features/payments/context';
 import { useURLParams } from 'hooks/use-url-params';

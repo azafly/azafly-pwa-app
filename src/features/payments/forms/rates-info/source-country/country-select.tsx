@@ -2,11 +2,12 @@
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { ReactElement } from 'react';
 import { TextField } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 import Autocomplete, { AutocompleteClassKey } from '@material-ui/lab/Autocomplete';
 
 import { Country, NIGERIA, useCountryList } from '../../../hooks/use-country-list';
+import { Dispatch } from 'app/store';
 import { RenderOptions } from './render-option-label';
-import { UK } from 'features/payments/context/constants';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -56,7 +57,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export type CountrySelectProps = {
-    handleCountryChange: (value: Country) => void;
     classKeys?: {
         [key in AutocompleteClassKey]?: string;
     };
@@ -67,15 +67,7 @@ export type CountrySelectProps = {
     renderOption?: (option: Country) => ReactElement;
 };
 
-export const AfricaCountriesSelect = ({
-    handleCountryChange,
-    classKeys,
-    options,
-    defaultOption,
-    getOptionLabel,
-    getOptionDisabled,
-    renderOption
-}: CountrySelectProps) => {
+export const AfricaCountriesSelect = ({ classKeys, options, defaultOption, getOptionLabel, getOptionDisabled, renderOption }: CountrySelectProps) => {
     const classes = useStyles();
     const classOverrides: typeof classKeys = {
         option: classes.option,
@@ -89,6 +81,7 @@ export const AfricaCountriesSelect = ({
     const optionDisabled = getOptionDisabled ? getOptionDisabled : (option: Country) => option.isComingSoon || option.isNotSupported;
     const _options = options ? options : [NIGERIA, ...popularSourceCountries];
     const _defaultOption = defaultOption ? defaultOption : NIGERIA;
+    const dispatch = useDispatch<Dispatch>();
 
     return (
         <div className={classes.root}>
@@ -97,7 +90,9 @@ export const AfricaCountriesSelect = ({
                 options={_options}
                 loading={true}
                 classes={classOverrides}
-                onChange={(e, value) => handleCountryChange(value ?? UK)}
+                onChange={(e, value) => {
+                    value && dispatch.payment.setRatesInfoSourceCountry(value);
+                }}
                 defaultValue={_defaultOption}
                 autoComplete
                 getOptionDisabled={option => optionDisabled(option)}

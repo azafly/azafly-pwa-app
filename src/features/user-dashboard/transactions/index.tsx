@@ -1,12 +1,13 @@
-import { Grid, Hidden, Slide, Typography } from '@material-ui/core';
 import { formatFirstName } from 'libs';
+import { Grid, Hidden, Slide, Typography } from '@material-ui/core';
+import Skeleton from 'react-loading-skeleton';
 
-import { TransactionListContainer } from '../transaction-list-container';
-import WalletContainer from '../wallet/wallet-container';
 import { CardSkeleton } from './card-skeleton';
+import { GetUserTransactionsQuery } from 'api/generated/graphql';
+import { TransactionListContainer } from './transaction-list-container';
+import WalletContainer from '../wallet/wallet-container';
 
 import { useDashboardStyles } from '../classes';
-import { GetUserTransactionsQuery } from 'api/generated/graphql';
 
 interface TransactionsViewProps {
     transactions: any;
@@ -24,7 +25,7 @@ export const Transactions = ({ transactions, userData, loading, handleSendVerifi
             <Grid item md={10} className={classes.data__section}>
                 <Hidden xsDown>
                     <Typography color={'textSecondary'} className={classes.name}>
-                        Hey 👋🏾 {formatFirstName(userData?.display_name ?? '')}!
+                        Hey 👋🏾 {!userData?.display_name ? <Skeleton width={'10ch'} /> : `${formatFirstName(userData?.display_name)}!`}
                     </Typography>{' '}
                 </Hidden>
                 <WalletContainer />

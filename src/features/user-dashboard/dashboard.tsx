@@ -1,20 +1,20 @@
 import { Grid, Hidden } from '@material-ui/core';
-import { Redirect } from 'react-router-dom';
+import { sendEmailVerification } from 'firebase/auth';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
-import { fetchWallet } from './mock';
 import { RootState } from 'app/store';
+import { fetchWallet } from './mock';
+import { firebaseAuth } from 'providers/auth/firebase/firebase';
 import { SideBar } from './side-bar';
 import { UserAccount } from 'views/user-account';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { Transactions as TransactionView } from './transactions';
-import { useGetUserTransactionsQuery } from 'api/generated/graphql';
+import { useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
 import { useUserContext } from 'hooks/use-user-context';
 import CardList from './virtual-cards/card-list';
-import Payments from 'views/payments';
 
 import { useDashboardStyles, StyledBadge } from './classes';
 
@@ -25,13 +25,11 @@ export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
 
-    const { user } = useSelector((rootState: RootState) => rootState.auth);
-    const { currentSideBarTab } = useSelector((rootState: RootState) => rootState.dashboard);
     const userData = useUserContext();
 
-    const id = userData?.id;
+    const { currentSideBarTab } = useSelector((rootState: RootState) => rootState.dashboard);
 
-    const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id } });
+    const [handleGetUserTransaction, { data: transactionData, loading }] = useGetUserTransactionsLazyQuery();
     const transactions = transactionData?.transaction;
 
     const handleSpeedDialVisibility = () => {
@@ -56,18 +54,21 @@ export default function Dashboard() {
             return;
         }
         setLoading(true);
-        user?.sendEmailVerification()
-            .then(() => {
-                setOpenSnackBar(true);
-                setSent('Verification Link sent successfully. Check your email to verify');
-                localStorage.setItem('verification_email_sent', 'true');
-                setLoading(false);
-            })
-            .catch(() => {
-                setOpenSnackBar(true);
-                setSent('Error sending Verification Link');
-                setLoading(false);
-            });
+        const currentUser = firebaseAuth.currentUser;
+        if (currentUser) {
+            sendEmailVerification(currentUser)
+                .then(() => {
+                    setOpenSnackBar(true);
+                    setSent('Verification Link sent successfully. Check your email to verify');
+                    localStorage.setItem('verification_email_sent', 'true');
+                    setLoading(false);
+                })
+                .catch(() => {
+                    setOpenSnackBar(true);
+                    setSent('Error sending Verification Link');
+                    setLoading(false);
+                });
+        }
     };
 
     const emailLink = isSendingLink ? (
@@ -83,19 +84,14 @@ export default function Dashboard() {
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
 
     useEffect(() => {
+        const id = userData?.id;
+        handleGetUserTransaction({ variables: { id } }).catch(error => console.log(error));
+    }, [handleGetUserTransaction, userData]);
+
+    useEffect(() => {
         fetchWallet();
     }, []);
 
-    if (userData?.is_new_user) {
-        return (
-            <Redirect
-                to={{
-                    pathname: '/onboarding-update',
-                    state: { referrer: '/dashboard' }
-                }}
-            />
-        );
-    }
     return (
         <div className={classes.dashboard_container}>
             <DefaultSnackbar

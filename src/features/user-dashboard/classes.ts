@@ -9,11 +9,9 @@ export const useCardStyles = makeStyles((theme: Theme) =>
             maxWidth: 900,
             margin: 'auto',
             border: '1px solid #DCDCDC',
+            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             padding: 0,
-            [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
-            [theme.breakpoints.down('md')]: {
-                width: '90vw'
-            }
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         },
         summary_heading: {
             fontWeight: 800,
@@ -86,7 +84,7 @@ export const StyledBadge = makeStyles(() =>
     })
 );
 
-export const useSidebarStyles = makeStyles((theme: Theme) =>
+export const useSidebarStyles = makeStyles(() =>
     createStyles({
         sidebar__root: {
             height: '120vh',
@@ -96,7 +94,8 @@ export const useSidebarStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             width: 250,
             flexGrow: 1,
-            marginRight: '3vw'
+            marginRight: '3vw',
+            paddingTop: '15vh'
         },
         button: {
             textDecoration: 'none',

@@ -8141,10 +8141,11 @@ export type InsertNewUserMutation = (
 );
 
 export type UpdateUserMutationVariables = Exact<{
-  email: Scalars['String'];
-  displayName: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
   photoURL?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
+  document_url?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -8153,6 +8154,34 @@ export type UpdateUserMutation = (
   & { readonly update_users?: Maybe<(
     { readonly __typename?: 'users_mutation_response' }
     & Pick<Users_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type UpdateProfileImageUrlMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  photoURL: Scalars['String'];
+}>;
+
+
+export type UpdateProfileImageUrlMutation = (
+  { readonly __typename?: 'mutation_root' }
+  & { readonly update_users_by_pk?: Maybe<(
+    { readonly __typename?: 'users' }
+    & Pick<Users, 'id' | 'document_url' | 'image_url'>
+  )> }
+);
+
+export type UpdateKycDocUrlMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  document_url: Scalars['String'];
+}>;
+
+
+export type UpdateKycDocUrlMutation = (
+  { readonly __typename?: 'mutation_root' }
+  & { readonly update_users_by_pk?: Maybe<(
+    { readonly __typename?: 'users' }
+    & Pick<Users, 'id' | 'document_url' | 'image_url'>
   )> }
 );
 
@@ -8247,28 +8276,15 @@ export type FilterTransactionsByDateRangeQuery = (
 );
 
 export type GetCurrentUserQueryVariables = Exact<{
-  id: Scalars['String'];
+  id: Scalars['uuid'];
 }>;
 
 
 export type GetCurrentUserQuery = (
   { readonly __typename?: 'query_root' }
-  & { readonly users: ReadonlyArray<(
+  & { readonly users_by_pk?: Maybe<(
     { readonly __typename?: 'users' }
-    & Pick<Users, 'display_name' | 'email' | 'email_verified' | 'firebase_id' | 'id' | 'image_url' | 'phone' | 'is_new_user' | 'address' | 'country'>
-  )> }
-);
-
-export type GetCurrentUserByEmailQueryVariables = Exact<{
-  email: Scalars['String'];
-}>;
-
-
-export type GetCurrentUserByEmailQuery = (
-  { readonly __typename?: 'query_root' }
-  & { readonly users: ReadonlyArray<(
-    { readonly __typename?: 'users' }
-    & Pick<Users, 'display_name' | 'email' | 'email_verified' | 'firebase_id' | 'id' | 'image_url' | 'phone' | 'is_new_user' | 'address' | 'country'>
+    & Pick<Users, 'display_name' | 'email' | 'email_verified' | 'firebase_id' | 'id' | 'image_url' | 'phone' | 'is_new_user' | 'address' | 'country' | 'document_url'>
   )> }
 );
 
@@ -8322,10 +8338,10 @@ export type InsertNewUserMutationHookResult = ReturnType<typeof useInsertNewUser
 export type InsertNewUserMutationResult = Apollo.MutationResult<InsertNewUserMutation>;
 export type InsertNewUserMutationOptions = Apollo.BaseMutationOptions<InsertNewUserMutation, InsertNewUserMutationVariables>;
 export const UpdateUserDocument = gql`
-    mutation updateUser($email: String!, $displayName: String!, $photoURL: String, $phone: String) {
+    mutation updateUser($email: String, $displayName: String, $photoURL: String, $phone: String, $document_url: String) {
   update_users(
     where: {email: {_eq: $email}}
-    _set: {display_name: $displayName, image_url: $photoURL, phone: $phone}
+    _set: {display_name: $displayName, image_url: $photoURL, phone: $phone, document_url: $document_url}
   ) {
     affected_rows
   }
@@ -8350,6 +8366,7 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, U
  *      displayName: // value for 'displayName'
  *      photoURL: // value for 'photoURL'
  *      phone: // value for 'phone'
+ *      document_url: // value for 'document_url'
  *   },
  * });
  */
@@ -8360,6 +8377,78 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const UpdateProfileImageUrlDocument = gql`
+    mutation updateProfileImageUrl($id: uuid!, $photoURL: String!) {
+  update_users_by_pk(pk_columns: {id: $id}, _set: {image_url: $photoURL}) {
+    id
+    document_url
+    image_url
+  }
+}
+    `;
+export type UpdateProfileImageUrlMutationFn = Apollo.MutationFunction<UpdateProfileImageUrlMutation, UpdateProfileImageUrlMutationVariables>;
+
+/**
+ * __useUpdateProfileImageUrlMutation__
+ *
+ * To run a mutation, you first call `useUpdateProfileImageUrlMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProfileImageUrlMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProfileImageUrlMutation, { data, loading, error }] = useUpdateProfileImageUrlMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      photoURL: // value for 'photoURL'
+ *   },
+ * });
+ */
+export function useUpdateProfileImageUrlMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileImageUrlMutation, UpdateProfileImageUrlMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProfileImageUrlMutation, UpdateProfileImageUrlMutationVariables>(UpdateProfileImageUrlDocument, options);
+      }
+export type UpdateProfileImageUrlMutationHookResult = ReturnType<typeof useUpdateProfileImageUrlMutation>;
+export type UpdateProfileImageUrlMutationResult = Apollo.MutationResult<UpdateProfileImageUrlMutation>;
+export type UpdateProfileImageUrlMutationOptions = Apollo.BaseMutationOptions<UpdateProfileImageUrlMutation, UpdateProfileImageUrlMutationVariables>;
+export const UpdateKycDocUrlDocument = gql`
+    mutation updateKYCDocUrl($id: uuid!, $document_url: String!) {
+  update_users_by_pk(pk_columns: {id: $id}, _set: {document_url: $document_url}) {
+    id
+    document_url
+    image_url
+  }
+}
+    `;
+export type UpdateKycDocUrlMutationFn = Apollo.MutationFunction<UpdateKycDocUrlMutation, UpdateKycDocUrlMutationVariables>;
+
+/**
+ * __useUpdateKycDocUrlMutation__
+ *
+ * To run a mutation, you first call `useUpdateKycDocUrlMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateKycDocUrlMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateKycDocUrlMutation, { data, loading, error }] = useUpdateKycDocUrlMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      document_url: // value for 'document_url'
+ *   },
+ * });
+ */
+export function useUpdateKycDocUrlMutation(baseOptions?: Apollo.MutationHookOptions<UpdateKycDocUrlMutation, UpdateKycDocUrlMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateKycDocUrlMutation, UpdateKycDocUrlMutationVariables>(UpdateKycDocUrlDocument, options);
+      }
+export type UpdateKycDocUrlMutationHookResult = ReturnType<typeof useUpdateKycDocUrlMutation>;
+export type UpdateKycDocUrlMutationResult = Apollo.MutationResult<UpdateKycDocUrlMutation>;
+export type UpdateKycDocUrlMutationOptions = Apollo.BaseMutationOptions<UpdateKycDocUrlMutation, UpdateKycDocUrlMutationVariables>;
 export const UpdateNewUserDocument = gql`
     mutation updateNewUser($email: String!, $address: String!, $country: String!, $document_url: String, $phone: String!) {
   update_users(
@@ -8633,8 +8722,8 @@ export type FilterTransactionsByDateRangeQueryHookResult = ReturnType<typeof use
 export type FilterTransactionsByDateRangeLazyQueryHookResult = ReturnType<typeof useFilterTransactionsByDateRangeLazyQuery>;
 export type FilterTransactionsByDateRangeQueryResult = Apollo.QueryResult<FilterTransactionsByDateRangeQuery, FilterTransactionsByDateRangeQueryVariables>;
 export const GetCurrentUserDocument = gql`
-    query getCurrentUser($id: String!) {
-  users(where: {firebase_id: {_eq: $id}}) {
+    query getCurrentUser($id: uuid!) {
+  users_by_pk(id: $id) {
     display_name
     email
     email_verified
@@ -8646,6 +8735,7 @@ export const GetCurrentUserDocument = gql`
     is_new_user
     address
     country
+    document_url
   }
 }
     `;
@@ -8677,48 +8767,3 @@ export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
-export const GetCurrentUserByEmailDocument = gql`
-    query getCurrentUserByEmail($email: String!) {
-  users(where: {email: {_eq: $email}}) {
-    display_name
-    email
-    email_verified
-    firebase_id
-    id
-    image_url
-    phone
-    image_url
-    is_new_user
-    address
-    country
-  }
-}
-    `;
-
-/**
- * __useGetCurrentUserByEmailQuery__
- *
- * To run a query within a React component, call `useGetCurrentUserByEmailQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCurrentUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCurrentUserByEmailQuery({
- *   variables: {
- *      email: // value for 'email'
- *   },
- * });
- */
-export function useGetCurrentUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>(GetCurrentUserByEmailDocument, options);
-      }
-export function useGetCurrentUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>(GetCurrentUserByEmailDocument, options);
-        }
-export type GetCurrentUserByEmailQueryHookResult = ReturnType<typeof useGetCurrentUserByEmailQuery>;
-export type GetCurrentUserByEmailLazyQueryHookResult = ReturnType<typeof useGetCurrentUserByEmailLazyQuery>;
-export type GetCurrentUserByEmailQueryResult = Apollo.QueryResult<GetCurrentUserByEmailQuery, GetCurrentUserByEmailQueryVariables>;

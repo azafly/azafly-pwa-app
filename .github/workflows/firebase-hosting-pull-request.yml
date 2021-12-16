@@ -34,4 +34,4 @@ jobs:
           directory: './'
           file_name: .env.staging
       - name: Deploy
-        run: yarn && yarn deploy:staging
+        run: yarn && env-cmd -f .env.staging react-app-rewired build && firebase deploy -P staging

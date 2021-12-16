@@ -1,13 +1,13 @@
-import { Grid, Hidden, Slide, Typography } from '@material-ui/core';
 import { formatFirstName } from 'libs';
+import { Grid, Hidden, Slide, Typography } from '@material-ui/core';
 import Skeleton from 'react-loading-skeleton';
 
+import { CardSkeleton } from './card-skeleton';
+import { GetUserTransactionsQuery } from 'api/generated/graphql';
 import { TransactionListContainer } from './transaction-list-container';
 import WalletContainer from '../wallet/wallet-container';
-import { CardSkeleton } from './card-skeleton';
 
 import { useDashboardStyles } from '../classes';
-import { GetUserTransactionsQuery } from 'api/generated/graphql';
 
 interface TransactionsViewProps {
     transactions: any;

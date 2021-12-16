@@ -73,6 +73,14 @@ function useFirebaseProviderAuth() {
             });
         }
     };
+    const handleSignIn = async (user: any) => {
+        const isNewUser = user?.additionalUserInfo?.isNewUser;
+        const token = await user?.user?.getIdToken(true);
+        const to = isNewUser ? '/onboarding-update' : '/dashboard';
+        localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
+        dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: true, isError: false, isLoading: false });
+        location.replace(to);
+    };
 
     const signupWithEmailPassword = async ({ email, password }: EmailAndPasswordSignUp) => {
         handleSignIn(createUserWithEmailAndPassword(firebaseAuth, email, password));

@@ -9,10 +9,10 @@ import { RootState } from 'app/store';
 import { fetchWallet } from './mock';
 import { firebaseAuth } from 'providers/auth/firebase/firebase';
 import { SideBar } from './side-bar';
+import { UserAccount } from 'views/user-account';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { Transactions as TransactionView } from './transactions';
 import { useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
-import { UserAccount } from 'views/user-account';
 import { useUserContext } from 'hooks/use-user-context';
 import CardList from './virtual-cards/card-list';
 

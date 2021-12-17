@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useCallback, useContext, useEffect } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { getStorage } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +23,7 @@ import { AuthContext, defaultAuhContext } from './constants';
 import { firebaseApp } from './firebase-config';
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { RootState, Dispatch } from 'app/store';
+import { computeIsAdmin } from 'libs/constants';
 
 export const database = getDatabase(firebaseApp);
 export const firebaseAuth = getAuth();
@@ -122,7 +123,8 @@ function useFirebaseProviderAuth() {
             if (user) {
                 const token = await user.getIdToken(true);
                 const idTokenResult = await user.getIdTokenResult();
-                const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL];
+                const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL] as Record<string, string | string[]>;
+                const allowedRoles = hasuraClaim['x-hasura-allowed-roles'];
                 if (hasuraClaim) {
                     dispatch.auth.updateAuthState({
                         ...reduxAuthState,
@@ -131,8 +133,10 @@ function useFirebaseProviderAuth() {
                         isError: false,
                         isLoading: false,
                         token,
-                        action: 'auth-changed'
+                        action: 'auth-changed',
+                        isAdmin: computeIsAdmin(user?.email ?? '', allowedRoles)
                     });
+
                     localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
                 } else {
                     // Check if refresh is required.

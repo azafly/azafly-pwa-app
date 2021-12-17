@@ -1,5 +1,5 @@
-import { Grid, Typography } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Grid, Typography, Slide } from '@material-ui/core';
 import { useMediaQuery } from '@material-ui/core';
 import Slider from 'react-slick';
 
@@ -58,26 +58,27 @@ const WalletContainer = () => {
     return (
         <div className={classes.reviewSlider_container}>
             <Typography className={classes.heading}> Your Accounts </Typography>
-
-            {isSmallScreen ? (
-                <Slider {...settings}>
-                    <div>
-                        <ResidenceWalletCard loading={loading || !transactionData} />
-                    </div>
-                    <div>
-                        <LocalWalletCard loading={loading || !transactionData} />
-                    </div>
-                </Slider>
-            ) : (
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6}>
-                        <ResidenceWalletCard loading={loading || !transactionData} />
+            <Slide direction='down' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+                {isSmallScreen ? (
+                    <Slider {...settings}>
+                        <div>
+                            <ResidenceWalletCard loading={loading || !transactionData} />
+                        </div>
+                        <div>
+                            <LocalWalletCard loading={loading || !transactionData} />
+                        </div>
+                    </Slider>
+                ) : (
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                            <ResidenceWalletCard loading={loading || !transactionData} />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <LocalWalletCard loading={loading || !transactionData} />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <LocalWalletCard loading={loading || !transactionData} />
-                    </Grid>
-                </Grid>
-            )}
+                )}
+            </Slide>
         </div>
     );
 };

@@ -95,7 +95,8 @@ export const useSidebarStyles = makeStyles(() =>
             width: 250,
             flexGrow: 1,
             marginRight: '3vw',
-            paddingTop: '15vh'
+            paddingTop: '5vh',
+            marginTop: '-10vh'
         },
         button: {
             textDecoration: 'none',
@@ -118,7 +119,9 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
         dashboard_container: {
             backgroundColor: '#f2f5f7',
             minHeight: '100vh',
-            height: 'auto'
+            height: 'auto',
+            paddingTop: 120,
+            [theme.breakpoints.down('xs')]: { paddingTop: 0 }
         },
         data__section: {
             margin: 'auto',
@@ -137,7 +140,6 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.down('sm')]: { width: '90vw' }
         },
         name: {
-            paddingTop: '15vh',
             fontWeight: 700,
             fontSize: '1.5rem',
             maxWidth: 900,

@@ -110,14 +110,16 @@ export default function Dashboard() {
                 </Hidden>
 
                 {(currentSideBarTab === 'transactions' || currentSideBarTab === 'dashboard') && (
-                    <TransactionView
-                        loading={loading}
-                        emailLink={emailLink}
-                        transactionData={transactionData}
-                        handleSendVerificationEmail={handleSendVerificationEmail}
-                        transactions={transactions}
-                        userData={userData}
-                    />
+                    <>
+                        <TransactionView
+                            loading={loading}
+                            emailLink={emailLink}
+                            transactionData={transactionData}
+                            handleSendVerificationEmail={handleSendVerificationEmail}
+                            transactions={transactions}
+                            userData={userData}
+                        />
+                    </>
                 )}
                 {currentSideBarTab === 'cards' && <CardList />}
                 {currentSideBarTab === 'account' && <UserAccount />}

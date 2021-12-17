@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 
 export type ApiRequestMethods = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';

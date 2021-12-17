@@ -1,5 +1,5 @@
 import { Dispatch, useState, SetStateAction } from 'react';
-import { Button, Input, IconButton, InputAdornment } from '@material-ui/core';
+import { Button, Input, IconButton } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';

@@ -146,3 +146,22 @@ export const africanCurrencies: Currency[] = [
         isComingSoon: true
     }
 ];
+
+// move this to hasura or cloud functions/firestore
+const admins = [
+    'ajiboye.o.john@gmail.com',
+    'johncode10.17@gmail.com',
+    'adewaleayantoye@gmail.com',
+    'sunday.ayandokun@gmail.com',
+    'ajibola.damilola90@gmail.com',
+    'obasanjo.ojelade@gmail.com',
+    'majeedmaryamirfan@gmail.com',
+    'oyelekeoluwasayo@gmail.com'
+];
+
+export const computeIsAdmin = (email: string, claim: string[] | string) => {
+    if (process.env.REACT_APP_NODE_ENVIRONMENT === 'production') return false;
+    const isHasuraAdmin = Array.isArray(claim) && Boolean(claim.find(role => role == 'admin'));
+    const isHasuraAdminFromClaimString = claim === 'admin';
+    return Boolean(admins.find(adminEmail => adminEmail === email)) || email.endsWith('@azafly.com') || isHasuraAdmin || isHasuraAdminFromClaimString;
+};

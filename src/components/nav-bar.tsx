@@ -17,6 +17,7 @@ import { DashboardSvgComponent, SignOutSvgComponent, ProfileSvgComponent, HelpSv
 import { Logo2SvgComponent } from 'components/icons/logo-style-2';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useUserContext } from 'hooks/use-user-context';
+import { ThreeDots } from 'components/css-loaders/three-dots';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -86,7 +87,7 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
 
     const { signout } = useFirebaseAuthContext();
     const { pathname } = useLocation();
-    const userData = useUserContext();
+    const { user: userData, loading } = useUserContext();
 
     const profileSrc = userData?.image_url;
 
@@ -228,7 +229,7 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
                                     onClick={handleProfileMenuOpen}
                                     color='inherit'
                                 >
-                                    <Avatar src={profileSrc ?? ''} />
+                                    {loading ? <ThreeDots /> : <Avatar src={profileSrc ?? ''} />}
                                 </IconButton>
                                 <IconButton
                                     edge='end'

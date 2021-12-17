@@ -20,11 +20,15 @@ export const useUserContext = () => {
         getTokenClaim();
     }, [user]);
 
-    const { data } = useGetCurrentUserQuery({
+    const { data, loading, error } = useGetCurrentUserQuery({
         variables: {
             id: claim
         }
     });
 
-    return data?.users_by_pk;
+    return {
+        user: data?.users_by_pk,
+        loading,
+        error
+    };
 };

@@ -23,7 +23,7 @@ const UserAccount = () => {
     const [success, setSuccess] = useState('');
 
     const { user, token } = useSelector((state: RootState) => state.auth);
-    const userData = useUserContext();
+    const { user: userData } = useUserContext();
 
     const [updateUserMutation] = useUpdateUserMutation();
 

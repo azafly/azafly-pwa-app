@@ -50,7 +50,7 @@ const WalletContainer = () => {
         infinite: false
     };
 
-    const userData = useUserContext();
+    const { user: userData } = useUserContext();
 
     const id = userData?.id;
     const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id } });

@@ -40,8 +40,8 @@ const authContext = createContext<AuthContext>(defaultAuhContext);
 function useFirebaseProviderAuth() {
     const dispatch = useDispatch<Dispatch>();
     const reduxAuthState = useSelector((state: RootState) => state.auth);
-    const setAuthPersistence = useCallback(() => setPersistence(firebaseAuth, browserSessionPersistence).catch(error => console.log(error)), []);
-    setAuthPersistence();
+
+    setPersistence(firebaseAuth, browserSessionPersistence).catch(error => console.log(error));
 
     const handleSignIn = async (signInCallback: Promise<UserCredential>) => {
         dispatch.auth.updateAuthState({ ...reduxAuthState, isLoading: true });

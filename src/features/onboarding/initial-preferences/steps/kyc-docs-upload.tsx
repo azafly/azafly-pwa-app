@@ -26,7 +26,7 @@ export const KYCDocuments = () => {
         setAlertState({ ...alertState, show: false });
     };
 
-    const userData = useUserContext();
+    const { user: userData } = useUserContext();
 
     const [handleUpdateDocUrl] = useUpdateKycDocUrlMutation();
     const [updateNewUserMutation] = useUpdateNewUserMutation({

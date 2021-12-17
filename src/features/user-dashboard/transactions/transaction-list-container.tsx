@@ -74,7 +74,8 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     const [filterTransactionByDate, { data: filteredTransactions, loading: isLoadingFilter }] = useFilterTransactionsByDateRangeLazyQuery();
     const classes = useStyles();
 
-    const { id = '' } = useUserContext() ?? {};
+    const { user: userData } = useUserContext();
+    const id = userData?.id;
 
     const handleDateRangeSelect = useCallback(
         (startEnd: any) => {

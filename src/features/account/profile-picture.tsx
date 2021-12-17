@@ -21,7 +21,7 @@ export const ProfilePicture = memo(function ProfilePicture({ classes }: ProfileP
     const [error, setError] = useState('');
 
     const { user } = useSelector((state: RootState) => state.auth);
-    const userData = useUserContext();
+    const { user: userData, loading } = useUserContext();
 
     const [handleUpdateDocUrl] = useUpdateProfileImageUrlMutation();
 
@@ -68,7 +68,7 @@ export const ProfilePicture = memo(function ProfilePicture({ classes }: ProfileP
                 />
             }
         >
-            {fileUploadLoading && <ThreeDots variantColor={'base'} />}
+            {(loading || fileUploadLoading) && <ThreeDots variantColor={'base'} />}
         </Badge>
     );
 });

@@ -25,7 +25,7 @@ export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
 
-    const userData = useUserContext();
+    const { user: userData } = useUserContext();
 
     const { currentSideBarTab } = useSelector((rootState: RootState) => rootState.dashboard);
 

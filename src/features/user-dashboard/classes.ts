@@ -144,6 +144,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             fontSize: '1.5rem',
             maxWidth: 900,
             margin: 'auto',
+            paddingTop: '2vh',
             color: theme.colors.textPrimary,
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
             textTransform: 'capitalize'

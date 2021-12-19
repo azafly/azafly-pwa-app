@@ -33,7 +33,7 @@ const initialState: DashboardState = {
     currentSideBarTab: 'transactions',
     rate: 2,
     sellCurrency: 'NGN' as CurrencyCode,
-    viewState: 'local'
+    viewState: 'abroad'
 };
 
 export const dashboard = createModel<RootModel>()({
@@ -88,6 +88,7 @@ export const dashboard = createModel<RootModel>()({
                     });
                     dispatch.dashboard.setOfferRate(data.exchange_rate_info?.base_rate ?? 1);
                     dispatch.dashboard.setFetchAPIState({ ...getState.dashboard.apiFetchState, loading: false, result: 'success' });
+                    dispatch.dashboard.setConvertedAmount(data.total_in_target_with_charges ?? 0);
                 } catch (error) {
                     dispatch.dashboard.setFetchAPIState({
                         ...getState.dashboard.apiFetchState,

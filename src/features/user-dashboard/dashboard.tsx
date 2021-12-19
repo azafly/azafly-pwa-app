@@ -1,11 +1,11 @@
 import { Grid, Hidden } from '@material-ui/core';
 import { sendEmailVerification } from 'firebase/auth';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { DefaultSnackbar, SpeedDialTooltip } from 'components';
-import { RootState } from 'app/store';
+import { Dispatch, RootState } from 'app/store';
 import { fetchWallet } from './mock';
 import { firebaseAuth } from 'providers/auth/firebase/firebase';
 import { SideBar } from './side-bar';
@@ -25,9 +25,10 @@ export default function Dashboard() {
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
 
+    const dispatch = useDispatch<Dispatch>();
     const { user: userData } = useUserContext();
 
-    const { currentSideBarTab } = useSelector((rootState: RootState) => rootState.dashboard);
+    const { currentSideBarTab, buyCurrency } = useSelector((rootState: RootState) => rootState.dashboard);
 
     const [handleGetUserTransaction, { data: transactionData, loading }] = useGetUserTransactionsLazyQuery();
     const transactions = transactionData?.transaction;
@@ -91,6 +92,11 @@ export default function Dashboard() {
     useEffect(() => {
         fetchWallet();
     }, []);
+
+    useEffect(() => {
+        dispatch.dashboard.setAsyncRateInfo(buyCurrency);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [buyCurrency]);
 
     return (
         <div className={classes.dashboard_container}>

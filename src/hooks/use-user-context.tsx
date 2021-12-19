@@ -1,7 +1,8 @@
-import { RootState } from 'app/store';
 import { useEffect, useState } from 'react';
-import { useGetCurrentUserQuery } from 'api/generated/graphql';
 import { useSelector } from 'react-redux';
+
+import { RootState } from 'app/store';
+import { useGetCurrentUserQuery } from 'api/generated/graphql';
 
 const HASURA_CLAIMS_URL = 'https://hasura.io/jwt/claims';
 

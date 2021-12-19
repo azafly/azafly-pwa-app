@@ -16,9 +16,10 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         action: {
-            fontSize: '0.85em',
-            fontWeight: 400,
-            textTransform: 'capitalize'
+            fontSize: '0.95em',
+            fontWeight: 600,
+            textTransform: 'capitalize',
+            color: theme.colors.base
         },
         typography: {
             fontSize: '1rem',

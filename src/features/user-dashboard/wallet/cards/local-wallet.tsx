@@ -1,11 +1,11 @@
-import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
+import { Box, Button, Card, CardActions, CardContent, Typography, Theme } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Skeleton from 'react-loading-skeleton';
 
 import AddIcon from '@mui/icons-material/Add';
 import PaymentsIcon from '@mui/icons-material/Payments';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         card__container: {
             padding: 10,
@@ -13,9 +13,10 @@ const useStyles = makeStyles(() =>
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)'
         },
         action: {
-            fontSize: '0.85em',
-            fontWeight: 400,
-            textTransform: 'capitalize'
+            fontSize: '0.95em',
+            fontWeight: 600,
+            textTransform: 'capitalize',
+            color: theme.colors.base
         },
         typography: {
             fontSize: '1rem',

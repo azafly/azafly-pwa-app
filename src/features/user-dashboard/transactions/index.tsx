@@ -29,7 +29,7 @@ export const Transactions = ({ transactions, userData, loading, handleSendVerifi
             <Slide direction='up' in mountOnEnter unmountOnExit appear timeout={800}>
                 <Grid item md={10} className={classes.data__section}>
                     <Hidden xsDown>
-                        <Typography color={'textSecondary'} className={classes.name}>
+                        <Typography color={'textSecondary'} className={classes.name} gutterBottom>
                             Hey 👋🏾 {!userData?.display_name ? <Skeleton width={'10ch'} /> : `${formatFirstName(userData?.display_name)}!`}
                         </Typography>{' '}
                     </Hidden>

@@ -41,7 +41,7 @@ export function VerticalPaymentStepper() {
 
     const steps = getSteps;
     const { activeStep, canGoNext, paymentLink, setActiveStep } = usePaymentContext();
-    const { apiFetchState, initialOffer } = useSelector((state: RootState) => state.payment);
+    const { apiFetchState } = useSelector((state: RootState) => state.payment);
 
     const handleNext = () => {
         localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: activeStep + 1 });
@@ -147,7 +147,7 @@ export function VerticalPaymentStepper() {
     }, [handleGetPendingOffer, urlParamOfferId, urlParamStep, pendingOffer, setActiveStep, dispatch.payment]);
 
     return (
-        <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+        <Slide direction='right' in={true} mountOnEnter unmountOnExit appear timeout={800}>
             <div className={classes.root}>
                 <Stepper activeStep={activeStep} orientation='vertical'>
                     {steps.map((label, index) => (

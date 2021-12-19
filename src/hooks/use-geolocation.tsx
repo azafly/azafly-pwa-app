@@ -1,11 +1,12 @@
 import { useEffect, useReducer } from 'react';
-import axios from 'axios';
 
+import axios from 'axios';
 interface LocationProps {
     isLoading: boolean;
     userCurrentCountry?: any;
     isAfrica?: boolean;
     error?: string;
+    countriesByRegion?: any;
 }
 
 const initialState = { isLoading: false, userCurrentCountry: null };
@@ -25,7 +26,9 @@ const geolocationReducer = (state: LocationProps = initialState, action: Action)
     }
 };
 
-const useGeolocation = () => {
+export const getIsAfrica = (countryCode: string, africaCountries: any) => countryCode in africaCountries;
+
+export const useGeolocation = () => {
     const [location, dispatch] = useReducer(geolocationReducer, initialState);
 
     const getCountriesByRegion = async () =>
@@ -34,18 +37,17 @@ const useGeolocation = () => {
     const getUserGeoLocationData = async () =>
         axios.get(`https://geolocation-db.com/json/${process.env.GEOLOCATION_KEY}`).then(({ data }) => data.country_name);
 
-    const getUserGeolocationDetails = async () => {
-        dispatch({ type: 'request' });
-        try {
-            const [countriesByRegion, userCurrentCountry] = await Promise.all([getCountriesByRegion(), getUserGeoLocationData()]);
-            const isAfrica = userCurrentCountry in countriesByRegion.Africa;
-            dispatch({ type: 'success', payload: { isAfrica, userCurrentCountry } });
-        } catch (error) {
-            dispatch({ type: 'failure' });
-        }
-    };
-
     useEffect(() => {
+        const getUserGeolocationDetails = async () => {
+            dispatch({ type: 'request' });
+            try {
+                const [countriesByRegion, userCurrentCountry] = await Promise.all([getCountriesByRegion(), getUserGeoLocationData()]);
+                const isAfrica = getIsAfrica(userCurrentCountry.code, countriesByRegion.Africa);
+                dispatch({ type: 'success', payload: { isAfrica, userCurrentCountry, countriesByRegion } });
+            } catch (error) {
+                dispatch({ type: 'failure' });
+            }
+        };
         getUserGeolocationDetails();
     }, []);
 

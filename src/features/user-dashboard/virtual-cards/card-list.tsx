@@ -58,10 +58,7 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '90vw',
             maxWidth: 900,
             margin: 'auto',
-            marginTop: '20vh',
-            [theme.breakpoints.only('xs')]: {
-                marginTop: '12vh'
-            },
+            marginTop: '12vh',
             '& .tabHeader_typography': {
                 fontSize: '0.75rem',
                 fontFamily: 'Nunito',

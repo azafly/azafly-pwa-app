@@ -6,11 +6,9 @@ const useStyles = makeStyles((theme: Theme) =>
         typo: {
             fontWeight: 700,
             fontSize: '2rem',
-            paddingRight: 30,
-            paddingLeft: 30,
+            padding: 10,
             [theme.breakpoints.down('sm')]: {
-                lineHeight: 0.5,
-                margin: '10px'
+                lineHeight: 0.5
             }
         }
     })
@@ -24,7 +22,7 @@ export const ConversionIcon = () => {
                 sx={{
                     // background: '#fafafa',
                     // borderRadius: '50%',
-                    width: 100,
+                    width: 50,
                     // boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
                     // border: '1px solid #DCDCDC',
                     // height: 100,

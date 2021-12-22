@@ -13,6 +13,10 @@ interface APIFetchState {
 }
 
 export type CurrencyCode = 'NGN' | 'USD' | 'EUR' | 'GBP' | 'CAD';
+interface CardIdentifier {
+    currency: CurrencyCode;
+    openTopUpModal: boolean;
+}
 
 interface DashboardState {
     apiFetchState: APIFetchState;
@@ -23,6 +27,7 @@ interface DashboardState {
     rate: number;
     sellCurrency: CurrencyCode;
     viewState: ViewState;
+    currentVirtualCard: CardIdentifier;
 }
 
 const initialState: DashboardState = {
@@ -33,7 +38,11 @@ const initialState: DashboardState = {
     currentSideBarTab: 'transactions',
     rate: 2,
     sellCurrency: 'NGN' as CurrencyCode,
-    viewState: 'abroad'
+    viewState: 'abroad',
+    currentVirtualCard: {
+        currency: 'USD',
+        openTopUpModal: false
+    }
 };
 
 export const dashboard = createModel<RootModel>()({
@@ -62,6 +71,9 @@ export const dashboard = createModel<RootModel>()({
         },
         setFetchAPIState(state, payload: APIFetchState) {
             return { ...state, apiFetchState: payload };
+        },
+        setCurrentCardIdentifier(state, payload: CardIdentifier) {
+            return { ...state, currentVirtualCard: payload };
         }
     },
     effects: dispatch => {

@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
         credit_card__container: {
             padding: 10,
             width: 350,
+            maxWidth: 450,
             position: 'relative',
             [theme.breakpoints.only('xs')]: {
                 width: '100%',

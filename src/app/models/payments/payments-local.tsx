@@ -12,6 +12,7 @@ interface APIFetchState {
 export type CurrencyCode = 'NGN' | 'USD' | 'EUR' | 'GBP' | 'CAD';
 export type Rates = typeof currencies;
 export type BoundType = 'lower' | 'upper' | null;
+
 interface LocalPaymentState {
     apiFetchState: APIFetchState;
     buyAmount: number;

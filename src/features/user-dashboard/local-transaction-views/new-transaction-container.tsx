@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const NewTransactionContainer = () => {
     const [amount, setAmount] = useState(0);
-    const { buyAmount, buyCurrency, rates, sellCurrencyTotalToPay } = useSelector((state: RootState) => state.localPayments);
+    const { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay } = useSelector((state: RootState) => state.localPayments);
     const dispatch = useDispatch<Dispatch>();
 
     const isDesktop = useMediaQuery('(min-width:800px)');
@@ -76,7 +76,7 @@ export const NewTransactionContainer = () => {
                     options={otherCountries}
                 />
                 <ConversionIcon />
-                <ConversionCard amount={sellCurrencyTotalToPay} info={'Total amount in Naira'} options={africa} disabled={true} />
+                <ConversionCard amount={sellCurrencyTotalToPay} info={`Total amount in ${sellCurrency}`} options={africa} disabled={true} />
             </Stack>
             <Stack direction={buttonAlignment} justifyContent={'center'} m={3} spacing={2}>
                 <Button variant={'contained'} color={'primary'} className={classes.cta_button} onClick={() => handleCTAClick('card')}>

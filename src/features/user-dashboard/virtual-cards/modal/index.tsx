@@ -31,16 +31,14 @@ export default function BasicModal({ children, openModal, handleClose }: React.P
     } = useSelector(({ dashboard }: RootState) => ({ dashboard }));
 
     return (
-        <div>
-            <Modal
-                onBackdropClick={() => dispatch.dashboard.setCurrentCardIdentifier({ currency, openTopUpModal: false })}
-                open={openModal}
-                onClose={handleClose}
-                aria-labelledby='modal-modal-title'
-                aria-describedby='modal-modal-description'
-            >
-                <Box sx={style}>{children}</Box>
-            </Modal>
-        </div>
+        <Modal
+            onBackdropClick={() => dispatch.dashboard.setCurrentCardIdentifier({ currency, openTopUpModal: false })}
+            open={openModal}
+            onClose={handleClose}
+            aria-labelledby='modal-modal-title'
+            aria-describedby='modal-modal-description'
+        >
+            <Box sx={style}>{children}</Box>
+        </Modal>
     );
 }

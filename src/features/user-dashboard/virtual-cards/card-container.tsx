@@ -20,11 +20,11 @@ export const CardContainer = ({ cardObject }: CardContainerProps) => {
     return (
         <Card style={{ width: '100%', boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)', border: '1px solid #DCDCDC' }}>
             <CardContent>
-                <Grid container alignItems={'center'}>
-                    <Grid item xs={12} sm={7}>
+                <Grid container alignItems={'center'} justifyContent={'center'}>
+                    <Grid container item xs={12} md={5} alignItems={'center'} justifyContent={'center'}>
                         <CreditCard {...cardObject} />
                     </Grid>
-                    <Grid item xs={12} sm={5}>
+                    <Grid container item xs={12} md={5} alignItems={'center'} justifyContent={'center'}>
                         <VirtualCardActions />
                     </Grid>
                 </Grid>

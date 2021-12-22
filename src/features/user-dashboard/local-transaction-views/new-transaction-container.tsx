@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const NewTransactionContainer = () => {
     const [amount, setAmount] = useState(0);
-    const { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay } = useSelector((state: RootState) => state.localPayments);
+    const { buyAmount, buyCurrency, rates, sellCurrencyTotalToPay } = useSelector((state: RootState) => state.localPayments);
     const dispatch = useDispatch<Dispatch>();
 
     const isDesktop = useMediaQuery('(min-width:800px)');
@@ -47,10 +47,11 @@ export const NewTransactionContainer = () => {
 
     const handleBuyAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
         const amount = !e.target.value ? 0 : parseInt(e.target.value);
-        // fetch this from serve minMax per currency
-        //const limitAmount = amount > 10000 && buyCurrency !== 'NGN' ? 10000 : amount;
+        // set limit from server imposed limit
+        const LIMIT = 10000;
+        const limitAmount = amount > LIMIT ? LIMIT : amount;
         setAmount(amount);
-        dispatch.localPayments.setBuyAmount(amount);
+        dispatch.localPayments.setBuyAmount(limitAmount);
         if (rates && buyCurrency) {
         }
         dispatch.localPayments.setTotalToPayInSellCurrency(null);
@@ -59,15 +60,6 @@ export const NewTransactionContainer = () => {
     const classes = useStyles();
     const direction = isDesktop ? 'row' : 'column';
     const buttonAlignment = isMobile ? 'column' : 'row';
-    // const formattedBuyAmount = useMemo(
-    //     () => (amount > 0 ? formatCurrency({ amount, currency: buyCurrency, countryCode: 'DE' }) : `${buyAmount}`),
-    //     [amount, buyAmount, buyCurrency]
-    // );
-
-    // const formattedSellAmount = useMemo(
-    //     () => formatCurrency({ amount: convertedAmount, currency: sellCurrency, countryCode: 'NG' }),
-    //     [convertedAmount, sellCurrency]
-    // );
 
     const handleCTAClick = (name: 'card' | 'direct') => {
         name === 'card' ? dispatch.dashboard.setCurrentDashboardTab('cards') : dispatch.dashboard.setCurrentDashboardTab('payment');

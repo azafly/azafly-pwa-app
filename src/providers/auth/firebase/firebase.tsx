@@ -4,7 +4,6 @@ import { getStorage } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     applyActionCode,
-    browserSessionPersistence,
     confirmPasswordReset as confirmPassword,
     createUserWithEmailAndPassword,
     FacebookAuthProvider,
@@ -12,7 +11,6 @@ import {
     GoogleAuthProvider,
     onAuthStateChanged,
     sendPasswordResetEmail as sendPasswordReset,
-    setPersistence,
     signInWithEmailAndPassword as signInWithPass,
     signInWithPopup,
     UserCredential,
@@ -41,8 +39,6 @@ const authContext = createContext<AuthContext>(defaultAuhContext);
 function useFirebaseProviderAuth() {
     const dispatch = useDispatch<Dispatch>();
     const reduxAuthState = useSelector((state: RootState) => state.auth);
-
-    setPersistence(firebaseAuth, browserSessionPersistence).catch(error => console.log(error));
 
     const handleSignIn = async (signInCallback: Promise<UserCredential>) => {
         dispatch.auth.updateAuthState({ ...reduxAuthState, isLoading: true });

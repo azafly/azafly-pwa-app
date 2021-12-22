@@ -1,9 +1,7 @@
 import { createStyles, Input, makeStyles, Theme, Typography } from '@material-ui/core';
 import { Stack } from '@mui/material';
-import { useSelector } from 'react-redux';
 
 import { CurrencyToggle, CurrencyListParams } from './currency-toggle';
-import { RootState } from 'app/store';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -54,7 +52,6 @@ interface ConversionCardProps {
 
 export const ConversionCard = ({ amount, info, handleAmountChange, disabled = false, options }: ConversionCardProps) => {
     const classes = useStyles();
-    const {} = useSelector((state: RootState) => state.dashboard);
 
     return (
         <Stack

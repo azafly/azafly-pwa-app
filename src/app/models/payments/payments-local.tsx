@@ -11,6 +11,7 @@ interface APIFetchState {
 }
 export type CurrencyCode = 'NGN' | 'USD' | 'EUR' | 'GBP' | 'CAD';
 export type Rates = typeof currencies;
+export type BoundType = 'lower' | 'upper' | null;
 interface LocalPaymentState {
     apiFetchState: APIFetchState;
     buyAmount: number;
@@ -18,15 +19,19 @@ interface LocalPaymentState {
     sellCurrencyTotalToPay: number;
     rates: any;
     sellCurrency: CurrencyCode;
+    upperBoundLimitExceeded: boolean;
+    loverBoundLimitNotReached: boolean;
 }
 
 const initialState: LocalPaymentState = {
     apiFetchState: {},
-    buyAmount: 1,
+    buyAmount: 1001,
     buyCurrency: 'CAD' as CurrencyCode,
     sellCurrencyTotalToPay: 0,
     rates: null,
-    sellCurrency: 'NGN' as CurrencyCode
+    sellCurrency: 'NGN' as CurrencyCode,
+    upperBoundLimitExceeded: false,
+    loverBoundLimitNotReached: false
 };
 
 export const localPayments = createModel<RootModel>()({
@@ -49,6 +54,12 @@ export const localPayments = createModel<RootModel>()({
         },
         setSellCurrencyTotalToPay(state, payload: number) {
             return { ...state, sellCurrencyTotalToPay: payload };
+        },
+        setUpperLimitExceeded(state, payload: boolean) {
+            return { ...state, upperBoundLimitExceeded: payload };
+        },
+        setLowerLimitExceeded(state, payload: boolean) {
+            return { ...state, lowerBoundLimitExceeded: payload };
         }
     },
     effects: dispatch => {
@@ -80,7 +91,6 @@ export const localPayments = createModel<RootModel>()({
             },
             async setTotalToPayInSellCurrency(_, getState) {
                 const { buyAmount = 1, sellCurrency, buyCurrency, rates } = getState.localPayments;
-                // set limit from server imposed limit
                 dispatch.localPayments.setSellCurrencyTotalToPay(buyAmount * rates[sellCurrency][buyCurrency]['rate']);
             }
         };

@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import React from 'react';
 import { Box, Grid, Tabs, Tab, Typography } from '@material-ui/core';
-
-import { SignUpForm } from './sign-up/form';
-import { SignInForm } from './sign-in/form';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 
 import { Logo1SvgComponent } from 'components/icons/logo-1';
+import { SignInForm } from './sign-in/form';
+import { SignUpForm } from './sign-up/form';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -66,15 +65,6 @@ export function OnboardingTab() {
     const handleChange = (_: React.ChangeEvent<unknown>, newValue: number) => {
         setValue(newValue);
     };
-
-    const location = window.location.href;
-
-    useEffect(() => {
-        if (location.includes('signin')) setValue(1);
-        else {
-            setValue(0);
-        }
-    }, [location]);
 
     return (
         <Grid item xs={12} sm={6} className={classes.onboardingTabRoot} alignItems={'center'}>

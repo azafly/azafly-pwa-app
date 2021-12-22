@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '90vw',
             maxWidth: 900,
             margin: 'auto',
-            marginTop: '12vh',
+            marginTop: '14vh',
             '& .tabHeader_typography': {
                 fontSize: '0.75rem',
                 fontFamily: 'Nunito',

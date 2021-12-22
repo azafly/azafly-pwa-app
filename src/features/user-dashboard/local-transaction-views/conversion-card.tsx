@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         amountInfo: {
             padding: 16,
+            background: 'white',
             [theme.breakpoints.down('sm')]: {
                 padding: 10
             }

@@ -120,8 +120,8 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
             backgroundColor: '#f2f5f7',
             minHeight: '100vh',
             height: 'auto',
-            paddingTop: 120,
-            [theme.breakpoints.down('xs')]: { paddingTop: 0 }
+            paddingTop: 100,
+            [theme.breakpoints.down('xs')]: { paddingTop: '80px' }
         },
         data__section: {
             margin: 'auto',

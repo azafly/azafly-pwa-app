@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import { ChangeEvent, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
@@ -12,12 +12,15 @@ import { Dispatch, RootState } from 'app/store';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        container: {
+            maxWidth: 900,
+            margin: 'auto'
+        },
         new_transaction_container: {
             maxWidth: 900,
             margin: 'auto',
             marginTop: '3vh',
-            [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
-            [theme.breakpoints.only('xs')]: { marginTop: '15vh' }
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         },
         convert: {
             [theme.breakpoints.up('md')]: {
@@ -25,25 +28,32 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         cta_button: {
-            textTransform: 'capitalize'
+            textTransform: 'capitalize',
+            textAlign: 'center',
+            [theme.breakpoints.down('sm')]: {
+                fontSize: '0.8rem'
+            }
         }
     })
 );
 
 export const NewTransactionContainer = () => {
     const [amount, setAmount] = useState(0);
-    const { buyAmount, buyCurrency, convertedAmount, rate } = useSelector((state: RootState) => state.dashboard);
+    const { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay } = useSelector((state: RootState) => state.localPayments);
     const dispatch = useDispatch<Dispatch>();
 
     const isDesktop = useMediaQuery('(min-width:800px)');
-    const isMobile = useMediaQuery('(max-width:400px)');
+    const isMobile = useMediaQuery('(max-width:450px)');
 
     const handleBuyAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
         const amount = !e.target.value ? 0 : parseInt(e.target.value);
-        const limitAmount = amount > 10000 && buyCurrency !== 'NGN' ? 10000 : amount;
-        setAmount(limitAmount);
-        dispatch.dashboard.setBuyAmount(limitAmount);
-        dispatch.dashboard.setConvertedAmount(limitAmount * rate);
+        // fetch this from serve minMax per currency
+        //const limitAmount = amount > 10000 && buyCurrency !== 'NGN' ? 10000 : amount;
+        setAmount(amount);
+        dispatch.localPayments.setBuyAmount(amount);
+        if (rates && buyCurrency) {
+        }
+        dispatch.localPayments.setTotalToPayInSellCurrency(null);
     };
 
     const classes = useStyles();
@@ -59,8 +69,12 @@ export const NewTransactionContainer = () => {
     //     [convertedAmount, sellCurrency]
     // );
 
+    const handleCTAClick = (name: 'card' | 'direct') => {
+        name === 'card' ? dispatch.dashboard.setCurrentDashboardTab('cards') : dispatch.dashboard.setCurrentDashboardTab('payment');
+    };
+
     return (
-        <>
+        <Box className={classes.container}>
             <Stack direction={direction} alignItems={'center'} className={classes.new_transaction_container}>
                 {' '}
                 <ConversionCard
@@ -70,16 +84,23 @@ export const NewTransactionContainer = () => {
                     options={otherCountries}
                 />
                 <ConversionIcon />
-                <ConversionCard amount={convertedAmount} info={'Total amount in Naira'} options={africa} disabled={true} />
+                <ConversionCard amount={sellCurrencyTotalToPay} info={'Total amount in Naira'} options={africa} disabled={true} />
             </Stack>
             <Stack direction={buttonAlignment} justifyContent={'center'} m={3} spacing={2}>
-                <Button variant={'contained'} color={'primary'} className={classes.cta_button}>
+                <Button variant={'contained'} color={'primary'} className={classes.cta_button} onClick={() => handleCTAClick('card')}>
                     Pay with Virtual Card
                 </Button>
-                <Button component={Link} variant={'outlined'} color={'secondary'} className={classes.cta_button} to={'/payment'}>
+                <Button
+                    component={Link}
+                    variant={'outlined'}
+                    color={'secondary'}
+                    className={classes.cta_button}
+                    to={'/payment'}
+                    onClick={() => handleCTAClick('direct')}
+                >
                     Pay Directly to Institution
                 </Button>
             </Stack>
-        </>
+        </Box>
     );
 };

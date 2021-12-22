@@ -1,3 +1,4 @@
+export { CountryViewToggleSwitch } from './country-view-toggle';
 export { DefaultSnackbar } from './snackbar';
 export { EmptyDataSvgComponent } from './empty-data';
 export { GenericButton } from './button';

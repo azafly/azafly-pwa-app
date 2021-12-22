@@ -52,7 +52,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     }
 }));
 
-export function ViewToggleSwitch() {
+export function CountryViewToggleSwitch() {
     const {
         auth: { isAdmin }
     } = useSelector(({ auth }: RootState) => ({ auth }));

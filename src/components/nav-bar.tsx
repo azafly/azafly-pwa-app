@@ -18,7 +18,7 @@ import { Logo2SvgComponent } from 'components/icons/logo-style-2';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useUserContext } from 'hooks/use-user-context';
 import { ThreeDots } from 'components/css-loaders/three-dots';
-import { ViewToggleSwitch } from 'features/user-dashboard/view-toggle/switch';
+import { CountryViewToggleSwitch } from 'components/country-view-toggle';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -219,7 +219,7 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
                         <Logo2SvgComponent />
                     </Link>
                     <div className={classes.grow} />
-                    <ViewToggleSwitch />
+                    <CountryViewToggleSwitch />
                     <div className={classes.sectionDesktop}>
                         {!isOnboardingPage && (
                             <>

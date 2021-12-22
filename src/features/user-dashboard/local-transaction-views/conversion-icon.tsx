@@ -5,11 +5,12 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         typo: {
             fontWeight: 700,
-            fontSize: '3rem',
-            [theme.breakpoints.down('xs')]: {
+            fontSize: '2rem',
+            paddingRight: 30,
+            paddingLeft: 30,
+            [theme.breakpoints.down('sm')]: {
                 lineHeight: 0.5,
-                margin: '10px',
-                fontSize: '1.5rem'
+                margin: '10px'
             }
         }
     })
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const ConversionIcon = () => {
     const classes = useStyles();
     return (
-        <Grid sx={{ width: 150, margin: 'auto' }} alignItems={'center'} alignSelf={'center'} alignContent={'center'}>
+        <Grid sx={{ width: 50, margin: 'auto' }} alignItems={'center'} alignSelf={'center'} alignContent={'center'}>
             <Box
                 sx={{
                     // background: '#fafafa',

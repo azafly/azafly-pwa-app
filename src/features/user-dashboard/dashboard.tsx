@@ -28,7 +28,9 @@ export default function Dashboard() {
     const dispatch = useDispatch<Dispatch>();
     const { user: userData } = useUserContext();
 
-    const { currentSideBarTab, buyCurrency } = useSelector((rootState: RootState) => rootState.dashboard);
+    const {
+        dashboard: { currentSideBarTab, buyCurrency }
+    } = useSelector(({ dashboard, auth }: RootState) => ({ dashboard, auth }));
 
     const [handleGetUserTransaction, { data: transactionData, loading }] = useGetUserTransactionsLazyQuery();
     const transactions = transactionData?.transaction;
@@ -94,9 +96,10 @@ export default function Dashboard() {
     }, []);
 
     useEffect(() => {
-        dispatch.dashboard.setAsyncRateInfo(buyCurrency);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [buyCurrency]);
+        dispatch.localPayments.setExchangeRates();
+        // replace with /abroad payment rates
+        // dispatch.dashboard.setAsyncRateInfo(buyCurrency);
+    }, [dispatch.localPayments]);
 
     return (
         <div className={classes.dashboard_container}>

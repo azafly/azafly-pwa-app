@@ -70,12 +70,11 @@ export const dashboard = createModel<RootModel>()({
                 if (getState.auth.isAdmin) {
                     const viewState = getState.dashboard.viewState === 'abroad' ? 'local' : 'abroad';
                     dispatch.dashboard.setViewState(viewState);
+                    dispatch.auth.setIsUserCountryAfrican(!getState.auth.isAfrica);
                 }
             },
             async setAsyncRateInfo(target_currency, getState) {
                 const { buyAmount, sellCurrency } = getState.dashboard;
-
-                console.log(target_currency);
 
                 dispatch.dashboard.setFetchAPIState({ ...getState.dashboard.apiFetchState, loading: true });
                 try {

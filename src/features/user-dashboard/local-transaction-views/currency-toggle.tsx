@@ -1,6 +1,6 @@
 import { Avatar, Box } from '@mui/material';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as React from 'react';
 import FormControl from '@mui/material/FormControl';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -9,7 +9,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { Dispatch, RootState } from 'app/store';
+import { Dispatch } from 'app/store';
 
 export interface CurrencyListParams {
     country: string;
@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme: Theme) =>
 export function CurrencyToggle({ options }: CurrencyToggleProps) {
     const [currency, setCurrency] = React.useState<CurrencyListParams>(options[0]);
 
-    const { buyAmount, rate, buyCurrency } = useSelector((state: RootState) => state.dashboard);
     const dispatch = useDispatch<Dispatch>();
 
     const getCurrentCurrency = () => {
@@ -50,15 +49,10 @@ export function CurrencyToggle({ options }: CurrencyToggleProps) {
         const currency = event.target.value;
         // @ts-ignore
         setCurrency(currency);
-
         // @ts-ignore
-        if (buyCurrency !== currency.currencyCode) {
-            // @ts-ignore
-            dispatch.dashboard.setAsyncRateInfo(currency.currencyCode);
-            // @ts-ignore
-            dispatch.dashboard.setBuyCurrency(currency.currencyCode);
-            dispatch.dashboard.setConvertedAmount(buyAmount * rate);
-        }
+        dispatch.localPayments.setBuyCurrency(currency.currencyCode);
+        // @ts-ignore
+        dispatch.localPayments.setTotalToPayInSellCurrency(null);
     };
 
     const classes = useStyles();

@@ -13,8 +13,6 @@ import { getApolloClient } from 'libs/apollo-client';
 import { RootState } from 'app/store';
 import { Routes } from 'routes';
 
-//GoogleGTA.initialize('UA-201238935-1');
-
 function App() {
     const { token, isAuth } = useSelector((state: RootState) => state.auth);
     const preferredTheme = useMemo(() => createTheme(theme), []);

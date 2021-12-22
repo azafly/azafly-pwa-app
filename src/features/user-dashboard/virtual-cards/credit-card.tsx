@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: 450,
             position: 'relative',
             [theme.breakpoints.only('xs')]: {
-                width: '100%',
                 margin: 'auto'
             }
         },

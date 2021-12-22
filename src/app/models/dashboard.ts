@@ -15,7 +15,8 @@ interface APIFetchState {
 export type CurrencyCode = 'NGN' | 'USD' | 'EUR' | 'GBP' | 'CAD';
 interface CardIdentifier {
     currency: CurrencyCode;
-    openTopUpModal: boolean;
+    openTopUpModal?: boolean;
+    action?: 'top-up' | 'settings' | 'freeze' | 'pin';
 }
 
 interface DashboardState {
@@ -41,7 +42,8 @@ const initialState: DashboardState = {
     viewState: 'abroad',
     currentVirtualCard: {
         currency: 'USD',
-        openTopUpModal: false
+        openTopUpModal: false,
+        action: 'top-up'
     }
 };
 

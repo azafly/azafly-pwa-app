@@ -1,12 +1,32 @@
-import { Slide, Typography } from '@mui/material';
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
-import { CardContainer } from './card-container';
-import { FilterTab } from '../filter-tab-heading';
 import { Avatar, Stack } from '@mui/material';
+import { CardContainer } from './card-container';
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { FilterTab } from '../filter-tab-heading';
+import { Slide, Typography } from '@mui/material';
+import { useState } from 'react';
 
-const mockData = [
+import { CurrencyCode } from 'app/models/dashboard';
+import { RootState } from 'app/store';
+import { useSelector } from 'react-redux';
+
+import BasicModal from './modal/index';
+import { TopUpForm, VirtualCardSetting } from './forms';
+
+interface VirtualCardObject {
+    currency: CurrencyCode;
+    countryCode: string;
+    amount: number;
+    cardNumber: string;
+    last4digits: string;
+    expiry: string;
+    key: string;
+    cvv: string;
+}
+
+const mockData: VirtualCardObject[] = [
     {
         currency: 'EUR',
+        key: 'EUR',
         countryCode: 'EU',
         amount: 100,
         cardNumber: '5346 5464 6474',
@@ -16,6 +36,7 @@ const mockData = [
     },
     {
         currency: 'GBP',
+        key: 'GBP',
         countryCode: 'GB',
         amount: 100,
         cardNumber: '5344 5464 4474',
@@ -25,6 +46,7 @@ const mockData = [
     },
     {
         currency: 'NGN',
+        key: 'NGN',
         countryCode: 'NG',
         amount: 780000,
         cardNumber: '5344 5464 0474',
@@ -34,6 +56,7 @@ const mockData = [
     },
     {
         currency: 'USD',
+        key: 'USD',
         countryCode: 'US',
         amount: 1100,
         cardNumber: '5344 5464 4474',
@@ -43,6 +66,7 @@ const mockData = [
     },
     {
         currency: 'CAD',
+        key: 'CAD',
         countryCode: 'CA',
         amount: 100,
         cardNumber: '5344 5464 3474',
@@ -83,30 +107,51 @@ const tabs = mockData.map((cardObject: typeof mockData[0], index) => {
         </div>
     );
     return {
+        key: currency,
         heading,
         component: <CardContainer cardObject={cardObject} />
     };
 });
 
+function getActionModal(action: any) {
+    switch (action) {
+        case 'top-up':
+            return <TopUpForm />;
+        case 'settings':
+            return <VirtualCardSetting />;
+        default:
+            return <TopUpForm />;
+    }
+}
 const CardList = () => {
+    const {
+        currentVirtualCard: { action = 'top-up', currency, openTopUpModal = false }
+    } = useSelector((state: RootState) => state.dashboard);
+    const [openModal, setOpenModal] = useState(openTopUpModal);
+
     const classes = useStyles();
     return (
-        <Slide
-            direction='left'
-            in
-            mountOnEnter
-            unmountOnExit
-            appear
-            timeout={800}
-            easing={{ enter: 'cubic-bezier(0.0, 0, 0.2, 1)', exit: 'cubic-bezier(0.4, 0, 1, 1)' }}
-        >
-            <Stack className={classes.container}>
-                <Typography gutterBottom variant={'h6'} align={'left'} fontFamily={'Nunito'} fontWeight={700}>
-                    Virtual Cards
-                </Typography>
-                <FilterTab tabViews={tabs} />
-            </Stack>
-        </Slide>
+        <>
+            <BasicModal handleClose={() => setOpenModal(false)} openModal={openTopUpModal || openModal}>
+                {getActionModal(action)}
+            </BasicModal>
+            <Slide
+                direction='left'
+                in
+                mountOnEnter
+                unmountOnExit
+                appear
+                timeout={800}
+                easing={{ enter: 'cubic-bezier(0.0, 0, 0.2, 1)', exit: 'cubic-bezier(0.4, 0, 1, 1)' }}
+            >
+                <Stack className={classes.container}>
+                    <Typography gutterBottom variant={'h6'} align={'left'} fontFamily={'Nunito'} fontWeight={700}>
+                        Virtual Cards
+                    </Typography>
+                    <FilterTab tabViews={tabs} currentKey={currency} />
+                </Stack>
+            </Slide>
+        </>
     );
 };
 

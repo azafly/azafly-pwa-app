@@ -39,7 +39,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const NewTransactionContainer = () => {
     const [amount, setAmount] = useState(0);
-    const { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay } = useSelector((state: RootState) => state.localPayments);
+    const {
+        localPayments: { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay },
+        dashboard: {
+            currentVirtualCard: { currency }
+        }
+    } = useSelector(({ localPayments, dashboard }: RootState) => ({ localPayments, dashboard }));
     const dispatch = useDispatch<Dispatch>();
 
     const isDesktop = useMediaQuery('(min-width:800px)');
@@ -63,6 +68,7 @@ export const NewTransactionContainer = () => {
 
     const handleCTAClick = (name: 'card' | 'direct') => {
         name === 'card' ? dispatch.dashboard.setCurrentDashboardTab('cards') : dispatch.dashboard.setCurrentDashboardTab('payment');
+        dispatch.dashboard.setCurrentCardIdentifier({ currency, openTopUpModal: true });
     };
 
     return (

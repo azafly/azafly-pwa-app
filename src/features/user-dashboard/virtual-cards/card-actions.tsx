@@ -34,38 +34,53 @@ interface VirtualCardActions {
     currency: CurrencyCode;
 }
 
+type Action = 'top-up' | 'settings' | 'freeze' | 'pin';
+
+interface GRID_ITEM_INTERFACE {
+    avatar: JSX.Element;
+    primaryText: string;
+    secondaryText: string;
+    action: Action;
+}
 export function VirtualCardActions({ currency }: VirtualCardActions) {
     const classes = useStyles();
     const dispatch = useDispatch<Dispatch>();
 
-    const GRID_ITEMS = [
+    const GRID_ITEMS: GRID_ITEM_INTERFACE[] = [
         {
             avatar: <AddReactionIcon sx={{ color: '#4990A4' }} />,
             primaryText: 'Top-up Virtual Card',
-            secondaryText: 'Add more money to your card'
+            secondaryText: 'Add more money to your card',
+            action: 'top-up'
         },
         {
             avatar: <AcUnitIcon sx={{ color: '#4990A4' }} />,
             primaryText: 'Freeze Card',
-            secondaryText: 'Block Card Temporarily'
+            secondaryText: 'Block Card Temporarily',
+            action: 'freeze'
         },
         {
             avatar: <SecurityIcon sx={{ color: '#4990A4' }} />,
             primaryText: 'PIN and Security',
-            secondaryText: 'Unblock PIN or CVV & more'
+            secondaryText: 'Unblock PIN or CVV & more',
+            action: 'pin'
         },
         {
             avatar: <SettingsIcon sx={{ color: '#4990A4' }} />,
 
             primaryText: 'Settings',
-            secondaryText: `Share, Set card limit & more`
+            secondaryText: `Share, Set card limit & more`,
+            action: 'settings'
         }
     ];
     return (
         <List>
-            {GRID_ITEMS.map(({ avatar, primaryText, secondaryText }) => {
+            {GRID_ITEMS.map(({ avatar, primaryText, secondaryText, action }) => {
                 return (
-                    <ListItem key={primaryText} onClick={() => console.log('hey')}>
+                    <ListItem
+                        key={primaryText}
+                        onClick={() => dispatch.dashboard.setCurrentCardIdentifier({ currency, action, openTopUpModal: true })}
+                    >
                         <ListItemAvatar>
                             <Avatar sx={{ border: '1px solid #4990A4', background: 'white' }}>{avatar}</Avatar>
                         </ListItemAvatar>

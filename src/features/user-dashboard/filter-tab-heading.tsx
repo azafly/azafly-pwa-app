@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { Box, Typography } from '@material-ui/core';
 import Tabs from '@mui/material/Tabs';
@@ -66,13 +66,21 @@ interface TransactionFilterTabProps {
     handleSetDateValue?: Dispatch<SetStateAction<DateRange<Date>>>;
     dateValue?: any;
     openDatePicker?: boolean;
+    currentKey?: any;
 }
-export const FilterTab = ({ tabViews }: TransactionFilterTabProps) => {
+export const FilterTab = ({ tabViews, currentKey }: TransactionFilterTabProps) => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (_: React.ChangeEvent<unknown>, newValue: number) => {
         setValue(newValue);
     };
+
+    useEffect(() => {
+        const index = tabViews.map(tab => tab.key).indexOf(currentKey);
+        const value = index < 0 ? 0 : index;
+        setValue(value);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentKey]);
 
     const classes = useStyles();
 

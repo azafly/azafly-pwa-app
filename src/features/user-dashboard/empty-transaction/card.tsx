@@ -29,7 +29,7 @@ export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, 
             {!loading && (
                 <>
                     {!emailVerified && <VerificationRequestBox emailLink={emailLink} handleSendVerificationEmail={handleSendVerificationEmail} />}
-                    <Card>
+                    <Card className={classes.card}>
                         <Typography variant={'h5'} className={classes.nothing}>
                             {`You do not have any transactions yet`}{' '}
                         </Typography>

@@ -18,8 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: 'auto',
             marginBottom: 20,
             marginTop: '3vh',
-            [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
-            [theme.breakpoints.only('xs')]: { marginTop: '12vh' }
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         },
         heading: {
             fontWeight: 650,

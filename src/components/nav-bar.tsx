@@ -183,14 +183,6 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
                 <Typography>Help</Typography>
             </MenuItem>
             {!isOnboardingPage && (
-                <MenuItem component={Link} to={'/payment'}>
-                    <IconButton aria-label='help' aria-controls='menu' aria-haspopup='true' color='inherit'>
-                        <PaymentsIcon />
-                    </IconButton>
-                    <Typography>New Payment</Typography>
-                </MenuItem>
-            )}
-            {!isOnboardingPage && (
                 <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
                     <IconButton aria-label='dashboard' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
                         <DashboardSvgComponent />
@@ -246,22 +238,6 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
                                     <Badge badgeContent={3} color='secondary'>
                                         <NotificationsIcon />
                                     </Badge>
-                                </IconButton>
-
-                                <IconButton
-                                    edge='end'
-                                    aria-label='account of current user'
-                                    aria-controls={menuId}
-                                    aria-haspopup='true'
-                                    onClick={handleProfileMenuOpen}
-                                    color='inherit'
-                                >
-                                    <Link to={callToAction.link} className='link'>
-                                        {' '}
-                                        <Button variant='contained' className='payment_button' endIcon={callToAction.icon}>
-                                            {callToAction.text}
-                                        </Button>
-                                    </Link>
                                 </IconButton>
                             </>
                         )}

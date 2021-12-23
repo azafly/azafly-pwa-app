@@ -9,6 +9,8 @@ import { Country, NIGERIA, useCountryList } from '../../../hooks/use-country-lis
 import { Dispatch } from 'app/store';
 import { RenderOptions } from './render-option-label';
 
+import { useURLParams } from 'hooks/use-url-params';
+
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         maxWidth: 400,
@@ -74,13 +76,19 @@ export const AfricaCountriesSelect = ({ classKeys, options, defaultOption, getOp
         ...classKeys
     };
 
-    const { popularSourceCountries } = useCountryList();
+    const { popularSourceCountries, countryCodeLookup } = useCountryList();
+
+    const urlParamSendFrom = useURLParams('send_from');
+    // const urlParamSendTo = useURLParams('send_to');
+    // const defaultParams = 'NG';
+
+    const sendFrom = countryCodeLookup[urlParamSendFrom ?? 'NG'];
 
     const optionRenderer = (optionData: Country) => (renderOption ? renderOption : <RenderOptions option={optionData} />);
     const optionLabel = getOptionLabel ? getOptionLabel : (option: Country) => `${option.emoji ?? ''} ${' '}${option.currency.code}`;
     const optionDisabled = getOptionDisabled ? getOptionDisabled : (option: Country) => option.isComingSoon || option.isNotSupported;
     const _options = options ? options : [NIGERIA, ...popularSourceCountries];
-    const _defaultOption = defaultOption ? defaultOption : NIGERIA;
+    const _defaultOption = urlParamSendFrom ? sendFrom : NIGERIA;
     const dispatch = useDispatch<Dispatch>();
 
     return (

@@ -2,12 +2,14 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { Country, useCountryList } from '../../../hooks/use-country-list';
+import { Country, NIGERIA, useCountryList } from '../../../hooks/use-country-list';
 import { Dispatch, RootState } from 'app/store';
 import { RenderOptions } from './render-option-label';
 import { UK } from 'features/payments/context/constants';
+
+import { useURLParams } from 'hooks/use-url-params';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -90,7 +92,7 @@ export function CurrencyAmount() {
     const classes = useStyles();
     const [showCountryList, setShowCountryList] = React.useState(false);
 
-    const { popularTargetCountries } = useCountryList();
+    const { popularTargetCountries, countryCodeLookup } = useCountryList();
     const dispatch = useDispatch<Dispatch>();
     const { amount } = useSelector((state: RootState) => state.payment.rateInfo);
 
@@ -103,6 +105,17 @@ export function CurrencyAmount() {
 
     const getOptionLabel = (option: Country) => `${option.emoji ?? ''}  ${option.currency.code}`;
     const optionRenderer = (optionData: Country) => <RenderOptions option={optionData} />;
+
+    const urlParamSendTo = useURLParams('send_to');
+    const [initialValue, setInitialValue] = useState(NIGERIA);
+
+    useEffect(() => {
+        urlParamSendTo ? setInitialValue(countryCodeLookup[urlParamSendTo]) : '';
+
+        console.log(initialValue);
+    }, [urlParamSendTo, initialValue, countryCodeLookup]);
+
+    console.log(initialValue);
 
     return (
         <div className={classes.root} onClick={handleShow}>
@@ -125,7 +138,7 @@ export function CurrencyAmount() {
                     className={classes.toggle__section}
                     disablePortal
                     id='currency'
-                    defaultValue={UK}
+                    defaultValue={initialValue || UK}
                     options={options}
                     classes={{
                         paper: classes.listbox,

@@ -36,6 +36,7 @@ interface CountryListData {
     popularSourceCountries: Country[];
     NIGERIA: Country;
     formattedCountries: Country[];
+    countryCodeLookup: Record<string, Country>;
     countriesByRegion: CountriesByRegion;
     currentlySupportedCountries: Country[];
     isLoadingCountryList: boolean;
@@ -63,6 +64,7 @@ const defaultCountryListData: CountryListData = {
     popularSourceCountries: [],
     NIGERIA,
     formattedCountries: [],
+    countryCodeLookup: {},
     countriesByRegion: {
         Africa: [],
         North_America: [],

@@ -1,4 +1,4 @@
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, Typography } from '@material-ui/core';
 import { ChangeEvent, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
@@ -22,17 +22,16 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: '3vh',
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         },
-        convert: {
-            [theme.breakpoints.up('md')]: {
-                width: '120%'
-            }
-        },
         cta_button: {
             textTransform: 'capitalize',
             textAlign: 'center',
             [theme.breakpoints.down('sm')]: {
                 fontSize: '0.8rem'
             }
+        },
+        error: {
+            margin: 10,
+            fontSize: '0.9rem'
         }
     })
 );
@@ -40,9 +39,9 @@ const useStyles = makeStyles((theme: Theme) =>
 export const NewTransactionContainer = () => {
     const [amount, setAmount] = useState(0);
     const {
-        localPayments: { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay },
+        localPayments: { apiFetchState, buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay },
         dashboard: {
-            currentVirtualCard: { currency }
+            currentVirtualCard: { currency = 'USD' }
         }
     } = useSelector(({ localPayments, dashboard }: RootState) => ({ localPayments, dashboard }));
     const dispatch = useDispatch<Dispatch>();
@@ -72,7 +71,7 @@ export const NewTransactionContainer = () => {
     };
 
     return (
-        <Box className={classes.container}>
+        <>
             <Stack direction={direction} alignItems={'center'} className={classes.new_transaction_container}>
                 {' '}
                 <ConversionCard
@@ -84,6 +83,11 @@ export const NewTransactionContainer = () => {
                 <ConversionIcon />
                 <ConversionCard amount={sellCurrencyTotalToPay} info={`Total amount in ${sellCurrency}`} options={africa} disabled={true} />
             </Stack>
+            {apiFetchState.result === 'error' && (
+                <Typography color={'error'} paragraph className={classes.error}>
+                    {apiFetchState.message}
+                </Typography>
+            )}
             <Stack direction={buttonAlignment} justifyContent={'center'} m={3} spacing={2}>
                 <Button variant={'contained'} color={'primary'} className={classes.cta_button} onClick={() => handleCTAClick('card')}>
                     Pay with Virtual Card
@@ -99,6 +103,6 @@ export const NewTransactionContainer = () => {
                     Pay Directly to Institution
                 </Button>
             </Stack>
-        </Box>
+        </>
     );
 };

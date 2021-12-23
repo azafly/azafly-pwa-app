@@ -1,6 +1,7 @@
 import { createModel } from '@rematch/core';
 
 import { currencies, getCurrencyRates } from 'app/models/payments/mock';
+import { getCurrentExchangeRates } from 'services/rest-clients/user-payment';
 import { RootModel } from '../index';
 
 interface APIFetchState {
@@ -38,7 +39,7 @@ const initialState: LocalPaymentState = {
 export const localPayments = createModel<RootModel>()({
     state: initialState,
     reducers: {
-        setRates(state, payload: Rates) {
+        setRates(state, payload: Record<string, unknown> | null) {
             return { ...state, rates: payload };
         },
         setFetchAPIState(state, payload: APIFetchState) {
@@ -68,13 +69,14 @@ export const localPayments = createModel<RootModel>()({
             async setExchangeRates() {
                 const initialAPIState = {
                     type: 'settingExchangeRate',
-                    message: '...fetching Rate...>',
+                    message: '...fetching Rate...',
                     loading: true
                 };
-                dispatch.dashboard.setFetchAPIState(initialAPIState);
+                dispatch.localPayments.setFetchAPIState(initialAPIState);
+
                 try {
-                    const { data } = await getCurrencyRates();
-                    dispatch.localPayments.setRates(data);
+                    const rates = await getCurrentExchangeRates();
+                    dispatch.localPayments.setRates(rates);
                     dispatch.localPayments.setFetchAPIState({
                         ...initialAPIState,
                         loading: false,
@@ -82,7 +84,7 @@ export const localPayments = createModel<RootModel>()({
                         message: 'Rates fetched successfully'
                     });
                 } catch (error) {
-                    dispatch.dashboard.setFetchAPIState({
+                    dispatch.localPayments.setFetchAPIState({
                         ...initialAPIState,
                         loading: false,
                         result: 'error',
@@ -92,7 +94,16 @@ export const localPayments = createModel<RootModel>()({
             },
             async setTotalToPayInSellCurrency(_, getState) {
                 const { buyAmount = 1, sellCurrency, buyCurrency, rates } = getState.localPayments;
-                dispatch.localPayments.setSellCurrencyTotalToPay(buyAmount * rates[sellCurrency][buyCurrency]['rate']);
+                if (!rates) {
+                    dispatch.localPayments.setFetchAPIState({
+                        loading: false,
+                        result: 'error',
+                        message: `We couldn't get the current rate`
+                    });
+                    dispatch.localPayments.setSellCurrencyTotalToPay(0);
+                } else {
+                    dispatch.localPayments.setSellCurrencyTotalToPay(buyAmount * rates[sellCurrency][buyCurrency]);
+                }
             }
         };
     }

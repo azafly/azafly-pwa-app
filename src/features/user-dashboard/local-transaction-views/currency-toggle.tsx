@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         select: {
             paddingTop: 10,
+            maxWidth: 300,
             [theme.breakpoints.down('sm')]: {
                 background: 8
             },
@@ -57,7 +58,7 @@ export function CurrencyToggle({ options }: CurrencyToggleProps) {
 
     const classes = useStyles();
     return (
-        <Box sx={{ padding: '14px', borderTopRightRadius: 4, borderBottomRightRadius: 4 }}>
+        <Box sx={{ padding: '14px', borderTopRightRadius: 4, borderBottomRightRadius: 4, maxWidth: 300 }}>
             <FormControl
                 classes={{ root: classes.select }}
                 variant='filled'

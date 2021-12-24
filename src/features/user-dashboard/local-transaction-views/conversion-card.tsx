@@ -11,11 +11,8 @@ const useStyles = makeStyles((theme: Theme) =>
             flexGrow: 1,
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             border: '1px solid #DCDCDC',
-            [theme.breakpoints.up('md')]: {
-                width: '120%'
-            },
             [theme.breakpoints.down('sm')]: {
-                width: '90vw'
+                width: '98%'
             }
         },
         amountInfo: {
@@ -49,11 +46,21 @@ interface ConversionCardProps {
     disabled?: boolean;
     options: CurrencyListParams[];
     tourClassName?: string;
+    initialCurrency: string;
 }
 
-export const ConversionCard = ({ amount, info, handleAmountChange, disabled = false, options, tourClassName = '' }: ConversionCardProps) => {
+export const ConversionCard = ({
+    amount,
+    info,
+    handleAmountChange,
+    disabled = false,
+    options,
+    tourClassName = '',
+    initialCurrency
+}: ConversionCardProps) => {
     const classes = useStyles();
 
+    const initialCurrencyValue = options.filter(option => option.currencyCode === initialCurrency)[0];
     return (
         <Stack
             direction={'row'}
@@ -78,7 +85,7 @@ export const ConversionCard = ({ amount, info, handleAmountChange, disabled = fa
                     onChange={handleAmountChange}
                 />
             </Stack>
-            <CurrencyToggle options={options} />
+            <CurrencyToggle options={options} initialValue={initialCurrencyValue} />
         </Stack>
     );
 };

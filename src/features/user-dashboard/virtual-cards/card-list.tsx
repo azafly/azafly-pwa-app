@@ -2,79 +2,15 @@ import { Avatar, Stack } from '@mui/material';
 import { CardContainer } from './card-container';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { FilterTab } from '../filter-tab-heading';
-import { Slide, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
+import { Slide, Typography } from '@mui/material';
 
-import { CurrencyCode } from 'app/models/dashboard';
-import { RootState } from 'app/store';
-import { useSelector } from 'react-redux';
+import { Dispatch, RootState } from 'app/store';
+import { mockCards } from 'app/models/cards/mocks';
 
 import BasicModal from './modal/index';
 import { TopUpForm, VirtualCardSetting } from './forms';
-
-interface VirtualCardObject {
-    currency: CurrencyCode;
-    countryCode: string;
-    amount: number;
-    cardNumber: string;
-    last4digits: string;
-    expiry: string;
-    key: string;
-    cvv: string;
-}
-
-const mockData: VirtualCardObject[] = [
-    {
-        currency: 'EUR',
-        key: 'EUR',
-        countryCode: 'EU',
-        amount: 100,
-        cardNumber: '5346 5464 6474',
-        last4digits: '7895',
-        expiry: '08/24',
-        cvv: '123'
-    },
-    {
-        currency: 'GBP',
-        key: 'GBP',
-        countryCode: 'GB',
-        amount: 100,
-        cardNumber: '5344 5464 4474',
-        last4digits: '5895',
-        expiry: '02/27',
-        cvv: '890'
-    },
-    {
-        currency: 'NGN',
-        key: 'NGN',
-        countryCode: 'NG',
-        amount: 780000,
-        cardNumber: '5344 5464 0474',
-        last4digits: '5805',
-        expiry: '02/24',
-        cvv: '576'
-    },
-    {
-        currency: 'USD',
-        key: 'USD',
-        countryCode: 'US',
-        amount: 1100,
-        cardNumber: '5344 5464 4474',
-        last4digits: '4895',
-        expiry: '02/24',
-        cvv: '492'
-    },
-    {
-        currency: 'CAD',
-        key: 'CAD',
-        countryCode: 'CA',
-        amount: 100,
-        cardNumber: '5344 5464 3474',
-        last4digits: '7896',
-        expiry: '02/27',
-        cvv: '090'
-    }
-];
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -93,26 +29,6 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-const tabs = mockData.map((cardObject: typeof mockData[0], index) => {
-    const { currency, countryCode } = cardObject;
-
-    const heading = (
-        <div style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} key={index}>
-            {' '}
-            <Avatar
-                src={`https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/${countryCode}.svg`}
-                sx={{ width: 20, height: 20 }}
-            />
-            <Typography className={'tabHeader_typography'}> {currency}</Typography>
-        </div>
-    );
-    return {
-        key: currency,
-        heading,
-        component: <CardContainer cardObject={cardObject} />
-    };
-});
-
 function getActionModal(action: any) {
     switch (action) {
         case 'top-up':
@@ -125,11 +41,38 @@ function getActionModal(action: any) {
 }
 const CardList = () => {
     const {
-        currentVirtualCard: { action = 'top-up', currency, openTopUpModal = false }
-    } = useSelector((state: RootState) => state.dashboard);
+        dashboard: { currentVirtualCard },
+        VIRTUAL_CARDS: { userCards }
+    } = useSelector(({ dashboard, VIRTUAL_CARDS }: RootState) => ({ dashboard, VIRTUAL_CARDS }));
+    const dispatch = useDispatch<Dispatch>();
+    const classes = useStyles();
+    const { action = 'top-up', currency, openTopUpModal = false } = currentVirtualCard ?? {};
     const [openModal, setOpenModal] = useState(openTopUpModal);
 
-    const classes = useStyles();
+    const tabs = mockCards.map((cardObject: typeof mockCards[0], index) => {
+        const { currency, countryCode } = cardObject;
+
+        const heading = (
+            <div style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} key={index}>
+                {' '}
+                <Avatar
+                    src={`https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/${countryCode}.svg`}
+                    sx={{ width: 20, height: 20 }}
+                />
+                <Typography className={'tabHeader_typography'}> {currency}</Typography>
+            </div>
+        );
+        return {
+            key: currency,
+            heading,
+            headingClickHandler: () => {
+                dispatch.dashboard.setCurrentCardIdentifier({ currency: cardObject.currency });
+                dispatch.VIRTUAL_CARDS.setCurrentCard(userCards[cardObject.currency]);
+            },
+            component: <CardContainer cardObject={cardObject} />
+        };
+    });
+
     return (
         <>
             <BasicModal handleClose={() => setOpenModal(false)} openModal={openTopUpModal || openModal}>

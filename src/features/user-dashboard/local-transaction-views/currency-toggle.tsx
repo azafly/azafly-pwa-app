@@ -20,6 +20,7 @@ export interface CurrencyListParams {
 
 interface CurrencyToggleProps {
     options: CurrencyListParams[];
+    initialValue: CurrencyListParams;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -36,8 +37,8 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export function CurrencyToggle({ options }: CurrencyToggleProps) {
-    const [currency, setCurrency] = React.useState<CurrencyListParams>(options[0]);
+export function CurrencyToggle({ options, initialValue }: CurrencyToggleProps) {
+    const [currency, setCurrency] = React.useState<CurrencyListParams>(initialValue);
 
     const dispatch = useDispatch<Dispatch>();
 
@@ -56,6 +57,7 @@ export function CurrencyToggle({ options }: CurrencyToggleProps) {
     };
 
     const classes = useStyles();
+
     return (
         <Box sx={{ padding: '14px', borderTopRightRadius: 4, borderBottomRightRadius: 4 }}>
             <FormControl
@@ -69,6 +71,8 @@ export function CurrencyToggle({ options }: CurrencyToggleProps) {
                     // @ts-ignore
                     value={getCurrentCurrency()}
                     onChange={handleRateChange}
+                    // @ts-ignore
+                    defaultValue={currency}
                     disableUnderline
                     sx={{
                         background: 'transparent',

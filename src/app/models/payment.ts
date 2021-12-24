@@ -1,7 +1,6 @@
 import { Country, NIGERIA } from 'types/country-data';
 import { createModel } from '@rematch/core';
-import { getInitialOffer } from '../../services/rest-clients/user-payment';
-import { GetOffersResponse } from 'services/rest-clients/user-payment';
+import { GetOffersResponseData, getInitialOffer, GetOffersRequestBody } from 'services/rest-clients/user-payment';
 import { RootModel } from './index';
 
 export interface RateInfo {
@@ -19,8 +18,14 @@ interface APIFetchState {
 
 export interface PaymentState {
     rateInfo: RateInfo;
-    initialOffer: GetOffersResponse['data'] | null;
     apiFetchState: APIFetchState;
+    offerBasedOnRate?: GetOffersResponseData;
+    paymentLink?: string;
+    paymentIntentPayload?: any;
+    verificationStatus: {
+        result?: 'error' | 'success' | null;
+        loading: boolean;
+    };
 }
 
 const initialState: PaymentState = {
@@ -29,8 +34,11 @@ const initialState: PaymentState = {
         sourceCountry: NIGERIA,
         amount: 100
     },
-    initialOffer: null,
     apiFetchState: {
+        result: null,
+        loading: false
+    },
+    verificationStatus: {
         result: null,
         loading: false
     }
@@ -52,29 +60,38 @@ export const payment = createModel<RootModel>()({
         setRatesInfoTargetCountry(state, payload: Country) {
             return { ...state, targetCountry: { ...payload } };
         },
-        setRatesInfoInitialOffer(state, payload) {
-            return { ...state, initialOffer: payload };
+        setOfferBasedOnRate(state, payload: GetOffersResponseData) {
+            return { ...state, offerBasedOnRate: payload };
         },
         setApiFetchState(state, payload: APIFetchState) {
             return { ...state, apiFetchState: payload };
+        },
+        setPaymentLink(state, payload: string) {
+            return { ...state, paymentLink: payload };
+        },
+        setPaymentIntentPayload(state, payload: string) {
+            return { ...state, paymentIntentPayload: payload };
+        },
+        setVerificationStatus(state, payload: PaymentState['verificationStatus']) {
+            return { ...state, verificationStatus: payload };
         }
     },
     effects: dispatch => {
         return {
-            async setInitialOffer(_, getState) {
+            async setInitialOffer({ source_currency, target_currency, source_amount }: GetOffersRequestBody, getState) {
                 dispatch.payment.setApiFetchState({ ...getState.payment.apiFetchState, loading: true });
                 try {
                     const { data } = await getInitialOffer({
-                        source_currency: getState.payment.rateInfo.sourceCountry.currency.code,
-                        target_currency: getState.payment.rateInfo.targetCountry.currency.code,
-                        source_amount: getState.payment.rateInfo.amount
+                        source_currency,
+                        target_currency,
+                        source_amount
                     });
                     dispatch.payment.setApiFetchState({ ...getState.payment.apiFetchState, result: 'success', loading: false });
-                    dispatch.payment.setRatesInfoInitialOffer(data.data);
+                    dispatch.payment.setOfferBasedOnRate(data.data);
                 } catch (error) {
                     dispatch.payment.setApiFetchState({ ...getState.payment.apiFetchState, result: 'error', loading: false });
                 } finally {
-                    dispatch.payment.setApiFetchState({ ...getState.payment.apiFetchState, result: null, loading: false });
+                    dispatch.payment.setApiFetchState({ ...getState.payment.apiFetchState, loading: false });
                 }
             }
         };

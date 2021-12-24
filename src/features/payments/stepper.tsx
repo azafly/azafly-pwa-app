@@ -66,7 +66,7 @@ export function VerticalPaymentStepper() {
                         className={classes.next}
                         onClick={() => {
                             localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: 1 });
-                            dispatch.payment.setInitialOffer('').then(() => handleNext());
+                            //   dispatch.payment.setInitialOffer('').then(() => handleNext());
                         }}
                         disabled={apiFetchState?.result === 'error'}
                     >
@@ -130,7 +130,6 @@ export function VerticalPaymentStepper() {
             }
             if (urlParamOfferId && urlParamStep) {
                 Promise.resolve(handleGetPendingOffer()).then(() => {
-                    dispatch.payment.setRatesInfoInitialOffer(pendingOffer?.payment_offer[0]);
                     const { source_amount, source_currency, target_currency, total_in_target_with_charges } = pendingOffer?.payment_offer[0] ?? {};
                     localStorage.setItem(
                         LOCAL_STORAGE_KEY.INITIAL_OFFER,

@@ -42,10 +42,9 @@ export const NewTransactionContainer = () => {
     const [amount, setAmount] = useState(0);
     const {
         localPayments: { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay },
-        dashboard: {
-            currentVirtualCard: { currency }
-        }
-    } = useSelector(({ localPayments, dashboard }: RootState) => ({ localPayments, dashboard }));
+        dashboard: { currentVirtualCard },
+        VIRTUAL_CARDS: { userCards }
+    } = useSelector(({ localPayments, dashboard, VIRTUAL_CARDS }: RootState) => ({ localPayments, dashboard, VIRTUAL_CARDS }));
     const dispatch = useDispatch<Dispatch>();
 
     const isDesktop = useMediaQuery('(min-width:800px)');
@@ -68,8 +67,12 @@ export const NewTransactionContainer = () => {
     const buttonAlignment = isMobile ? 'column' : 'row';
 
     const handleCTAClick = (name: 'card' | 'direct') => {
-        name === 'card' ? dispatch.dashboard.setCurrentDashboardTab('cards') : dispatch.dashboard.setCurrentDashboardTab('payment');
-        dispatch.dashboard.setCurrentCardIdentifier({ currency, openTopUpModal: true });
+        if (name === 'card') {
+            dispatch.dashboard.setCurrentDashboardTab('cards');
+            dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'EUR', openTopUpModal: true });
+            dispatch.VIRTUAL_CARDS.setCurrentCard(userCards[currentVirtualCard?.currency]);
+            dispatch.VIRTUAL_CARDS.setCardTopUpReferer('dashboard');
+        } else dispatch.dashboard.setCurrentDashboardTab('payment');
     };
 
     return (
@@ -82,6 +85,7 @@ export const NewTransactionContainer = () => {
                     handleAmountChange={handleBuyAmountChange}
                     options={otherCountries}
                     tourClassName={TOUR_DASHBOARD_LOCAL.SEND_FROM}
+                initialCurrency ={buyCurrency}
                 />
                 <ConversionIcon />
                 <ConversionCard
@@ -90,6 +94,7 @@ export const NewTransactionContainer = () => {
                     options={africa}
                     disabled={true}
                     tourClassName={TOUR_DASHBOARD_LOCAL.SEND_TO}
+                    initialCurrency ={sellCurrency}
                 />
             </Stack>
             <Stack direction={buttonAlignment} justifyContent={'center'} m={3} spacing={2}>

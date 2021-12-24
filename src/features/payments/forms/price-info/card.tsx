@@ -1,12 +1,9 @@
 import { Box, Card, Typography } from '@mui/material';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-import { formatCurrency } from 'libs';
 import { GuaranteeTag } from './guarantee-tag';
-import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { ThreeDots } from '../../../../components/css-loaders/three-dots/three-dots';
 import InfoIcon from '@mui/icons-material/Info';
-import { LocalStorageInitialOffer } from 'services/rest-clients/user-payment';
 import { RootState } from 'app/store';
 import { useSelector } from 'react-redux';
 
@@ -58,27 +55,25 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function PriceCard() {
     const classes = useStyles();
-    const {
-        initialOffer,
-        rateInfo: { sourceCountry }
-    } = useSelector((state: RootState) => state.payment);
+    const {} = useSelector((state: RootState) => state.payment);
 
     const getFormattedCurrency = () => {
-        const localStoragePaymentOffer = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string) as LocalStorageInitialOffer;
+        // const localStoragePaymentOffer = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string) as LocalStorageInitialOffer;
 
-        if (!initialOffer && localStoragePaymentOffer) {
-            return formatCurrency({
-                currency: localStoragePaymentOffer?.target_currency ?? 'NGN',
-                amount: localStoragePaymentOffer?.total_in_target_with_charges || 0,
-                countryCode: 'NG'
-            });
-        } else {
-            return formatCurrency({
-                currency: sourceCountry.currency.code,
-                amount: initialOffer?.total_in_target_with_charges || 0,
-                countryCode: sourceCountry.code
-            });
-        }
+        // if (!initialOffer && localStoragePaymentOffer) {
+        //     return formatCurrency({
+        //         currency: localStoragePaymentOffer?.target_currency ?? 'NGN',
+        //         amount: localStoragePaymentOffer?.total_in_target_with_charges || 0,
+        //         countryCode: 'NG'
+        //     });
+        // } else {
+        //     return formatCurrency({
+        //         currency: sourceCountry.currency.code,
+        //         amount: initialOffer?.total_in_target_with_charges || 0,
+        //         countryCode: sourceCountry.code
+        //     });
+        // }
+        return '100$';
     };
 
     return (

@@ -9,7 +9,7 @@ export const CountryOfResidence = () => {
     const dispatch = useDispatch<Dispatch>();
 
     return (
-        <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+        <Slide direction='down' in={true} mountOnEnter unmountOnExit appear timeout={800}>
             <Stack sx={{ width: '100%' }}>
                 <Typography
                     variant={'h6'}

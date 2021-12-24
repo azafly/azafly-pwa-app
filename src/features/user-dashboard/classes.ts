@@ -1,4 +1,5 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { TOUR_DASHBOARD_LOCAL } from './tours';
 
 export const useCardStyles = makeStyles((theme: Theme) =>
     createStyles({

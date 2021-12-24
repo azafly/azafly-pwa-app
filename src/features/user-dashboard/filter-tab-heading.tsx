@@ -86,7 +86,6 @@ export const FilterTab = ({ tabViews, currentKey }: TransactionFilterTabProps) =
 
     return (
         <div style={{ width: '100%' }}>
-            {' '}
             <Tabs
                 value={value}
                 onChange={handleChange}

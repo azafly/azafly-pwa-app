@@ -202,25 +202,27 @@ export const TransactionListContainer = memo(function TransactionListContainer({
         </div>
     );
     return (
-        <FilterTab
-            tabViews={[
-                {
-                    heading: heading('Transactions'),
-                    component: allOffers
-                },
-                {
-                    heading: heading('Pending Offers'),
-                    component: pendingTransactions
-                },
-                {
-                    heading: heading('', <DateRangeIcon />),
-                    component: transactionsByDate(),
-                    headingClickHandler: setOpenDatePicker
-                }
-            ]}
-            handleSetDateValue={setDateValue}
-            dateValue={dateValue}
-            openDatePicker={openDatePicker}
-        />
+        <>
+            <FilterTab
+                tabViews={[
+                    {
+                        heading: heading('Transactions'),
+                        component: allOffers
+                    },
+                    {
+                        heading: heading('Pending Offers'),
+                        component: pendingTransactions
+                    },
+                    {
+                        heading: heading('', <DateRangeIcon />),
+                        component: transactionsByDate(),
+                        headingClickHandler: setOpenDatePicker
+                    }
+                ]}
+                handleSetDateValue={setDateValue}
+                dateValue={dateValue}
+                openDatePicker={openDatePicker}
+            />
+        </>
     );
 });

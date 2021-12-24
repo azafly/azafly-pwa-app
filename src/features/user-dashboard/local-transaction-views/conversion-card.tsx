@@ -48,9 +48,10 @@ interface ConversionCardProps {
     handleAmountChange?: (e: any) => void;
     disabled?: boolean;
     options: CurrencyListParams[];
+    tourClassName?: string;
 }
 
-export const ConversionCard = ({ amount, info, handleAmountChange, disabled = false, options }: ConversionCardProps) => {
+export const ConversionCard = ({ amount, info, handleAmountChange, disabled = false, options, tourClassName = '' }: ConversionCardProps) => {
     const classes = useStyles();
 
     return (
@@ -59,7 +60,7 @@ export const ConversionCard = ({ amount, info, handleAmountChange, disabled = fa
             justifyContent={'space-between'}
             alignContent={'center'}
             alignItems={'center'}
-            className={classes.new_transaction_container}
+            className={`${classes.new_transaction_container} ${tourClassName}`}
         >
             <Stack className={classes.amountInfo}>
                 <Typography className={classes.info}>{info}</Typography>

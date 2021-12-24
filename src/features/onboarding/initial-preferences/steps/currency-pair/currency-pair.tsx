@@ -16,7 +16,7 @@ export const CurrencyPair = () => {
     }, [dispatch, disableNext]);
 
     return (
-        <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+        <Slide direction='down' in={true} mountOnEnter unmountOnExit appear timeout={800}>
             <Stack sx={{ width: '100%' }}>
                 <Typography variant={'h6'} sx={{ fontWeight: 700, fontFamily: 'Nunito', color: '#0d324d', marginBottom: '10px' }} align={'center'}>
                     {' '}

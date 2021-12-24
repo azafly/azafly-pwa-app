@@ -9,6 +9,7 @@ import { africa, otherCountries } from 'mocks/payment';
 import { ConversionCard } from './conversion-card';
 import { ConversionIcon } from './conversion-icon';
 import { Dispatch, RootState } from 'app/store';
+import { TOUR_DASHBOARD_LOCAL } from '../tours';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -80,19 +81,31 @@ export const NewTransactionContainer = () => {
                     info={'I need to pay'}
                     handleAmountChange={handleBuyAmountChange}
                     options={otherCountries}
+                    tourClassName={TOUR_DASHBOARD_LOCAL.SEND_FROM}
                 />
                 <ConversionIcon />
-                <ConversionCard amount={sellCurrencyTotalToPay} info={`Total amount in ${sellCurrency}`} options={africa} disabled={true} />
+                <ConversionCard
+                    amount={sellCurrencyTotalToPay}
+                    info={`Total amount in ${sellCurrency}`}
+                    options={africa}
+                    disabled={true}
+                    tourClassName={TOUR_DASHBOARD_LOCAL.SEND_TO}
+                />
             </Stack>
             <Stack direction={buttonAlignment} justifyContent={'center'} m={3} spacing={2}>
-                <Button variant={'contained'} color={'primary'} className={classes.cta_button} onClick={() => handleCTAClick('card')}>
+                <Button
+                    variant={'contained'}
+                    color={'primary'}
+                    className={`${classes.cta_button} ${TOUR_DASHBOARD_LOCAL.PAY_WITH_CARD}`}
+                    onClick={() => handleCTAClick('card')}
+                >
                     Pay with Virtual Card
                 </Button>
                 <Button
                     component={Link}
                     variant={'outlined'}
                     color={'secondary'}
-                    className={classes.cta_button}
+                    className={`${classes.cta_button} ${TOUR_DASHBOARD_LOCAL.PAY_DIRECT}`}
                     to={'/payment'}
                     onClick={() => handleCTAClick('direct')}
                 >

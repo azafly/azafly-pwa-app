@@ -86,7 +86,7 @@ export const KYCDocuments = () => {
             <DefaultSnackbar open={show} handleClose={handleCloseSnackBar} severity={severity as 'error' | 'success'} title={title} info={text} />
             {severity === 'success' && <Modal successCallBack={successCallBack} />}
             {severity !== 'success' && (
-                <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+                <Slide direction='down' in={true} mountOnEnter unmountOnExit appear timeout={800}>
                     <Box sx={{ width: '100%' }}>
                         <Typography variant={'h6'} gutterBottom align={'center'} sx={{ fontWeight: 700, fontFamily: 'Nunito', marginBottom: 2 }}>
                             {'Update your Identification document'}

@@ -11,6 +11,8 @@ import { firebaseAuth } from 'providers/auth/firebase/firebase';
 import { SideBar } from './side-bar';
 import { UserAccount } from 'views/user-account';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import { TOUR_DASHBOARD_LOCAL_STEPS } from './tours';
+import { Tour } from 'components/product-tour/tour';
 import { Transactions as TransactionView } from './transactions';
 import { useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
 import { useUserContext } from 'hooks/use-user-context';
@@ -29,7 +31,7 @@ export default function Dashboard() {
     const { user: userData } = useUserContext();
 
     const {
-        dashboard: { currentSideBarTab, buyCurrency }
+        dashboard: { currentSideBarTab }
     } = useSelector(({ dashboard, auth }: RootState) => ({ dashboard, auth }));
 
     const [handleGetUserTransaction, { data: transactionData, loading }] = useGetUserTransactionsLazyQuery();
@@ -103,6 +105,7 @@ export default function Dashboard() {
 
     return (
         <div className={classes.dashboard_container}>
+            <Tour steps={TOUR_DASHBOARD_LOCAL_STEPS} run={true} />
             <DefaultSnackbar
                 severity={alertSeverity}
                 open={openSnackBar}
@@ -117,18 +120,15 @@ export default function Dashboard() {
                         <SideBar />
                     </Grid>
                 </Hidden>
-
                 {(currentSideBarTab === 'transactions' || currentSideBarTab === 'dashboard') && (
-                    <>
-                        <TransactionView
-                            loading={loading}
-                            emailLink={emailLink}
-                            transactionData={transactionData}
-                            handleSendVerificationEmail={handleSendVerificationEmail}
-                            transactions={transactions}
-                            userData={userData}
-                        />
-                    </>
+                    <TransactionView
+                        loading={loading}
+                        emailLink={emailLink}
+                        transactionData={transactionData}
+                        handleSendVerificationEmail={handleSendVerificationEmail}
+                        transactions={transactions}
+                        userData={userData}
+                    />
                 )}
                 {currentSideBarTab === 'cards' && <CardList />}
                 {currentSideBarTab === 'account' && <UserAccount />}

@@ -8,6 +8,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import Stack from '@mui/material/Stack';
+import { TOUR_DASHBOARD_LOCAL } from './tours';
 
 import { useSidebarStyles } from './classes';
 
@@ -15,7 +16,7 @@ const sideMenu = [
     {
         label: 'Dashboard',
         route: 'dashboard',
-        icon: <DashboardIcon sx={{ fontSize: '1.1em' }} style={{ marginRight: '16px' }} />
+        icon: <DashboardIcon sx={{ fontSize: '1.1em' }} style={{ marginRight: '16px' }} className={TOUR_DASHBOARD_LOCAL.START_TOUR} />
     },
     {
         label: 'Cards',

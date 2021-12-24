@@ -119,10 +119,8 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboard_container: {
             backgroundColor: '#f2f5f7',
-            minHeight: '100vh',
-            height: 'auto',
-            paddingTop: 100,
-            [theme.breakpoints.down('xs')]: { paddingTop: '80px' }
+            paddingTop: 50,
+            [theme.breakpoints.down('xs')]: { paddingTop: '30px' }
         },
         data__section: {
             margin: 'auto',
@@ -135,8 +133,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
                 maxWidth: 900,
                 margin: 'auto',
                 color: theme.colors.textPrimary,
-                [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
-                [theme.breakpoints.down('xs')]: { textAlign: 'center' }
+                [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
             },
             [theme.breakpoints.down('sm')]: { width: '90vw' }
         },

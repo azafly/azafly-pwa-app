@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export function RatesInfo() {
     const classes = useStyles();
     const { popularSourceCountries } = useCountryList();
-    const { apiFetchState } = useSelector((state: RootState) => state.payment);
+    const { apiFetchState } = useSelector((state: RootState) => state.payments);
     const getOptionLabel = (option: Country) => `${option.emoji ?? ''} ${' '}${option.currency.code}`;
     const getOptionDisabled = (option: Country) => option.isComingSoon || option.isNotSupported;
 

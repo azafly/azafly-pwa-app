@@ -1,6 +1,6 @@
 import { Avatar, Box } from '@mui/material';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as React from 'react';
 import FormControl from '@mui/material/FormControl';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -9,7 +9,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { Dispatch } from 'app/store';
+import { Dispatch, RootState } from 'app/store';
 
 export interface CurrencyListParams {
     country: string;
@@ -41,6 +41,9 @@ export function CurrencyToggle({ options, initialValue }: CurrencyToggleProps) {
     const [currency, setCurrency] = React.useState<CurrencyListParams>(initialValue);
 
     const dispatch = useDispatch<Dispatch>();
+    const {
+        payments: { buyCurrency }
+    } = useSelector(({ payments }: RootState) => ({ payments }));
 
     const getCurrentCurrency = () => {
         return options.filter(option => option.currencyCode === currency.currencyCode)[0];
@@ -51,9 +54,13 @@ export function CurrencyToggle({ options, initialValue }: CurrencyToggleProps) {
         // @ts-ignore
         setCurrency(currency);
         // @ts-ignore
-        dispatch.localPayments.setBuyCurrency(currency.currencyCode);
+        dispatch.payments.setBuyCurrency(currency.currencyCode);
         // @ts-ignore
-        dispatch.localPayments.setTotalToPayInSellCurrency(null);
+        dispatch.payments.setTotalToPayInSellCurrency(null);
+        // @ts-ignore
+        dispatch.dashboard.setCurrentCardIdentifier(currency.currencyCode);
+        // @ts-ignore
+        dispatch.VIRTUAL_CARDS.setCurrentCard(currency.currencyCode);
     };
 
     const classes = useStyles();
@@ -72,7 +79,7 @@ export function CurrencyToggle({ options, initialValue }: CurrencyToggleProps) {
                     value={getCurrentCurrency()}
                     onChange={handleRateChange}
                     // @ts-ignore
-                    defaultValue={currency}
+                    defaultValue={buyCurrency}
                     disableUnderline
                     sx={{
                         background: 'transparent',

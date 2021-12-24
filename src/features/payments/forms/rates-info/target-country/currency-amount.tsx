@@ -94,7 +94,7 @@ export function CurrencyAmount() {
 
     const { popularTargetCountries, countryCodeLookup } = useCountryList();
     const dispatch = useDispatch<Dispatch>();
-    const { amount } = useSelector((state: RootState) => state.payment.rateInfo);
+    const { amount } = useSelector((state: RootState) => state.payments.rateInfo);
 
     const options = popularTargetCountries?.map(it => ({ ...it, label: it.name }));
 
@@ -125,7 +125,7 @@ export function CurrencyAmount() {
                 type='number'
                 label={'Amount'}
                 className={classes.input}
-                onChange={event => dispatch.payment.setRatesInfoAmount(parseInt(event.target.value))}
+                onChange={event => dispatch.payments.setRatesInfoAmount(parseInt(event.target.value))}
                 InputProps={{
                     className: classes.input
                 }}
@@ -133,7 +133,7 @@ export function CurrencyAmount() {
             <div>
                 <Autocomplete
                     onChange={(_, country) => {
-                        country && dispatch.payment.setRatesInfoTargetCountry(country);
+                        country && dispatch.payments.setRatesInfoTargetCountry(country);
                     }}
                     className={classes.toggle__section}
                     disablePortal

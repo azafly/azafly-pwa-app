@@ -15,6 +15,7 @@ export function PrivateRoute({ children, ...rest }: PropsWithChildren<any>) {
                 return isAuth ? (
                     <>
                         <NavBar />
+
                         {children}
                         <BottomNavBar />
                     </>

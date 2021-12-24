@@ -1,7 +1,8 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Grid, Typography, Slide } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { useMediaQuery } from '@material-ui/core';
 import Slider from 'react-slick';
+import Zoom from '@mui/material/Zoom';
 
 import { useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { useUserContext } from 'hooks/use-user-context';
@@ -18,15 +19,11 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: 'auto',
             marginBottom: 20,
             marginTop: '3vh',
-            [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
-            [theme.breakpoints.only('xs')]: { marginTop: '12vh' }
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         },
         heading: {
             fontWeight: 650,
-            marginBottom: 10,
-            [theme.breakpoints.only('xs')]: {
-                textAlign: 'center'
-            }
+            marginBottom: 10
         },
         modal: {
             width: '100vw',
@@ -58,7 +55,7 @@ const WalletContainer = () => {
     return (
         <div className={classes.reviewSlider_container}>
             <Typography className={classes.heading}> Your Accounts </Typography>
-            <Slide direction='down' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+            <Zoom in={true} mountOnEnter unmountOnExit appear timeout={500}>
                 {isSmallScreen ? (
                     <Slider {...settings}>
                         <div>
@@ -78,7 +75,7 @@ const WalletContainer = () => {
                         </Grid>
                     </Grid>
                 )}
-            </Slide>
+            </Zoom>
         </div>
     );
 };

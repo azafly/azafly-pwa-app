@@ -1,4 +1,4 @@
-import { Grid, Hidden } from '@material-ui/core';
+import { Box, Grid, Hidden } from '@material-ui/core';
 import { sendEmailVerification } from 'firebase/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
@@ -98,13 +98,16 @@ export default function Dashboard() {
     }, []);
 
     useEffect(() => {
-        dispatch.localPayments.setExchangeRates();
+        dispatch.payments.setExchangeRates();
+        dispatch.payments.setTotalToPayInSellCurrency(null);
         // replace with /abroad payment rates
         // dispatch.dashboard.setAsyncRateInfo(buyCurrency);
-    }, [dispatch.localPayments]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch.payments]);
 
     return (
         <div className={classes.dashboard_container}>
+            <Box sx={{ margin: 50 }} />
             <Tour steps={TOUR_DASHBOARD_LOCAL_STEPS} run={true} />
             <DefaultSnackbar
                 severity={alertSeverity}

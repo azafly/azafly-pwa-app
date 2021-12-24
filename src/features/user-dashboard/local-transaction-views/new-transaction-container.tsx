@@ -41,10 +41,10 @@ const useStyles = makeStyles((theme: Theme) =>
 export const NewTransactionContainer = () => {
     const [amount, setAmount] = useState(0);
     const {
-        localPayments: { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay },
+        payments: { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay },
         dashboard: { currentVirtualCard },
         VIRTUAL_CARDS: { userCards }
-    } = useSelector(({ localPayments, dashboard, VIRTUAL_CARDS }: RootState) => ({ localPayments, dashboard, VIRTUAL_CARDS }));
+    } = useSelector(({ payments, dashboard, VIRTUAL_CARDS }: RootState) => ({ payments, dashboard, VIRTUAL_CARDS }));
     const dispatch = useDispatch<Dispatch>();
 
     const isDesktop = useMediaQuery('(min-width:800px)');
@@ -56,10 +56,10 @@ export const NewTransactionContainer = () => {
         const LIMIT = 10000;
         const limitAmount = amount > LIMIT ? LIMIT : amount;
         setAmount(amount);
-        dispatch.localPayments.setBuyAmount(limitAmount);
+        dispatch.payments.setBuyAmount(limitAmount);
         if (rates && buyCurrency) {
         }
-        dispatch.localPayments.setTotalToPayInSellCurrency(null);
+        dispatch.payments.setTotalToPayInSellCurrency(null);
     };
 
     const classes = useStyles();
@@ -85,7 +85,7 @@ export const NewTransactionContainer = () => {
                     handleAmountChange={handleBuyAmountChange}
                     options={otherCountries}
                     tourClassName={TOUR_DASHBOARD_LOCAL.SEND_FROM}
-                initialCurrency ={buyCurrency}
+                    initialCurrency={buyCurrency}
                 />
                 <ConversionIcon />
                 <ConversionCard
@@ -94,7 +94,7 @@ export const NewTransactionContainer = () => {
                     options={africa}
                     disabled={true}
                     tourClassName={TOUR_DASHBOARD_LOCAL.SEND_TO}
-                    initialCurrency ={sellCurrency}
+                    initialCurrency={sellCurrency}
                 />
             </Stack>
             <Stack direction={buttonAlignment} justifyContent={'center'} m={3} spacing={2}>

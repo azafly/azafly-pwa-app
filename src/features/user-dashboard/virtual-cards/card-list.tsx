@@ -4,7 +4,8 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { FilterTab } from '../filter-tab-heading';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { Slide, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import Zoom from '@mui/material/Zoom';
 
 import { Dispatch, RootState } from 'app/store';
 import { mockCards } from 'app/models/cards/mocks';
@@ -18,12 +19,15 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '90vw',
             maxWidth: 900,
             margin: 'auto',
-            marginTop: '14vh',
+            marginTop: '12vh',
             '& .tabHeader_typography': {
-                fontSize: '0.75rem',
+                fontSize: '0.95rem',
                 fontFamily: 'Nunito',
                 fontWeight: 800,
                 paddingLeft: '1ch'
+            },
+            [theme.breakpoints.only('xs')]: {
+                marginTop: '8vh'
             }
         }
     })
@@ -57,7 +61,7 @@ const CardList = () => {
                 {' '}
                 <Avatar
                     src={`https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/${countryCode}.svg`}
-                    sx={{ width: 20, height: 20 }}
+                    sx={{ width: 30, height: 30 }}
                 />
                 <Typography className={'tabHeader_typography'}> {currency}</Typography>
             </div>
@@ -68,6 +72,7 @@ const CardList = () => {
             headingClickHandler: () => {
                 dispatch.dashboard.setCurrentCardIdentifier({ currency: cardObject.currency });
                 dispatch.VIRTUAL_CARDS.setCurrentCard(userCards[cardObject.currency]);
+                dispatch.payments.setBuyCurrency(cardObject.currency);
             },
             component: <CardContainer cardObject={cardObject} />
         };
@@ -78,13 +83,12 @@ const CardList = () => {
             <BasicModal handleClose={() => setOpenModal(false)} openModal={openTopUpModal || openModal}>
                 {getActionModal(action)}
             </BasicModal>
-            <Slide
-                direction='left'
+            <Zoom
                 in
                 mountOnEnter
                 unmountOnExit
                 appear
-                timeout={800}
+                timeout={500}
                 easing={{ enter: 'cubic-bezier(0.0, 0, 0.2, 1)', exit: 'cubic-bezier(0.4, 0, 1, 1)' }}
             >
                 <Stack className={classes.container}>
@@ -93,7 +97,7 @@ const CardList = () => {
                     </Typography>
                     <FilterTab tabViews={tabs} currentKey={currency} />
                 </Stack>
-            </Slide>
+            </Zoom>
         </>
     );
 };

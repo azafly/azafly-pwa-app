@@ -34,8 +34,12 @@ export const VIRTUAL_CARDS = createModel<RootModel>()({
         setFetchAPIState(state, payload: APIFetchState) {
             return { ...state, apiFetchState: payload };
         },
-        setCurrentCard(state, payload: VirtualCardState['currentCard']) {
-            return { ...state, currentCard: payload };
+        setCurrentCard(state, payload: VirtualCardState['currentCard'] | string) {
+            if (typeof payload === 'string') {
+                return { ...state, currentCard: state.userCards[payload] };
+            } else {
+                return { ...state, currentCard: payload };
+            }
         },
         setCardTopUpReferer(state, payload: VirtualCardState['topUpReferer']) {
             return { ...state, topUpReferer: payload };

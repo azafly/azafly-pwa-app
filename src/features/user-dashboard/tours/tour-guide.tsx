@@ -9,7 +9,7 @@ export enum TOUR_DASHBOARD_LOCAL {
 }
 
 const {
-    localPayments: { sellCurrency }
+    payments: { sellCurrency }
 } = store.getState();
 
 export const TOUR_DASHBOARD_LOCAL_STEPS = [

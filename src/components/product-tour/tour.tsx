@@ -12,5 +12,5 @@ export const Tour = ({ steps, run = true }: TourProps) => {
     const [_, setStep] = useState<TourProps['steps']>();
 
     useEffect(() => setStep(steps), [steps]);
-    return <JoyRide debug steps={steps} continuous showProgress locale={{ last: 'Done' }} scrollOffset={-20} />;
+    return <JoyRide debug steps={steps} continuous showProgress locale={{ last: 'Done' }} scrollOffset={0} />;
 };

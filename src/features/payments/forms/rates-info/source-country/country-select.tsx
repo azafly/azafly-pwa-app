@@ -99,7 +99,7 @@ export const AfricaCountriesSelect = ({ classKeys, options, defaultOption, getOp
                 loading={true}
                 classes={classOverrides}
                 onChange={(e, value) => {
-                    value && dispatch.payment.setRatesInfoSourceCountry(value);
+                    value && dispatch.payments.setRatesInfoSourceCountry(value);
                 }}
                 defaultValue={_defaultOption}
                 autoComplete

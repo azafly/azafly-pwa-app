@@ -35,19 +35,19 @@ export const useVerifyPaymentSuccess = () => {
     const dispatch = useDispatch<Dispatch>();
     useEffect(() => {
         setLoading(true);
-        dispatch.payment.setVerificationStatus({ result: null, loading: true });
+        dispatch.payments.setVerificationStatus({ result: null, loading: true });
         handleGetOfferById()
             .then(({ data }) => {
                 setOffer(data?.payment_offer[0].payment_intent_payload);
                 setLoading(false);
                 setError(false);
-                dispatch.payment.setVerificationStatus({ result: 'success', loading: false });
+                dispatch.payments.setVerificationStatus({ result: 'success', loading: false });
             })
 
             .catch(() => {
                 setError(true);
                 setLoading(false);
-                dispatch.payment.setVerificationStatus({ result: 'error', loading: false });
+                dispatch.payments.setVerificationStatus({ result: 'error', loading: false });
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [transaction_id, handleGetOfferById]);
@@ -55,14 +55,14 @@ export const useVerifyPaymentSuccess = () => {
         axiosClient()
             .get(path)
             .then(() => {
-                dispatch.payment.setVerificationStatus({ result: 'success', loading: false });
+                dispatch.payments.setVerificationStatus({ result: 'success', loading: false });
                 setError(true);
                 setLoading(false);
             })
             .catch(() => {
                 setLoading(false);
                 setError(false);
-                dispatch.payment.setVerificationStatus({ result: 'error', loading: false });
+                dispatch.payments.setVerificationStatus({ result: 'error', loading: false });
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [path]);

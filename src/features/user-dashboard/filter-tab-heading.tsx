@@ -21,6 +21,7 @@ export const useStyles = makeStyles((theme: Theme) =>
             background: 'white',
             maxWidth: 900,
             width: '100%',
+            margin: 'auto',
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         }

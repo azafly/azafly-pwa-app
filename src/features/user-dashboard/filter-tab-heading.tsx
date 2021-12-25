@@ -76,7 +76,6 @@ export const FilterTab = ({ tabViews, currentKey }: TransactionFilterTabProps) =
             <Tabs
                 allowScrollButtonsMobile
                 aria-label='scrollable tab'
-                centered
                 className={classes.filter_tab__container}
                 onChange={handleChange}
                 selectionFollowsFocus

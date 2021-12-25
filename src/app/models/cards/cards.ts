@@ -14,7 +14,7 @@ interface VirtualCardState {
     apiFetchState: APIFetchState;
     userCards: CardObject;
     currentCard: VirtualCardObject;
-    // store information if the user was referred to to up from dashboard or from within card
+    // store information if the user was referred to to-up from dashboard or from within card
     topUpReferer: 'dashboard' | 'card';
 }
 
@@ -44,8 +44,5 @@ export const VIRTUAL_CARDS = createModel<RootModel>()({
         setCardTopUpReferer(state, payload: VirtualCardState['topUpReferer']) {
             return { ...state, topUpReferer: payload };
         }
-    },
-    effects: dispatch => {
-        return {};
     }
 });

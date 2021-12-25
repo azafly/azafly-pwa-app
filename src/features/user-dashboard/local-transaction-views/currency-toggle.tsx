@@ -10,6 +10,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { Dispatch, RootState } from 'app/store';
+import { ExchangeRates, formatHasuraExchangeRates } from '../utils';
 
 export interface CurrencyListParams {
     country: string;
@@ -42,14 +43,14 @@ export function CurrencyToggle({ options, initialValue }: CurrencyToggleProps) {
 
     const dispatch = useDispatch<Dispatch>();
     const {
-        payments: { buyCurrency }
+        payments: { buyCurrency, sellCurrency }
     } = useSelector(({ payments }: RootState) => ({ payments }));
 
     const getCurrentCurrency = () => {
         return options.filter(option => option.currencyCode === currency.currencyCode)[0];
     };
 
-    const handleRateChange = (event: SelectChangeEvent) => {
+    const handleRateChange = async (event: SelectChangeEvent) => {
         const currency = event.target.value;
         // @ts-ignore
         setCurrency(currency);

@@ -1186,6 +1186,233 @@ export enum Currencies_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+/** columns and relationships of "exchange_rates" */
+export type Exchange_Rates = {
+  readonly __typename?: 'exchange_rates';
+  readonly created_at: Scalars['timestamptz'];
+  readonly currency_source?: Maybe<Scalars['String']>;
+  readonly currency_target?: Maybe<Scalars['String']>;
+  readonly id: Scalars['uuid'];
+  readonly is_active?: Maybe<Scalars['Boolean']>;
+  readonly rate?: Maybe<Scalars['numeric']>;
+  readonly updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "exchange_rates" */
+export type Exchange_Rates_Aggregate = {
+  readonly __typename?: 'exchange_rates_aggregate';
+  readonly aggregate?: Maybe<Exchange_Rates_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<Exchange_Rates>;
+};
+
+/** aggregate fields of "exchange_rates" */
+export type Exchange_Rates_Aggregate_Fields = {
+  readonly __typename?: 'exchange_rates_aggregate_fields';
+  readonly avg?: Maybe<Exchange_Rates_Avg_Fields>;
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<Exchange_Rates_Max_Fields>;
+  readonly min?: Maybe<Exchange_Rates_Min_Fields>;
+  readonly stddev?: Maybe<Exchange_Rates_Stddev_Fields>;
+  readonly stddev_pop?: Maybe<Exchange_Rates_Stddev_Pop_Fields>;
+  readonly stddev_samp?: Maybe<Exchange_Rates_Stddev_Samp_Fields>;
+  readonly sum?: Maybe<Exchange_Rates_Sum_Fields>;
+  readonly var_pop?: Maybe<Exchange_Rates_Var_Pop_Fields>;
+  readonly var_samp?: Maybe<Exchange_Rates_Var_Samp_Fields>;
+  readonly variance?: Maybe<Exchange_Rates_Variance_Fields>;
+};
+
+
+/** aggregate fields of "exchange_rates" */
+export type Exchange_Rates_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<Exchange_Rates_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Exchange_Rates_Avg_Fields = {
+  readonly __typename?: 'exchange_rates_avg_fields';
+  readonly rate?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "exchange_rates". All fields are combined with a logical 'AND'. */
+export type Exchange_Rates_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<Exchange_Rates_Bool_Exp>>;
+  readonly _not?: Maybe<Exchange_Rates_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<Exchange_Rates_Bool_Exp>>;
+  readonly created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  readonly currency_source?: Maybe<String_Comparison_Exp>;
+  readonly currency_target?: Maybe<String_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly is_active?: Maybe<Boolean_Comparison_Exp>;
+  readonly rate?: Maybe<Numeric_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "exchange_rates" */
+export enum Exchange_Rates_Constraint {
+  /** unique or primary key constraint */
+  ExchangeRatesPkey = 'exchange_rates_pkey'
+}
+
+/** input type for incrementing numeric columns in table "exchange_rates" */
+export type Exchange_Rates_Inc_Input = {
+  readonly rate?: Maybe<Scalars['numeric']>;
+};
+
+/** input type for inserting data into table "exchange_rates" */
+export type Exchange_Rates_Insert_Input = {
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly currency_source?: Maybe<Scalars['String']>;
+  readonly currency_target?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly is_active?: Maybe<Scalars['Boolean']>;
+  readonly rate?: Maybe<Scalars['numeric']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Exchange_Rates_Max_Fields = {
+  readonly __typename?: 'exchange_rates_max_fields';
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly currency_source?: Maybe<Scalars['String']>;
+  readonly currency_target?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly rate?: Maybe<Scalars['numeric']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type Exchange_Rates_Min_Fields = {
+  readonly __typename?: 'exchange_rates_min_fields';
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly currency_source?: Maybe<Scalars['String']>;
+  readonly currency_target?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly rate?: Maybe<Scalars['numeric']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "exchange_rates" */
+export type Exchange_Rates_Mutation_Response = {
+  readonly __typename?: 'exchange_rates_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<Exchange_Rates>;
+};
+
+/** on conflict condition type for table "exchange_rates" */
+export type Exchange_Rates_On_Conflict = {
+  readonly constraint: Exchange_Rates_Constraint;
+  readonly update_columns?: ReadonlyArray<Exchange_Rates_Update_Column>;
+  readonly where?: Maybe<Exchange_Rates_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "exchange_rates". */
+export type Exchange_Rates_Order_By = {
+  readonly created_at?: Maybe<Order_By>;
+  readonly currency_source?: Maybe<Order_By>;
+  readonly currency_target?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly is_active?: Maybe<Order_By>;
+  readonly rate?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: exchange_rates */
+export type Exchange_Rates_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "exchange_rates" */
+export enum Exchange_Rates_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CurrencySource = 'currency_source',
+  /** column name */
+  CurrencyTarget = 'currency_target',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsActive = 'is_active',
+  /** column name */
+  Rate = 'rate',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "exchange_rates" */
+export type Exchange_Rates_Set_Input = {
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly currency_source?: Maybe<Scalars['String']>;
+  readonly currency_target?: Maybe<Scalars['String']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly is_active?: Maybe<Scalars['Boolean']>;
+  readonly rate?: Maybe<Scalars['numeric']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Exchange_Rates_Stddev_Fields = {
+  readonly __typename?: 'exchange_rates_stddev_fields';
+  readonly rate?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Exchange_Rates_Stddev_Pop_Fields = {
+  readonly __typename?: 'exchange_rates_stddev_pop_fields';
+  readonly rate?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Exchange_Rates_Stddev_Samp_Fields = {
+  readonly __typename?: 'exchange_rates_stddev_samp_fields';
+  readonly rate?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Exchange_Rates_Sum_Fields = {
+  readonly __typename?: 'exchange_rates_sum_fields';
+  readonly rate?: Maybe<Scalars['numeric']>;
+};
+
+/** update columns of table "exchange_rates" */
+export enum Exchange_Rates_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CurrencySource = 'currency_source',
+  /** column name */
+  CurrencyTarget = 'currency_target',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsActive = 'is_active',
+  /** column name */
+  Rate = 'rate',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Exchange_Rates_Var_Pop_Fields = {
+  readonly __typename?: 'exchange_rates_var_pop_fields';
+  readonly rate?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Exchange_Rates_Var_Samp_Fields = {
+  readonly __typename?: 'exchange_rates_var_samp_fields';
+  readonly rate?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Exchange_Rates_Variance_Fields = {
+  readonly __typename?: 'exchange_rates_variance_fields';
+  readonly rate?: Maybe<Scalars['Float']>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   readonly __typename?: 'mutation_root';
@@ -1204,6 +1431,10 @@ export type Mutation_Root = {
   readonly delete_currencies?: Maybe<Currencies_Mutation_Response>;
   /** delete single row from the table: "currencies" */
   readonly delete_currencies_by_pk?: Maybe<Currencies>;
+  /** delete data from the table: "exchange_rates" */
+  readonly delete_exchange_rates?: Maybe<Exchange_Rates_Mutation_Response>;
+  /** delete single row from the table: "exchange_rates" */
+  readonly delete_exchange_rates_by_pk?: Maybe<Exchange_Rates>;
   /** delete data from the table: "payment_intent_failures" */
   readonly delete_payment_intent_failures?: Maybe<Payment_Intent_Failures_Mutation_Response>;
   /** delete single row from the table: "payment_intent_failures" */
@@ -1280,6 +1511,10 @@ export type Mutation_Root = {
   readonly insert_currencies?: Maybe<Currencies_Mutation_Response>;
   /** insert a single row into the table: "currencies" */
   readonly insert_currencies_one?: Maybe<Currencies>;
+  /** insert data into the table: "exchange_rates" */
+  readonly insert_exchange_rates?: Maybe<Exchange_Rates_Mutation_Response>;
+  /** insert a single row into the table: "exchange_rates" */
+  readonly insert_exchange_rates_one?: Maybe<Exchange_Rates>;
   /** insert data into the table: "payment_intent_failures" */
   readonly insert_payment_intent_failures?: Maybe<Payment_Intent_Failures_Mutation_Response>;
   /** insert a single row into the table: "payment_intent_failures" */
@@ -1354,6 +1589,10 @@ export type Mutation_Root = {
   readonly update_currencies?: Maybe<Currencies_Mutation_Response>;
   /** update single row of the table: "currencies" */
   readonly update_currencies_by_pk?: Maybe<Currencies>;
+  /** update data of the table: "exchange_rates" */
+  readonly update_exchange_rates?: Maybe<Exchange_Rates_Mutation_Response>;
+  /** update single row of the table: "exchange_rates" */
+  readonly update_exchange_rates_by_pk?: Maybe<Exchange_Rates>;
   /** update data of the table: "payment_intent_failures" */
   readonly update_payment_intent_failures?: Maybe<Payment_Intent_Failures_Mutation_Response>;
   /** update single row of the table: "payment_intent_failures" */
@@ -1461,6 +1700,18 @@ export type Mutation_RootDelete_CurrenciesArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Currencies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Exchange_RatesArgs = {
+  where: Exchange_Rates_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Exchange_Rates_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1696,6 +1947,20 @@ export type Mutation_RootInsert_CurrenciesArgs = {
 export type Mutation_RootInsert_Currencies_OneArgs = {
   object: Currencies_Insert_Input;
   on_conflict?: Maybe<Currencies_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Exchange_RatesArgs = {
+  objects: ReadonlyArray<Exchange_Rates_Insert_Input>;
+  on_conflict?: Maybe<Exchange_Rates_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Exchange_Rates_OneArgs = {
+  object: Exchange_Rates_Insert_Input;
+  on_conflict?: Maybe<Exchange_Rates_On_Conflict>;
 };
 
 
@@ -1959,6 +2224,22 @@ export type Mutation_RootUpdate_CurrenciesArgs = {
 export type Mutation_RootUpdate_Currencies_By_PkArgs = {
   _set?: Maybe<Currencies_Set_Input>;
   pk_columns: Currencies_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Exchange_RatesArgs = {
+  _inc?: Maybe<Exchange_Rates_Inc_Input>;
+  _set?: Maybe<Exchange_Rates_Set_Input>;
+  where: Exchange_Rates_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Exchange_Rates_By_PkArgs = {
+  _inc?: Maybe<Exchange_Rates_Inc_Input>;
+  _set?: Maybe<Exchange_Rates_Set_Input>;
+  pk_columns: Exchange_Rates_Pk_Columns_Input;
 };
 
 
@@ -4122,6 +4403,12 @@ export type Query_Root = {
   readonly currencies_aggregate: Currencies_Aggregate;
   /** fetch data from the table: "currencies" using primary key columns */
   readonly currencies_by_pk?: Maybe<Currencies>;
+  /** fetch data from the table: "exchange_rates" */
+  readonly exchange_rates: ReadonlyArray<Exchange_Rates>;
+  /** fetch aggregated fields from the table: "exchange_rates" */
+  readonly exchange_rates_aggregate: Exchange_Rates_Aggregate;
+  /** fetch data from the table: "exchange_rates" using primary key columns */
+  readonly exchange_rates_by_pk?: Maybe<Exchange_Rates>;
   /** An array relationship */
   readonly payment_intent_failures: ReadonlyArray<Payment_Intent_Failures>;
   /** An aggregate relationship */
@@ -4298,6 +4585,29 @@ export type Query_RootCurrencies_AggregateArgs = {
 
 
 export type Query_RootCurrencies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootExchange_RatesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Exchange_Rates_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Exchange_Rates_Order_By>>;
+  where?: Maybe<Exchange_Rates_Bool_Exp>;
+};
+
+
+export type Query_RootExchange_Rates_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Exchange_Rates_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Exchange_Rates_Order_By>>;
+  where?: Maybe<Exchange_Rates_Bool_Exp>;
+};
+
+
+export type Query_RootExchange_Rates_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -5474,6 +5784,12 @@ export type Subscription_Root = {
   readonly currencies_aggregate: Currencies_Aggregate;
   /** fetch data from the table: "currencies" using primary key columns */
   readonly currencies_by_pk?: Maybe<Currencies>;
+  /** fetch data from the table: "exchange_rates" */
+  readonly exchange_rates: ReadonlyArray<Exchange_Rates>;
+  /** fetch aggregated fields from the table: "exchange_rates" */
+  readonly exchange_rates_aggregate: Exchange_Rates_Aggregate;
+  /** fetch data from the table: "exchange_rates" using primary key columns */
+  readonly exchange_rates_by_pk?: Maybe<Exchange_Rates>;
   /** An array relationship */
   readonly payment_intent_failures: ReadonlyArray<Payment_Intent_Failures>;
   /** An aggregate relationship */
@@ -5650,6 +5966,29 @@ export type Subscription_RootCurrencies_AggregateArgs = {
 
 
 export type Subscription_RootCurrencies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootExchange_RatesArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Exchange_Rates_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Exchange_Rates_Order_By>>;
+  where?: Maybe<Exchange_Rates_Bool_Exp>;
+};
+
+
+export type Subscription_RootExchange_Rates_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Exchange_Rates_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Exchange_Rates_Order_By>>;
+  where?: Maybe<Exchange_Rates_Bool_Exp>;
+};
+
+
+export type Subscription_RootExchange_Rates_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -7089,6 +7428,7 @@ export type Users = {
   readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id: Scalars['uuid'];
   readonly image_url?: Maybe<Scalars['String']>;
+  readonly is_admin: Scalars['Boolean'];
   readonly is_new_user: Scalars['Boolean'];
   /** An array relationship */
   readonly payment_intent_failures: ReadonlyArray<Payment_Intent_Failures>;
@@ -7392,6 +7732,7 @@ export type Users_Bool_Exp = {
   readonly firebase_id?: Maybe<String_Comparison_Exp>;
   readonly id?: Maybe<Uuid_Comparison_Exp>;
   readonly image_url?: Maybe<String_Comparison_Exp>;
+  readonly is_admin?: Maybe<Boolean_Comparison_Exp>;
   readonly is_new_user?: Maybe<Boolean_Comparison_Exp>;
   readonly payment_intent_failures?: Maybe<Payment_Intent_Failures_Bool_Exp>;
   readonly payment_offers?: Maybe<Payment_Offer_Bool_Exp>;
@@ -7430,6 +7771,7 @@ export type Users_Insert_Input = {
   readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['uuid']>;
   readonly image_url?: Maybe<Scalars['String']>;
+  readonly is_admin?: Maybe<Scalars['Boolean']>;
   readonly is_new_user?: Maybe<Scalars['Boolean']>;
   readonly payment_intent_failures?: Maybe<Payment_Intent_Failures_Arr_Rel_Insert_Input>;
   readonly payment_offers?: Maybe<Payment_Offer_Arr_Rel_Insert_Input>;
@@ -7513,6 +7855,7 @@ export type Users_Order_By = {
   readonly firebase_id?: Maybe<Order_By>;
   readonly id?: Maybe<Order_By>;
   readonly image_url?: Maybe<Order_By>;
+  readonly is_admin?: Maybe<Order_By>;
   readonly is_new_user?: Maybe<Order_By>;
   readonly payment_intent_failures_aggregate?: Maybe<Payment_Intent_Failures_Aggregate_Order_By>;
   readonly payment_offers_aggregate?: Maybe<Payment_Offer_Aggregate_Order_By>;
@@ -7556,6 +7899,8 @@ export enum Users_Select_Column {
   /** column name */
   ImageUrl = 'image_url',
   /** column name */
+  IsAdmin = 'is_admin',
+  /** column name */
   IsNewUser = 'is_new_user',
   /** column name */
   Phone = 'phone',
@@ -7575,6 +7920,7 @@ export type Users_Set_Input = {
   readonly firebase_id?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['uuid']>;
   readonly image_url?: Maybe<Scalars['String']>;
+  readonly is_admin?: Maybe<Scalars['Boolean']>;
   readonly is_new_user?: Maybe<Scalars['Boolean']>;
   readonly phone?: Maybe<Scalars['String']>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
@@ -7602,6 +7948,8 @@ export enum Users_Update_Column {
   Id = 'id',
   /** column name */
   ImageUrl = 'image_url',
+  /** column name */
+  IsAdmin = 'is_admin',
   /** column name */
   IsNewUser = 'is_new_user',
   /** column name */
@@ -8288,6 +8636,17 @@ export type GetCurrentUserQuery = (
   )> }
 );
 
+export type GetExchangeRatesSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetExchangeRatesSubscription = (
+  { readonly __typename?: 'subscription_root' }
+  & { readonly exchange_rates: ReadonlyArray<(
+    { readonly __typename?: 'exchange_rates' }
+    & Pick<Exchange_Rates, 'currency_source' | 'currency_target' | 'rate' | 'is_active'>
+  )> }
+);
+
 
 export const InsertNewUserDocument = gql`
     mutation insertNewUser($id: uuid!, $email: String!, $email_verified: Boolean, $image_url: String, $display_name: String, $phone: String, $firebase_id: String!) {
@@ -8767,3 +9126,35 @@ export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
+export const GetExchangeRatesDocument = gql`
+    subscription GetExchangeRates {
+  exchange_rates {
+    currency_source
+    currency_target
+    rate
+    is_active
+  }
+}
+    `;
+
+/**
+ * __useGetExchangeRatesSubscription__
+ *
+ * To run a query within a React component, call `useGetExchangeRatesSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetExchangeRatesSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetExchangeRatesSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetExchangeRatesSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetExchangeRatesSubscription, GetExchangeRatesSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetExchangeRatesSubscription, GetExchangeRatesSubscriptionVariables>(GetExchangeRatesDocument, options);
+      }
+export type GetExchangeRatesSubscriptionHookResult = ReturnType<typeof useGetExchangeRatesSubscription>;
+export type GetExchangeRatesSubscriptionResult = Apollo.SubscriptionResult<GetExchangeRatesSubscription>;

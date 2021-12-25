@@ -6,8 +6,7 @@ import createPersistPlugin from '@rematch/persist';
 const persistPlugin = createPersistPlugin<RematchRootState<RootModel>, RootModel>({
     key: 'root',
     storage,
-    version: 2,
-    blacklist: ['auth']
+    version: 2
 });
 
 export const store = init<RootModel>({

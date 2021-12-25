@@ -14,11 +14,12 @@ import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { TOUR_DASHBOARD_LOCAL_STEPS } from './tours';
 import { Tour } from 'components/product-tour/tour';
 import { Transactions as TransactionView } from './transactions';
-import { useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
+import { useGetExchangeRatesSubscription, useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
 import { useUserContext } from 'hooks/use-user-context';
 import CardList from './virtual-cards/card-list';
 
 import { useDashboardStyles, StyledBadge } from './classes';
+import { formatHasuraExchangeRates, ExchangeRates } from './utils';
 
 export default function Dashboard() {
     const [hidden, setHidden] = useState(false);
@@ -31,10 +32,12 @@ export default function Dashboard() {
     const { user: userData } = useUserContext();
 
     const {
-        dashboard: { currentSideBarTab }
-    } = useSelector(({ dashboard, auth }: RootState) => ({ dashboard, auth }));
+        dashboard: { currentSideBarTab },
+        payments: { sellCurrency }
+    } = useSelector(({ dashboard, auth, payments }: RootState) => ({ dashboard, auth, payments }));
 
     const [handleGetUserTransaction, { data: transactionData, loading }] = useGetUserTransactionsLazyQuery();
+    const { data: exchangeRates, error: errorRates, loading: loadingRates } = useGetExchangeRatesSubscription();
     const transactions = transactionData?.transaction;
 
     const handleSpeedDialVisibility = () => {
@@ -98,11 +101,28 @@ export default function Dashboard() {
     }, []);
 
     useEffect(() => {
-        dispatch.payments.setExchangeRates();
-        dispatch.payments.setTotalToPayInSellCurrency(null);
-        // replace with /abroad payment rates
-        // dispatch.dashboard.setAsyncRateInfo(buyCurrency);
+        // set rates
+        if (exchangeRates) {
+            const rates = formatHasuraExchangeRates(sellCurrency, exchangeRates.exchange_rates as unknown as ExchangeRates[]);
+            dispatch.payments.setRates(rates);
+            dispatch.payments.setFetchAPIState({
+                loading: loadingRates,
+                result: 'success',
+                message: 'Rates fetched successfully'
+            });
+        }
+        if (errorRates) {
+            dispatch.dashboard.setFetchAPIState({
+                loading: loadingRates,
+                result: 'error',
+                message: `${errorRates}`
+            });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [exchangeRates, errorRates, loadingRates]);
+
+    useEffect(() => {
+        dispatch.payments.setTotalToPayInSellCurrency(null);
     }, [dispatch.payments]);
 
     return (

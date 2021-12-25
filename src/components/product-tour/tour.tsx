@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import JoyRide from 'react-joyride';
+import JoyRide, { Step } from 'react-joyride';
 
 interface TourProps {
     steps: Array<{
@@ -10,7 +10,9 @@ interface TourProps {
 }
 export const Tour = ({ steps, run = true }: TourProps) => {
     const [_, setStep] = useState<TourProps['steps']>();
+    const formattedSteps = steps.map(step => ({ ...step, placement: 'bottom' as Step['placement'], textAlign: 'center' }));
 
+    const debug = process.env.NODE_ENV !== 'production';
     useEffect(() => setStep(steps), [steps]);
-    return <JoyRide debug steps={steps} continuous showProgress locale={{ last: 'Done' }} scrollOffset={0} />;
+    return <JoyRide debug={debug} showSkipButton={true} steps={formattedSteps} continuous showProgress locale={{ last: 'Done' }} />;
 };

@@ -164,7 +164,10 @@ export const payments = createModel<RootModel>()({
             },
             async setTotalToPayInSellCurrency(_, getState) {
                 const { buyAmount = 1, sellCurrency, buyCurrency, rates } = getState.payments;
-                dispatch.payments.setSellCurrencyTotalToPay(buyAmount * rates[sellCurrency][buyCurrency]['rate']);
+                if (sellCurrency && buyCurrency && rates) {
+                    rates?.[sellCurrency]?.[buyCurrency] &&
+                        dispatch.payments.setSellCurrencyTotalToPay(buyAmount * rates[sellCurrency][buyCurrency]['rate']);
+                }
             }
         };
     }

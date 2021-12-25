@@ -43,11 +43,11 @@ export function CurrencyToggle({ options, initialValue }: CurrencyToggleProps) {
 
     const dispatch = useDispatch<Dispatch>();
     const {
-        payments: { buyCurrency, sellCurrency }
+        payments: { buyCurrency }
     } = useSelector(({ payments }: RootState) => ({ payments }));
 
     const getCurrentCurrency = () => {
-        return options.filter(option => option.currencyCode === currency.currencyCode)[0];
+        if (currency) return options.filter(option => option.currencyCode === currency.currencyCode)[0];
     };
 
     const handleRateChange = async (event: SelectChangeEvent) => {

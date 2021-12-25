@@ -9,12 +9,13 @@ const persistPlugin = createPersistPlugin<RematchRootState<RootModel>, RootModel
     version: 2
 });
 
+const trace = process.env.NODE_ENV !== 'production';
 export const store = init<RootModel>({
     models,
     plugins: [persistPlugin],
     redux: {
         devtoolOptions: {
-            trace: true
+            trace
         }
     }
 });

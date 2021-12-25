@@ -20,14 +20,25 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: 900,
             margin: 'auto',
             marginTop: '12vh',
+            [theme.breakpoints.only('xs')]: {
+                marginTop: '10vh'
+            },
             '& .tabHeader_typography': {
                 fontSize: '0.95rem',
                 fontFamily: 'Nunito',
                 fontWeight: 800,
-                paddingLeft: '1ch'
+                paddingLeft: '1ch',
+                [theme.breakpoints.only('xs')]: {
+                    fontSize: '0.8rem'
+                }
             },
-            [theme.breakpoints.only('xs')]: {
-                marginTop: '8vh'
+            '& .avatar': {
+                width: 30,
+                height: 30,
+                [theme.breakpoints.only('xs')]: {
+                    width: 25,
+                    height: 25
+                }
             }
         }
     })
@@ -50,7 +61,7 @@ const CardList = () => {
     } = useSelector(({ dashboard, VIRTUAL_CARDS }: RootState) => ({ dashboard, VIRTUAL_CARDS }));
     const dispatch = useDispatch<Dispatch>();
     const classes = useStyles();
-    const { action = 'top-up', currency, openTopUpModal = false } = currentVirtualCard ?? {};
+    const { action = 'top-up', currency: currencyKey, openTopUpModal = false } = currentVirtualCard ?? {};
     const [openModal, setOpenModal] = useState(openTopUpModal);
 
     const tabs = mockCards.map((cardObject: typeof mockCards[0], index) => {
@@ -95,7 +106,7 @@ const CardList = () => {
                     <Typography gutterBottom variant={'h6'} align={'left'} fontFamily={'Nunito'} fontWeight={700}>
                         Virtual Cards
                     </Typography>
-                    <FilterTab tabViews={tabs} currentKey={currency} />
+                    <FilterTab tabViews={tabs} currentKey={currencyKey} />
                 </Stack>
             </Zoom>
         </>

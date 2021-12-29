@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Autocomplete, { AutocompleteClassKey } from '@material-ui/lab/Autocomplete';
 
 import { Country, NIGERIA } from 'features/payments/hooks/use-country-list';
-import { RenderOptions } from 'features/payments/forms/rates-info/source-country/render-option-label';
+import { RenderOptions } from 'features/payments/forms/rates-info/send-from/render-option-label';
 import { RootState } from 'app/store';
 import { UK } from 'features/payments/context/constants';
 

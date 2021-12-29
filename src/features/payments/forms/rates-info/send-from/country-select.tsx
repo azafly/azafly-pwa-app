@@ -10,6 +10,7 @@ import { Dispatch } from 'app/store';
 import { RenderOptions } from './render-option-label';
 
 import { useURLParams } from 'hooks/use-url-params';
+import { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -69,7 +70,8 @@ export type CountrySelectProps = {
     renderOption?: (option: Country) => ReactElement;
 };
 
-export const AfricaCountriesSelect = ({ classKeys, options, defaultOption, getOptionLabel, getOptionDisabled, renderOption }: CountrySelectProps) => {
+export const AfricaCountriesSelect = ({ classKeys, options, getOptionLabel, getOptionDisabled, renderOption }: CountrySelectProps) => {
+    const [defaultOption, setDefaultOption] = useState<Country | null>(null);
     const classes = useStyles();
     const classOverrides: typeof classKeys = {
         option: classes.option,
@@ -82,14 +84,19 @@ export const AfricaCountriesSelect = ({ classKeys, options, defaultOption, getOp
     // const urlParamSendTo = useURLParams('send_to');
     // const defaultParams = 'NG';
 
-    const sendFrom = countryCodeLookup[urlParamSendFrom ?? 'NG'];
-
     const optionRenderer = (optionData: Country) => (renderOption ? renderOption : <RenderOptions option={optionData} />);
     const optionLabel = getOptionLabel ? getOptionLabel : (option: Country) => `${option.emoji ?? ''} ${' '}${option.currency.code}`;
     const optionDisabled = getOptionDisabled ? getOptionDisabled : (option: Country) => option.isComingSoon || option.isNotSupported;
     const _options = options ? options : [NIGERIA, ...popularSourceCountries];
-    const _defaultOption = urlParamSendFrom ? sendFrom : NIGERIA;
+
     const dispatch = useDispatch<Dispatch>();
+
+    useEffect(() => {
+        if (countryCodeLookup) {
+            const sendFrom = countryCodeLookup[urlParamSendFrom ?? 'NG'];
+            setDefaultOption(sendFrom ?? NIGERIA);
+        }
+    }, [countryCodeLookup, urlParamSendFrom]);
 
     return (
         <div className={classes.root}>
@@ -101,7 +108,7 @@ export const AfricaCountriesSelect = ({ classKeys, options, defaultOption, getOp
                 onChange={(e, value) => {
                     value && dispatch.payment.setRatesInfoSourceCountry(value);
                 }}
-                defaultValue={_defaultOption}
+                value={defaultOption}
                 autoComplete
                 getOptionDisabled={option => optionDisabled(option)}
                 getOptionLabel={option => optionLabel(option)}

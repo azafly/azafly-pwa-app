@@ -3,8 +3,8 @@ import { Box, Grid } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import Chip from '@mui/material/Chip';
 
-import { AfricaCountriesSelect } from './source-country/country-select';
-import { CurrencyAmount } from './target-country/currency-amount';
+import { AfricaCountriesSelect } from './send-from/country-select';
+import { CurrencyAmount } from './send-to/currency-amount';
 import { Country, NIGERIA, useCountryList } from '../../hooks/use-country-list';
 import { RootState } from 'app/store';
 

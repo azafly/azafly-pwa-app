@@ -111,11 +111,7 @@ export function CurrencyAmount() {
 
     useEffect(() => {
         urlParamSendTo ? setInitialValue(countryCodeLookup[urlParamSendTo]) : '';
-
-        console.log(initialValue);
     }, [urlParamSendTo, initialValue, countryCodeLookup]);
-
-    console.log(initialValue);
 
     return (
         <div className={classes.root} onClick={handleShow}>
@@ -138,7 +134,7 @@ export function CurrencyAmount() {
                     className={classes.toggle__section}
                     disablePortal
                     id='currency'
-                    defaultValue={initialValue || UK}
+                    value={initialValue || UK}
                     options={options}
                     classes={{
                         paper: classes.listbox,

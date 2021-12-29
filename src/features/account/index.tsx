@@ -80,7 +80,7 @@ const UserAccount = () => {
     const showAlert = useMemo(() => Boolean(success) || Boolean(error), [success, error]);
 
     return (
-        <Slide direction='down' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+        <Slide direction='left' in={true} mountOnEnter unmountOnExit appear timeout={300}>
             <div className={classes.user_account__root}>
                 <DefaultSnackbar
                     open={showAlert}

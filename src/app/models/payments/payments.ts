@@ -5,13 +5,22 @@ import { currencies, getCurrencyRates } from 'app/models/payments/mock';
 import { GetOffersResponseData, getInitialOffer, GetOffersRequestBody } from 'services/rest-clients/user-payment';
 import { RootModel } from '../index';
 
+export enum CARD_PAYMENT_STATES {
+    CREATING_OFFER = 'CREATING_OFFER',
+    OFFER_CREATED = 'OFFER_CREATED',
+    FETCHING_PAYMENT_LINK = 'FETCHING_PAYMENT_LINK',
+    PAYMENT_LINK_SUCCESS = 'PAYMENT_LINK_SUCCESS',
+    DONE = 'DONE',
+    GROUND_ZERO = 'GROUND_ZERO'
+}
+
 export interface RateInfo {
     targetCountry: Country;
     sourceCountry: Country;
     amount: number;
 }
 export type CurrencyCode = 'NGN' | 'USD' | 'EUR' | 'GBP' | 'CAD';
-export type Rates = typeof currencies;
+export type Rates = Record<string, any>;
 export type BoundType = 'lower' | 'upper' | null;
 
 interface APIFetchState {
@@ -30,14 +39,16 @@ export interface PaymentState {
     verificationStatus: {
         result?: 'error' | 'success' | null;
         loading: boolean;
+        message?: string;
     };
     buyAmount: number;
     buyCurrency: CurrencyCode;
     sellCurrencyTotalToPay: number;
-    rates: any;
+    rates: Rates;
     sellCurrency: CurrencyCode;
     upperBoundLimitExceeded: boolean;
     loverBoundLimitNotReached: boolean;
+    currentlyVerifiedOffer: any;
 }
 
 const initialState: PaymentState = {
@@ -51,16 +62,16 @@ const initialState: PaymentState = {
         loading: false
     },
     verificationStatus: {
-        result: null,
         loading: false
     },
     buyAmount: 100,
     buyCurrency: 'CAD' as CurrencyCode,
     sellCurrencyTotalToPay: 0,
-    rates: null,
+    rates: currencies,
     sellCurrency: 'NGN' as CurrencyCode,
     upperBoundLimitExceeded: false,
-    loverBoundLimitNotReached: false
+    loverBoundLimitNotReached: false,
+    currentlyVerifiedOffer: {}
 };
 
 export const payments = createModel<RootModel>()({
@@ -117,19 +128,23 @@ export const payments = createModel<RootModel>()({
         },
         setLowerLimitExceeded(state, payload: boolean) {
             return { ...state, lowerBoundLimitExceeded: payload };
+        },
+        setCurrentlyVerifiedOffer(state, payload: any) {
+            return { ...state, currentlyVerifiedOffer: payload };
         }
     },
     effects: dispatch => {
         return {
             async setInitialOffer({ source_currency, target_currency, source_amount }: GetOffersRequestBody, getState) {
-                dispatch.payments.setApiFetchState({ ...getState.payments.apiFetchState, loading: true });
+                dispatch.payments.setApiFetchState({ result: 'error', loading: true, message: CARD_PAYMENT_STATES.CREATING_OFFER });
                 try {
                     const { data } = await getInitialOffer({
                         source_currency,
                         target_currency,
                         source_amount
                     });
-                    dispatch.payments.setApiFetchState({ ...getState.payments.apiFetchState, result: 'success', loading: false });
+
+                    dispatch.payments.setApiFetchState({ result: 'success', loading: false, message: CARD_PAYMENT_STATES.OFFER_CREATED });
                     dispatch.payments.setOfferBasedOnRate(data.data);
                 } catch (error) {
                     dispatch.payments.setApiFetchState({ ...getState.payments.apiFetchState, result: 'error', loading: false });
@@ -162,7 +177,7 @@ export const payments = createModel<RootModel>()({
                     });
                 }
             },
-            async setTotalToPayInSellCurrency(_, getState) {
+            async setTotalToPayInSellCurrencyAsync(_, getState) {
                 const { buyAmount = 1, sellCurrency, buyCurrency, rates } = getState.payments;
                 if (sellCurrency && buyCurrency && rates) {
                     rates?.[sellCurrency]?.[buyCurrency] &&

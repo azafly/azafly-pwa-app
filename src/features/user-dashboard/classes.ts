@@ -5,12 +5,12 @@ export const useCardStyles = makeStyles((theme: Theme) =>
     createStyles({
         dashboardCard__root: {
             cursor: 'pointer',
-            borderRadius: 8,
+            borderRadius: 6,
             marginBottom: 10,
             maxWidth: 900,
             margin: 'auto',
             border: '1px solid #DCDCDC',
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
+            boxShadow: '0 2px 20px rgb(212 216 232 / 52%)',
             padding: 0,
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         },
@@ -92,7 +92,7 @@ export const useSidebarStyles = makeStyles(() =>
             borderRadius: 4,
             position: 'fixed',
             background: 'white',
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
+            boxShadow: '0 2px 20px rgb(212 216 232 / 52%)',
             width: 250,
             flexGrow: 1,
             marginRight: '3vw',
@@ -120,6 +120,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
         dashboard_container: {
             backgroundColor: '#f2f5f7',
             paddingTop: 50,
+            height: '100vh',
             [theme.breakpoints.down('xs')]: { paddingTop: '30px' }
         },
         data__section: {

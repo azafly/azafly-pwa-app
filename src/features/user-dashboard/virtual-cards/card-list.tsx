@@ -11,7 +11,7 @@ import { Dispatch, RootState } from 'app/store';
 import { mockCards } from 'app/models/cards/mocks';
 
 import BasicModal from './modal/index';
-import { TopUpForm, VirtualCardSetting } from './forms';
+import { TopUpForm, VirtualCardSetting } from './actions';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -84,6 +84,7 @@ const CardList = () => {
                 dispatch.dashboard.setCurrentCardIdentifier({ currency: cardObject.currency });
                 dispatch.VIRTUAL_CARDS.setCurrentCard(userCards[cardObject.currency]);
                 dispatch.payments.setBuyCurrency(cardObject.currency);
+                dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
             },
             component: <CardContainer cardObject={cardObject} />
         };

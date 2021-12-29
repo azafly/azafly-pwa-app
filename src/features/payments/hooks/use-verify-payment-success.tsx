@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { axiosClient } from 'services/rest-clients';
-import { Dispatch } from 'app/store';
-import { useURLParams } from 'hooks/use-url-params';
+import { Dispatch, RootState } from 'app/store';
+import { formatCardArrayToObject } from 'app/models/cards';
+import { topUpCard } from 'app/models/payments/mock';
 import { useGetPendingOfferByIdLazyQuery } from 'api/generated/graphql';
+import { useURLParams } from 'hooks/use-url-params';
 
 interface Status {
     status: 'success' | 'error' | null;
@@ -15,9 +17,8 @@ interface Status {
 }
 
 export const useVerifyPaymentSuccess = () => {
-    const [paymentIntentPayload, setOffer] = useState<any>(null);
-    const [error, setError] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [offer, setOffer] = useState<any>();
+    const [paymentIntentPayload, setPaymentIntentPayload] = useState<string | undefined>();
     const TRANSFER_REF = 'tx_ref';
     const TRANSACTION_ID = 'transaction_id';
     const STATUS = 'status';
@@ -27,6 +28,12 @@ export const useVerifyPaymentSuccess = () => {
     const status = useURLParams(STATUS);
     const path = `/verify?tx_ref=${tx_ref}&transaction_id=${transaction_id}&status=${status}`;
 
+    const {
+        payments: {
+            verificationStatus: { result, loading: verifying }
+        }
+    } = useSelector(({ payments }: RootState) => ({ payments }));
+
     const [handleGetOfferById] = useGetPendingOfferByIdLazyQuery({
         variables: {
             offer_id: tx_ref
@@ -34,19 +41,15 @@ export const useVerifyPaymentSuccess = () => {
     });
     const dispatch = useDispatch<Dispatch>();
     useEffect(() => {
-        setLoading(true);
-        dispatch.payments.setVerificationStatus({ result: null, loading: true });
+        dispatch.payments.setVerificationStatus({ loading: true });
         handleGetOfferById()
             .then(({ data }) => {
-                setOffer(data?.payment_offer[0].payment_intent_payload);
-                setLoading(false);
-                setError(false);
+                setPaymentIntentPayload(data?.payment_offer[0].payment_intent_payload ?? '');
+                setOffer(data?.payment_offer[0]);
                 dispatch.payments.setVerificationStatus({ result: 'success', loading: false });
             })
 
             .catch(() => {
-                setError(true);
-                setLoading(false);
                 dispatch.payments.setVerificationStatus({ result: 'error', loading: false });
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,35 +59,34 @@ export const useVerifyPaymentSuccess = () => {
             .get(path)
             .then(() => {
                 dispatch.payments.setVerificationStatus({ result: 'success', loading: false });
-                setError(true);
-                setLoading(false);
+                dispatch.payments.setCurrentlyVerifiedOffer(offer);
             })
             .catch(() => {
-                setLoading(false);
-                setError(false);
                 dispatch.payments.setVerificationStatus({ result: 'error', loading: false });
             });
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [path]);
 
-    const verificationStatus: Status = error
-        ? {
-              status: 'error',
-              heading: `Oh no 😩 , we couldn't verify your payment`,
-              text: `If you are sure your payment went through,
+    const verificationStatus: Status =
+        result === 'error'
+            ? {
+                  status: 'error',
+                  heading: `Oh no 😩 , we couldn't verify your payment`,
+                  text: `If you are sure your payment went through,
         Contact Support through the chat bubble below or email`,
-              referer: paymentIntentPayload?.includes('top_up') ? 'cards' : 'payments',
-              cta: paymentIntentPayload?.includes('top_up') ? 'Restart Top Up' : `Start Payment again`
-          }
-        : {
-              status: 'success',
-              heading: 'Payment was processed successfully',
-              text: 'You can now track your payment',
-              referer: paymentIntentPayload?.includes('top_up') ? 'cards' : 'payments',
-              cta: paymentIntentPayload?.includes('top_up') ? 'Go to Virtual card' : 'Track Payment'
-          };
+                  referer: paymentIntentPayload?.includes('top_up') ? 'cards' : 'payments',
+                  cta: paymentIntentPayload?.includes('top_up') ? 'Restart Top Up' : `Start Payment again`
+              }
+            : {
+                  status: 'success',
+                  heading: 'Payment was processed successfully',
+                  text: 'You can now track your payment',
+                  referer: paymentIntentPayload?.includes('top_up') ? 'cards' : 'payments',
+                  cta: paymentIntentPayload?.includes('top_up') ? 'Go to Virtual card' : 'Track Payment'
+              };
     return {
         verificationStatus,
-        loading
+        loading: verifying
     };
 };

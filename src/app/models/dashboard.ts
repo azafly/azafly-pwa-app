@@ -1,5 +1,4 @@
 import { createModel } from '@rematch/core';
-import { getInitialOffer } from 'services/rest-clients/user-payment';
 
 import { RootModel } from './index';
 

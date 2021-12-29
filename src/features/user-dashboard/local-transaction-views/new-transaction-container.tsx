@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         container: {
             maxWidth: 900,
-            margin: 'auto'
+            margin: 'auto',
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         },
         new_transaction_container: {
             maxWidth: 900,
@@ -51,15 +52,15 @@ export const NewTransactionContainer = () => {
     const isMobile = useMediaQuery('(max-width:450px)');
 
     const handleBuyAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const amount = !e.target.value ? 0 : parseInt(e.target.value);
+        const amountValue = !e.target.value ? 0 : parseInt(e.target.value);
         // set limit from server imposed limit
         const LIMIT = 10000;
-        const limitAmount = amount > LIMIT ? LIMIT : amount;
-        setAmount(amount);
+        const limitAmount = amount > LIMIT ? LIMIT : amountValue;
+        setAmount(amountValue);
         dispatch.payments.setBuyAmount(limitAmount);
         if (rates && buyCurrency) {
+            dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
         }
-        dispatch.payments.setTotalToPayInSellCurrency(null);
     };
 
     const classes = useStyles();

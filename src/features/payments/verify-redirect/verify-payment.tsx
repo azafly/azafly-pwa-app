@@ -6,7 +6,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 import { Dispatch, RootState } from 'app/store';
+import { formatCardArrayToObject } from 'app/models/cards';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import { topUpCard } from 'app/models/payments/mock';
 import { useVerifyPaymentSuccess } from 'features/payments/hooks';
 
 const style = {
@@ -23,8 +25,9 @@ export default function RedirectCallback() {
     const history = useHistory();
     const dispatch = useDispatch<Dispatch>();
     const {
-        dashboard: { currentVirtualCard }
-    } = useSelector(({ dashboard }: RootState) => ({ dashboard }));
+        dashboard: { currentVirtualCard },
+        payments: { currentlyVerifiedOffer }
+    } = useSelector(({ dashboard, payments }: RootState) => ({ dashboard, payments }));
 
     const {
         verificationStatus: { status, heading, text, cta, referer },
@@ -33,9 +36,14 @@ export default function RedirectCallback() {
 
     const goToNext = async () => {
         if (referer === 'cards') {
+            // fetch and set new wallet dat
+            const currency = currentlyVerifiedOffer?.source_currency;
+            const amount = currentlyVerifiedOffer?.amount;
+            topUpCard({ currency, amount }).then(({ data }) => {
+                dispatch.VIRTUAL_CARDS.setUserCards(formatCardArrayToObject(data));
+            });
             dispatch.dashboard.setCurrentDashboardTab('cards');
             dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'USD', openTopUpModal: false });
-            // fetch and set new wallet dat
         }
         history.replace('/dashboard');
     };
@@ -50,29 +58,25 @@ export default function RedirectCallback() {
                 {loading ? (
                     <>
                         <h4 style={{ textAlign: 'center' }}> Verifying your payment</h4>
-                        <ThreeDots
-                            styles={{
-                                background: '#4990A4'
-                            }}
-                        />
+                        <ThreeDots variantColor={'base'} />
                     </>
                 ) : (
                     <>
                         <h3 style={{ textAlign: 'center' }} id='verify-modal'>
                             {heading}
                         </h3>
-                        {status === 'success' && <CheckCircleOutlineIcon style={{ fontSize: 50 }} color={'success'} />}
-                        {status === 'error' && <CancelIcon style={{ fontSize: 50 }} color={'error'} />}
+                        {status && status === 'success' && <CheckCircleOutlineIcon style={{ fontSize: 50 }} color={'success'} />}
+                        {status && status === 'error' && <CancelIcon style={{ fontSize: 50 }} color={'error'} />}
                         <p style={{ textAlign: 'center' }} id='payment-verify'>
                             {text} <strong>{status === 'error' && 'support@azafly.com'}</strong>
                         </p>
                         <Box sx={{ margin: 1 }}>
-                            {status === 'success' && (
+                            {status && status === 'success' && (
                                 <Button variant={'contained'} onClick={goToNext} color={'success'}>
                                     {cta}
                                 </Button>
                             )}
-                            {status === 'error' && (
+                            {status && status === 'error' && (
                                 <>
                                     <h4 style={{ textAlign: 'center' }}> Or</h4>
                                     <Button variant={'contained'} sx={{ margin: 1 }} onClick={goToPayments} color={'error'}>

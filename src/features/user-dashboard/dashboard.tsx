@@ -1,4 +1,5 @@
 import { Box, Grid, Hidden } from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
 import { sendEmailVerification } from 'firebase/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
@@ -8,13 +9,14 @@ import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { Dispatch, RootState } from 'app/store';
 import { fetchWallet } from './mock';
 import { firebaseAuth } from 'providers/auth/firebase/firebase';
+import { mockCards, formatCardArrayToObject } from 'app/models/cards';
 import { SideBar } from './side-bar';
-import { UserAccount } from 'views/user-account';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { TOUR_DASHBOARD_LOCAL_STEPS } from './tours';
 import { Tour } from 'components/product-tour/tour';
+import { TOUR_DASHBOARD_LOCAL_STEPS } from './tours';
 import { Transactions as TransactionView } from './transactions';
 import { useGetExchangeRatesSubscription, useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
+import { UserAccount } from 'views/user-account';
 import { useUserContext } from 'hooks/use-user-context';
 import CardList from './virtual-cards/card-list';
 
@@ -98,7 +100,9 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchWallet();
-    }, []);
+        dispatch.VIRTUAL_CARDS.setUserCards(formatCardArrayToObject(mockCards));
+        dispatch.dashboard.setCurrentCardIdentifier({ currency: mockCards[0].currency });
+    }, [dispatch.VIRTUAL_CARDS, dispatch.payments, dispatch.dashboard]);
 
     useEffect(() => {
         // set rates
@@ -122,7 +126,7 @@ export default function Dashboard() {
     }, [exchangeRates, errorRates, loadingRates]);
 
     useEffect(() => {
-        dispatch.payments.setTotalToPayInSellCurrency(null);
+        dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
     }, [dispatch.payments]);
 
     return (
@@ -155,6 +159,7 @@ export default function Dashboard() {
                 )}
                 {currentSideBarTab === 'cards' && <CardList />}
                 {currentSideBarTab === 'account' && <UserAccount />}
+                {currentSideBarTab === 'payment' && <Redirect to={'/payment'} />}
             </Grid>
 
             <SpeedDialTooltip

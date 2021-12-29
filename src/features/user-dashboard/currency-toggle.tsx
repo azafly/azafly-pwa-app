@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { Dispatch, RootState } from 'app/store';
-import { ExchangeRates, formatHasuraExchangeRates } from '../utils';
+import { ExchangeRates, formatHasuraExchangeRates } from './utils';
 
 export interface CurrencyListParams {
     country: string;
@@ -43,25 +43,24 @@ export function CurrencyToggle({ options, initialValue }: CurrencyToggleProps) {
 
     const dispatch = useDispatch<Dispatch>();
     const {
-        payments: { buyCurrency }
-    } = useSelector(({ payments }: RootState) => ({ payments }));
+        dashboard: { currentVirtualCard }
+    } = useSelector(({ payments, dashboard }: RootState) => ({ payments, dashboard }));
 
     const getCurrentCurrency = () => {
-        if (currency) return options.filter(option => option.currencyCode === currency.currencyCode)[0];
+        return options.filter(option => option.currencyCode === currency?.currencyCode)[0];
     };
 
     const handleRateChange = async (event: SelectChangeEvent) => {
-        const currency = event.target.value;
+        const currencyValue = event.target.value;
         // @ts-ignore
-        setCurrency(currency);
+        setCurrency(currencyValue);
         // @ts-ignore
-        dispatch.payments.setBuyCurrency(currency.currencyCode);
+        dispatch.payments.setBuyCurrency(currencyValue.currencyCode);
         // @ts-ignore
-        dispatch.payments.setTotalToPayInSellCurrency(null);
+        dispatch.dashboard.setCurrentCardIdentifier({ ...currentVirtualCard, currency: currencyValue.currencyCode });
+        dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
         // @ts-ignore
-        dispatch.dashboard.setCurrentCardIdentifier(currency.currencyCode);
-        // @ts-ignore
-        dispatch.VIRTUAL_CARDS.setCurrentCard(currency.currencyCode);
+        dispatch.VIRTUAL_CARDS.setCurrentCard(currencyValue.currencyCode);
     };
 
     const classes = useStyles();
@@ -80,7 +79,7 @@ export function CurrencyToggle({ options, initialValue }: CurrencyToggleProps) {
                     value={getCurrentCurrency()}
                     onChange={handleRateChange}
                     // @ts-ignore
-                    defaultValue={buyCurrency}
+                    defaultValue={initialValue}
                     disableUnderline
                     sx={{
                         background: 'transparent',

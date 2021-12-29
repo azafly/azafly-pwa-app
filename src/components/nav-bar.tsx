@@ -12,8 +12,10 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import React, { memo, ReactElement } from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { DashboardSvgComponent, SignOutSvgComponent, ProfileSvgComponent, HelpSvgComponent } from 'components/icons';
+import { Dispatch, RootState } from 'app/store';
 import { Logo2SvgComponent } from 'components/icons/logo-style-2';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useUserContext } from 'hooks/use-user-context';
@@ -85,6 +87,7 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+    const dispatch = useDispatch<Dispatch>();
 
     const { signout } = useFirebaseAuthContext();
     const { pathname } = useLocation();
@@ -112,6 +115,10 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
 
     const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setMobileMoreAnchorEl(event.currentTarget);
+    };
+
+    const handleRestDashboardTab = () => {
+        dispatch.dashboard.setCurrentDashboardTab('dashboard');
     };
 
     const menuId = 'primary-account-menu';
@@ -214,7 +221,7 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
         <div className={classes.grow}>
             <AppBar position='fixed' elevation={0}>
                 <Toolbar>
-                    <Link to={isOnboardingPage ? '#' : '/dashboard'} className={classes.title}>
+                    <Link to={isOnboardingPage ? '#' : '/dashboard'} className={classes.title} onClick={handleRestDashboardTab}>
                         {' '}
                         <Logo2SvgComponent />
                     </Link>

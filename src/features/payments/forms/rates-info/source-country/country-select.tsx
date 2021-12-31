@@ -10,6 +10,7 @@ import { Dispatch } from 'app/store';
 import { RenderOptions } from './render-option-label';
 
 import { useURLParams } from 'hooks/use-url-params';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -69,7 +70,7 @@ export type CountrySelectProps = {
     renderOption?: (option: Country) => ReactElement;
 };
 
-export const AfricaCountriesSelect = ({ classKeys, options, defaultOption, getOptionLabel, getOptionDisabled, renderOption }: CountrySelectProps) => {
+export const AfricaCountriesSelect = ({ classKeys, options, getOptionLabel, getOptionDisabled, renderOption }: CountrySelectProps) => {
     const classes = useStyles();
     const classOverrides: typeof classKeys = {
         option: classes.option,
@@ -79,9 +80,6 @@ export const AfricaCountriesSelect = ({ classKeys, options, defaultOption, getOp
     const { popularSourceCountries, countryCodeLookup } = useCountryList();
 
     const urlParamSendFrom = useURLParams('send_from');
-    // const urlParamSendTo = useURLParams('send_to');
-    // const defaultParams = 'NG';
-
     const sendFrom = countryCodeLookup[urlParamSendFrom ?? 'NG'];
 
     const optionRenderer = (optionData: Country) => (renderOption ? renderOption : <RenderOptions option={optionData} />);
@@ -101,7 +99,7 @@ export const AfricaCountriesSelect = ({ classKeys, options, defaultOption, getOp
                 onChange={(e, value) => {
                     value && dispatch.payments.setRatesInfoSourceCountry(value);
                 }}
-                defaultValue={_defaultOption}
+                value={_defaultOption}
                 autoComplete
                 getOptionDisabled={option => optionDisabled(option)}
                 getOptionLabel={option => optionLabel(option)}

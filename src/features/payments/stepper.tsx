@@ -41,16 +41,18 @@ export function VerticalPaymentStepper() {
 
     const steps = getSteps;
     const { activeStep, canGoNext, paymentLink, setActiveStep } = usePaymentContext();
-    const { apiFetchState } = useSelector((state: RootState) => state.payments);
+    const { apiFetchState, DIRECT_activeStep } = useSelector((state: RootState) => state.payments);
 
     const handleNext = () => {
         localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: activeStep + 1 });
+        dispatch.payments.DIRECT_setActiveStep(activeStep + 1);
         setActiveStep(prevActiveStep => prevActiveStep + 1);
     };
 
     const handleBack = () => {
         localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: activeStep - 1 });
         setActiveStep(prevActiveStep => prevActiveStep - 1);
+        dispatch.payments.DIRECT_setActiveStep(activeStep - 1);
         history.push({
             state: {
                 step: activeStep
@@ -66,7 +68,7 @@ export function VerticalPaymentStepper() {
                         className={classes.next}
                         onClick={() => {
                             localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: 1 });
-                            //   dispatch.payments.setInitialOffer('').then(() => handleNext());
+                            dispatch.payments.DIRECT_setActiveStep(1);
                         }}
                         disabled={apiFetchState?.result === 'error'}
                     >
@@ -124,10 +126,6 @@ export function VerticalPaymentStepper() {
 
     useEffect(() => {
         const computeStepToNavigateTo = () => {
-            const localStorageActiveStep = Number(localStorage.getItem(LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP));
-            if (localStorageActiveStep && !urlParamOfferId && !urlParamStep) {
-                setActiveStep(localStorageActiveStep);
-            }
             if (urlParamOfferId && urlParamStep) {
                 Promise.resolve(handleGetPendingOffer()).then(() => {
                     const { source_amount, source_currency, target_currency, total_in_target_with_charges } = pendingOffer?.payment_offer[0] ?? {};
@@ -136,14 +134,16 @@ export function VerticalPaymentStepper() {
                         JSON.stringify({ source_amount, source_currency, target_currency, total_in_target_with_charges })
                     );
                     setActiveStep(Number(urlParamStep));
+                    dispatch.payments.DIRECT_setActiveStep(Number(urlParamStep));
                 });
             }
             if (urlParamStep && !urlParamOfferId) {
                 setActiveStep(0);
+                dispatch.payments.DIRECT_setActiveStep(0);
             }
         };
         computeStepToNavigateTo();
-    }, [handleGetPendingOffer, urlParamOfferId, urlParamStep, pendingOffer, setActiveStep, dispatch.payment]);
+    }, [handleGetPendingOffer, urlParamOfferId, urlParamStep, pendingOffer, setActiveStep, dispatch.payments]);
 
     return (
         <Slide direction='right' in={true} mountOnEnter unmountOnExit appear timeout={800}>

@@ -28,13 +28,16 @@ export default function BasicModal({ children, openModal, handleClose }: React.P
         dashboard: { currentVirtualCard }
     } = useSelector(({ dashboard }: RootState) => ({ dashboard }));
 
+    const handleOnClose = () => {
+        handleClose(!openModal);
+        dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'NGN', openTopUpModal: false });
+    };
+
     return (
         <Modal
-            onBackdropClick={() =>
-                dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'NGN', openTopUpModal: false })
-            }
+            onBackdropClick={handleOnClose}
             open={openModal}
-            onClose={handleClose}
+            onClose={handleOnClose}
             aria-labelledby='modal-modal-title'
             aria-describedby='modal-modal-description'
         >

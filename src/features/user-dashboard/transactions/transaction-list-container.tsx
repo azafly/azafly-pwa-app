@@ -93,9 +93,11 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     const isMobile = useMediaQuery('(max-width:960px)');
 
     const all = transactions?.map((transaction: any) => <CardContainer transactionData={transaction} key={transaction.id} />);
+
     const pending = offerData?.payment_offer?.map((transaction: any) => (
         <PendingOfferCardContainer transactionData={transaction} key={transaction.id} />
     ));
+
     const allOffers = transactions.length ? (
         all
     ) : (

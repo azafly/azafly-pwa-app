@@ -12,10 +12,10 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import React, { memo, ReactElement } from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { DashboardSvgComponent, SignOutSvgComponent, ProfileSvgComponent, HelpSvgComponent } from 'components/icons';
-import { Dispatch, RootState } from 'app/store';
+import { Dispatch } from 'app/store';
 import { Logo2SvgComponent } from 'components/icons/logo-style-2';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useUserContext } from 'hooks/use-user-context';
@@ -263,11 +263,15 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
                                     onClick={handleProfileMenuOpen}
                                     color='inherit'
                                 >
-                                    <Link to={callToAction.link} className='link'>
-                                        {' '}
-                                        <Button variant='contained' className='payment_button' endIcon={callToAction.icon}>
-                                            {callToAction.text}
-                                        </Button>
+                                    <Link
+                                        to={callToAction.link}
+                                        component={Button}
+                                        // @ts-ignore
+                                        variant='contained'
+                                        className='link payment_button'
+                                        endIcon={callToAction.icon}
+                                    >
+                                        {callToAction.text}
                                     </Link>
                                 </IconButton>
                             </>

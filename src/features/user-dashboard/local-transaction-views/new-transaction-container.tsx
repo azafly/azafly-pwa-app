@@ -71,7 +71,7 @@ export const NewTransactionContainer = () => {
         if (name === 'card') {
             dispatch.dashboard.setCurrentDashboardTab('cards');
             dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'EUR', openTopUpModal: true });
-            dispatch.VIRTUAL_CARDS.setCurrentCard(userCards[currentVirtualCard?.currency]);
+            dispatch.VIRTUAL_CARDS.setCurrentCard(userCards[currentVirtualCard?.currency ?? 'EUR']);
             dispatch.VIRTUAL_CARDS.setCardTopUpReferer('dashboard');
         } else dispatch.dashboard.setCurrentDashboardTab('payment');
     };

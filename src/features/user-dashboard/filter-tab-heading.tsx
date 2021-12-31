@@ -35,7 +35,7 @@ function TabPanel(props: TabPanelProps) {
         <div role='tabpanel' hidden={value !== index} id={`scrollable-tabpanel-${index}`} aria-labelledby={`scrollable-tab-${index}`} {...other}>
             {value === index && (
                 <Box pt={1}>
-                    <Typography>{children}</Typography>
+                    <Box>{children}</Box>
                 </Box>
             )}
         </div>

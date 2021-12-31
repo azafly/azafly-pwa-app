@@ -39,7 +39,7 @@ export function topUpCard({ currency, amount }: TopUpMockArgs) {
         if (card.currency === currency) {
             return {
                 ...card,
-                amount: card.amount + amount
+                amount: card.balance + amount
             };
         }
         return card;

@@ -3,15 +3,17 @@ import { CardContainer } from './card-container';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { FilterTab } from '../filter-tab-heading';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Typography } from '@mui/material';
-import Zoom from '@mui/material/Zoom';
+import Fade from '@mui/material/Fade';
 
 import { Dispatch, RootState } from 'app/store';
-import { mockCards } from 'app/models/cards/mocks';
+import { mockCards, formatCardArrayToObject } from 'app/models/cards/mocks';
+import { TopUpForm, VirtualCardSetting } from './actions';
+import { useGetUserCardsSubscription } from 'api/generated/graphql';
+import { useUserContext } from 'hooks/use-user-context';
 
 import BasicModal from './modal/index';
-import { TopUpForm, VirtualCardSetting } from './actions';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -63,7 +65,11 @@ const CardList = () => {
     const classes = useStyles();
     const { action = 'top-up', currency: currencyKey, openTopUpModal = false } = currentVirtualCard ?? {};
     const [openModal, setOpenModal] = useState(openTopUpModal);
+    const { user } = useUserContext();
+    const { data, loading, error } = useGetUserCardsSubscription({ variables: { userId: user?.id ?? '' } });
 
+    // TODO : use carData above other than mock once implementation si complete
+    const formattedCardObject = useMemo(() => formatCardArrayToObject(data?.virtual_cards ?? []), [data]);
     const tabs = mockCards.map((cardObject: typeof mockCards[0], index) => {
         const { currency, countryCode } = cardObject;
 
@@ -95,7 +101,7 @@ const CardList = () => {
             <BasicModal handleClose={() => setOpenModal(false)} openModal={openTopUpModal || openModal}>
                 {getActionModal(action)}
             </BasicModal>
-            <Zoom
+            <Fade
                 in
                 mountOnEnter
                 unmountOnExit
@@ -109,7 +115,7 @@ const CardList = () => {
                     </Typography>
                     <FilterTab tabViews={tabs} currentKey={currencyKey} />
                 </Stack>
-            </Zoom>
+            </Fade>
         </>
     );
 };

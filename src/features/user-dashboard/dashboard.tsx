@@ -102,6 +102,7 @@ export default function Dashboard() {
         fetchWallet();
         dispatch.VIRTUAL_CARDS.setUserCards(formatCardArrayToObject(mockCards));
         dispatch.dashboard.setCurrentCardIdentifier({ currency: mockCards[0].currency });
+        dispatch.dashboard.setCurrentDashboardTab('dashboard');
     }, [dispatch.VIRTUAL_CARDS, dispatch.payments, dispatch.dashboard]);
 
     useEffect(() => {

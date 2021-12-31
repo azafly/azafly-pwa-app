@@ -8647,6 +8647,19 @@ export type GetExchangeRatesSubscription = (
   )> }
 );
 
+export type GetUserCardsSubscriptionVariables = Exact<{
+  userId: Scalars['uuid'];
+}>;
+
+
+export type GetUserCardsSubscription = (
+  { readonly __typename?: 'subscription_root' }
+  & { readonly virtual_cards: ReadonlyArray<(
+    { readonly __typename?: 'virtual_cards' }
+    & Pick<Virtual_Cards, 'balance' | 'card_last_4digits' | 'currency' | 'id' | 'is_active' | 'issuer_virtual_card_id'>
+  )> }
+);
+
 
 export const InsertNewUserDocument = gql`
     mutation insertNewUser($id: uuid!, $email: String!, $email_verified: Boolean, $image_url: String, $display_name: String, $phone: String, $firebase_id: String!) {
@@ -9158,3 +9171,38 @@ export function useGetExchangeRatesSubscription(baseOptions?: Apollo.Subscriptio
       }
 export type GetExchangeRatesSubscriptionHookResult = ReturnType<typeof useGetExchangeRatesSubscription>;
 export type GetExchangeRatesSubscriptionResult = Apollo.SubscriptionResult<GetExchangeRatesSubscription>;
+export const GetUserCardsDocument = gql`
+    subscription GetUserCards($userId: uuid!) {
+  virtual_cards(where: {user_id: {_eq: $userId}}) {
+    balance
+    card_last_4digits
+    currency
+    id
+    is_active
+    issuer_virtual_card_id
+  }
+}
+    `;
+
+/**
+ * __useGetUserCardsSubscription__
+ *
+ * To run a query within a React component, call `useGetUserCardsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserCardsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserCardsSubscription({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetUserCardsSubscription(baseOptions: Apollo.SubscriptionHookOptions<GetUserCardsSubscription, GetUserCardsSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetUserCardsSubscription, GetUserCardsSubscriptionVariables>(GetUserCardsDocument, options);
+      }
+export type GetUserCardsSubscriptionHookResult = ReturnType<typeof useGetUserCardsSubscription>;
+export type GetUserCardsSubscriptionResult = Apollo.SubscriptionResult<GetUserCardsSubscription>;

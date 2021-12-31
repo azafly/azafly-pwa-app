@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface VirtualCardProps {
-    amount: number;
+    balance: number;
     currency: string;
     cardNumber: string;
     last4digits: string;
@@ -58,13 +58,13 @@ interface VirtualCardProps {
     countryCode: string;
 }
 
-export const CreditCard = memo(function CreditCard({ amount, currency, cardNumber, countryCode, last4digits, expiry, cvv }: VirtualCardProps) {
+export const CreditCard = memo(function CreditCard({ balance, currency, cardNumber, countryCode, last4digits, expiry, cvv }: VirtualCardProps) {
     const classes = useStyles();
     const [show, setShow] = useState(false);
 
-    const balance = formatCurrency({
+    const _balance = formatCurrency({
         currency,
-        amount,
+        amount: balance,
         countryCode
     });
     return (
@@ -73,7 +73,7 @@ export const CreditCard = memo(function CreditCard({ amount, currency, cardNumbe
                 <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant='body2' className={classes.typography}>
-                            {balance}
+                            {_balance}
                         </Typography>
 
                         <Slide

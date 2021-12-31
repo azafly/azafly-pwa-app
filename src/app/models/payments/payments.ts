@@ -11,7 +11,8 @@ export enum CARD_PAYMENT_STATES {
     FETCHING_PAYMENT_LINK = 'FETCHING_PAYMENT_LINK',
     PAYMENT_LINK_SUCCESS = 'PAYMENT_LINK_SUCCESS',
     DONE = 'DONE',
-    GROUND_ZERO = 'GROUND_ZERO'
+    GROUND_ZERO = 'IDLE',
+    ERROR = 'ERROR'
 }
 
 export interface RateInfo {
@@ -49,6 +50,7 @@ export interface PaymentState {
     upperBoundLimitExceeded: boolean;
     loverBoundLimitNotReached: boolean;
     currentlyVerifiedOffer: any;
+    DIRECT_activeStep: number;
 }
 
 const initialState: PaymentState = {
@@ -71,7 +73,8 @@ const initialState: PaymentState = {
     sellCurrency: 'NGN' as CurrencyCode,
     upperBoundLimitExceeded: false,
     loverBoundLimitNotReached: false,
-    currentlyVerifiedOffer: {}
+    currentlyVerifiedOffer: {},
+    DIRECT_activeStep: 0
 };
 
 export const payments = createModel<RootModel>()({
@@ -90,7 +93,10 @@ export const payments = createModel<RootModel>()({
         setRatesInfoTargetCountry(state, payload: Country) {
             return { ...state, targetCountry: { ...payload } };
         },
-        setOfferBasedOnRate(state, payload: GetOffersResponseData) {
+        DIRECT_setActiveStep(state, payload: number) {
+            return { ...state, DIRECT_activeStep: payload };
+        },
+        setOfferBasedOnRate(state, payload: GetOffersResponseData | undefined) {
             return { ...state, offerBasedOnRate: payload };
         },
         setApiFetchState(state, payload: APIFetchState) {
@@ -183,6 +189,7 @@ export const payments = createModel<RootModel>()({
                     rates?.[sellCurrency]?.[buyCurrency] &&
                         dispatch.payments.setSellCurrencyTotalToPay(buyAmount * rates[sellCurrency][buyCurrency]['rate']);
                 }
+                return 0;
             }
         };
     }

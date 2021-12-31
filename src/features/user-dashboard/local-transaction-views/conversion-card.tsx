@@ -6,7 +6,7 @@ import { CurrencyToggle, CurrencyListParams } from '../currency-toggle';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         new_transaction_container: {
-            borderRadius: 4,
+            borderRadius: 8,
             margin: 'auto',
             flexGrow: 1,
             border: '1px solid #DCDCDC',
@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         amountInfo: {
+            borderTopLeftRadius: 8,
+            borderBottomLeftRadius: 8,
             padding: 16,
             background: 'white',
             [theme.breakpoints.down('sm')]: {
@@ -77,9 +79,8 @@ export const ConversionCard = ({
                     id='amount'
                     placeholder='0.00'
                     name={'amount'}
-                    value={amount ?? 0}
                     className={classes.amount}
-                    defaultValue={'100'}
+                    defaultValue={amount ?? 0}
                     disableUnderline
                     disabled={disabled}
                     onChange={handleAmountChange}

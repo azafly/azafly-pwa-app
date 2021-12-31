@@ -49,6 +49,10 @@ export default function RedirectCallback() {
     };
 
     const goToPayments = async () => {
+        if (referer === 'card') {
+            dispatch.dashboard.setCurrentDashboardTab('cards');
+            history.replace('/dashboard');
+        }
         history.replace('/payment');
     };
 

@@ -111,11 +111,7 @@ export function CurrencyAmount() {
 
     useEffect(() => {
         urlParamSendTo ? setInitialValue(countryCodeLookup[urlParamSendTo]) : '';
-
-        console.log(initialValue);
     }, [urlParamSendTo, initialValue, countryCodeLookup]);
-
-    console.log(initialValue);
 
     return (
         <div className={classes.root} onClick={handleShow}>

@@ -80,7 +80,7 @@ export const ConversionCard = ({
                     placeholder='0.00'
                     name={'amount'}
                     className={classes.amount}
-                    defaultValue={amount ?? 0}
+                    value={amount ?? 0}
                     disableUnderline
                     disabled={disabled}
                     onChange={handleAmountChange}

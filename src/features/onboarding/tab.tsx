@@ -67,7 +67,7 @@ export function OnboardingTab() {
     };
 
     return (
-        <Grid item xs={12} sm={6} className={classes.onboardingTabRoot} alignItems={'center'}>
+        <Grid item xs={12} sm={6} className={classes.onboardingTabRoot}>
             <Typography variant={'h4'} gutterBottom style={{ fontWeight: 700, marginTop: 30 }} align={'center'}>
                 <Logo1SvgComponent />
             </Typography>

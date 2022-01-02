@@ -1,11 +1,12 @@
 import { Box, Card, Typography } from '@mui/material';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-
-import { GuaranteeTag } from './guarantee-tag';
-import { ThreeDots } from '../../../../components/css-loaders/three-dots/three-dots';
 import InfoIcon from '@mui/icons-material/Info';
-import { RootState } from 'app/store';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
+
+import { formatCurrency } from 'libs';
+import { isAllValueTruthy } from 'libs/index';
+import { RootState } from 'app/store';
+import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -13,10 +14,12 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: 675,
             borderRadius: 4,
             margin: '10px 0px',
+            backgroundColor: 'white',
+            border: '1px solid #DCDCDC',
+            boxShadow: '0 2px 20px rgb(212 216 232 / 52%)',
             [theme.breakpoints.only('xs')]: {
                 width: '100%',
                 margin: '10px 0px',
-                backgroundColor: 'transparent',
                 padding: 0
             },
             '& .MuiButton-containedPrimary': {
@@ -55,32 +58,26 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function PriceCard() {
     const classes = useStyles();
-    const {} = useSelector((state: RootState) => state.payment);
+    const {
+        offerBasedOnRate,
+        apiFetchState: { loading }
+    } = useSelector((state: RootState) => state.payments);
 
+    const { destination_currency, total_in_target_with_charges } = offerBasedOnRate || {};
     const getFormattedCurrency = () => {
-        // const localStoragePaymentOffer = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string) as LocalStorageInitialOffer;
-
-        // if (!initialOffer && localStoragePaymentOffer) {
-        //     return formatCurrency({
-        //         currency: localStoragePaymentOffer?.target_currency ?? 'NGN',
-        //         amount: localStoragePaymentOffer?.total_in_target_with_charges || 0,
-        //         countryCode: 'NG'
-        //     });
-        // } else {
-        //     return formatCurrency({
-        //         currency: sourceCountry.currency.code,
-        //         amount: initialOffer?.total_in_target_with_charges || 0,
-        //         countryCode: sourceCountry.code
-        //     });
-        // }
-        return '100$';
+        if (offerBasedOnRate && isAllValueTruthy(destination_currency, total_in_target_with_charges)) {
+            return formatCurrency({
+                currency: offerBasedOnRate.destination_currency ?? 'NGN',
+                amount: offerBasedOnRate.total_in_target_with_charges ?? 0,
+                countryCode: 'NG'
+            });
+        }
     };
 
     return (
         <div className={classes.root}>
-            <GuaranteeTag isLoading={false} />
             <Card elevation={0} className={classes.card}>
-                {false ? (
+                {loading ? (
                     <ThreeDots variantColor={'base'} />
                 ) : (
                     <div>

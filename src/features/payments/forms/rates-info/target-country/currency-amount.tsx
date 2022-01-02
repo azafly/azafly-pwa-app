@@ -93,8 +93,6 @@ export function CurrencyAmount() {
     const [showCountryList, setShowCountryList] = React.useState(false);
 
     const { popularTargetCountries, countryCodeLookup } = useCountryList();
-    const dispatch = useDispatch<Dispatch>();
-    const { amount } = useSelector((state: RootState) => state.payments.rateInfo);
 
     const options = popularTargetCountries?.map(it => ({ ...it, label: it.name }));
 
@@ -117,11 +115,13 @@ export function CurrencyAmount() {
         <div className={classes.root} onClick={handleShow}>
             <TextField
                 id='amount'
-                value={amount}
+                value={100}
                 type='number'
                 label={'Amount'}
                 className={classes.input}
-                onChange={event => dispatch.payments.setRatesInfoAmount(parseInt(event.target.value))}
+                onChange={event => {
+                    // TODO: handle from new redux store
+                }}
                 InputProps={{
                     className: classes.input
                 }}
@@ -129,7 +129,7 @@ export function CurrencyAmount() {
             <div>
                 <Autocomplete
                     onChange={(_, country) => {
-                        country && dispatch.payments.setRatesInfoTargetCountry(country);
+                        //         // TODO: handle from new redux store dispatch.payments.setRatesInfoTargetCountry(country);
                     }}
                     className={classes.toggle__section}
                     disablePortal

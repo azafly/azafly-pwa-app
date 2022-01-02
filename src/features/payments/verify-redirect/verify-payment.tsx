@@ -6,9 +6,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 import { Dispatch, RootState } from 'app/store';
-import { formatCardArrayToObject } from 'app/models/cards';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { topUpCard } from 'app/models/payments/mock';
 import { useVerifyPaymentSuccess } from 'features/payments/hooks';
 
 const style = {
@@ -25,8 +23,7 @@ export default function RedirectCallback() {
     const history = useHistory();
     const dispatch = useDispatch<Dispatch>();
     const {
-        dashboard: { currentVirtualCard },
-        payments: { currentlyVerifiedOffer }
+        dashboard: { currentVirtualCard }
     } = useSelector(({ dashboard, payments }: RootState) => ({ dashboard, payments }));
 
     const {
@@ -36,13 +33,7 @@ export default function RedirectCallback() {
 
     const goToNext = async () => {
         if (referer === 'cards') {
-            // fetch and set new wallet dat
-            const currency = currentlyVerifiedOffer?.source_currency;
-            const amount = currentlyVerifiedOffer?.amount;
-            topUpCard({ currency, amount }).then(({ data }) => {
-                dispatch.VIRTUAL_CARDS.setUserCards(formatCardArrayToObject(data));
-            });
-            dispatch.dashboard.setCurrentDashboardTab('cards');
+            new Promise(() => dispatch.dashboard.setCurrentDashboardTab('cards')).then(() => history.replace('/dashboard'));
             dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'USD', openTopUpModal: false });
         }
         history.replace('/dashboard');
@@ -51,9 +42,8 @@ export default function RedirectCallback() {
     const goToPayments = async () => {
         if (referer === 'card') {
             dispatch.dashboard.setCurrentDashboardTab('cards');
-            history.replace('/dashboard');
         }
-        history.replace('/payment');
+        history.replace('/dashboard');
     };
 
     return (

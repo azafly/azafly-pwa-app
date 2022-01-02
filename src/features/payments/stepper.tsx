@@ -1,10 +1,11 @@
-import { Button, Stepper, Step, StepContent, StepLabel, Slide } from '@material-ui/core';
+import { Button, Stepper, Step, StepContent, StepLabel, Zoom } from '@material-ui/core';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { Dispatch, RootState } from 'app/store';
+import { isAllValueTruthy } from '../../libs/index';
 import { localStorageClient, LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { PaymentInfo } from './forms/payment-info/payment-info';
 import { PriceInfo } from './forms/price-info';
@@ -106,6 +107,7 @@ export function VerticalPaymentStepper() {
                         classes={{
                             disabled: classes.disabled
                         }}
+                        onClick={() => dispatch.payments.DIRECT_setPaymentIntentPayload({})}
                         disabled={apiFetchState?.result === 'error' || !paymentLink}
                     >
                         {apiFetchState?.loading ? <ThreeDots style={{ height: 30 }} /> : 'Pay'}
@@ -143,10 +145,20 @@ export function VerticalPaymentStepper() {
             }
         };
         computeStepToNavigateTo();
-    }, [handleGetPendingOffer, urlParamOfferId, urlParamStep, pendingOffer, setActiveStep, dispatch.payments]);
+        setActiveStep(DIRECT_activeStep);
+    }, [handleGetPendingOffer, urlParamOfferId, urlParamStep, pendingOffer, setActiveStep, dispatch.payments, DIRECT_activeStep]);
+
+    useEffect(() => {
+        const { amount, buyCurrency, refer, sellCurrency, step } = history.location.state ?? {};
+        console.log(isAllValueTruthy({ amount, buyCurrency, refer, sellCurrency, step }));
+        if (isAllValueTruthy({ amount, buyCurrency, refer, sellCurrency, step })) {
+            setActiveStep(step);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [history]);
 
     return (
-        <Slide direction='right' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+        <Zoom in={true} mountOnEnter unmountOnExit appear timeout={800}>
             <div className={classes.root}>
                 <Stepper activeStep={activeStep} orientation='vertical'>
                     {steps.map((label, index) => (
@@ -156,23 +168,25 @@ export function VerticalPaymentStepper() {
                             </StepLabel>
                             <StepContent>
                                 {getStepContent(index, handleNext)}
-                                <div className={classes.actionsContainer}>
-                                    <Button
-                                        disabled={activeStep === 0}
-                                        onClick={handleBack}
-                                        className={classes.button}
-                                        color={'default'}
-                                        variant={'outlined'}
-                                    >
-                                        Back
-                                    </Button>
-                                    {handleStepper(index)}
-                                </div>
+                                {activeStep !== 2 && (
+                                    <div className={classes.actionsContainer}>
+                                        <Button
+                                            disabled={activeStep === 0}
+                                            onClick={handleBack}
+                                            className={classes.button}
+                                            color='secondary'
+                                            variant={'contained'}
+                                        >
+                                            Back
+                                        </Button>
+                                        {handleStepper(index)}
+                                    </div>
+                                )}
                             </StepContent>
                         </Step>
                     ))}
                 </Stepper>
             </div>
-        </Slide>
+        </Zoom>
     );
 }

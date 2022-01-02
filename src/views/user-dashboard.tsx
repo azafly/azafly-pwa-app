@@ -1,6 +1,5 @@
 import { Box } from '@mui/system';
 import { lazy, Suspense } from 'react';
-import PaymentsIcon from '@mui/icons-material/Payments';
 
 import { NavBar } from 'components/nav-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots';
@@ -13,16 +12,10 @@ const SuspenseComponent = () => (
     </Box>
 );
 
-const callToAction = {
-    text: 'New Payment',
-    link: '/payment',
-    icon: <PaymentsIcon />
-};
-
 const UserDashboard = () => {
     return (
         <>
-            <NavBar callToAction={callToAction} />
+            <NavBar />
             <Suspense fallback={<SuspenseComponent />}>
                 <LazyDashBoard />
             </Suspense>

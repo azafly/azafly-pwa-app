@@ -40,3 +40,8 @@ export const debounce = (callback: any, wait: number) => {
         }, wait);
     };
 };
+
+export const isAllValueTruthy = (...args: any) => {
+    const isTruthy = (values: any) => values.every((arg: unknown) => arg !== null && typeof arg !== undefined);
+    return isTruthy([...args]);
+};

@@ -32,7 +32,6 @@ interface APIFetchState {
 }
 
 export interface PaymentState {
-    rateInfo: RateInfo;
     apiFetchState: APIFetchState;
     offerBasedOnRate?: GetOffersResponseData;
     paymentLink?: string;
@@ -51,14 +50,10 @@ export interface PaymentState {
     loverBoundLimitNotReached: boolean;
     currentlyVerifiedOffer: any;
     DIRECT_activeStep: number;
+    DIRECT_paymentIntentPayload: Record<string, any>;
 }
 
 const initialState: PaymentState = {
-    rateInfo: {
-        targetCountry: NIGERIA,
-        sourceCountry: NIGERIA,
-        amount: 100
-    },
     apiFetchState: {
         result: null,
         loading: false
@@ -74,27 +69,18 @@ const initialState: PaymentState = {
     upperBoundLimitExceeded: false,
     loverBoundLimitNotReached: false,
     currentlyVerifiedOffer: {},
-    DIRECT_activeStep: 0
+    DIRECT_activeStep: 0,
+    DIRECT_paymentIntentPayload: {}
 };
 
 export const payments = createModel<RootModel>()({
     state: initialState,
     reducers: {
-        setRatesInfoAmount(state, payload: number) {
-            const rateInfo = {
-                ...state.rateInfo,
-                amount: payload
-            };
-            return { ...state, ...rateInfo };
-        },
-        setRatesInfoSourceCountry(state, payload: Country) {
-            return { ...state, sourceCountry: { ...payload } };
-        },
-        setRatesInfoTargetCountry(state, payload: Country) {
-            return { ...state, targetCountry: { ...payload } };
-        },
         DIRECT_setActiveStep(state, payload: number) {
             return { ...state, DIRECT_activeStep: payload };
+        },
+        DIRECT_setPaymentIntentPayload(state, payload: PaymentState['DIRECT_paymentIntentPayload']) {
+            return { ...state, DIRECT_paymentIntentPayload: payload };
         },
         setOfferBasedOnRate(state, payload: GetOffersResponseData | undefined) {
             return { ...state, offerBasedOnRate: payload };

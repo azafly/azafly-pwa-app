@@ -1,5 +1,4 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
-import { TOUR_DASHBOARD_LOCAL } from './tours';
 
 export const useCardStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -125,6 +124,7 @@ export const useDashboardStyles = makeStyles((theme: Theme) =>
         },
         data__section: {
             margin: 'auto',
+            marginBottom: '10vh',
             '& .heading': {
                 marginBottom: 10,
                 fontFamily: 'Nunito',

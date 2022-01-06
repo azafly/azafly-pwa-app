@@ -1,12 +1,21 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { axiosClient } from './index';
+import { axiosClient, RATES_URL } from './index';
 import { PURPOSE } from 'features/payments/forms/payment-info/form-fields';
 
 export type ApiRequestMethods = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
 
 const OFFERS_ENDPOINT = '/offers';
 const CREATE_INTENT_ENDPOINT = '/create-intent';
+export type CurrencyCode = 'NGN' | 'USD' | 'EUR' | 'GBP' | 'CAD';
+export interface ExchangeRatesResponse {
+    target_currency: CurrencyCode;
+    rates: {
+        currency: CurrencyCode;
+        rate: number;
+    }[];
+}
+
 export interface GetOffersRequestBody {
     source_currency: string;
     target_currency: string;
@@ -109,6 +118,18 @@ export const createPaymentIntent = async ({
         logo: 'https://image.gif'
     });
 };
+
+export const getCurrentExchangeRates = () =>
+    axiosClient()
+        .get<{ data: ExchangeRatesResponse }>(`${RATES_URL}`)
+        .then(({ data }) => {
+            const rates: Record<string, number> = {};
+            data.data.rates.forEach(({ currency, rate }) => (rates[currency] = rate));
+            return {
+                [data.data.target_currency]: rates
+            };
+        })
+        .catch(() => null);
 
 export interface LocalStorageInitialOffer {
     source_currency: string;

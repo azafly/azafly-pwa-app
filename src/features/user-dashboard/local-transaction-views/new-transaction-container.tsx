@@ -1,4 +1,4 @@
-import { Box, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { ChangeEvent, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Stack, useMediaQuery } from '@mui/material';
@@ -23,11 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: 'auto',
             marginTop: '3vh',
             [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
-        },
-        convert: {
-            [theme.breakpoints.up('md')]: {
-                width: '120%'
-            }
         },
         cta_button: {
             textTransform: 'capitalize',
@@ -87,7 +82,7 @@ export const NewTransactionContainer = () => {
     };
 
     return (
-        <Box className={classes.container}>
+        <>
             <Stack direction={direction} alignItems={'center'} className={classes.new_transaction_container}>
                 {' '}
                 <ConversionCard
@@ -126,6 +121,6 @@ export const NewTransactionContainer = () => {
                     Pay Directly to Institution
                 </Button>
             </Stack>
-        </Box>
+        </>
     );
 };

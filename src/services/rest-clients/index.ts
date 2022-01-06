@@ -3,7 +3,9 @@ import axios from 'axios';
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 
 export type ApiRequestMethods = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
-export const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/payments`;
+export const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
+export const RATES_URL = `${process.env.REACT_APP_API_BASE_URL}/rates`;
+export const PAYMENTS_URL = `${process.env.REACT_APP_API_BASE_URL}/payments`;
 const CLIENT_API_TOKEN = process.env.REACT_APP_CLIENT_API_TOKEN;
 
 export const axiosClient = <T = Record<string, string>>(method: ApiRequestMethods = 'GET', data?: T) => {

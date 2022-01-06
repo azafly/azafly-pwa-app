@@ -9,7 +9,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import PaymentsIcon from '@mui/icons-material/Payments';
 import React, { memo } from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -175,14 +174,6 @@ export const NavBar = memo(function NavBar() {
                 </IconButton>
                 <Typography>Help</Typography>
             </MenuItem>
-            {!isOnboardingPage && (
-                <MenuItem component={Link} to={'/payment'}>
-                    <IconButton aria-label='help' aria-controls='menu' aria-haspopup='true' color='inherit'>
-                        <PaymentsIcon />
-                    </IconButton>
-                    <Typography>New Payment</Typography>
-                </MenuItem>
-            )}
             {!isOnboardingPage && (
                 <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
                     <IconButton aria-label='dashboard' aria-controls='dashboard' aria-haspopup='true' color='inherit'>

@@ -169,7 +169,10 @@ export const useEmptyCardStyles = makeStyles((theme: Theme) =>
             }
         },
         card: {
-            marginTop: 20
+            padding: 50,
+            [theme.breakpoints.down('sm')]: {
+                padding: 20
+            }
         },
         button: {
             textTransform: 'none',

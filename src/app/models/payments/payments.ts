@@ -1,18 +1,19 @@
 import { createModel } from '@rematch/core';
 
-import { Country, NIGERIA } from 'types/country-data';
+import { Country } from 'types/country-data';
 import { currencies, getCurrencyRates } from 'app/models/payments/mock';
 import { GetOffersResponseData, getInitialOffer, GetOffersRequestBody } from 'services/rest-clients/user-payment';
 import { RootModel } from '../index';
 
-export enum CARD_PAYMENT_STATES {
+export enum PAYMENT_STATES {
     CREATING_OFFER = 'CREATING_OFFER',
     OFFER_CREATED = 'OFFER_CREATED',
     FETCHING_PAYMENT_LINK = 'FETCHING_PAYMENT_LINK',
     PAYMENT_LINK_SUCCESS = 'PAYMENT_LINK_SUCCESS',
     DONE = 'DONE',
     GROUND_ZERO = 'IDLE',
-    ERROR = 'ERROR'
+    ERROR = 'ERROR',
+    RATES_FETCHED = 'RATES_FETCHED'
 }
 
 export interface RateInfo {
@@ -128,7 +129,7 @@ export const payments = createModel<RootModel>()({
     effects: dispatch => {
         return {
             async setInitialOffer({ source_currency, target_currency, source_amount }: GetOffersRequestBody, getState) {
-                dispatch.payments.setApiFetchState({ result: 'error', loading: true, message: CARD_PAYMENT_STATES.CREATING_OFFER });
+                dispatch.payments.setApiFetchState({ result: 'error', loading: true, message: PAYMENT_STATES.CREATING_OFFER });
                 try {
                     const { data } = await getInitialOffer({
                         source_currency,
@@ -136,7 +137,7 @@ export const payments = createModel<RootModel>()({
                         source_amount
                     });
 
-                    dispatch.payments.setApiFetchState({ result: 'success', loading: false, message: CARD_PAYMENT_STATES.OFFER_CREATED });
+                    dispatch.payments.setApiFetchState({ result: 'success', loading: false, message: PAYMENT_STATES.OFFER_CREATED });
                     dispatch.payments.setOfferBasedOnRate(data.data);
                 } catch (error) {
                     dispatch.payments.setApiFetchState({ ...getState.payments.apiFetchState, result: 'error', loading: false });

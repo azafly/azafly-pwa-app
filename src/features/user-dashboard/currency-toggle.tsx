@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { Dispatch, RootState } from 'app/store';
-import { ExchangeRates, formatHasuraExchangeRates } from './utils';
+import { PAYMENT_STATES } from 'app/models/payments';
 
 export interface CurrencyListParams {
     country: string;
@@ -22,6 +22,7 @@ export interface CurrencyListParams {
 interface CurrencyToggleProps {
     options: CurrencyListParams[];
     initialValue: CurrencyListParams;
+    handleCurrencyChangeExtraAction?: any;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -38,12 +39,13 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export function CurrencyToggle({ options, initialValue }: CurrencyToggleProps) {
+export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtraAction }: CurrencyToggleProps) {
     const [currency, setCurrency] = React.useState<CurrencyListParams>(initialValue);
 
     const dispatch = useDispatch<Dispatch>();
     const {
-        dashboard: { currentVirtualCard }
+        dashboard: { currentVirtualCard },
+        payments
     } = useSelector(({ payments, dashboard }: RootState) => ({ payments, dashboard }));
 
     const getCurrentCurrency = () => {
@@ -61,6 +63,7 @@ export function CurrencyToggle({ options, initialValue }: CurrencyToggleProps) {
         dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
         // @ts-ignore
         dispatch.VIRTUAL_CARDS.setCurrentCard(currencyValue.currencyCode);
+        handleCurrencyChangeExtraAction && handleCurrencyChangeExtraAction({ ...payments.apiFetchState, message: PAYMENT_STATES.GROUND_ZERO });
     };
 
     const classes = useStyles();

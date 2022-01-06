@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { NativeSelect, TextareaAutosize } from '@mui/material';
+import { NativeSelect } from '@mui/material';
 import { TextField, InputLabel } from '@material-ui/core';
 
 import { transformCase } from 'libs';

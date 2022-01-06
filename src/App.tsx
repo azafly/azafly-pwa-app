@@ -15,7 +15,7 @@ import { getApolloClient } from 'libs/apollo-client';
 import { RootState } from 'app/store';
 import { Routes } from 'routes';
 
-import { ThreeDots } from './features/user-dashboard/loader-skeleton';
+import { ThreeDots } from 'components/css-loaders/three-dots';
 
 function App() {
     const { token } = useSelector((state: RootState) => state.auth);

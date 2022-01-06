@@ -18,14 +18,15 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex',
             padding: '80px',
-            borderRadius: 4,
             justifyContent: 'center',
             backgroundColor: 'rgb(254,254,250)',
             margin: 50,
             width: '100%',
+            borderRadius: 18,
             [theme.breakpoints.up('sm')]: {
                 border: '1px solid #DCDCDC',
-                boxShadow: '0 2px 20px rgb(212 216 232 / 52%)'
+                transition: '200ms all cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: '0 2px 4px 0 rgba(218,228,239,0.5)'
             },
 
             [theme.breakpoints.only('sm')]: {

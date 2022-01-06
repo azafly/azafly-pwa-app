@@ -18,6 +18,7 @@ import { Transactions as TransactionView } from './transactions';
 import { useGetExchangeRatesSubscription, useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
 import { UserAccount } from 'views/user-account';
 import { useUserContext } from 'hooks/use-user-context';
+import { PAYMENT_STATES } from 'app/models/payments';
 import CardList from './virtual-cards/card-list';
 
 import { useDashboardStyles, StyledBadge } from './classes';
@@ -110,11 +111,6 @@ export default function Dashboard() {
         if (exchangeRates) {
             const rates = formatHasuraExchangeRates(sellCurrency, exchangeRates.exchange_rates as unknown as ExchangeRates[]);
             dispatch.payments.setRates(rates);
-            dispatch.payments.setFetchAPIState({
-                loading: loadingRates,
-                result: 'success',
-                message: 'Rates fetched successfully'
-            });
         }
         if (errorRates) {
             dispatch.dashboard.setFetchAPIState({

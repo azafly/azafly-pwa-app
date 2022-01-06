@@ -14,7 +14,7 @@ const style = {
     bgcolor: 'background.paper',
     boxShadow: 24,
     borderRadius: 4,
-    p: 4
+    p: 3
 };
 
 interface VirtualCardModal {

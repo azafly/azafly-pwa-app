@@ -1,22 +1,26 @@
-import { Box, Card, Typography } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
+import { Card } from '@mui/material';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { Stack } from '@mui/material';
+import { Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { formatCurrency } from 'libs';
 import { isAllValueTruthy } from 'libs/index';
 import { RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import { SupportedMethods } from './supported-methods';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             maxWidth: 675,
-            borderRadius: 4,
             margin: '10px 0px',
             backgroundColor: 'white',
+            borderRadius: 18,
             border: '1px solid #DCDCDC',
-            boxShadow: '0 2px 20px rgb(212 216 232 / 52%)',
+            transition: '200ms all cubic-bezier(0.4, 0, 0.2, 1)',
+            boxShadow: '0 2px 4px 0 rgba(218,228,239,0.5)',
             [theme.breakpoints.only('xs')]: {
                 width: '100%',
                 margin: '10px 0px',
@@ -35,23 +39,44 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         card: {
-            borderRadius: 7,
-            padding: 10,
-            marginBottom: 20,
-            marginTop: 10,
+            borderRadius: 18,
+            cursor: 'pointer',
             [theme.breakpoints.only('xs')]: {
                 marginTop: 20
             }
         },
-        price: {
-            color: theme.colors.textPrimary,
-            fontWeight: 900,
-            fontSize: '1.5rem',
-            margin: '1rem',
+        moreInfo: {
+            paddingLeft: 30,
+            paddingRight: 30,
+            paddingTop: 10,
+            paddingBottom: 10,
+            margin: '0px -20px',
+            marginTop: 10,
+            backgroundColor: '#f9fafa',
+            '&:hover': {
+                backgroundColor: 'white'
+            }
+        },
+        paragraph: {
+            fontSize: '0.7rem',
+            padding: '0px 10px'
+        },
+        prices: {
             display: 'flex',
-            justifyContent: 'center',
-            alignContent: 'center',
-            marginTop: 10
+            marginLeft: '2rem',
+            justifyContent: 'space-between',
+            '& .price': {
+                color: theme.colors.textPrimary,
+                fontWeight: 800,
+                fontSize: '1.5rem',
+                marginTop: 10
+            },
+            '& .heading': {
+                fontWeight: 400,
+                fontSize: '0.9rem'
+            },
+            '& .rate': {},
+            '& .fees': {}
         }
     })
 );
@@ -66,33 +91,57 @@ export function PriceCard() {
     const { destination_currency, total_in_target_with_charges } = offerBasedOnRate || {};
     const getFormattedCurrency = () => {
         if (offerBasedOnRate && isAllValueTruthy(destination_currency, total_in_target_with_charges)) {
-            return formatCurrency({
+            const totalPriceToPay = formatCurrency({
                 currency: offerBasedOnRate.destination_currency ?? 'NGN',
                 amount: offerBasedOnRate.total_in_target_with_charges ?? 0,
                 countryCode: 'NG'
             });
+
+            return {
+                rate: offerBasedOnRate?.exchange_rate_info?.base_rate,
+                totalPriceToPay,
+                feesTotal: offerBasedOnRate?.fees_info?.total
+            };
         }
+        return {};
     };
+
+    const { rate, totalPriceToPay, feesTotal } = getFormattedCurrency();
 
     return (
         <div className={classes.root}>
-            <Card elevation={0} className={classes.card}>
+            <Card classes={{ root: classes.card }}>
                 {loading ? (
                     <ThreeDots variantColor={'base'} />
                 ) : (
-                    <div>
-                        <h5 className={classes.price}> {getFormattedCurrency()}</h5>
-                    </div>
+                    offerBasedOnRate && (
+                        <div className={classes.prices}>
+                            <h5 className={'price'}>
+                                <span className={'heading'}>{offerBasedOnRate ? 'Total amount to pay in Naira' : 'Go back to get rates'}</span>
+                                <br />
+                                {totalPriceToPay}
+                            </h5>
+                            {/* <div>
+                            {' '}
+                            <p className={'rate'}> Rate : {rate}</p>
+                            <p className={'fees'}> Our Fees: {feesTotal}</p>
+                        </div> */}
+                        </div>
+                    )
                 )}
-                <Box sx={{ display: 'flex' }}>
-                    <InfoIcon color={'info'} />
-                    <Typography paragraph className={'paragraph'} sx={{ fontSize: '0.7rem', padding: '0px 10px' }} align={'justify'}>
-                        {' '}
-                        {`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-                                dummy text ever since the 1500s.
+                {offerBasedOnRate && <SupportedMethods />}
+                {offerBasedOnRate && (
+                    <Stack direction={'row'} className={classes.moreInfo}>
+                        <InfoIcon color={'info'} />
+                        <Typography className={classes.paragraph} align={'justify'}>
+                            {' '}
+                            {`Please be aware that this payment option is subject to limits imposed by the Central Bank of Nigeria on how much each payer can send to pay school fees abroad. Payment will require additional documentation to be filled out by the payer.  We recommend providing the Authorization Letter issued with the payment instructions along with it. 
+
+Due to currency controls implemented in Nigeria, we advise the payer to take into consideration the total amount available by banks on a daily basis whenever preparing to send funds abroad with specific due dates. .
                                 `}
-                    </Typography>
-                </Box>
+                        </Typography>
+                    </Stack>
+                )}
             </Card>
         </div>
     );

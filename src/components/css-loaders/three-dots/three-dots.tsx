@@ -1,18 +1,21 @@
 import './styles.css';
 import { CSSProperties } from '@material-ui/styles';
-import { Box } from '@material-ui/core';
+import { Stack } from '@mui/material';
 interface Props {
     styles?: CSSProperties;
     className?: string;
-    variantColor?: 'base' | 'white'; // loading indeciator is base or white
+    variantColor?: 'base' | 'white'; // loading indeciator is base or white,
+    loadingText?: string;
+    textPosition?: 'start' | 'end';
 }
-export const ThreeDots = ({ styles, className, variantColor }: Props) => {
+export const ThreeDots = ({ styles, className, variantColor, loadingText, textPosition = 'start' }: Props) => {
     const updatedStyles = {
         ...styles,
         backgroundColor: variantColor === 'base' ? '#4990A4' : 'white'
     };
     return (
-        <Box
+        <Stack
+            direction={'row'}
             sx={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -21,12 +24,15 @@ export const ThreeDots = ({ styles, className, variantColor }: Props) => {
                 height: '100%'
             }}
         >
+            {' '}
+            {textPosition === 'start' && <div style={{ fontFamily: 'Nunito', fontWeight: 600 }}> {loadingText} </div>}
             <div className='lds-ellipsis'>
                 <div className={className} style={updatedStyles}></div>
                 <div className={className} style={updatedStyles}></div>
                 <div className={className} style={updatedStyles}></div>
                 <div className={className} style={updatedStyles}></div>
             </div>
-        </Box>
+            {textPosition === 'end' && <div style={{ fontFamily: 'Nunito', fontWeight: 600 }}> {loadingText} </div>}
+        </Stack>
     );
 };

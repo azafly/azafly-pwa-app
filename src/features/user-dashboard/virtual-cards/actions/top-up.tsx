@@ -4,7 +4,7 @@ import { Fade, Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
-import { CARD_PAYMENT_STATES } from 'app/models/payments';
+import { PAYMENT_STATES } from 'app/models/payments';
 import { ConversionCard } from 'features/user-dashboard/local-transaction-views/conversion-card';
 import { createPaymentIntent, getInitialOffer } from 'services/rest-clients/user-payment';
 import { Dispatch, RootState } from 'app/store';
@@ -58,21 +58,30 @@ export const TopUpForm = () => {
         setShowInfo(false);
         dispatch.payments.setApiFetchState({
             ...payments?.apiFetchState,
-            message: CARD_PAYMENT_STATES.GROUND_ZERO
+            message: PAYMENT_STATES.GROUND_ZERO
         });
     };
 
     const { user } = useUserContext();
 
-    const handleContinueToPayment = async () => {
+    const handleConfirmToPayment = async () => {
         try {
-            dispatch.payments.setApiFetchState({ result: 'success', loading: true, message: CARD_PAYMENT_STATES.FETCHING_PAYMENT_LINK });
+            dispatch.payments.setApiFetchState({ result: 'error', loading: true, message: PAYMENT_STATES.CREATING_OFFER });
+            const { data } = await getInitialOffer({
+                source_currency: buyCurrency,
+                source_amount: parseInt(`${amount}`),
+                target_currency: sellCurrency
+            });
+            dispatch.payments.setApiFetchState({ result: 'success', loading: false, message: PAYMENT_STATES.OFFER_CREATED });
+            dispatch.payments.setOfferBasedOnRate(data.data);
+            setShowInfo(true);
+            dispatch.payments.setApiFetchState({ result: 'success', loading: true, message: PAYMENT_STATES.FETCHING_PAYMENT_LINK });
             const {
                 data: {
                     data: { payment_link }
                 }
             } = await createPaymentIntent({
-                payment_offer_id: payments.offerBasedOnRate?.payment_offer_id ?? '',
+                payment_offer_id: data.data.payment_offer_id,
                 email: user?.email ?? '',
                 payment_title: `Top up ${buyCurrency} virtual card`,
                 currency: buyCurrency,
@@ -81,31 +90,9 @@ export const TopUpForm = () => {
                 load_on_card: true
             });
             dispatch.payments.setPaymentLink(payment_link);
-            dispatch.payments.setApiFetchState({ result: 'success', loading: false, message: CARD_PAYMENT_STATES.PAYMENT_LINK_SUCCESS });
+            dispatch.payments.setApiFetchState({ result: 'success', loading: false, message: PAYMENT_STATES.PAYMENT_LINK_SUCCESS });
         } catch (error) {
-            dispatch.payments.setApiFetchState({ result: 'error', loading: false });
-            dispatch.payments.setApiFetchState({
-                result: payments?.apiFetchState?.result ?? null,
-                loading: false,
-                message: CARD_PAYMENT_STATES.ERROR
-            });
-        }
-    };
-
-    const handleConfirmToPayment = async () => {
-        try {
-            dispatch.payments.setApiFetchState({ result: 'error', loading: true, message: CARD_PAYMENT_STATES.CREATING_OFFER });
-            const { data } = await getInitialOffer({
-                source_currency: buyCurrency,
-                source_amount: parseInt(`${amount}`),
-                target_currency: sellCurrency
-            });
-            dispatch.payments.setApiFetchState({ result: 'success', loading: false, message: CARD_PAYMENT_STATES.OFFER_CREATED });
-            dispatch.payments.setOfferBasedOnRate(data.data);
-            setShowInfo(true);
-            handleContinueToPayment();
-        } catch (error) {
-            dispatch.payments.setApiFetchState({ ...apiFetchState, result: 'error', loading: false, message: CARD_PAYMENT_STATES.ERROR });
+            dispatch.payments.setApiFetchState({ ...apiFetchState, result: 'error', loading: false, message: PAYMENT_STATES.ERROR });
         }
     };
 
@@ -115,11 +102,14 @@ export const TopUpForm = () => {
     useEffect(() => {
         dispatch.payments.setApiFetchState({
             ...payments?.apiFetchState,
-            message: CARD_PAYMENT_STATES.GROUND_ZERO
+            message: PAYMENT_STATES.GROUND_ZERO
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // TODO: if the current card is same as base currency. Top up shouldn't involve conversion.
+    // No rates, Just go straight to checkout
+    const message = payments?.apiFetchState?.message === PAYMENT_STATES.CREATING_OFFER ? 'confirming rate and charges' : 'preparing payment offer';
     return (
         <Fade in mountOnEnter unmountOnExit appear timeout={300}>
             <div className={classes.container}>
@@ -129,14 +119,18 @@ export const TopUpForm = () => {
                     handleAmountChange={handleAmountChange}
                     options={otherCountries}
                     initialCurrency={buyCurrency}
+                    handleCurrencyChangeExtraAction={dispatch.payments.setApiFetchState}
                 />
 
                 <Typography className={classes.topUpInfo} paragraph>
-                    You are about to add <strong>{formatCurrency({ countryCode: 'NG', amount, currency: buyCurrency })}</strong> to your{' '}
-                    <strong>{buyCurrency}</strong> virtual card. <span className={'more_info'}> *Rate and fee subject to change until payment. </span>
+                    <span>
+                        {' '}
+                        1 {buyCurrency} = {sellCurrency} {rates?.[sellCurrency]?.[buyCurrency]?.['rate']}
+                    </span>
+                    <span className={'more_info'}> *Rate and fee subject to change until payment. </span>
                 </Typography>
 
-                {showRateInfo && offerBasedOnRate && (
+                {payments?.apiFetchState?.message !== PAYMENT_STATES.GROUND_ZERO && showRateInfo && offerBasedOnRate && (
                     <>
                         <Stack>
                             <Typography className={classes.topUpInfo} paragraph>
@@ -152,18 +146,6 @@ export const TopUpForm = () => {
                                 )}
                             </Typography>
                             <Typography className={classes.additional_rate_info}>
-                                Rate:&nbsp;
-                                {offerBasedOnRate.exchange_rate_info?.base_rate && (
-                                    <span className={'amounts'}>
-                                        {formatCurrency({
-                                            currency: sellCurrency,
-                                            amount: offerBasedOnRate.exchange_rate_info?.base_rate,
-                                            countryCode: 'NG'
-                                        })}
-                                    </span>
-                                )}
-                            </Typography>
-                            <Typography className={classes.additional_rate_info}>
                                 Our fees:&nbsp;
                                 {offerBasedOnRate.fees_info?.total && (
                                     <span className={'amounts'}>
@@ -175,18 +157,18 @@ export const TopUpForm = () => {
                     </>
                 )}
 
-                {payments?.apiFetchState?.loading && <ThreeDots variantColor={'base'} />}
-                {!payments?.apiFetchState?.loading &&
-                    (payments?.apiFetchState?.message === CARD_PAYMENT_STATES.GROUND_ZERO ||
-                        payments?.apiFetchState?.message !== CARD_PAYMENT_STATES.PAYMENT_LINK_SUCCESS) && (
-                        <Button onClick={handleConfirmToPayment} variant={'outlined'} color={'primary'} className={'payment-action'} fullWidth>
-                            {'Confirm'}{' '}
-                        </Button>
-                    )}
+                {payments?.apiFetchState?.loading && <ThreeDots variantColor={'base'} loadingText={message} />}
+
+                {!payments?.apiFetchState?.loading && payments?.apiFetchState?.message === PAYMENT_STATES.GROUND_ZERO && (
+                    <Button onClick={handleConfirmToPayment} variant={'outlined'} color={'primary'} className={'payment-action'} fullWidth>
+                        {'Confirm'}{' '}
+                    </Button>
+                )}
 
                 {payments?.apiFetchState?.result &&
-                    payments?.apiFetchState?.message === CARD_PAYMENT_STATES.PAYMENT_LINK_SUCCESS &&
-                    !payments?.apiFetchState?.loading && (
+                    !payments?.apiFetchState?.loading &&
+                    payments?.apiFetchState?.message !== PAYMENT_STATES.GROUND_ZERO &&
+                    payments?.apiFetchState?.message === PAYMENT_STATES.PAYMENT_LINK_SUCCESS && (
                         <Fade in={true} mountOnEnter unmountOnExit appear timeout={800}>
                             <Button role={'link'} href={paymentLink} variant={'contained'} color={'primary'} className={'payment-action'} fullWidth>
                                 Pay Now

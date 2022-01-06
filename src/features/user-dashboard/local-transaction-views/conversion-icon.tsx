@@ -20,12 +20,7 @@ export const ConversionIcon = () => {
         <Grid sx={{ width: 50, margin: 'auto' }} alignItems={'center'} alignSelf={'center'} alignContent={'center'}>
             <Box
                 sx={{
-                    // background: '#fafafa',
-                    // borderRadius: '50%',
                     width: 50,
-                    // boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
-                    // border: '1px solid #DCDCDC',
-                    // height: 100,
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',

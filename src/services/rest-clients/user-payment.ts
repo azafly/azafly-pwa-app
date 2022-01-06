@@ -14,6 +14,8 @@ export interface GetOffersRequestBody {
 }
 
 export interface GetOffersResponseData {
+    target_currency: string;
+    source_amount: number;
     payment_offer_id: string;
     source_currency?: string;
     destination_currency?: string;

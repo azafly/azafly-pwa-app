@@ -2,14 +2,14 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import { Country, NIGERIA, useCountryList } from '../../../hooks/use-country-list';
+import { Country, useCountryList } from '../../../hooks/use-country-list';
 import { Dispatch, RootState } from 'app/store';
 import { RenderOptions } from './render-option-label';
 import { UK } from 'features/payments/context/constants';
 
-import { useURLParams } from 'hooks/use-url-params';
+import { CurrencyCode } from 'app/models/payments/mock';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -91,8 +91,14 @@ const useStyles = makeStyles((theme: Theme) =>
 export function CurrencyAmount() {
     const classes = useStyles();
     const [showCountryList, setShowCountryList] = React.useState(false);
+    const [amountValue, setAmountValue] = React.useState(100);
+    const [countryValue, setCountryValue] = React.useState<Country | null>(UK);
 
     const { popularTargetCountries, countryCodeLookup } = useCountryList();
+    const {
+        auth: { hasuraUser }
+    } = useSelector(({ auth }: RootState) => ({ auth }));
+    const dispatch = useDispatch<Dispatch>();
 
     const options = popularTargetCountries?.map(it => ({ ...it, label: it.name }));
 
@@ -101,46 +107,45 @@ export function CurrencyAmount() {
         setShowCountryList(!showCountryList);
     };
 
+    const handleCurrencyChange = (_: any, country: Country | null) => {
+        setCountryValue(country);
+        country && dispatch.payments.setBuyCurrency(country.currency.code as CurrencyCode);
+    };
+
+    const handleOnChangeAmountValue = ({ target: { value } }: any) => {
+        const amount = value ? parseInt(value) : 0;
+        setAmountValue(amount);
+        dispatch.payments.setBuyAmount(amount);
+    };
     const getOptionLabel = (option: Country) => `${option.emoji ?? ''}  ${option.currency.code}`;
     const optionRenderer = (optionData: Country) => <RenderOptions option={optionData} />;
-
-    const urlParamSendTo = useURLParams('send_to');
-    const [initialValue, setInitialValue] = useState(NIGERIA);
-
-    useEffect(() => {
-        urlParamSendTo ? setInitialValue(countryCodeLookup[urlParamSendTo]) : '';
-    }, [urlParamSendTo, initialValue, countryCodeLookup]);
 
     return (
         <div className={classes.root} onClick={handleShow}>
             <TextField
                 id='amount'
-                value={100}
+                value={amountValue}
                 type='number'
                 label={'Amount'}
                 className={classes.input}
-                onChange={event => {
-                    // TODO: handle from new redux store
-                }}
+                onChange={handleOnChangeAmountValue}
                 InputProps={{
                     className: classes.input
                 }}
             />
             <div>
                 <Autocomplete
-                    onChange={(_, country) => {
-                        //         // TODO: handle from new redux store dispatch.payments.setRatesInfoTargetCountry(country);
-                    }}
+                    onChange={handleCurrencyChange}
                     className={classes.toggle__section}
                     disablePortal
                     id='currency'
-                    defaultValue={initialValue || UK}
+                    loading={!hasuraUser || !countryCodeLookup}
+                    value={countryValue || UK}
                     options={options}
                     classes={{
                         paper: classes.listbox,
                         root: classes.autoCompleteRoot
                     }}
-                    loading
                     autoComplete
                     getOptionLabel={option => getOptionLabel(option)}
                     renderOption={optionData => optionRenderer(optionData)}

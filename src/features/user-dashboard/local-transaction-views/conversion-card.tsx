@@ -49,6 +49,7 @@ interface ConversionCardProps {
     options: CurrencyListParams[];
     tourClassName?: string;
     initialCurrency: string;
+    handleCurrencyChangeExtraAction?: any;
 }
 
 export const ConversionCard = ({
@@ -58,7 +59,8 @@ export const ConversionCard = ({
     disabled = false,
     options,
     tourClassName = '',
-    initialCurrency
+    initialCurrency,
+    handleCurrencyChangeExtraAction
 }: ConversionCardProps) => {
     const classes = useStyles();
 
@@ -86,7 +88,7 @@ export const ConversionCard = ({
                     onChange={handleAmountChange}
                 />
             </Stack>
-            <CurrencyToggle options={options} initialValue={initialCurrencyValue} />
+            <CurrencyToggle options={options} initialValue={initialCurrencyValue} handleCurrencyChangeExtraAction={handleCurrencyChangeExtraAction} />
         </Stack>
     );
 };

@@ -1,4 +1,5 @@
-import { Grid, Hidden } from '@material-ui/core';
+import { Box, Grid, Hidden } from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
 import { sendEmailVerification } from 'firebase/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
@@ -8,15 +9,20 @@ import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { Dispatch, RootState } from 'app/store';
 import { fetchWallet } from './mock';
 import { firebaseAuth } from 'providers/auth/firebase/firebase';
+import { mockCards, formatCardArrayToObject } from 'app/models/cards';
 import { SideBar } from './side-bar';
-import { UserAccount } from 'views/user-account';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
+import { Tour } from 'components/product-tour/tour';
+import { TOUR_DASHBOARD_LOCAL_STEPS } from './tours';
 import { Transactions as TransactionView } from './transactions';
-import { useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
+import { useGetExchangeRatesSubscription, useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
+import { UserAccount } from 'views/user-account';
 import { useUserContext } from 'hooks/use-user-context';
+import { PAYMENT_STATES } from 'app/models/payments';
 import CardList from './virtual-cards/card-list';
 
 import { useDashboardStyles, StyledBadge } from './classes';
+import { formatHasuraExchangeRates, ExchangeRates } from './utils';
 
 export default function Dashboard() {
     const [hidden, setHidden] = useState(false);
@@ -29,10 +35,12 @@ export default function Dashboard() {
     const { user: userData } = useUserContext();
 
     const {
-        dashboard: { currentSideBarTab, buyCurrency }
-    } = useSelector(({ dashboard, auth }: RootState) => ({ dashboard, auth }));
+        dashboard: { currentSideBarTab },
+        payments: { sellCurrency }
+    } = useSelector(({ dashboard, auth, payments }: RootState) => ({ dashboard, auth, payments }));
 
     const [handleGetUserTransaction, { data: transactionData, loading }] = useGetUserTransactionsLazyQuery();
+    const { data: exchangeRates, error: errorRates, loading: loadingRates } = useGetExchangeRatesSubscription();
     const transactions = transactionData?.transaction;
 
     const handleSpeedDialVisibility = () => {
@@ -93,16 +101,35 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchWallet();
-    }, []);
+        dispatch.VIRTUAL_CARDS.setUserCards(formatCardArrayToObject(mockCards));
+        dispatch.dashboard.setCurrentCardIdentifier({ currency: mockCards[0].currency });
+        dispatch.dashboard.setCurrentDashboardTab('dashboard');
+    }, [dispatch.VIRTUAL_CARDS, dispatch.payments, dispatch.dashboard]);
 
     useEffect(() => {
-        dispatch.localPayments.setExchangeRates();
-        // replace with /abroad payment rates
-        // dispatch.dashboard.setAsyncRateInfo(buyCurrency);
-    }, [dispatch.localPayments]);
+        // set rates
+        if (exchangeRates) {
+            const rates = formatHasuraExchangeRates(sellCurrency, exchangeRates.exchange_rates as unknown as ExchangeRates[]);
+            dispatch.payments.setRates(rates);
+        }
+        if (errorRates) {
+            dispatch.dashboard.setFetchAPIState({
+                loading: loadingRates,
+                result: 'error',
+                message: `${errorRates}`
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [exchangeRates, errorRates, loadingRates]);
+
+    useEffect(() => {
+        dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
+    }, [dispatch.payments]);
 
     return (
         <div className={classes.dashboard_container}>
+            <Box sx={{ margin: 50 }} />
+            <Tour steps={TOUR_DASHBOARD_LOCAL_STEPS} run={true} />
             <DefaultSnackbar
                 severity={alertSeverity}
                 open={openSnackBar}
@@ -117,21 +144,19 @@ export default function Dashboard() {
                         <SideBar />
                     </Grid>
                 </Hidden>
-
                 {(currentSideBarTab === 'transactions' || currentSideBarTab === 'dashboard') && (
-                    <>
-                        <TransactionView
-                            loading={loading}
-                            emailLink={emailLink}
-                            transactionData={transactionData}
-                            handleSendVerificationEmail={handleSendVerificationEmail}
-                            transactions={transactions}
-                            userData={userData}
-                        />
-                    </>
+                    <TransactionView
+                        loading={loading}
+                        emailLink={emailLink}
+                        transactionData={transactionData}
+                        handleSendVerificationEmail={handleSendVerificationEmail}
+                        transactions={transactions}
+                        userData={userData}
+                    />
                 )}
                 {currentSideBarTab === 'cards' && <CardList />}
                 {currentSideBarTab === 'account' && <UserAccount />}
+                {currentSideBarTab === 'payment' && <Redirect to={'/payment'} />}
             </Grid>
 
             <SpeedDialTooltip

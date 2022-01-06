@@ -3,9 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { ErrorBoundary } from 'components/error-boundary';
-import { FirebaseAuthProvider } from 'providers/auth/firebase';
-import { getPersistor } from '@rematch/persist';
-import { PersistGate } from 'redux-persist/es/integration/react';
+
 import { store } from 'app/store';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import App from './App';
@@ -15,17 +13,12 @@ import './index.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { ThreeDots } from './features/user-dashboard/loader-skeleton';
 
 ReactDOM.render(
     <React.StrictMode>
         <ErrorBoundary>
             <ReduxProvider store={store}>
-                <FirebaseAuthProvider>
-                    <PersistGate loading={<ThreeDots />} persistor={getPersistor()}>
-                        <App />
-                    </PersistGate>
-                </FirebaseAuthProvider>
+                <App />
             </ReduxProvider>
         </ErrorBoundary>
     </React.StrictMode>,

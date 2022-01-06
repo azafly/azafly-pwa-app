@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
         card__container: {
             padding: 10,
             border: '1px solid #DCDCDC',
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)'
+            boxShadow: '0 2px 20px rgb(212 216 232 / 52%)'
         },
         action: {
             fontSize: '0.95em',

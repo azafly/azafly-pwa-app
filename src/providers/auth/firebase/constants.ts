@@ -1,5 +1,6 @@
 import { EmailAndPasswordSignUp } from './firebase';
 import { User as FirebaseUser } from 'firebase/auth';
+
 import 'firebase/firestore';
 
 export interface LocalUser {

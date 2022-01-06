@@ -1,8 +1,7 @@
 import * as yup from 'yup';
-import { NativeSelect, TextareaAutosize } from '@mui/material';
+import { NativeSelect } from '@mui/material';
 import { TextField, InputLabel } from '@material-ui/core';
 
-import { GoogleAddressAutoComplete } from 'components';
 import { transformCase } from 'libs';
 interface PaymentInfo {
     label: string;
@@ -17,11 +16,9 @@ interface PaymentInfo {
     defVal?: string;
 }
 
-export type BY_WHOM = 'self' | 'others';
-
-export const byWhom: Record<string, BY_WHOM> = {
-    self: 'self',
-    OTHERS: 'others'
+export const byWhom: Record<string, string> = {
+    self: 'My self',
+    OTHERS: 'Paying for a 3rd party'
 };
 
 export type PURPOSE = 'medical' | 'education' | 'software' | 'mortgage' | 'family_and_friends' | 'school_fees' | 'others';
@@ -73,7 +70,8 @@ export const initialValues = () => {
 };
 
 export const validationSchema = yup.object().shape({
-    by: yup.string().oneOf(['self', 'others'], 'Please select one'),
+    by: yup.string().oneOf(['My self', 'Paying for a 3rd party'], 'Please select one'),
+    references: yup.string().required('Enter a reference info. Like an invoice ID '),
     purpose: yup
         .string()
         .oneOf(['medical', 'education', 'software', 'mortgage', 'family_and_friends', 'school_fees', 'others'], 'Please select one')
@@ -84,24 +82,31 @@ interface generateInput {
     props: any;
     option: PaymentInfo;
     isError?: boolean;
-    handler: Record<string, string>;
-    setAddressValue: any;
+    defaultValue: string;
 }
 
-export const generateInputType = ({ props, option, isError, setAddressValue }: generateInput) => {
+export const generateInputType = ({ props, option, isError, defaultValue }: generateInput) => {
     if (option?.type === 'select') {
         switch (option.picker) {
             case 'by':
             case 'purpose':
                 const label = option.name === 'by' ? `Who's making payment` : `Select Purpose`;
-                const defaultValue: PURPOSE | BY_WHOM = option.name === 'by' ? 'self' : 'education';
                 return (
                     <>
                         <InputLabel id={label}>{label}</InputLabel>
-                        <NativeSelect label={label} labelId='' id={label} {...props} name={option?.name} style={{ width: '100%' }}>
-                            <option key={''} value={'Select one'} defaultValue={'Select one'}>
+                        <NativeSelect
+                            label={label}
+                            labelId=''
+                            id={label}
+                            {...props}
+                            name={option?.name}
+                            style={{ width: '100%' }}
+                            value={defaultValue}
+                        >
+                            <option key={''} value={'Select one'}>
                                 {''}
                             </option>
+
                             {option?.items?.map(item => (
                                 <option key={item} value={item} defaultValue={defaultValue}>
                                     {transformCase(item)}
@@ -119,8 +124,8 @@ export const generateInputType = ({ props, option, isError, setAddressValue }: g
                 fullWidth
                 id={option?.label}
                 name={option?.name}
-                defaultValue={option?.defVal}
                 label={option?.label}
+                value={defaultValue || ''}
                 type={option?.type ?? 'text'}
                 {...props}
                 FormHelperTextProps={{
@@ -128,19 +133,5 @@ export const generateInputType = ({ props, option, isError, setAddressValue }: g
                 }}
             />
         );
-    } else if (option.type === 'textArea') {
-        return (
-            <TextareaAutosize
-                maxRows={4}
-                id={option?.label}
-                name={option?.name}
-                defaultValue={option?.defVal}
-                aria-label='maximum height'
-                placeholder='Maximum 4 rows'
-                style={{ width: '100%' }}
-            />
-        );
-    } else if (option.type === 'autocomplete') {
-        return <GoogleAddressAutoComplete />;
     }
 };

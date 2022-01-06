@@ -1,6 +1,6 @@
 import { Avatar, Box } from '@mui/material';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as React from 'react';
 import FormControl from '@mui/material/FormControl';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -9,7 +9,8 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { Dispatch } from 'app/store';
+import { Dispatch, RootState } from 'app/store';
+import { PAYMENT_STATES } from 'app/models/payments';
 
 export interface CurrencyListParams {
     country: string;
@@ -20,6 +21,8 @@ export interface CurrencyListParams {
 
 interface CurrencyToggleProps {
     options: CurrencyListParams[];
+    initialValue: CurrencyListParams;
+    handleCurrencyChangeExtraAction?: any;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,26 +40,35 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export function CurrencyToggle({ options }: CurrencyToggleProps) {
-    const [currency, setCurrency] = React.useState<CurrencyListParams>(options[0]);
+export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtraAction }: CurrencyToggleProps) {
+    const [currency, setCurrency] = React.useState<CurrencyListParams>(initialValue);
 
     const dispatch = useDispatch<Dispatch>();
+    const {
+        dashboard: { currentVirtualCard },
+        payments
+    } = useSelector(({ payments, dashboard }: RootState) => ({ payments, dashboard }));
 
     const getCurrentCurrency = () => {
-        return options.filter(option => option.currencyCode === currency.currencyCode)[0];
+        return options.filter(option => option.currencyCode === currency?.currencyCode)[0];
     };
 
-    const handleRateChange = (event: SelectChangeEvent) => {
-        const currency = event.target.value;
+    const handleRateChange = async (event: SelectChangeEvent) => {
+        const currencyValue = event.target.value;
         // @ts-ignore
-        setCurrency(currency);
+        setCurrency(currencyValue);
         // @ts-ignore
-        dispatch.localPayments.setBuyCurrency(currency.currencyCode);
+        dispatch.payments.setBuyCurrency(currencyValue.currencyCode);
         // @ts-ignore
-        dispatch.localPayments.setTotalToPayInSellCurrency(null);
+        dispatch.dashboard.setCurrentCardIdentifier({ ...currentVirtualCard, currency: currencyValue.currencyCode });
+        dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
+        // @ts-ignore
+        dispatch.VIRTUAL_CARDS.setCurrentCard(currencyValue.currencyCode);
+        handleCurrencyChangeExtraAction && handleCurrencyChangeExtraAction({ ...payments.apiFetchState, message: PAYMENT_STATES.GROUND_ZERO });
     };
 
     const classes = useStyles();
+
     return (
         <Box sx={{ padding: '14px', borderTopRightRadius: 4, borderBottomRightRadius: 4, maxWidth: 300 }}>
             <FormControl
@@ -70,6 +82,8 @@ export function CurrencyToggle({ options }: CurrencyToggleProps) {
                     // @ts-ignore
                     value={getCurrentCurrency()}
                     onChange={handleRateChange}
+                    // @ts-ignore
+                    defaultValue={initialValue}
                     disableUnderline
                     sx={{
                         background: 'transparent',

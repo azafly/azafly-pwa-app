@@ -1,6 +1,7 @@
-import { Avatar, Button } from '@material-ui/core';
+import { Avatar } from '@material-ui/core';
 import { Link, useLocation } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
@@ -8,17 +9,17 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import PaymentsIcon from '@mui/icons-material/Payments';
-import React, { memo, ReactElement } from 'react';
+import React, { memo } from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
+import { CountryViewToggleSwitch } from 'components/country-view-toggle';
 import { DashboardSvgComponent, SignOutSvgComponent, ProfileSvgComponent, HelpSvgComponent } from 'components/icons';
+import { Dispatch } from 'app/store';
 import { Logo2SvgComponent } from 'components/icons/logo-style-2';
+import { ThreeDots } from 'components/css-loaders/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useUserContext } from 'hooks/use-user-context';
-import { ThreeDots } from 'components/css-loaders/three-dots';
-import { CountryViewToggleSwitch } from 'components/country-view-toggle';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -67,24 +68,11 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-interface NavBarProps {
-    callToAction?: {
-        text: string;
-        icon?: ReactElement;
-        link: string;
-    };
-}
-
-const defaultCallToAction: NavBarProps['callToAction'] = {
-    text: 'Dashboard',
-    icon: <DashboardSvgComponent />,
-    link: '/dashboard'
-};
-
-export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction }: NavBarProps) {
+export const NavBar = memo(function NavBar() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+    const dispatch = useDispatch<Dispatch>();
 
     const { signout } = useFirebaseAuthContext();
     const { pathname } = useLocation();
@@ -112,6 +100,10 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
 
     const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setMobileMoreAnchorEl(event.currentTarget);
+    };
+
+    const handleRestDashboardTab = () => {
+        dispatch.dashboard.setCurrentDashboardTab('dashboard');
     };
 
     const menuId = 'primary-account-menu';
@@ -206,7 +198,7 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
         <div className={classes.grow}>
             <AppBar position='fixed' elevation={0}>
                 <Toolbar>
-                    <Link to={isOnboardingPage ? '#' : '/dashboard'} className={classes.title}>
+                    <Link to={isOnboardingPage ? '#' : '/dashboard'} className={classes.title} onClick={handleRestDashboardTab}>
                         {' '}
                         <Logo2SvgComponent />
                     </Link>
@@ -225,6 +217,11 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
                                 >
                                     {loading ? <ThreeDots /> : <Avatar src={profileSrc ?? ''} />}
                                 </IconButton>
+                                <IconButton aria-label='notifications' color='inherit'>
+                                    <Badge badgeContent={3} color='secondary'>
+                                        <NotificationsIcon />
+                                    </Badge>
+                                </IconButton>
                                 <IconButton
                                     edge='end'
                                     aria-label='account of current user'
@@ -233,12 +230,6 @@ export const NavBar = memo(function NavBar({ callToAction = defaultCallToAction 
                                     onClick={handleProfileMenuOpen}
                                     color='inherit'
                                 />
-
-                                <IconButton aria-label='notifications' color='inherit'>
-                                    <Badge badgeContent={3} color='secondary'>
-                                        <NotificationsIcon />
-                                    </Badge>
-                                </IconButton>
                             </>
                         )}
                     </div>

@@ -1,4 +1,5 @@
-import { Box, Grid, Slide, TextField } from '@material-ui/core';
+import { Box, Grid, TextField } from '@material-ui/core';
+import { Fade } from '@mui/material';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useState, useMemo } from 'react';
@@ -80,7 +81,7 @@ const UserAccount = () => {
     const showAlert = useMemo(() => Boolean(success) || Boolean(error), [success, error]);
 
     return (
-        <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+        <Fade in mountOnEnter unmountOnExit appear timeout={800}>
             <div className={classes.user_account__root}>
                 <DefaultSnackbar
                     open={showAlert}
@@ -128,7 +129,7 @@ const UserAccount = () => {
                     <FilesContainer files={[userData?.document_url ?? '']} className={classes.files} />
                 </div>
             </div>
-        </Slide>
+        </Fade>
     );
 };
 

@@ -1,16 +1,15 @@
-import * as React from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { styled, Box } from '@mui/system';
 import { useSelector } from 'react-redux';
+import * as React from 'react';
 import Button from '@mui/material/Button';
 import ModalUnstyled from '@mui/core/ModalUnstyled';
 import Snackbar from '@mui/material/Snackbar';
 
-import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
-import { PaymentInfo, GetOffersResponseData } from 'services/rest-clients/user-payment';
-import { RootState } from 'app/store';
 import { usePaymentContext } from 'features/payments/context';
 import { useURLParams } from 'hooks/use-url-params';
+import { isAllValueTruthy } from 'libs/index';
+import { RootState } from 'app/store';
 
 const StyledModal = styled(ModalUnstyled)`
     position: fixed;
@@ -61,20 +60,25 @@ export default function ReviewModal() {
     const { handleCreatePaymentIntent } = usePaymentContext();
     const urlParamOfferId = useURLParams('offer_id');
 
-    const goToPayment = async () => {
-        const { fullname, references, purpose } = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.PAYMENT_INFO) as string) as PaymentInfo;
-        const { payment_offer_id, source_currency } = JSON.parse(
-            localStorage.getItem(LOCAL_STORAGE_KEY.INITIAL_OFFER) as string
-        ) as GetOffersResponseData;
+    const {
+        payments: { offerBasedOnRate, DIRECT_paymentIntentPayload }
+    } = useSelector(({ payments }: RootState) => ({ payments }));
 
-        handleCreatePaymentIntent({
-            payment_offer_id: urlParamOfferId ?? payment_offer_id,
-            payment_title: purpose,
-            description: references,
-            email: user?.email ?? '',
-            name: fullname,
-            currency: source_currency ?? 'NGN'
-        });
+    const goToPayment = async () => {
+        const { references, purpose, fileUrl, name } = DIRECT_paymentIntentPayload;
+        const { payment_offer_id, source_currency } = offerBasedOnRate || {};
+
+        if (isAllValueTruthy(payment_offer_id, source_currency, payment_offer_id, source_currency, name)) {
+            handleCreatePaymentIntent({
+                payment_offer_id: urlParamOfferId ?? payment_offer_id!,
+                payment_title: purpose,
+                description: references,
+                email: user?.email ?? '',
+                name,
+                currency: source_currency ?? 'NGN',
+                document_url: fileUrl ?? null
+            });
+        }
         handleClose();
     };
 

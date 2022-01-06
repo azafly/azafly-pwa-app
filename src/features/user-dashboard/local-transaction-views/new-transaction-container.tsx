@@ -1,20 +1,22 @@
-import { Box, Button, Typography } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { ChangeEvent, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
 import { Stack, useMediaQuery } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { africa, otherCountries } from 'mocks/payment';
 import { ConversionCard } from './conversion-card';
 import { ConversionIcon } from './conversion-icon';
 import { Dispatch, RootState } from 'app/store';
+import { TOUR_DASHBOARD_LOCAL } from '../tours';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         container: {
             maxWidth: 900,
-            margin: 'auto'
+            margin: 'auto',
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         },
         new_transaction_container: {
             maxWidth: 900,
@@ -25,13 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
         cta_button: {
             textTransform: 'capitalize',
             textAlign: 'center',
-            [theme.breakpoints.down('sm')]: {
-                fontSize: '0.8rem'
-            }
-        },
-        error: {
-            margin: 10,
-            fontSize: '0.9rem'
+            minWidth: '25ch'
         }
     })
 );
@@ -39,26 +35,25 @@ const useStyles = makeStyles((theme: Theme) =>
 export const NewTransactionContainer = () => {
     const [amount, setAmount] = useState(0);
     const {
-        localPayments: { apiFetchState, buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay },
-        dashboard: {
-            currentVirtualCard: { currency = 'USD' }
-        }
-    } = useSelector(({ localPayments, dashboard }: RootState) => ({ localPayments, dashboard }));
+        payments: { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay },
+        dashboard: { currentVirtualCard },
+        VIRTUAL_CARDS: { userCards }
+    } = useSelector(({ payments, dashboard, VIRTUAL_CARDS }: RootState) => ({ payments, dashboard, VIRTUAL_CARDS }));
     const dispatch = useDispatch<Dispatch>();
-
+    const browserHistory = useHistory();
     const isDesktop = useMediaQuery('(min-width:800px)');
     const isMobile = useMediaQuery('(max-width:450px)');
 
     const handleBuyAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const amount = !e.target.value ? 0 : parseInt(e.target.value);
+        const amountValue = !e.target.value ? 0 : parseInt(e.target.value);
         // set limit from server imposed limit
         const LIMIT = 10000;
-        const limitAmount = amount > LIMIT ? LIMIT : amount;
-        setAmount(amount);
-        dispatch.localPayments.setBuyAmount(limitAmount);
+        const limitAmount = amount > LIMIT ? LIMIT : amountValue;
+        setAmount(amountValue);
+        dispatch.payments.setBuyAmount(limitAmount);
         if (rates && buyCurrency) {
+            dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
         }
-        dispatch.localPayments.setTotalToPayInSellCurrency(null);
     };
 
     const classes = useStyles();
@@ -66,8 +61,24 @@ export const NewTransactionContainer = () => {
     const buttonAlignment = isMobile ? 'column' : 'row';
 
     const handleCTAClick = (name: 'card' | 'direct') => {
-        name === 'card' ? dispatch.dashboard.setCurrentDashboardTab('cards') : dispatch.dashboard.setCurrentDashboardTab('payment');
-        dispatch.dashboard.setCurrentCardIdentifier({ currency, openTopUpModal: true });
+        if (name === 'card') {
+            dispatch.dashboard.setCurrentDashboardTab('cards');
+            dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'EUR', openTopUpModal: true });
+            dispatch.VIRTUAL_CARDS.setCurrentCard(userCards[currentVirtualCard?.currency ?? 'EUR']);
+            dispatch.VIRTUAL_CARDS.setCardTopUpReferer('dashboard');
+        } else {
+            dispatch.payments.setInitialOffer({ source_currency: buyCurrency, source_amount: buyAmount, target_currency: sellCurrency });
+            browserHistory.push({
+                pathname: '/payment',
+                state: {
+                    refer: 'local-DIRECT',
+                    buyCurrency,
+                    sellCurrency,
+                    amount,
+                    step: 1
+                }
+            });
+        }
     };
 
     return (
@@ -79,25 +90,32 @@ export const NewTransactionContainer = () => {
                     info={'I need to pay'}
                     handleAmountChange={handleBuyAmountChange}
                     options={otherCountries}
+                    tourClassName={TOUR_DASHBOARD_LOCAL.SEND_FROM}
+                    initialCurrency={buyCurrency}
                 />
                 <ConversionIcon />
-                <ConversionCard amount={sellCurrencyTotalToPay} info={`Total amount in ${sellCurrency}`} options={africa} disabled={true} />
+                <ConversionCard
+                    amount={sellCurrencyTotalToPay}
+                    info={`Total amount in ${sellCurrency}`}
+                    options={africa}
+                    disabled={true}
+                    tourClassName={TOUR_DASHBOARD_LOCAL.SEND_TO}
+                    initialCurrency={sellCurrency}
+                />
             </Stack>
-            {apiFetchState.result === 'error' && (
-                <Typography color={'error'} paragraph className={classes.error}>
-                    {apiFetchState.message}
-                </Typography>
-            )}
-            <Stack direction={buttonAlignment} justifyContent={'center'} m={3} spacing={2}>
-                <Button variant={'contained'} color={'primary'} className={classes.cta_button} onClick={() => handleCTAClick('card')}>
-                    Pay with Virtual Card
+            <Stack direction={buttonAlignment} justifyContent={'center'} m={2} spacing={2}>
+                <Button
+                    variant={'contained'}
+                    color={'primary'}
+                    className={`${classes.cta_button} ${TOUR_DASHBOARD_LOCAL.PAY_WITH_CARD}`}
+                    onClick={() => handleCTAClick('card')}
+                >
+                    Fund &nbsp; <strong>{buyCurrency} </strong>&nbsp; Virtual Card
                 </Button>
                 <Button
-                    component={Link}
                     variant={'outlined'}
                     color={'secondary'}
-                    className={classes.cta_button}
-                    to={'/payment'}
+                    className={`${classes.cta_button} ${TOUR_DASHBOARD_LOCAL.PAY_DIRECT}`}
                     onClick={() => handleCTAClick('direct')}
                 >
                     Pay Directly to Institution

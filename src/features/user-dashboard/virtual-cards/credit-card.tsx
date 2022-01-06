@@ -1,7 +1,7 @@
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
 import { createStyles, makeStyles, Theme, lighten } from '@material-ui/core/styles';
-import { Stack } from '@mui/material';
 import { memo, useState } from 'react';
+import { Slide, Stack } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { formatCurrency } from 'libs';
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface VirtualCardProps {
-    amount: number;
+    balance: number;
     currency: string;
     cardNumber: string;
     last4digits: string;
@@ -58,13 +58,13 @@ interface VirtualCardProps {
     countryCode: string;
 }
 
-export const CreditCard = memo(function CreditCard({ amount, currency, cardNumber, countryCode, last4digits, expiry, cvv }: VirtualCardProps) {
+export const CreditCard = memo(function CreditCard({ balance, currency, cardNumber, countryCode, last4digits, expiry, cvv }: VirtualCardProps) {
     const classes = useStyles();
     const [show, setShow] = useState(false);
 
-    const balance = formatCurrency({
+    const _balance = formatCurrency({
         currency,
-        amount,
+        amount: balance,
         countryCode
     });
     return (
@@ -73,11 +73,22 @@ export const CreditCard = memo(function CreditCard({ amount, currency, cardNumbe
                 <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant='body2' className={classes.typography}>
-                            {balance}
+                            {_balance}
                         </Typography>
-                        <Box sx={{ marginTop: -5 }}>
-                            <Logo2SvgComponent height={30} />
-                        </Box>
+
+                        <Slide
+                            direction='left'
+                            in
+                            mountOnEnter
+                            unmountOnExit
+                            appear
+                            timeout={500}
+                            easing={{ enter: 'cubic-bezier(0.0, 0, 0.2, 1)', exit: 'cubic-bezier(0.4, 0, 1, 1)' }}
+                        >
+                            <Box sx={{ marginTop: -5 }}>
+                                <Logo2SvgComponent height={30} />
+                            </Box>
+                        </Slide>
                     </Box>
                     <Typography variant='h5' className={classes.cardNumber} align={'center'}>
                         {show ? cardNumber : '**** **** ****'} {last4digits}

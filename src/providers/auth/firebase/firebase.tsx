@@ -14,6 +14,8 @@ import {
     signInWithEmailAndPassword as signInWithPass,
     signInWithPopup,
     UserCredential,
+    setPersistence,
+    browserSessionPersistence,
     verifyPasswordResetCode as verifyPassword
 } from 'firebase/auth';
 
@@ -114,10 +116,13 @@ function useFirebaseProviderAuth() {
         return applyActionCode(firebaseAuth, actionCode);
     };
 
+    setPersistence(firebaseAuth, browserSessionPersistence).catch(error => {
+        console.log(error);
+    });
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, async user => {
             if (user) {
-                const token = await user.getIdToken(true);
+                const token = await user.getIdToken();
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL] as Record<string, string | string[]>;
                 const allowedRoles = hasuraClaim['x-hasura-allowed-roles'];

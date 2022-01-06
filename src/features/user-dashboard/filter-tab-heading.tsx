@@ -23,20 +23,7 @@ export const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
             margin: 'auto',
             boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
-            [theme.breakpoints.up('xl')]: { maxWidth: 1200 },
-            '& .MuiTabs-flexContainer': {
-                justifyContent: 'center',
-                '& span': {
-                    textTransform: 'none'
-                }
-            }
-        },
-        tabHeader: {
-            fontSize: '0.8em',
-            fontWeight: 800,
-            '& button': {
-                fontSize: '0.6em'
-            }
+            [theme.breakpoints.up('xl')]: { maxWidth: 1200 }
         }
     })
 );
@@ -45,10 +32,10 @@ function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
 
     return (
-        <div role='tabpanel' hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
+        <div role='tabpanel' hidden={value !== index} id={`scrollable-tabpanel-${index}`} aria-labelledby={`scrollable-tab-${index}`} {...other}>
             {value === index && (
                 <Box pt={1}>
-                    <Typography>{children}</Typography>
+                    <Box>{children}</Box>
                 </Box>
             )}
         </div>
@@ -57,8 +44,8 @@ function TabPanel(props: TabPanelProps) {
 
 function a11yProps(index: any) {
     return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`
+        id: `scrollable-tab-${index}`,
+        'aria-controls': `scrollable-tabpanel-${index}`
     };
 }
 interface TransactionFilterTabProps {
@@ -86,14 +73,15 @@ export const FilterTab = ({ tabViews, currentKey }: TransactionFilterTabProps) =
 
     return (
         <div style={{ width: '100%' }}>
-            {' '}
             <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label='onboarding tab'
-                variant='scrollable'
                 allowScrollButtonsMobile
+                aria-label='scrollable tab'
                 className={classes.filter_tab__container}
+                onChange={handleChange}
+                selectionFollowsFocus
+                value={value}
+                variant='scrollable'
+                visibleScrollbar
             >
                 {tabViews.map(({ heading, headingClickHandler }, index) => {
                     return <Tab key={index} label={heading} {...a11yProps(index)} onClick={() => headingClickHandler && headingClickHandler(true)} />;

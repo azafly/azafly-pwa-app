@@ -93,9 +93,11 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     const isMobile = useMediaQuery('(max-width:960px)');
 
     const all = transactions?.map((transaction: any) => <CardContainer transactionData={transaction} key={transaction.id} />);
+
     const pending = offerData?.payment_offer?.map((transaction: any) => (
         <PendingOfferCardContainer transactionData={transaction} key={transaction.id} />
     ));
+
     const allOffers = transactions.length ? (
         all
     ) : (
@@ -202,25 +204,27 @@ export const TransactionListContainer = memo(function TransactionListContainer({
         </div>
     );
     return (
-        <FilterTab
-            tabViews={[
-                {
-                    heading: heading('Transactions'),
-                    component: allOffers
-                },
-                {
-                    heading: heading('Pending Offers'),
-                    component: pendingTransactions
-                },
-                {
-                    heading: heading('', <DateRangeIcon />),
-                    component: transactionsByDate(),
-                    headingClickHandler: setOpenDatePicker
-                }
-            ]}
-            handleSetDateValue={setDateValue}
-            dateValue={dateValue}
-            openDatePicker={openDatePicker}
-        />
+        <>
+            <FilterTab
+                tabViews={[
+                    {
+                        heading: heading('Transactions'),
+                        component: allOffers
+                    },
+                    {
+                        heading: heading('Pending Offers'),
+                        component: pendingTransactions
+                    },
+                    {
+                        heading: heading('', <DateRangeIcon />),
+                        component: transactionsByDate(),
+                        headingClickHandler: setOpenDatePicker
+                    }
+                ]}
+                handleSetDateValue={setDateValue}
+                dateValue={dateValue}
+                openDatePicker={openDatePicker}
+            />
+        </>
     );
 });

@@ -6,7 +6,7 @@ import { CurrencyCode } from 'app/models/payments/mock';
 import { VirtualCardActions } from './card-actions';
 
 interface VirtualCardObject {
-    amount: number;
+    balance: number;
     currency: CurrencyCode;
     cardNumber: string;
     last4digits: string;

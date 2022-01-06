@@ -7,12 +7,12 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 
 import { DefaultSnackbar, UploadButton } from 'components';
 import { Dispatch, RootState } from 'app/store';
+import { storage } from 'providers/auth/firebase';
 import { ThreeDots } from 'components/css-loaders/three-dots';
 import { UpdateKycDocUrlMutationVariables, useUpdateKycDocUrlMutation, useUpdateNewUserMutation } from 'api/generated/graphql';
-import Modal from '../modal';
 import { uploadBytesResumable, getDownloadURL, ref as fbStorageRef } from 'firebase/storage';
-import { storage } from 'providers/auth/firebase';
 import { useUserContext } from 'hooks/use-user-context';
+import Modal from '../modal';
 
 export const KYCDocuments = () => {
     const [fileUploadLoading, setFileUploadLoading] = useState(false);
@@ -86,7 +86,7 @@ export const KYCDocuments = () => {
             <DefaultSnackbar open={show} handleClose={handleCloseSnackBar} severity={severity as 'error' | 'success'} title={title} info={text} />
             {severity === 'success' && <Modal successCallBack={successCallBack} />}
             {severity !== 'success' && (
-                <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+                <Slide direction='down' in={true} mountOnEnter unmountOnExit appear timeout={800}>
                     <Box sx={{ width: '100%' }}>
                         <Typography variant={'h6'} gutterBottom align={'center'} sx={{ fontWeight: 700, fontFamily: 'Nunito', marginBottom: 2 }}>
                             {'Update your Identification document'}

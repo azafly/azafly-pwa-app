@@ -1,24 +1,23 @@
 import { createStyles, Input, makeStyles, Theme, Typography } from '@material-ui/core';
 import { Stack } from '@mui/material';
 
-import { CurrencyToggle, CurrencyListParams } from './currency-toggle';
+import { CurrencyToggle, CurrencyListParams } from '../currency-toggle';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         new_transaction_container: {
-            borderRadius: 4,
+            borderRadius: 8,
             margin: 'auto',
             flexGrow: 1,
-            boxShadow: '0 2px 16px 0 rgba(0, 0, 0, .08)',
             border: '1px solid #DCDCDC',
-            [theme.breakpoints.up('md')]: {
-                width: '120%'
-            },
+            boxShadow: '0 2px 20px rgb(212 216 232 / 52%)',
             [theme.breakpoints.down('sm')]: {
-                width: '90vw'
+                width: '98%'
             }
         },
         amountInfo: {
+            borderTopLeftRadius: 8,
+            borderBottomLeftRadius: 8,
             padding: 16,
             background: 'white',
             [theme.breakpoints.down('sm')]: {
@@ -48,18 +47,31 @@ interface ConversionCardProps {
     handleAmountChange?: (e: any) => void;
     disabled?: boolean;
     options: CurrencyListParams[];
+    tourClassName?: string;
+    initialCurrency: string;
+    handleCurrencyChangeExtraAction?: any;
 }
 
-export const ConversionCard = ({ amount, info, handleAmountChange, disabled = false, options }: ConversionCardProps) => {
+export const ConversionCard = ({
+    amount,
+    info,
+    handleAmountChange,
+    disabled = false,
+    options,
+    tourClassName = '',
+    initialCurrency,
+    handleCurrencyChangeExtraAction
+}: ConversionCardProps) => {
     const classes = useStyles();
 
+    const initialCurrencyValue = options.filter(option => option.currencyCode === initialCurrency)[0];
     return (
         <Stack
             direction={'row'}
             justifyContent={'space-between'}
             alignContent={'center'}
             alignItems={'center'}
-            className={classes.new_transaction_container}
+            className={`${classes.new_transaction_container} ${tourClassName}`}
         >
             <Stack className={classes.amountInfo}>
                 <Typography className={classes.info}>{info}</Typography>
@@ -69,15 +81,14 @@ export const ConversionCard = ({ amount, info, handleAmountChange, disabled = fa
                     id='amount'
                     placeholder='0.00'
                     name={'amount'}
-                    value={amount ?? 0}
                     className={classes.amount}
-                    defaultValue={'100'}
+                    value={amount ?? 0}
                     disableUnderline
                     disabled={disabled}
                     onChange={handleAmountChange}
                 />
             </Stack>
-            <CurrencyToggle options={options} />
+            <CurrencyToggle options={options} initialValue={initialCurrencyValue} handleCurrencyChangeExtraAction={handleCurrencyChangeExtraAction} />
         </Stack>
     );
 };

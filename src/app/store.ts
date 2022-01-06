@@ -6,15 +6,17 @@ import createPersistPlugin from '@rematch/persist';
 const persistPlugin = createPersistPlugin<RematchRootState<RootModel>, RootModel>({
     key: 'root',
     storage,
-    version: 2
+    version: 2,
+    blacklist: ['auth', 'payments', 'VIRTUAL_CARDS', 'dashboard']
 });
 
+const trace = process.env.NODE_ENV !== 'production';
 export const store = init<RootModel>({
     models,
     plugins: [persistPlugin],
     redux: {
         devtoolOptions: {
-            trace: true
+            trace
         }
     }
 });

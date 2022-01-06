@@ -1,13 +1,10 @@
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { Grid, Snackbar, SnackbarCloseReason, SnackbarOrigin } from '@material-ui/core';
-import { useEffect, useState, SyntheticEvent } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, SyntheticEvent } from 'react';
 
 import { OnboardingIllustration } from 'features/onboarding/illustration';
 import { OnboardingTab } from 'features/onboarding/tab';
 import { useOnboardingMainStyles } from 'features/onboarding/sign-up/classes';
-import { useHistory } from 'react-router-dom';
-import { RootState } from 'app/store';
 
 interface SnackBarAlertState {
     open: boolean;
@@ -17,8 +14,6 @@ interface SnackBarAlertState {
 
 const Onboarding = () => {
     const classes = useOnboardingMainStyles();
-    const { isAuth } = useSelector((state: RootState) => state.auth);
-    const history = useHistory();
 
     const [alertState, setAlertState] = useState<SnackBarAlertState>({
         open: false,
@@ -35,13 +30,6 @@ const Onboarding = () => {
 
         setAlertState({ ...alertState, open: false });
     };
-
-    useEffect(() => {
-        const handleLoggedInUserDirect = () => {
-            isAuth && history.push('/dashboard');
-        };
-        handleLoggedInUserDirect();
-    }, [history, isAuth]);
 
     return (
         <div className={classes.onboarding}>

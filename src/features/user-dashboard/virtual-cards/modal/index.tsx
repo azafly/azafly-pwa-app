@@ -12,9 +12,9 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
-    p: 4
+    borderRadius: 4,
+    p: 3
 };
 
 interface VirtualCardModal {
@@ -25,16 +25,19 @@ interface VirtualCardModal {
 export default function BasicModal({ children, openModal, handleClose }: React.PropsWithChildren<VirtualCardModal>) {
     const dispatch = useDispatch<Dispatch>();
     const {
-        dashboard: {
-            currentVirtualCard: { currency }
-        }
+        dashboard: { currentVirtualCard }
     } = useSelector(({ dashboard }: RootState) => ({ dashboard }));
+
+    const handleOnClose = () => {
+        handleClose(!openModal);
+        dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'NGN', openTopUpModal: false });
+    };
 
     return (
         <Modal
-            onBackdropClick={() => dispatch.dashboard.setCurrentCardIdentifier({ currency, openTopUpModal: false })}
+            onBackdropClick={handleOnClose}
             open={openModal}
-            onClose={handleClose}
+            onClose={handleOnClose}
             aria-labelledby='modal-modal-title'
             aria-describedby='modal-modal-description'
         >

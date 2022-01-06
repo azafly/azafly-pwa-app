@@ -58,7 +58,7 @@ export const PhoneNumber = () => {
     return (
         <>
             <DefaultSnackbar open={result === 'error'} handleClose={handleCloseSnackBar} severity={'error'} title={'Error'} info={message ?? ''} />
-            <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+            <Slide direction='down' in={true} mountOnEnter unmountOnExit appear timeout={800}>
                 <Stack sx={{ width: '100%' }}>
                     <Typography variant={'h6'} align={'center'} style={{ fontWeight: 700, fontFamily: 'Nunito', color: '#0d324d', marginBottom: 10 }}>
                         {' '}

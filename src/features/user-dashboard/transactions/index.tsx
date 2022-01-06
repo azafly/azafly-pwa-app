@@ -1,16 +1,18 @@
-import { formatFirstName } from 'libs';
-import { Grid, Hidden, Slide, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import Skeleton from 'react-loading-skeleton';
 
 import { CardSkeleton } from './card-skeleton';
+import { formatFirstName } from 'libs';
 import { GetUserTransactionsQuery } from 'api/generated/graphql';
 import { NewTransactionContainer } from '../local-transaction-views/new-transaction-container';
 import { RootState } from 'app/store';
+
 import { TransactionListContainer } from './transaction-list-container';
 import WalletContainer from '../wallet/wallet-container';
 
 import { useDashboardStyles } from '../classes';
+import { TOUR_DASHBOARD_LOCAL } from '../tours';
 
 interface TransactionsViewProps {
     transactions: any;
@@ -25,34 +27,31 @@ export const Transactions = ({ transactions, userData, loading, handleSendVerifi
     const classes = useDashboardStyles();
     const { viewState } = useSelector(({ dashboard }: RootState) => dashboard);
     return (
-        <>
-            <Slide direction='up' in mountOnEnter unmountOnExit appear timeout={800}>
-                <Grid item md={10} className={classes.data__section}>
-                    <Typography color={'textSecondary'} className={classes.name} gutterBottom>
-                        Hey 👋🏾 {!userData?.display_name ? <Skeleton width={'10ch'} /> : `${formatFirstName(userData?.display_name)}!`}
-                    </Typography>{' '}
-                    {viewState === 'local' ? <NewTransactionContainer /> : <WalletContainer />}
-                    <Typography className={'heading'}>Recent Activities</Typography>{' '}
-                    {loading || !transactionData ? (
-                        <>
-                            {Array(5)
-                                .fill('')
-                                .map((_, index) => (
-                                    <CardSkeleton key={index} />
-                                ))}
-                        </>
-                    ) : (
-                        <>
-                            <TransactionListContainer
-                                transactions={transactions ?? []}
-                                emailLink={emailLink}
-                                loading={loading}
-                                handleSendVerificationEmail={handleSendVerificationEmail}
-                            />
-                        </>
-                    )}
-                </Grid>
-            </Slide>
-        </>
+        <Grid item md={10} className={classes.data__section}>
+            <Typography color={'textSecondary'} className={classes.name} gutterBottom>
+                <span className={`${TOUR_DASHBOARD_LOCAL.START_TOUR}`} /> Hey 👋🏾{' '}
+                {!userData?.display_name ? <Skeleton width={'10ch'} /> : `${formatFirstName(userData?.display_name)}!`}{' '}
+            </Typography>{' '}
+            {viewState === 'local' ? <NewTransactionContainer /> : <WalletContainer />}
+            <Typography className={'heading'}>Recent Activities</Typography>{' '}
+            {loading || !transactionData ? (
+                <>
+                    {Array(5)
+                        .fill('')
+                        .map((_, index) => (
+                            <CardSkeleton key={index} />
+                        ))}
+                </>
+            ) : (
+                <>
+                    <TransactionListContainer
+                        transactions={transactions ?? []}
+                        emailLink={emailLink}
+                        loading={loading}
+                        handleSendVerificationEmail={handleSendVerificationEmail}
+                    />
+                </>
+            )}
+        </Grid>
     );
 };

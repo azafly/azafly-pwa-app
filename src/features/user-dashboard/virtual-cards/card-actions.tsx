@@ -15,6 +15,9 @@ import { Dispatch } from 'app/store';
 
 const useStyles = makeStyles(() =>
     createStyles({
+        actionItem: {
+            cursor: 'pointer'
+        },
         listItem__root: {
             '& span': {
                 fontSize: '0.9rem !important',
@@ -30,23 +33,23 @@ const useStyles = makeStyles(() =>
     })
 );
 
-interface VirtualCardActions {
+interface VirtualCardActionsProps {
     currency: CurrencyCode;
 }
 
 type Action = 'top-up' | 'settings' | 'freeze' | 'pin';
 
-interface GRID_ITEM_INTERFACE {
+interface GridItemInterface {
     avatar: JSX.Element;
     primaryText: string;
     secondaryText: string;
     action: Action;
 }
-export function VirtualCardActions({ currency }: VirtualCardActions) {
+export function VirtualCardActions({ currency }: VirtualCardActionsProps) {
     const classes = useStyles();
     const dispatch = useDispatch<Dispatch>();
 
-    const GRID_ITEMS: GRID_ITEM_INTERFACE[] = [
+    const GRID_ITEMS: GridItemInterface[] = [
         {
             avatar: <AddReactionIcon sx={{ color: '#4990A4' }} />,
             primaryText: 'Top-up Virtual Card',
@@ -79,6 +82,7 @@ export function VirtualCardActions({ currency }: VirtualCardActions) {
                 return (
                     <ListItem
                         key={primaryText}
+                        className={classes.actionItem}
                         onClick={() => dispatch.dashboard.setCurrentCardIdentifier({ currency, action, openTopUpModal: true })}
                     >
                         <ListItemAvatar>

@@ -73,7 +73,7 @@ export const PhoneVerification = () => {
     return (
         <>
             <DefaultSnackbar open={result === 'error'} handleClose={handleCloseSnackBar} severity={'error'} title={'Error'} info={message ?? ''} />
-            <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+            <Slide direction='down' in={true} mountOnEnter unmountOnExit appear timeout={800}>
                 <Box sx={{ width: '100%' }}>
                     <Typography variant={'h6'} gutterBottom align={'center'} sx={{ fontWeight: 700, fontFamily: 'Nunito', marginBottom: 2 }}>
                         {'Enter the 6-digit code you receive on your phone'}

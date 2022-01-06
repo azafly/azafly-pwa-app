@@ -58,13 +58,13 @@ export function CountryViewToggleSwitch() {
     } = useSelector(({ auth }: RootState) => ({ auth }));
     const dispatch = useDispatch<Dispatch>();
 
-    const label = !isAfrica ? 'Nigeria' : 'Abroad';
+    const label = isAfrica ? 'Local' : 'Abroad';
     return (
         <>
             {isAdmin && (
                 <FormControlLabel
                     control={<MaterialUISwitch defaultChecked onChange={() => dispatch.dashboard.toggleViewState(null)} />}
-                    label={`View - ${label}`}
+                    label={`${label}`}
                 />
             )}
         </>

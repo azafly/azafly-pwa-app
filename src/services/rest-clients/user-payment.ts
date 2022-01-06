@@ -23,6 +23,8 @@ export interface GetOffersRequestBody {
 }
 
 export interface GetOffersResponseData {
+    target_currency: string;
+    source_amount: number;
     payment_offer_id: string;
     source_currency?: string;
     destination_currency?: string;
@@ -57,6 +59,8 @@ export interface CreatePaymentIntentBody {
     description: string;
     telephone?: string;
     name: string;
+    document_url?: string;
+    load_on_card?: boolean;
 }
 
 export interface CreatePaymentIntentResponse {
@@ -96,7 +100,9 @@ export const createPaymentIntent = async ({
     currency,
     description,
     telephone,
-    name
+    name,
+    document_url,
+    load_on_card = false
 }: CreatePaymentIntentBody) => {
     return axiosClient().post<CreatePaymentIntentResponse>(CREATE_INTENT_ENDPOINT, {
         payment_offer_id,
@@ -107,6 +113,8 @@ export const createPaymentIntent = async ({
         telephone,
         name,
         payment_options,
+        document_url,
+        load_on_card,
         logo: 'https://image.gif'
     });
 };

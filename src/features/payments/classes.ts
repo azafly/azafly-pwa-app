@@ -42,7 +42,7 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
             marginRight: theme.spacing(3),
             textTransform: 'none',
             zIndex: 0,
-            width: '18ch'
+            width: '25ch'
         },
         disabled: {
             opacity: 0.7,
@@ -55,7 +55,7 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
             marginTop: theme.spacing(1),
             textTransform: 'none',
             background: theme.colors.base,
-            width: '20ch',
+            width: '25ch',
             color: 'white',
             textDecoration: 'none',
             cursor: 'pointer',

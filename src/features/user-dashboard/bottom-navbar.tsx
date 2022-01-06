@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
         bottomNavRoot: {
             width: '100vw',
             position: 'fixed',
-            boxShadow: '0 2px 16px 0 rgb(0 0 0 / 8%)',
+            boxShadow: '0 2px 20px rgb(212 216 232 / 52%)',
             zIndex: 9999,
             left: 0,
             bottom: -0,
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
         appBar: {
             backgroundColor: 'white',
             marginBottom: 200,
-            boxShadow: '0 2px 16px 0 rgb(0 0 0 / 8%)',
+            boxShadow: '0 2px 20px rgb(212 216 232 / 52%)',
             [theme.breakpoints.only('xs')]: {
                 top: 'auto',
                 bottom: 0

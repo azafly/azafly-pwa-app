@@ -9,6 +9,8 @@ import { Dispatch, RootState } from 'app/store';
 import { RenderOptions } from './render-option-label';
 import { UK } from 'features/payments/context/constants';
 
+import { CurrencyCode } from 'app/models/payments/mock';
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -89,10 +91,14 @@ const useStyles = makeStyles((theme: Theme) =>
 export function CurrencyAmount() {
     const classes = useStyles();
     const [showCountryList, setShowCountryList] = React.useState(false);
+    const [amountValue, setAmountValue] = React.useState(100);
+    const [countryValue, setCountryValue] = React.useState<Country | null>(UK);
 
-    const { popularTargetCountries } = useCountryList();
+    const { popularTargetCountries, countryCodeLookup } = useCountryList();
+    const {
+        auth: { hasuraUser }
+    } = useSelector(({ auth }: RootState) => ({ auth }));
     const dispatch = useDispatch<Dispatch>();
-    const { amount } = useSelector((state: RootState) => state.payment.rateInfo);
 
     const options = popularTargetCountries?.map(it => ({ ...it, label: it.name }));
 
@@ -101,6 +107,16 @@ export function CurrencyAmount() {
         setShowCountryList(!showCountryList);
     };
 
+    const handleCurrencyChange = (_: any, country: Country | null) => {
+        setCountryValue(country);
+        country && dispatch.payments.setBuyCurrency(country.currency.code as CurrencyCode);
+    };
+
+    const handleOnChangeAmountValue = ({ target: { value } }: any) => {
+        const amount = value ? parseInt(value) : 0;
+        setAmountValue(amount);
+        dispatch.payments.setBuyAmount(amount);
+    };
     const getOptionLabel = (option: Country) => `${option.emoji ?? ''}  ${option.currency.code}`;
     const optionRenderer = (optionData: Country) => <RenderOptions option={optionData} />;
 
@@ -108,30 +124,28 @@ export function CurrencyAmount() {
         <div className={classes.root} onClick={handleShow}>
             <TextField
                 id='amount'
-                value={amount}
+                value={amountValue}
                 type='number'
                 label={'Amount'}
                 className={classes.input}
-                onChange={event => dispatch.payment.setRatesInfoAmount(parseInt(event.target.value))}
+                onChange={handleOnChangeAmountValue}
                 InputProps={{
                     className: classes.input
                 }}
             />
             <div>
                 <Autocomplete
-                    onChange={(_, country) => {
-                        country && dispatch.payment.setRatesInfoTargetCountry(country);
-                    }}
+                    onChange={handleCurrencyChange}
                     className={classes.toggle__section}
                     disablePortal
                     id='currency'
-                    defaultValue={UK}
+                    loading={!hasuraUser || !countryCodeLookup}
+                    value={countryValue || UK}
                     options={options}
                     classes={{
                         paper: classes.listbox,
                         root: classes.autoCompleteRoot
                     }}
-                    loading
                     autoComplete
                     getOptionLabel={option => getOptionLabel(option)}
                     renderOption={optionData => optionRenderer(optionData)}

@@ -1,15 +1,17 @@
-import { Button, Stepper, Step, StepContent, StepLabel, Slide } from '@material-ui/core';
+import { Box, Button, Stepper, Step, StepContent, StepLabel } from '@material-ui/core';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { Dispatch, RootState } from 'app/store';
-import { localStorageClient, LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
+import { getInitialOffer } from 'services/rest-clients/user-payment';
+import { GetOffersResponseData } from 'services/rest-clients/user-payment';
+import { PAYMENT_STATES } from 'app/models/payments';
 import { PaymentInfo } from './forms/payment-info/payment-info';
 import { PriceInfo } from './forms/price-info';
 import { RatesInfo } from './forms/rates-info';
-import { ThreeDots } from '../user-dashboard/loader-skeleton';
+import { ThreeDots } from 'components/css-loaders/three-dots';
 import { useGetPendingOfferByIdLazyQuery } from 'api/generated/graphql';
 import { usePaymentContext } from './context';
 import { useStepperStyles } from './classes';
@@ -40,17 +42,19 @@ export function VerticalPaymentStepper() {
     const dispatch = useDispatch<Dispatch>();
 
     const steps = getSteps;
-    const { activeStep, canGoNext, paymentLink, setActiveStep } = usePaymentContext();
-    const { apiFetchState } = useSelector((state: RootState) => state.payment);
+    const { activeStep, paymentLink, setActiveStep } = usePaymentContext();
+    const { apiFetchState, buyAmount, buyCurrency, DIRECT_activeStep, offerBasedOnRate, sellCurrency } = useSelector(
+        (state: RootState) => state.payments
+    );
 
     const handleNext = () => {
-        localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: activeStep + 1 });
+        dispatch.payments.DIRECT_setActiveStep(activeStep + 1);
         setActiveStep(prevActiveStep => prevActiveStep + 1);
     };
 
     const handleBack = () => {
-        localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: activeStep - 1 });
         setActiveStep(prevActiveStep => prevActiveStep - 1);
+        dispatch.payments.DIRECT_setActiveStep(activeStep - 1);
         history.push({
             state: {
                 step: activeStep
@@ -58,19 +62,45 @@ export function VerticalPaymentStepper() {
         });
     };
 
+    // pending offer
+    const urlParamOfferId = useURLParams('offer_id');
+    const [handleGetPendingOffer, { data: pendingOffer }] = useGetPendingOfferByIdLazyQuery({
+        variables: { offer_id: urlParamOfferId }
+    });
+    const handleGetOffersBasedOnRates = async () => {
+        if (
+            offerBasedOnRate?.source_currency === buyCurrency &&
+            offerBasedOnRate?.target_currency === sellCurrency &&
+            offerBasedOnRate.source_amount === buyAmount
+        ) {
+            dispatch.payments.DIRECT_setActiveStep(1);
+            return;
+        }
+        dispatch.payments.setApiFetchState({ ...apiFetchState, loading: true, message: PAYMENT_STATES.CREATING_OFFER });
+        try {
+            const {
+                data: { data }
+            } = await getInitialOffer({ source_currency: buyCurrency, source_amount: buyAmount, target_currency: sellCurrency });
+            dispatch.payments.setOfferBasedOnRate(data);
+            dispatch.payments.setApiFetchState({ ...apiFetchState, loading: false, message: PAYMENT_STATES.OFFER_CREATED });
+            dispatch.payments.DIRECT_setActiveStep(1);
+        } catch (error) {
+            dispatch.payments.setApiFetchState({ ...apiFetchState, loading: false, message: PAYMENT_STATES.ERROR });
+        }
+    };
+
     const handleStepper = (step: number) => {
         switch (step) {
             case 0:
-                return (
+                return apiFetchState?.loading ? (
+                    <ThreeDots variantColor={'base'} loadingText={'creating offer'} />
+                ) : (
                     <button
                         className={classes.next}
-                        onClick={() => {
-                            localStorageClient<number>({ method: 'SET', key: LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP, data: 1 });
-                            dispatch.payment.setInitialOffer('').then(() => handleNext());
-                        }}
-                        disabled={apiFetchState?.result === 'error'}
+                        onClick={handleGetOffersBasedOnRates}
+                        disabled={apiFetchState?.result === 'error' || apiFetchState.loading}
                     >
-                        {apiFetchState?.loading ? <ThreeDots style={{ height: 30 }} /> : 'Get offer'}
+                        {'Get offer'}
                         <NavigateNextIcon />
                     </button>
                 );
@@ -81,7 +111,7 @@ export function VerticalPaymentStepper() {
                         className={classes.next}
                         variant={'contained'}
                         color={'primary'}
-                        disabled={apiFetchState?.result === 'error'}
+                        disabled={apiFetchState?.result === 'error' || !offerBasedOnRate}
                         classes={{
                             disabled: classes.disabled
                         }}
@@ -104,9 +134,10 @@ export function VerticalPaymentStepper() {
                         classes={{
                             disabled: classes.disabled
                         }}
+                        onClick={() => dispatch.payments.DIRECT_setPaymentIntentPayload({})}
                         disabled={apiFetchState?.result === 'error' || !paymentLink}
                     >
-                        {apiFetchState?.loading ? <ThreeDots style={{ height: 30 }} /> : 'Pay'}
+                        {apiFetchState?.loading ? <ThreeDots /> : 'Pay'}
                         <NavigateNextIcon />
                     </Button>
                 );
@@ -115,65 +146,64 @@ export function VerticalPaymentStepper() {
         }
     };
 
-    // pending offer
-    const urlParamOfferId = useURLParams('offer_id');
-    const urlParamStep = useURLParams('step');
-    const [handleGetPendingOffer, { data: pendingOffer }] = useGetPendingOfferByIdLazyQuery({
-        variables: { offer_id: urlParamOfferId }
-    });
-
     useEffect(() => {
+        const handleGetPendingOfferCallBack = () => {
+            Promise.resolve(handleGetPendingOffer()).then(() => {
+                pendingOffer?.payment_offer[0] &&
+                    dispatch.payments.setOfferBasedOnRate({
+                        ...pendingOffer?.payment_offer[0],
+                        payment_offer_id: pendingOffer?.payment_offer[0].id
+                    } as GetOffersResponseData);
+            });
+        };
+
         const computeStepToNavigateTo = () => {
-            const localStorageActiveStep = Number(localStorage.getItem(LOCAL_STORAGE_KEY.PAYMENT_ACTIVE_STEP));
-            if (localStorageActiveStep && !urlParamOfferId && !urlParamStep) {
-                setActiveStep(localStorageActiveStep);
-            }
-            if (urlParamOfferId && urlParamStep) {
-                Promise.resolve(handleGetPendingOffer()).then(() => {
-                    dispatch.payment.setRatesInfoInitialOffer(pendingOffer?.payment_offer[0]);
-                    const { source_amount, source_currency, target_currency, total_in_target_with_charges } = pendingOffer?.payment_offer[0] ?? {};
-                    localStorage.setItem(
-                        LOCAL_STORAGE_KEY.INITIAL_OFFER,
-                        JSON.stringify({ source_amount, source_currency, target_currency, total_in_target_with_charges })
-                    );
-                    setActiveStep(Number(urlParamStep));
-                });
-            }
-            if (urlParamStep && !urlParamOfferId) {
+            if (urlParamOfferId) {
+                dispatch.payments.DIRECT_setActiveStep(0);
                 setActiveStep(0);
+                handleGetPendingOfferCallBack();
+            } else {
+                setActiveStep(DIRECT_activeStep);
             }
         };
         computeStepToNavigateTo();
-    }, [handleGetPendingOffer, urlParamOfferId, urlParamStep, pendingOffer, setActiveStep, dispatch.payment]);
+    }, [handleGetPendingOffer, urlParamOfferId, pendingOffer, setActiveStep, dispatch.payments, DIRECT_activeStep, activeStep]);
 
     return (
-        <Slide direction='right' in={true} mountOnEnter unmountOnExit appear timeout={800}>
-            <div className={classes.root}>
-                <Stepper activeStep={activeStep} orientation='vertical'>
-                    {steps.map((label, index) => (
-                        <Step key={label}>
-                            <StepLabel className={classes.stepperLabel} onClick={() => canGoNext && setActiveStep(index)}>
-                                {label}
-                            </StepLabel>
-                            <StepContent>
-                                {getStepContent(index, handleNext)}
+        <div className={classes.root}>
+            <Stepper activeStep={activeStep} orientation='vertical'>
+                {steps.map((label, index) => (
+                    <Step key={label}>
+                        <StepLabel
+                            className={classes.stepperLabel}
+                            onClick={() => {
+                                dispatch.payments.DIRECT_setActiveStep(index);
+                                setActiveStep(index);
+                            }}
+                        >
+                            {label}
+                        </StepLabel>
+                        <StepContent>
+                            <Box width={'100%'}>{getStepContent(index, handleNext)}</Box>
+
+                            {activeStep !== 2 && (
                                 <div className={classes.actionsContainer}>
                                     <Button
                                         disabled={activeStep === 0}
                                         onClick={handleBack}
                                         className={classes.button}
-                                        color={'default'}
-                                        variant={'outlined'}
+                                        color='secondary'
+                                        variant={'contained'}
                                     >
                                         Back
                                     </Button>
                                     {handleStepper(index)}
                                 </div>
-                            </StepContent>
-                        </Step>
-                    ))}
-                </Stepper>
-            </div>
-        </Slide>
+                            )}
+                        </StepContent>
+                    </Step>
+                ))}
+            </Stepper>
+        </div>
     );
 }

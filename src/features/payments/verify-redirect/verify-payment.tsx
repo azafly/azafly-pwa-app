@@ -1,7 +1,7 @@
 import { Box } from '@mui/system';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '@mui/material/Button';
+import Button from '@material-ui/core/Button';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
@@ -66,14 +66,22 @@ export default function RedirectCallback() {
                         </p>
                         <Box sx={{ margin: 1 }}>
                             {status && status === 'success' && (
-                                <Button variant={'contained'} onClick={goToNext} color={'success'}>
+                                <Button
+                                    variant={'contained'}
+                                    onClick={goToNext}
+                                    style={{ margin: 1, background: '#4990a4', width: '25ch', textTransform: 'capitalize' }}
+                                >
                                     {cta}
                                 </Button>
                             )}
                             {status && status === 'error' && (
                                 <>
                                     <h4 style={{ textAlign: 'center' }}> Or</h4>
-                                    <Button variant={'contained'} sx={{ margin: 1 }} onClick={goToPayments} color={'error'}>
+                                    <Button
+                                        variant={'contained'}
+                                        style={{ margin: 1, background: 'rgba(248,81,73,0.4)', textTransform: 'capitalize', width: '25ch' }}
+                                        onClick={goToPayments}
+                                    >
                                         {cta}
                                     </Button>
                                 </>

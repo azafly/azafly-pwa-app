@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { axiosClient } from 'services/rest-clients';
 import { Dispatch, RootState } from 'app/store';
-import { getOfferById } from 'services/rest-clients/user-payment';
 import { useGetPendingOfferByIdLazyQuery } from 'api/generated/graphql';
 import { useURLParams } from 'hooks/use-url-params';
 

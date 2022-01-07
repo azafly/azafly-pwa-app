@@ -134,7 +134,7 @@ export const payments = createModel<RootModel>()({
     effects: dispatch => {
         return {
             async setInitialOffer({ source_currency, target_currency, source_amount }: GetOffersRequestBody, getState) {
-                dispatch.payments.setApiFetchState({ result: 'error', loading: true, message: PAYMENT_STATES.CREATING_OFFER });
+                dispatch.payments.setApiFetchState({ result: null, loading: true, message: PAYMENT_STATES.CREATING_OFFER });
                 try {
                     const { data } = await getInitialOffer({
                         source_currency,

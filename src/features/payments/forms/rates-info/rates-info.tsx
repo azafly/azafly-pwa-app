@@ -90,7 +90,9 @@ export function RatesInfo() {
             setAmount(initialAmount);
             dispatch.payments.setBuyCurrency(urlParamBuyCurrency);
             dispatch.payments.setSellCurrency(urlParamSellCurrency);
-            dispatch.payments.setSellCurrencyTotalToPay(rates[urlParamSellCurrency][urlParamBuyCurrency]['rate'] * Number(urlParamAmount));
+            dispatch.payments.setSellCurrencyTotalToPay(
+                offerBasedOnRate?.total_in_target_with_charges ?? rates[urlParamSellCurrency][urlParamBuyCurrency]['rate'] * Number(urlParamAmount)
+            );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -136,7 +138,7 @@ export function RatesInfo() {
                     </Grid>
                     <Grid item xs={12}>
                         <CurrencyAmount
-                            amount={sellCurrencyTotalToPay}
+                            amount={Number(offerBasedOnRate?.total_in_target_with_charges?.toFixed(2)) ?? sellCurrencyTotalToPay}
                             info={`Total amount in ${sellCurrency}`}
                             options={africa}
                             initialCurrency={initialSellCurrency}

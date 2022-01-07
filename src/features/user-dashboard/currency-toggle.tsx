@@ -35,7 +35,13 @@ const useStyles = makeStyles((theme: Theme) =>
             },
             '& img': {
                 alignSelf: 'first baseline !important'
+            },
+            '& .MuiTypography-body1': {
+                fontWeight: 700
             }
+        },
+        svg: {
+            marginTop: -7
         }
     })
 );
@@ -77,8 +83,8 @@ export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtr
                 sx={{ minWidth: 120, display: 'flex', alignItems: 'center', paddingTop: '0rem' }}
             >
                 <Select
-                    labelId='demo-simple-select-filled-label'
-                    id='demo-simple-select-filled'
+                    labelId='filled-label'
+                    id='filled-label'
                     // @ts-ignore
                     value={getCurrentCurrency()}
                     onChange={handleRateChange}
@@ -91,20 +97,26 @@ export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtr
                         marginBottom: '-2rem'
                     }}
                     IconComponent={KeyboardArrowDownIcon}
-                    classes={{ filled: classes.select, select: classes.select }}
+                    classes={{ filled: classes.select, select: classes.select, icon: classes.svg }}
                 >
                     {options.map(option => {
                         return (
-                            // @ts-ignore
-                            <MenuItem value={option} key={option.currencyCode} disabled={!option.active}>
-                                <Stack direction={'row'} sx={{ marginTop: '-7px !important' }}>
+                            <MenuItem
+                                // @ts-ignore
+                                value={option}
+                                key={option.currencyCode}
+                                disabled={!option.active}
+                                sx={{ height: '50px' }}
+                            >
+                                <Stack direction={'row'} sx={{ m: 'auto', mb: 1, marginTop: '-7px !important' }} alignItems={'center'}>
                                     <Avatar
                                         src={option.flag}
-                                        sx={{ mr: '0.8ch', height: '20px', width: '30px' }}
+                                        sx={{ mr: '0.8ch', height: '30px !important', width: '35px !important' }}
                                         sizes={'small'}
-                                        variant={'rounded'}
                                     />{' '}
-                                    <Typography sx={{ fontWeight: 700, fontFamily: 'Nunito', mr: '1ch' }}>{option.currencyCode}</Typography>
+                                    <Typography fontWeight={700} sx={{ fontWeight: 800, fontFamily: 'Nunito', mr: '1ch' }}>
+                                        {option.currencyCode}
+                                    </Typography>
                                 </Stack>
                             </MenuItem>
                         );

@@ -52,9 +52,8 @@ export function VerticalPaymentStepper() {
 
     const steps = getSteps;
     const { activeStep, paymentLink, setActiveStep } = usePaymentContext();
-    const { apiFetchState, buyAmount, buyCurrency, DIRECT_canGoNext, DIRECT_activeStep, offerBasedOnRate, sellCurrency } = useSelector(
-        (state: RootState) => state.payments
-    );
+    const { apiFetchState, buyAmount, buyCurrency, DIRECT_canGoNext, DIRECT_activeStep, offerBasedOnRate, sellCurrency, sellCurrencyTotalToPay } =
+        useSelector((state: RootState) => state.payments);
 
     const handleNext = () => {
         dispatch.payments.DIRECT_setActiveStep(activeStep + 1);
@@ -92,6 +91,7 @@ export function VerticalPaymentStepper() {
             } = await getInitialOffer({ source_currency: buyCurrency, source_amount: buyAmount, target_currency: sellCurrency });
             dispatch.payments.setOfferBasedOnRate(data);
             dispatch.payments.setApiFetchState({ ...apiFetchState, loading: false, message: PAYMENT_STATES.OFFER_CREATED });
+            dispatch.payments.setSellCurrencyTotalToPay(data.total_in_target_with_charges ?? sellCurrencyTotalToPay ?? 0);
             dispatch.payments.DIRECT_setActiveStep(1);
         } catch (error) {
             dispatch.payments.setApiFetchState({ ...apiFetchState, result: 'error', loading: false, message: PAYMENT_STATES.ERROR });

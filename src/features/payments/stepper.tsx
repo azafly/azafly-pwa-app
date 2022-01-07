@@ -52,7 +52,7 @@ export function VerticalPaymentStepper() {
 
     const steps = getSteps;
     const { activeStep, paymentLink, setActiveStep } = usePaymentContext();
-    const { apiFetchState, buyAmount, buyCurrency, DIRECT_activeStep, offerBasedOnRate, sellCurrency } = useSelector(
+    const { apiFetchState, buyAmount, buyCurrency, DIRECT_canGoNext, DIRECT_activeStep, offerBasedOnRate, sellCurrency } = useSelector(
         (state: RootState) => state.payments
     );
 
@@ -136,18 +136,20 @@ export function VerticalPaymentStepper() {
             case 2:
                 return null;
             case 3:
-                return (
+                return apiFetchState?.loading ? (
+                    <ThreeDots variantColor={'base'} loadingText={'setting up payment'} />
+                ) : (
                     <Button
                         className={classes.next}
                         href={paymentLink}
                         classes={{
                             disabled: classes.disabled
                         }}
+                        endIcon={<NavigateNextIcon />}
                         onClick={() => dispatch.payments.DIRECT_setPaymentIntentPayload({})}
                         disabled={apiFetchState?.result === 'error' || !paymentLink}
                     >
-                        {apiFetchState?.loading ? <ThreeDots /> : 'Pay'}
-                        <NavigateNextIcon />
+                        {'Pay'}
                     </Button>
                 );
             default:
@@ -187,8 +189,10 @@ export function VerticalPaymentStepper() {
                             classes={{ label: classes.stepperLabel }}
                             className={classes.stepperLabel}
                             onClick={() => {
-                                dispatch.payments.DIRECT_setActiveStep(index);
-                                setActiveStep(index);
+                                if (DIRECT_canGoNext) {
+                                    dispatch.payments.DIRECT_setActiveStep(index);
+                                    setActiveStep(index);
+                                }
                             }}
                             StepIconComponent={icon}
                         >

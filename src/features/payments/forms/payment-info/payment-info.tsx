@@ -145,7 +145,14 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
                             <Button
                                 variant='contained'
                                 color={'default'}
-                                style={{ textTransform: 'none', fontSize: '12px', fontWeight: 400, cursor: 'pointer', width: '100%', height: 40 }}
+                                style={{
+                                    textTransform: 'none',
+                                    fontSize: '12px',
+                                    fontWeight: 400,
+                                    width: '100%',
+                                    height: 40,
+                                    cursor: 'pointer'
+                                }}
                                 endIcon={
                                     <UploadButton
                                         label={'Upload Document'}

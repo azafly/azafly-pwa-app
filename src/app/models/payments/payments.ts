@@ -52,6 +52,7 @@ export interface PaymentState {
     currentlyVerifiedOffer: any;
     DIRECT_activeStep: number;
     DIRECT_paymentIntentPayload: Record<string, any>;
+    DIRECT_canGoNext: boolean;
 }
 
 const initialState: PaymentState = {
@@ -71,7 +72,8 @@ const initialState: PaymentState = {
     loverBoundLimitNotReached: false,
     currentlyVerifiedOffer: {},
     DIRECT_activeStep: 0,
-    DIRECT_paymentIntentPayload: {}
+    DIRECT_paymentIntentPayload: {},
+    DIRECT_canGoNext: false
 };
 
 export const payments = createModel<RootModel>()({
@@ -79,6 +81,9 @@ export const payments = createModel<RootModel>()({
     reducers: {
         DIRECT_setActiveStep(state, payload: number) {
             return { ...state, DIRECT_activeStep: payload };
+        },
+        DIRECT_setCanGoNext(state, payload: boolean) {
+            return { ...state, canGoNext: payload };
         },
         DIRECT_setPaymentIntentPayload(state, payload: PaymentState['DIRECT_paymentIntentPayload']) {
             return { ...state, DIRECT_paymentIntentPayload: payload };

@@ -2,12 +2,14 @@ import { Box, Grid } from '@material-ui/core';
 import { Chip, Zoom } from '@mui/material';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 import { africa, otherCountries } from 'mocks/payment';
 import { ChangeEvent } from 'react';
 import { CurrencyAmount } from './currency-amount';
 import { Dispatch, RootState } from 'app/store';
+import { useURLParams } from 'hooks/use-url-params';
+import { CurrencyCode } from 'app/models/payments';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -53,7 +55,9 @@ export function RatesInfo() {
     const classes = useStyles();
     const [amount, setAmount] = useState(0);
 
-    const { apiFetchState, buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay } = useSelector((state: RootState) => state.payments);
+    const { apiFetchState, buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay, offerBasedOnRate } = useSelector(
+        (state: RootState) => state.payments
+    );
 
     const dispatch = useDispatch<Dispatch>();
 
@@ -70,13 +74,38 @@ export function RatesInfo() {
     };
 
     useEffect(() => {
-        if (rates && rates[sellCurrency][buyCurrency]) {
+        if (rates && rates[sellCurrency] && rates[sellCurrency][buyCurrency]) {
             dispatch.payments.setSellCurrencyTotalToPay(rates[sellCurrency][buyCurrency]['rate'] * buyAmount);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const urlParamBuyCurrency = useURLParams('buy') as CurrencyCode;
+    const urlParamSellCurrency = useURLParams('sell') as CurrencyCode;
+    const urlParamAmount = useURLParams('amount');
+
+    useEffect(() => {
+        if (urlParamBuyCurrency && urlParamSellCurrency && urlParamAmount) {
+            const initialAmount = Number(urlParamAmount) || buyAmount || 100;
+            setAmount(initialAmount);
+            dispatch.payments.setBuyCurrency(urlParamBuyCurrency);
+            dispatch.payments.setSellCurrency(urlParamSellCurrency);
+            dispatch.payments.setSellCurrencyTotalToPay(rates[urlParamSellCurrency][urlParamBuyCurrency]['rate'] * Number(urlParamAmount));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (buyAmount <= 0 || !buyCurrency || (!sellCurrency && offerBasedOnRate)) {
+            dispatch.payments.DIRECT_setCanGoNext(false);
+        } else {
+            dispatch.payments.DIRECT_setCanGoNext(true);
+        }
+    }, [buyAmount, buyCurrency, dispatch.payments, sellCurrency, offerBasedOnRate]);
+
     const handleResetError = () => dispatch.payments.setApiFetchState({ loading: false });
+    const initialBuyCurrency = useMemo(() => urlParamBuyCurrency || buyCurrency || 'GBP', [buyCurrency, urlParamBuyCurrency]);
+    const initialSellCurrency = useMemo(() => urlParamSellCurrency || sellCurrency || 'NGN', [sellCurrency, urlParamSellCurrency]);
 
     return (
         <form className={classes.root} noValidate autoComplete='on'>
@@ -102,7 +131,7 @@ export function RatesInfo() {
                             info={`I need to pay`}
                             handleAmountChange={handleSellAmountChange}
                             options={otherCountries}
-                            initialCurrency={buyCurrency ?? 'GBP'}
+                            initialCurrency={initialBuyCurrency}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -110,7 +139,7 @@ export function RatesInfo() {
                             amount={sellCurrencyTotalToPay}
                             info={`Total amount in ${sellCurrency}`}
                             options={africa}
-                            initialCurrency={sellCurrency}
+                            initialCurrency={initialSellCurrency}
                         />
                     </Grid>
                 </Grid>

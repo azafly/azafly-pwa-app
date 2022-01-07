@@ -66,6 +66,7 @@ export const CurrencyAmount = ({
     const classes = useStyles();
 
     const initialCurrencyValue = options.filter(option => option.currencyCode === initialCurrency)[0];
+
     return (
         <Stack
             direction={'row'}

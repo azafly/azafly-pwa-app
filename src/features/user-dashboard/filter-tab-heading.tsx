@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { createStyles, makeStyles, Theme, useMediaQuery } from '@material-ui/core';
 import { Box, Typography } from '@material-ui/core';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -70,6 +70,8 @@ export const FilterTab = ({ tabViews, currentKey }: TransactionFilterTabProps) =
     }, [currentKey]);
 
     const classes = useStyles();
+    const scrollableTabs = useMediaQuery('(max-width:950px)');
+    const isScrollable = scrollableTabs ? 'scrollable' : 'standard';
 
     return (
         <div style={{ width: '100%' }}>
@@ -80,7 +82,9 @@ export const FilterTab = ({ tabViews, currentKey }: TransactionFilterTabProps) =
                 onChange={handleChange}
                 selectionFollowsFocus
                 value={value}
-                variant='scrollable'
+                variant={isScrollable}
+                scrollButtons
+                centered={true}
                 visibleScrollbar
             >
                 {tabViews.map(({ heading, headingClickHandler }, index) => {

@@ -1,8 +1,8 @@
 import { Box, Chip } from '@mui/material';
-import { Country } from '../../../hooks/use-country-list';
+import { Country } from 'types//country-data';
 
 export interface IRenderOptions {
-    option?: Country;
+    option: Country;
 }
 
 export const RenderOptions = ({ option }: IRenderOptions) => {

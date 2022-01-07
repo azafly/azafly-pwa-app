@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const NewTransactionContainer = () => {
     const [amount, setAmount] = useState(0);
     const {
-        payments: { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay },
+        payments: { buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay, offerBasedOnRate },
         dashboard: { currentVirtualCard },
         VIRTUAL_CARDS: { userCards }
     } = useSelector(({ payments, dashboard, VIRTUAL_CARDS }: RootState) => ({ payments, dashboard, VIRTUAL_CARDS }));
@@ -81,6 +81,9 @@ export const NewTransactionContainer = () => {
         }
     };
 
+    const formattedAmount = offerBasedOnRate?.total_in_target_with_charges
+        ? Number(offerBasedOnRate?.total_in_target_with_charges?.toFixed(2))
+        : sellCurrencyTotalToPay;
     return (
         <>
             <Stack direction={direction} alignItems={'center'} className={classes.new_transaction_container}>
@@ -95,7 +98,7 @@ export const NewTransactionContainer = () => {
                 />
                 <ConversionIcon />
                 <ConversionCard
-                    amount={sellCurrencyTotalToPay}
+                    amount={formattedAmount}
                     info={`Total amount in ${sellCurrency}`}
                     options={africa}
                     disabled={true}

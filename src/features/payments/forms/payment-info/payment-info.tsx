@@ -1,4 +1,4 @@
-import { Button, Grid } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -65,8 +65,10 @@ const useStyles = makeStyles((theme: Theme) =>
                 color: '#4990A4'
             }
         },
-        upload: {
-            cursor: 'pointer !important'
+        uploadHelperText: {
+            fontSize: '0.7rem',
+            paddingTop: 10,
+            color: theme.colors.base
         }
     })
 );
@@ -96,8 +98,8 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
         }
     });
 
-    const uploadLabel =
-        fileUrl || DIRECT_paymentIntentPayload.document_url ? 'Document submitted Change Document?' : 'Upload supporting document e.g invoice';
+    const uploadHelperText =
+        fileUrl || DIRECT_paymentIntentPayload.document_url ? 'Document Uploaded. Upload a new one?' : 'Upload a supporting Document e.g an invoice';
 
     useEffect(() => {
         const getDefaultValue = (key: string) => {
@@ -139,25 +141,36 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
                         );
                     })}
                     <Grid item xs={12} sm={6} className={classes.formControl}>
-                        <Button
-                            variant='contained'
-                            color={'secondary'}
-                            className={classes.upload}
-                            style={{ textTransform: 'none', fontSize: '12px', fontWeight: 400, cursor: 'pointer', width: '100%', padding: 0 }}
-                            endIcon={
-                                <UploadButton
-                                    label={uploadLabel}
-                                    icon={<UploadFileIcon sx={{ color: 'white' }} />}
-                                    loading={fileUploadLoading}
-                                    uploadCallback={e =>
-                                        handleFileUpload(e, `user-transactions/${user?.id}/${offerBasedOnRate?.payment_offer_id ?? uuidv4()}`)
-                                    }
-                                />
-                            }
-                        />
+                        <Stack>
+                            <Button
+                                variant='contained'
+                                color={'default'}
+                                style={{
+                                    textTransform: 'none',
+                                    fontSize: '12px',
+                                    fontWeight: 400,
+                                    width: '100%',
+                                    height: 40,
+                                    cursor: 'pointer'
+                                }}
+                                endIcon={
+                                    <UploadButton
+                                        label={'Upload Document'}
+                                        icon={<UploadFileIcon />}
+                                        loading={fileUploadLoading}
+                                        uploadCallback={e =>
+                                            handleFileUpload(e, `user-transactions/${user?.id}/${offerBasedOnRate?.payment_offer_id ?? uuidv4()}`)
+                                        }
+                                    />
+                                }
+                            />
+                            <Typography paragraph color={'secondary'} align={'center'} className={classes.uploadHelperText}>
+                                {uploadHelperText}
+                            </Typography>
+                        </Stack>
                     </Grid>
                 </Grid>
-                <Stack direction={'row'} spacing={3} sx={{ mt: 3 }}>
+                <Stack direction={'row'} spacing={3} sx={{ mt: 1 }}>
                     <Button
                         color='secondary'
                         variant='contained'

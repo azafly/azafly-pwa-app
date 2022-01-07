@@ -1,15 +1,16 @@
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { styled, Box } from '@mui/system';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import ModalUnstyled from '@mui/core/ModalUnstyled';
 import Snackbar from '@mui/material/Snackbar';
 
+import { Dispatch, RootState } from 'app/store';
+import { isAllValueTruthy } from 'libs/index';
 import { usePaymentContext } from 'features/payments/context';
 import { useURLParams } from 'hooks/use-url-params';
-import { isAllValueTruthy } from 'libs/index';
-import { RootState } from 'app/store';
+import { PAYMENT_STATES } from 'app/models/payments';
 
 const StyledModal = styled(ModalUnstyled)`
     position: fixed;
@@ -64,21 +65,29 @@ export default function ReviewModal() {
         payments: { offerBasedOnRate, DIRECT_paymentIntentPayload }
     } = useSelector(({ payments }: RootState) => ({ payments }));
 
+    const dispatch = useDispatch<Dispatch>();
+
     const goToPayment = async () => {
         const { references, purpose, fileUrl, name } = DIRECT_paymentIntentPayload;
         const { payment_offer_id, source_currency } = offerBasedOnRate || {};
-
-        if (isAllValueTruthy(payment_offer_id, source_currency, payment_offer_id, source_currency, name)) {
-            handleCreatePaymentIntent({
-                payment_offer_id: urlParamOfferId ?? payment_offer_id!,
-                payment_title: purpose,
-                description: references,
-                email: user?.email ?? '',
-                name,
-                currency: source_currency ?? 'NGN',
-                document_url: fileUrl ?? null
-            });
+        dispatch.payments.setApiFetchState({ result: null, loading: true, message: PAYMENT_STATES.FETCHING_PAYMENT_LINK });
+        try {
+            if (isAllValueTruthy(payment_offer_id, source_currency, payment_offer_id, source_currency, name)) {
+                handleCreatePaymentIntent({
+                    payment_offer_id: urlParamOfferId ?? payment_offer_id!,
+                    payment_title: purpose,
+                    description: references,
+                    email: user?.email ?? '',
+                    name,
+                    currency: source_currency ?? 'NGN',
+                    document_url: fileUrl ?? null
+                });
+            }
+            dispatch.payments.setApiFetchState({ result: 'success', loading: false, message: PAYMENT_STATES.PAYMENT_LINK_SUCCESS });
+        } catch (error) {
+            dispatch.payments.setApiFetchState({ result: 'error', loading: false, message: PAYMENT_STATES.ERROR });
         }
+
         handleClose();
     };
 

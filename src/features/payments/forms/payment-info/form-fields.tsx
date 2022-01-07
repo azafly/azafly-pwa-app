@@ -128,6 +128,9 @@ export const generateInputType = ({ props, option, isError, defaultValue }: gene
                 value={defaultValue || ''}
                 type={option?.type ?? 'text'}
                 {...props}
+                rows={2}
+                multiline
+                variant='outlined'
                 FormHelperTextProps={{
                     className: isError ? '' : 'info'
                 }}

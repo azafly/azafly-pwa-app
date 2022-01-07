@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 import { Dispatch, RootState } from 'app/store';
 

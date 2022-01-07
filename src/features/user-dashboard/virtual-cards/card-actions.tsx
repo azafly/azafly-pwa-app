@@ -76,15 +76,16 @@ export function VirtualCardActions({ currency }: VirtualCardActionsProps) {
             action: 'settings'
         }
     ];
+
+    const handleOnActionClick = (action: Action) => {
+        dispatch.payments.setBuyCurrency(currency);
+        dispatch.dashboard.setCurrentCardIdentifier({ currency, action, openTopUpModal: true });
+    };
     return (
         <List>
             {GRID_ITEMS.map(({ avatar, primaryText, secondaryText, action }) => {
                 return (
-                    <ListItem
-                        key={primaryText}
-                        className={classes.actionItem}
-                        onClick={() => dispatch.dashboard.setCurrentCardIdentifier({ currency, action, openTopUpModal: true })}
-                    >
+                    <ListItem key={primaryText} className={classes.actionItem} onClick={() => handleOnActionClick(action)}>
                         <ListItemAvatar>
                             <Avatar sx={{ border: '1px solid #4990A4', background: 'white' }}>{avatar}</Avatar>
                         </ListItemAvatar>

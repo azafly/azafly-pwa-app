@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
             '& .tabHeader_typography': {
                 fontSize: '0.95rem',
                 fontFamily: 'Nunito',
-                fontWeight: 800,
+                fontWeight: 700,
                 paddingLeft: '1ch',
                 [theme.breakpoints.only('xs')]: {
                     fontSize: '0.8rem'

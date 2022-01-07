@@ -197,7 +197,7 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     };
 
     const heading = (text: string, icon?: any) => (
-        <div style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} key={text}>
+        <div style={{ display: 'flex', marginRight: '3ch' }} key={text}>
             {' '}
             {icon}
             <Typography style={{ textTransform: 'capitalize', fontWeight: 600, fontSize: '0.95em', color: '#0d324d' }}> {text}</Typography>

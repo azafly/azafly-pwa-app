@@ -2,7 +2,12 @@ import { Box, Button, Stepper, Step, StepContent, StepLabel } from '@material-ui
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import PaymentIcon from '@mui/icons-material/Payment';
+import ReviewModal from './review/review';
+import StorageIcon from '@mui/icons-material/Storage';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
 import { Dispatch, RootState } from 'app/store';
 import { getInitialOffer } from 'services/rest-clients/user-payment';
@@ -16,9 +21,13 @@ import { useGetPendingOfferByIdLazyQuery } from 'api/generated/graphql';
 import { usePaymentContext } from './context';
 import { useStepperStyles } from './classes';
 import { useURLParams } from 'hooks/use-url-params';
-import ReviewModal from './review/review';
 
-const getSteps = ['Payment Info', 'Payment method', 'Payment Information', 'Review & Confirm'];
+const getSteps = [
+    { label: 'Where are you sending to', icon: AddLocationAltIcon },
+    { label: 'Rates and Fees Information', icon: TrendingDownIcon },
+    { label: 'Details of the Receiver', icon: StorageIcon },
+    { label: 'Review & Confirm Payment', icon: PaymentIcon }
+];
 export type Steps = typeof getSteps[number];
 
 function getStepContent(step: number, handleNext: () => void) {
@@ -43,9 +52,8 @@ export function VerticalPaymentStepper() {
 
     const steps = getSteps;
     const { activeStep, paymentLink, setActiveStep } = usePaymentContext();
-    const { apiFetchState, buyAmount, buyCurrency, DIRECT_activeStep, offerBasedOnRate, sellCurrency } = useSelector(
-        (state: RootState) => state.payments
-    );
+    const { apiFetchState, buyAmount, buyCurrency, DIRECT_canGoNext, DIRECT_activeStep, offerBasedOnRate, sellCurrency, sellCurrencyTotalToPay } =
+        useSelector((state: RootState) => state.payments);
 
     const handleNext = () => {
         dispatch.payments.DIRECT_setActiveStep(activeStep + 1);
@@ -83,9 +91,10 @@ export function VerticalPaymentStepper() {
             } = await getInitialOffer({ source_currency: buyCurrency, source_amount: buyAmount, target_currency: sellCurrency });
             dispatch.payments.setOfferBasedOnRate(data);
             dispatch.payments.setApiFetchState({ ...apiFetchState, loading: false, message: PAYMENT_STATES.OFFER_CREATED });
+            dispatch.payments.setSellCurrencyTotalToPay(data.total_in_target_with_charges ?? sellCurrencyTotalToPay ?? 0);
             dispatch.payments.DIRECT_setActiveStep(1);
         } catch (error) {
-            dispatch.payments.setApiFetchState({ ...apiFetchState, loading: false, message: PAYMENT_STATES.ERROR });
+            dispatch.payments.setApiFetchState({ ...apiFetchState, result: 'error', loading: false, message: PAYMENT_STATES.ERROR });
         }
     };
 
@@ -95,14 +104,14 @@ export function VerticalPaymentStepper() {
                 return apiFetchState?.loading ? (
                     <ThreeDots variantColor={'base'} loadingText={'creating offer'} />
                 ) : (
-                    <button
+                    <Button
+                        endIcon={<NavigateNextIcon />}
                         className={classes.next}
                         onClick={handleGetOffersBasedOnRates}
-                        disabled={apiFetchState?.result === 'error' || apiFetchState.loading}
+                        disabled={apiFetchState?.result === 'error' || apiFetchState.loading || buyAmount <= 0}
                     >
                         {'Get offer'}
-                        <NavigateNextIcon />
-                    </button>
+                    </Button>
                 );
             case 1:
                 return (
@@ -127,18 +136,20 @@ export function VerticalPaymentStepper() {
             case 2:
                 return null;
             case 3:
-                return (
+                return apiFetchState?.loading ? (
+                    <ThreeDots variantColor={'base'} loadingText={'setting up payment'} />
+                ) : (
                     <Button
                         className={classes.next}
                         href={paymentLink}
                         classes={{
                             disabled: classes.disabled
                         }}
+                        endIcon={<NavigateNextIcon />}
                         onClick={() => dispatch.payments.DIRECT_setPaymentIntentPayload({})}
                         disabled={apiFetchState?.result === 'error' || !paymentLink}
                     >
-                        {apiFetchState?.loading ? <ThreeDots /> : 'Pay'}
-                        <NavigateNextIcon />
+                        {'Pay'}
                     </Button>
                 );
             default:
@@ -172,14 +183,18 @@ export function VerticalPaymentStepper() {
     return (
         <div className={classes.root}>
             <Stepper activeStep={activeStep} orientation='vertical'>
-                {steps.map((label, index) => (
+                {steps.map(({ label, icon }, index) => (
                     <Step key={label}>
                         <StepLabel
+                            classes={{ label: classes.stepperLabel }}
                             className={classes.stepperLabel}
                             onClick={() => {
-                                dispatch.payments.DIRECT_setActiveStep(index);
-                                setActiveStep(index);
+                                if (DIRECT_canGoNext) {
+                                    dispatch.payments.DIRECT_setActiveStep(index);
+                                    setActiveStep(index);
+                                }
                             }}
+                            StepIconComponent={icon}
                         >
                             {label}
                         </StepLabel>

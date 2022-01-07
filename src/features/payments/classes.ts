@@ -28,7 +28,8 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
             },
             '& .MuiStepper-root': {
                 background: 'inherit',
-                borderRadius: 15
+                borderRadius: 15,
+                width: '100%'
             },
             '& .MuiStepLabel-label': {
                 cursor: 'pointer',
@@ -36,7 +37,13 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
                 color: theme.colors.textPrimary
             }
         },
-        stepperLabel: {},
+        stepperLabel: {
+            color: theme.palette.secondary.main,
+            cursor: 'pointer',
+            '&:active': {
+                color: 'white'
+            }
+        },
         button: {
             marginTop: theme.spacing(1),
             marginRight: theme.spacing(3),

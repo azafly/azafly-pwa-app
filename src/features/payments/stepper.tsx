@@ -17,8 +17,17 @@ import { usePaymentContext } from './context';
 import { useStepperStyles } from './classes';
 import { useURLParams } from 'hooks/use-url-params';
 import ReviewModal from './review/review';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import StorageIcon from '@mui/icons-material/Storage';
+import PaymentIcon from '@mui/icons-material/Payment';
 
-const getSteps = ['Payment Info', 'Payment method', 'Payment Information', 'Review & Confirm'];
+const getSteps = [
+    { label: 'Payment Info', icon: AddLocationAltIcon },
+    { label: 'Payment method', icon: PersonAddAltIcon },
+    { label: 'Payment Information', icon: StorageIcon },
+    { label: 'Review & Confirm', icon: PaymentIcon }
+];
 export type Steps = typeof getSteps[number];
 
 function getStepContent(step: number, handleNext: () => void) {
@@ -172,14 +181,16 @@ export function VerticalPaymentStepper() {
     return (
         <div className={classes.root}>
             <Stepper activeStep={activeStep} orientation='vertical'>
-                {steps.map((label, index) => (
+                {steps.map(({ label, icon }, index) => (
                     <Step key={label}>
                         <StepLabel
+                            classes={{ label: classes.stepperLabel }}
                             className={classes.stepperLabel}
                             onClick={() => {
                                 dispatch.payments.DIRECT_setActiveStep(index);
                                 setActiveStep(index);
                             }}
+                            StepIconComponent={icon}
                         >
                             {label}
                         </StepLabel>

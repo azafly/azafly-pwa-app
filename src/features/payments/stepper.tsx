@@ -136,7 +136,7 @@ export function VerticalPaymentStepper() {
             case 2:
                 return null;
             case 3:
-                return apiFetchState?.loading ? (
+                return apiFetchState.message === PAYMENT_STATES.FETCHING_PAYMENT_LINK ? (
                     <ThreeDots variantColor={'base'} loadingText={'setting up payment'} />
                 ) : (
                     <Button
@@ -149,7 +149,7 @@ export function VerticalPaymentStepper() {
                         onClick={() => dispatch.payments.DIRECT_setPaymentIntentPayload({})}
                         disabled={apiFetchState?.result === 'error' || !paymentLink}
                     >
-                        {'Pay'}
+                        {apiFetchState?.loading ? '...loading' : 'Pay'}
                     </Button>
                 );
             default:

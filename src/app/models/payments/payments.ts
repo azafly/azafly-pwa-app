@@ -34,7 +34,7 @@ interface APIFetchState {
 
 export interface PaymentState {
     apiFetchState: APIFetchState;
-    offerBasedOnRate?: GetOffersResponseData;
+    offerBasedOnRate?: GetOffersResponseData | null;
     paymentLink?: string;
     paymentIntentPayload?: any;
     verificationStatus: {
@@ -88,7 +88,7 @@ export const payments = createModel<RootModel>()({
         DIRECT_setPaymentIntentPayload(state, payload: PaymentState['DIRECT_paymentIntentPayload']) {
             return { ...state, DIRECT_paymentIntentPayload: payload };
         },
-        setOfferBasedOnRate(state, payload: GetOffersResponseData | undefined) {
+        setOfferBasedOnRate(state, payload: GetOffersResponseData | null) {
             return { ...state, offerBasedOnRate: payload };
         },
         setApiFetchState(state, payload: APIFetchState) {

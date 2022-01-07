@@ -16,7 +16,7 @@ export interface CurrencyListParams {
     country: string;
     currencyCode: string;
     active: boolean;
-    flag?: string;
+    flag: string;
 }
 
 interface CurrencyToggleProps {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         select: {
             paddingTop: 10,
-            maxWidth: 300,
+            maxWidth: 250,
             [theme.breakpoints.down('sm')]: {
                 background: 8
             },
@@ -70,21 +70,22 @@ export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtr
         dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
         // @ts-ignore
         dispatch.VIRTUAL_CARDS.setCurrentCard(currencyValue.currencyCode);
+        dispatch.payments.setOfferBasedOnRate(null);
         handleCurrencyChangeExtraAction && handleCurrencyChangeExtraAction({ ...payments.apiFetchState, message: PAYMENT_STATES.GROUND_ZERO });
     };
 
     const classes = useStyles();
 
     return (
-        <Box sx={{ padding: '14px', borderTopRightRadius: 4, borderBottomRightRadius: 4, maxWidth: 300 }}>
+        <Box sx={{ padding: '14px', borderTopRightRadius: 4, borderBottomRightRadius: 4, maxWidth: 250 }}>
             <FormControl
                 classes={{ root: classes.select }}
                 variant='filled'
-                sx={{ minWidth: 120, display: 'flex', alignItems: 'center', paddingTop: '0rem' }}
+                sx={{ minWidth: 120, display: 'flex', alignItems: 'center', paddingTop: '0rem', maxWidth: 250 }}
             >
                 <Select
-                    labelId='filled-label'
-                    id='filled-label'
+                    labelId='demo-simple-select-filled-label'
+                    id='demo-simple-select-filled'
                     // @ts-ignore
                     value={getCurrentCurrency()}
                     onChange={handleRateChange}
@@ -114,7 +115,7 @@ export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtr
                                         sx={{ mr: '0.8ch', height: '30px !important', width: '35px !important' }}
                                         sizes={'small'}
                                     />{' '}
-                                    <Typography fontWeight={700} sx={{ fontWeight: 800, fontFamily: 'Nunito', mr: '1ch' }}>
+                                    <Typography fontWeight={700} sx={{ fontFamily: 'Nunito', mr: '1ch' }}>
                                         {option.currencyCode}
                                     </Typography>
                                 </Stack>

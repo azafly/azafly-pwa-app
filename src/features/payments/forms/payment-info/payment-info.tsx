@@ -93,7 +93,6 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
         validationSchema,
         onSubmit: values => {
             gotToNextStep();
-            console.log(values);
             dispatchStore.payments.DIRECT_setPaymentIntentPayload({ ...values, fileUrl, name: hasuraUser?.display_name });
         }
     });

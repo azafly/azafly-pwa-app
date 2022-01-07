@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { axiosClient } from 'services/rest-clients';
 import { Dispatch, RootState } from 'app/store';
+import { getOfferById } from 'services/rest-clients/user-payment';
 import { useGetPendingOfferByIdLazyQuery } from 'api/generated/graphql';
 import { useURLParams } from 'hooks/use-url-params';
 
@@ -14,17 +15,18 @@ interface Status {
     referer: string;
 }
 
+const TRANSFER_REF = 'tx_ref';
+const TRANSACTION_ID = 'transaction_id';
+const STATUS = 'status';
+
 export const useVerifyPaymentSuccess = () => {
     const [offer, setOffer] = useState<any>();
     const [paymentIntentPayload, setPaymentIntentPayload] = useState<string | undefined>();
-    const TRANSFER_REF = 'tx_ref';
-    const TRANSACTION_ID = 'transaction_id';
-    const STATUS = 'status';
 
     const tx_ref = useURLParams(TRANSFER_REF);
     const transaction_id = useURLParams(TRANSACTION_ID);
     const status = useURLParams(STATUS);
-    const path = `/verify?tx_ref=${tx_ref}&transaction_id=${transaction_id}&status=${status}`;
+    const path = `payments/verify?tx_ref=${tx_ref}&transaction_id=${transaction_id}&status=${status}`;
 
     const {
         payments: {
@@ -38,33 +40,34 @@ export const useVerifyPaymentSuccess = () => {
         }
     });
     const dispatch = useDispatch<Dispatch>();
+
     useEffect(() => {
-        dispatch.payments.setVerificationStatus({ loading: true });
+        dispatch.payments.setVerificationStatus({ loading: true, result: null });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        const verifyOrder = async () => {
+            return axiosClient()
+                .get(path)
+                .then(() => {
+                    dispatch.payments.setVerificationStatus({ result: 'success', loading: false });
+                    dispatch.payments.setCurrentlyVerifiedOffer(offer);
+                })
+                .catch(() => {
+                    dispatch.payments.setVerificationStatus({ result: 'error', loading: false });
+                });
+        };
         handleGetOfferById()
             .then(({ data }) => {
                 setPaymentIntentPayload(data?.payment_offer[0].payment_intent_payload ?? '');
                 setOffer(data?.payment_offer[0]);
-                dispatch.payments.setVerificationStatus({ result: 'success', loading: false });
-            })
-
-            .catch(() => {
-                dispatch.payments.setVerificationStatus({ result: 'error', loading: false });
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [transaction_id, handleGetOfferById]);
-    useEffect(() => {
-        axiosClient()
-            .get(path)
-            .then(() => {
-                dispatch.payments.setVerificationStatus({ result: 'success', loading: false });
-                dispatch.payments.setCurrentlyVerifiedOffer(offer);
+                verifyOrder();
             })
             .catch(() => {
                 dispatch.payments.setVerificationStatus({ result: 'error', loading: false });
             });
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [path]);
+    }, [transaction_id, handleGetOfferById, dispatch.payments, offer, path]);
 
     const verificationStatus: Status =
         result === 'error'

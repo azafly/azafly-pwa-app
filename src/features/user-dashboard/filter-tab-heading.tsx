@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { createStyles, makeStyles, Theme, useMediaQuery } from '@material-ui/core';
-import { Box, Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 

@@ -5,7 +5,6 @@ import Slider from 'react-slick';
 
 import { useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { useUserContext } from 'hooks/use-user-context';
-
 import LocalWalletCard from './cards/local-wallet';
 import ResidenceWalletCard from './cards/residence-wallet';
 

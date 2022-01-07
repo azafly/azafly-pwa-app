@@ -62,7 +62,6 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: '0px 10px'
         },
         prices: {
-            display: 'flex',
             marginLeft: '2rem',
             justifyContent: 'space-between',
             '& .price': {
@@ -75,8 +74,17 @@ const useStyles = makeStyles((theme: Theme) =>
                 fontWeight: 400,
                 fontSize: '0.9rem'
             },
-            '& .rate': {},
-            '& .fees': {}
+            '& .rate': {
+                color: theme.colors.base,
+                fontSize: '.75rem',
+                fontWeight: 600,
+                marginRight: '4ch'
+            },
+            '& .fees': {
+                color: theme.colors.base,
+                fontSize: '.75rem',
+                fontWeight: 600
+            }
         }
     })
 );
@@ -85,7 +93,9 @@ export function PriceCard() {
     const classes = useStyles();
     const {
         offerBasedOnRate,
-        apiFetchState: { loading }
+        apiFetchState: { loading },
+        buyCurrency,
+        sellCurrency
     } = useSelector((state: RootState) => state.payments);
 
     const { destination_currency, total_in_target_with_charges } = offerBasedOnRate || {};
@@ -121,11 +131,14 @@ export function PriceCard() {
                                 <br />
                                 {totalPriceToPay}
                             </h5>
-                            {/* <div>
-                            {' '}
-                            <p className={'rate'}> Rate : {rate}</p>
-                            <p className={'fees'}> Our Fees: {feesTotal}</p>
-                        </div> */}
+                            <Stack direction={'row'} sx={{ marginTop: '-50px' }}>
+                                {' '}
+                                <p className={'rate'}>
+                                    {' '}
+                                    Rate : 1 {buyCurrency} = {sellCurrency} {rate}
+                                </p>
+                                <p className={'fees'}> Our fees: {feesTotal}</p>
+                            </Stack>
                         </div>
                     )
                 )}

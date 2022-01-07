@@ -81,6 +81,9 @@ export const NewTransactionContainer = () => {
         }
     };
 
+    const formattedAmount = offerBasedOnRate?.total_in_target_with_charges
+        ? Number(offerBasedOnRate?.total_in_target_with_charges?.toFixed(2))
+        : sellCurrencyTotalToPay;
     return (
         <>
             <Stack direction={direction} alignItems={'center'} className={classes.new_transaction_container}>
@@ -95,7 +98,7 @@ export const NewTransactionContainer = () => {
                 />
                 <ConversionIcon />
                 <ConversionCard
-                    amount={Number(offerBasedOnRate?.total_in_target_with_charges?.toFixed(2)) ?? sellCurrencyTotalToPay}
+                    amount={formattedAmount}
                     info={`Total amount in ${sellCurrency}`}
                     options={africa}
                     disabled={true}

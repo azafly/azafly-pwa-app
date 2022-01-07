@@ -108,6 +108,9 @@ export function RatesInfo() {
     const handleResetError = () => dispatch.payments.setApiFetchState({ loading: false });
     const initialBuyCurrency = useMemo(() => urlParamBuyCurrency || buyCurrency || 'GBP', [buyCurrency, urlParamBuyCurrency]);
     const initialSellCurrency = useMemo(() => urlParamSellCurrency || sellCurrency || 'NGN', [sellCurrency, urlParamSellCurrency]);
+    const formattedAmount = offerBasedOnRate?.total_in_target_with_charges
+        ? Number(offerBasedOnRate?.total_in_target_with_charges?.toFixed(2))
+        : sellCurrencyTotalToPay;
 
     return (
         <form className={classes.root} noValidate autoComplete='on'>
@@ -138,7 +141,7 @@ export function RatesInfo() {
                     </Grid>
                     <Grid item xs={12}>
                         <CurrencyAmount
-                            amount={Number(offerBasedOnRate?.total_in_target_with_charges?.toFixed(2)) ?? sellCurrencyTotalToPay}
+                            amount={formattedAmount}
                             info={`Total amount in ${sellCurrency}`}
                             options={africa}
                             initialCurrency={initialSellCurrency}

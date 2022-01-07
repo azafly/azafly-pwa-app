@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 marginTop: '10vh'
             },
             '& .tabHeader_typography': {
-                fontSize: '0.75rem',
+                fontSize: '0.95rem',
                 fontFamily: 'Nunito',
                 fontWeight: 700,
                 paddingLeft: '1ch',
@@ -69,7 +69,6 @@ const CardList = () => {
     const { data, loading, error } = useGetUserCardsSubscription({ variables: { userId: user?.id ?? '' } });
 
     // TODO : use carData above other than mock once implementation si complete
-
     const formattedCardObject = useMemo(() => formatCardArrayToObject(data?.virtual_cards ?? []), [data]);
     const tabs = mockCards.map((cardObject: typeof mockCards[0], index) => {
         const { currency, countryCode } = cardObject;

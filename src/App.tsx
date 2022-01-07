@@ -24,9 +24,9 @@ function App() {
     const client = getApolloClient(token);
 
     return (
-        <PersistGate loading={<ThreeDots />} persistor={getPersistor()}>
+        <ApolloProvider client={client}>
             <FirebaseAuthProvider>
-                <ApolloProvider client={client}>
+                <PersistGate loading={<ThreeDots />} persistor={getPersistor()}>
                     <LocalizationProvider dateAdapter={DateAdapter}>
                         {' '}
                         <ThemeProvider theme={preferredTheme}>
@@ -34,9 +34,9 @@ function App() {
                             <Routes />
                         </ThemeProvider>
                     </LocalizationProvider>
-                </ApolloProvider>
+                </PersistGate>
             </FirebaseAuthProvider>
-        </PersistGate>
+        </ApolloProvider>
     );
 }
 

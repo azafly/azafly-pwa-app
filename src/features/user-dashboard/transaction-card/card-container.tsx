@@ -47,7 +47,7 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
                     </div>
 
                     {payment_status !== 'PENDING' && (
-                        <Chip className={classes.serviceInitiated} label={is_success_done ? 'Completed' : 'In Progress'} />
+                        <Chip className={classes.serviceInitiated} label={is_success_done ? 'Success' : 'In Progress'} />
                     )}
                     {payment_status === 'PENDING' && <Chip className={classes.serviceInitiated} label={'Pending'} />}
                 </div>
@@ -59,7 +59,6 @@ export const CardContainer = memo(function CardContainer({ transactionData }: Ca
                         Your progress summary
                     </Typography>
                     <ProgressStatusSteppers />
-                    {/* <TaskList taskList={tasks} /> */}
                 </Collapse>
             </CardContent>
         </Card>

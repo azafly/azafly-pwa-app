@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 import { PAYMENT_STATES } from 'app/models/payments';
-import { ConversionCard } from 'features/user-dashboard/local-transaction-views/conversion-card';
+import { ConversionCard } from 'features/user-dashboard/currency-conversion/conversion-card';
 import { createPaymentIntent, getInitialOffer } from 'services/rest-clients/user-payment';
 import { Dispatch, RootState } from 'app/store';
 import { formatCurrency } from 'libs';

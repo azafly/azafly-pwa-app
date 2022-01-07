@@ -1,4 +1,4 @@
-import { Avatar, Box } from '@mui/material';
+import { Avatar, Box, Chip } from '@mui/material';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import * as React from 'react';
@@ -109,15 +109,16 @@ export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtr
                                 disabled={!option.active}
                                 sx={{ height: '50px' }}
                             >
-                                <Stack direction={'row'} sx={{ m: 'auto', mb: 1, marginTop: '-7px !important' }} alignItems={'center'}>
+                                <Stack direction={'row'} sx={{ mb: 1, mt: '-7px !important' }}>
                                     <Avatar
                                         src={option.flag}
-                                        sx={{ mr: '0.8ch', height: '30px !important', width: '35px !important' }}
+                                        sx={{ mr: '0.8ch', height: '25px !important', width: '30px !important' }}
                                         sizes={'small'}
                                     />{' '}
                                     <Typography fontWeight={700} sx={{ fontFamily: 'Nunito', mr: '1ch' }}>
                                         {option.currencyCode}
                                     </Typography>
+                                    {!option.active && <Chip label={'Coming Soon'} sx={{ marginLeft: '2ch' }} size={'small'} />}
                                 </Stack>
                             </MenuItem>
                         );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { axiosClient } from 'services/rest-clients';
@@ -68,6 +68,8 @@ export const useVerifyPaymentSuccess = () => {
             });
     }, [transaction_id, handleGetOfferById, dispatch.payments, offer, path]);
 
+    const referer = useMemo(() => (paymentIntentPayload?.includes('top_up') ? 'cards' : 'payments'), [paymentIntentPayload]);
+
     const verificationStatus: Status =
         result === 'error'
             ? {
@@ -75,16 +77,17 @@ export const useVerifyPaymentSuccess = () => {
                   heading: `Oh no 😩 , we couldn't verify your payment`,
                   text: `If you are sure your payment went through,
         Contact Support through the chat bubble below or email`,
-                  referer: paymentIntentPayload?.includes('top_up') ? 'cards' : 'payments',
+                  referer,
                   cta: paymentIntentPayload?.includes('top_up') ? 'Restart Top Up' : `Start Payment again`
               }
             : {
                   status: 'success',
                   heading: 'Payment was processed successfully',
                   text: 'You can now track your payment',
-                  referer: paymentIntentPayload?.includes('top_up') ? 'cards' : 'payments',
+                  referer,
                   cta: paymentIntentPayload?.includes('top_up') ? 'Go to Virtual card' : 'Track Payment'
               };
+
     return {
         verificationStatus,
         loading: verifying

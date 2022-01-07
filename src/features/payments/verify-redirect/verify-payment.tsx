@@ -26,22 +26,20 @@ export default function RedirectCallback() {
         dashboard: { currentVirtualCard }
     } = useSelector(({ dashboard, payments }: RootState) => ({ dashboard, payments }));
 
-    const {
-        verificationStatus: { status, heading, text, cta, referer },
-        loading
-    } = useVerifyPaymentSuccess();
+    const { verificationStatus, loading } = useVerifyPaymentSuccess();
 
     const goToNext = async () => {
-        if (referer === 'cards') {
-            new Promise(() => dispatch.dashboard.setCurrentDashboardTab('cards')).then(() => history.replace('/dashboard'));
+        if (verificationStatus?.referer === 'cards') {
+            dispatch.dashboard.setCurrentDashboardTab('cards');
             dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'USD', openTopUpModal: false });
         }
         history.replace('/dashboard');
     };
 
     const goToPayments = async () => {
-        if (referer === 'card') {
+        if (verificationStatus?.referer === 'cards') {
             dispatch.dashboard.setCurrentDashboardTab('cards');
+            dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'USD', openTopUpModal: true });
         }
         history.replace('/dashboard');
     };
@@ -57,24 +55,24 @@ export default function RedirectCallback() {
                 ) : (
                     <>
                         <h3 style={{ textAlign: 'center' }} id='verify-modal'>
-                            {heading}
+                            {verificationStatus?.heading}
                         </h3>
-                        {status && status === 'success' && <CheckCircleOutlineIcon style={{ fontSize: 50 }} color={'success'} />}
-                        {status && status === 'error' && <CancelIcon style={{ fontSize: 50 }} color={'error'} />}
+                        {verificationStatus?.status === 'success' && <CheckCircleOutlineIcon style={{ fontSize: 50 }} color={'success'} />}
+                        {verificationStatus?.status === 'error' && <CancelIcon style={{ fontSize: 50 }} color={'error'} />}
                         <p style={{ textAlign: 'center' }} id='payment-verify'>
-                            {text} <strong>{status === 'error' && 'support@azafly.com'}</strong>
+                            {verificationStatus?.text} <strong>{verificationStatus?.status === 'error' && 'support@azafly.com'}</strong>
                         </p>
                         <Box sx={{ margin: 1 }}>
-                            {status && status === 'success' && (
+                            {verificationStatus?.status && verificationStatus?.status === 'success' && (
                                 <Button
                                     variant={'contained'}
                                     onClick={goToNext}
-                                    style={{ margin: 1, background: '#4990a4', width: '25ch', textTransform: 'capitalize' }}
+                                    style={{ margin: 1, background: '#4990a4', width: '25ch', textTransform: 'capitalize', color: 'white' }}
                                 >
-                                    {cta}
+                                    {verificationStatus.cta}
                                 </Button>
                             )}
-                            {status && status === 'error' && (
+                            {verificationStatus?.status && verificationStatus?.status === 'error' && (
                                 <>
                                     <h4 style={{ textAlign: 'center' }}> Or</h4>
                                     <Button
@@ -82,7 +80,7 @@ export default function RedirectCallback() {
                                         style={{ margin: 1, background: 'rgba(248,81,73,0.4)', textTransform: 'capitalize', width: '25ch' }}
                                         onClick={goToPayments}
                                     >
-                                        {cta}
+                                        {verificationStatus.cta}
                                     </Button>
                                 </>
                             )}

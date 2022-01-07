@@ -108,6 +108,8 @@ export function VerticalPaymentStepper() {
                         endIcon={<NavigateNextIcon />}
                         className={classes.next}
                         onClick={handleGetOffersBasedOnRates}
+                        variant={'contained'}
+                        color={'primary'}
                         disabled={apiFetchState?.result === 'error' || apiFetchState.loading || buyAmount <= 0}
                     >
                         {'Get offer'}

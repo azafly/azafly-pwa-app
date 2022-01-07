@@ -16,7 +16,7 @@ export interface CurrencyListParams {
     country: string;
     currencyCode: string;
     active: boolean;
-    flag?: string;
+    flag: string;
 }
 
 interface CurrencyToggleProps {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         select: {
             paddingTop: 10,
-            maxWidth: 300,
+            maxWidth: 250,
             [theme.breakpoints.down('sm')]: {
                 background: 8
             },
@@ -70,11 +70,11 @@ export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtr
     const classes = useStyles();
 
     return (
-        <Box sx={{ padding: '14px', borderTopRightRadius: 4, borderBottomRightRadius: 4, maxWidth: 300 }}>
+        <Box sx={{ padding: '14px', borderTopRightRadius: 4, borderBottomRightRadius: 4, maxWidth: 250 }}>
             <FormControl
                 classes={{ root: classes.select }}
                 variant='filled'
-                sx={{ minWidth: 120, display: 'flex', alignItems: 'center', paddingTop: '0rem' }}
+                sx={{ minWidth: 120, display: 'flex', alignItems: 'center', paddingTop: '0rem', maxWidth: 250 }}
             >
                 <Select
                     labelId='demo-simple-select-filled-label'

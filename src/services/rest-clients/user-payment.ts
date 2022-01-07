@@ -5,8 +5,8 @@ import { PURPOSE } from 'features/payments/forms/payment-info/form-fields';
 
 export type ApiRequestMethods = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
 
-const OFFERS_ENDPOINT = '/offers';
-const CREATE_INTENT_ENDPOINT = '/create-intent';
+const OFFERS_ENDPOINT = '/payments/offers';
+const CREATE_INTENT_ENDPOINT = '/payments/create-intent';
 export type CurrencyCode = 'NGN' | 'USD' | 'EUR' | 'GBP' | 'CAD';
 export interface ExchangeRatesResponse {
     target_currency: CurrencyCode;

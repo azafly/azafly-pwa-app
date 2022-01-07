@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { axiosClient } from 'services/rest-clients';
 import { Dispatch, RootState } from 'app/store';
-import { formatCardArrayToObject } from 'app/models/cards';
-import { topUpCard } from 'app/models/payments/mock';
 import { useGetPendingOfferByIdLazyQuery } from 'api/generated/graphql';
 import { useURLParams } from 'hooks/use-url-params';
 

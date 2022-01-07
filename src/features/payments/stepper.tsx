@@ -2,7 +2,12 @@ import { Box, Button, Stepper, Step, StepContent, StepLabel } from '@material-ui
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import PaymentIcon from '@mui/icons-material/Payment';
+import ReviewModal from './review/review';
+import StorageIcon from '@mui/icons-material/Storage';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
 import { Dispatch, RootState } from 'app/store';
 import { getInitialOffer } from 'services/rest-clients/user-payment';
@@ -16,17 +21,12 @@ import { useGetPendingOfferByIdLazyQuery } from 'api/generated/graphql';
 import { usePaymentContext } from './context';
 import { useStepperStyles } from './classes';
 import { useURLParams } from 'hooks/use-url-params';
-import ReviewModal from './review/review';
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import StorageIcon from '@mui/icons-material/Storage';
-import PaymentIcon from '@mui/icons-material/Payment';
 
 const getSteps = [
-    { label: 'Payment Info', icon: AddLocationAltIcon },
-    { label: 'Payment method', icon: PersonAddAltIcon },
-    { label: 'Payment Information', icon: StorageIcon },
-    { label: 'Review & Confirm', icon: PaymentIcon }
+    { label: 'Where are you sending to', icon: AddLocationAltIcon },
+    { label: 'Rates and Fees Information', icon: TrendingDownIcon },
+    { label: 'Details of the Receiver', icon: StorageIcon },
+    { label: 'Review & Confirm Payment', icon: PaymentIcon }
 ];
 export type Steps = typeof getSteps[number];
 
@@ -94,7 +94,7 @@ export function VerticalPaymentStepper() {
             dispatch.payments.setApiFetchState({ ...apiFetchState, loading: false, message: PAYMENT_STATES.OFFER_CREATED });
             dispatch.payments.DIRECT_setActiveStep(1);
         } catch (error) {
-            dispatch.payments.setApiFetchState({ ...apiFetchState, loading: false, message: PAYMENT_STATES.ERROR });
+            dispatch.payments.setApiFetchState({ ...apiFetchState, result: 'error', loading: false, message: PAYMENT_STATES.ERROR });
         }
     };
 
@@ -104,14 +104,14 @@ export function VerticalPaymentStepper() {
                 return apiFetchState?.loading ? (
                     <ThreeDots variantColor={'base'} loadingText={'creating offer'} />
                 ) : (
-                    <button
+                    <Button
+                        endIcon={<NavigateNextIcon />}
                         className={classes.next}
                         onClick={handleGetOffersBasedOnRates}
-                        disabled={apiFetchState?.result === 'error' || apiFetchState.loading}
+                        disabled={apiFetchState?.result === 'error' || apiFetchState.loading || buyAmount <= 0}
                     >
                         {'Get offer'}
-                        <NavigateNextIcon />
-                    </button>
+                    </Button>
                 );
             case 1:
                 return (

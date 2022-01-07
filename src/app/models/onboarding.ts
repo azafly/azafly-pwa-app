@@ -1,6 +1,6 @@
 import { createModel } from '@rematch/core';
 
-import { Country } from 'features/payments/hooks/use-country-list';
+import { Country } from 'types//country-data';
 import { CountryListData, defaultCountryListData } from 'types/country-data';
 import { Currency } from 'libs/constants';
 import { RootModel } from './index';

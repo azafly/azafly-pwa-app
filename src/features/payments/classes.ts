@@ -44,11 +44,17 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
                 color: 'white'
             }
         },
+        actionsContainer: {
+            marginBottom: theme.spacing(2),
+            maxWidth: 800,
+            display: 'flex',
+            justifyContent: 'space-around',
+            height: 50
+        },
         button: {
             marginTop: theme.spacing(1),
             marginRight: theme.spacing(3),
             textTransform: 'none',
-            zIndex: 0,
             width: '25ch'
         },
         disabled: {
@@ -79,12 +85,6 @@ export const useStepperStyles = makeStyles((theme: Theme) =>
             fontSize: '1.5rem',
             borderBottom: 'none',
             flexGrow: 1
-        },
-        actionsContainer: {
-            marginBottom: theme.spacing(2),
-            maxWidth: 800,
-            display: 'flex',
-            justifyContent: 'space-around'
         },
         resetContainer: {
             padding: theme.spacing(3)

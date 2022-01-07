@@ -1,12 +1,13 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Box, Grid } from '@material-ui/core';
-import { useSelector } from 'react-redux';
-import Chip from '@mui/material/Chip';
+import { Chip, Zoom } from '@mui/material';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 
-import { AfricaCountriesSelect } from './source-country/country-select';
-import { CurrencyAmount } from './target-country/currency-amount';
-import { Country, NIGERIA, useCountryList } from '../../hooks/use-country-list';
-import { RootState } from 'app/store';
+import { africa, otherCountries } from 'mocks/payment';
+import { ChangeEvent } from 'react';
+import { CurrencyAmount } from './currency-amount';
+import { Dispatch, RootState } from 'app/store';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -14,7 +15,6 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             padding: 50,
             borderRadius: 8,
-            margin: 50,
             maxWidth: 675,
             [theme.breakpoints.only('xs')]: {
                 width: '100%',
@@ -51,30 +51,67 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function RatesInfo() {
     const classes = useStyles();
-    const { popularSourceCountries } = useCountryList();
-    const { apiFetchState } = useSelector((state: RootState) => state.payments);
-    const getOptionLabel = (option: Country) => `${option.emoji ?? ''} ${' '}${option.currency.code}`;
-    const getOptionDisabled = (option: Country) => option.isComingSoon || option.isNotSupported;
+    const [amount, setAmount] = useState(0);
+
+    const { apiFetchState, buyAmount, buyCurrency, rates, sellCurrency, sellCurrencyTotalToPay } = useSelector((state: RootState) => state.payments);
+
+    const dispatch = useDispatch<Dispatch>();
+
+    const handleSellAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const amountValue = !e.target.value ? 0 : parseInt(e.target.value);
+        // set limit from server imposed limit
+        const LIMIT = 10000;
+        const limitAmount = amount > LIMIT ? LIMIT : amountValue;
+        setAmount(amountValue);
+        dispatch.payments.setBuyAmount(limitAmount);
+        if (rates && buyCurrency) {
+            dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
+        }
+    };
+
+    useEffect(() => {
+        if (rates && rates[sellCurrency][buyCurrency]) {
+            dispatch.payments.setSellCurrencyTotalToPay(rates[sellCurrency][buyCurrency]['rate'] * buyAmount);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const handleResetError = () => dispatch.payments.setApiFetchState({ loading: false });
 
     return (
         <form className={classes.root} noValidate autoComplete='on'>
             <div>
-                <Grid container>
+                <Grid container spacing={2}>
                     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                         {apiFetchState?.result === 'error' && (
-                            <Chip color={'error'} label={''} size={'medium'} sx={{ marginBottom: 3 }} variant={'outlined'} />
+                            <Zoom in={true} mountOnEnter unmountOnExit appear timeout={500}>
+                                <Chip
+                                    color={'error'}
+                                    label={`Sorry 😢 . We couldn't get offer this time.`}
+                                    size={'medium'}
+                                    sx={{ marginBottom: 3 }}
+                                    variant={'outlined'}
+                                    onDelete={handleResetError}
+                                />
+                            </Zoom>
                         )}
                     </Box>
                     <Grid item xs={12}>
-                        <AfricaCountriesSelect
-                            classKeys={{ option: classes.option }}
-                            options={[NIGERIA, ...popularSourceCountries]}
-                            getOptionLabel={getOptionLabel}
-                            getOptionDisabled={getOptionDisabled}
+                        <CurrencyAmount
+                            amount={amount > 0 ? amount : buyAmount}
+                            info={`I need to pay`}
+                            handleAmountChange={handleSellAmountChange}
+                            options={otherCountries}
+                            initialCurrency={buyCurrency ?? 'GBP'}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <CurrencyAmount />
+                        <CurrencyAmount
+                            amount={sellCurrencyTotalToPay}
+                            info={`Total amount in ${sellCurrency}`}
+                            options={africa}
+                            initialCurrency={sellCurrency}
+                        />
                     </Grid>
                 </Grid>
             </div>

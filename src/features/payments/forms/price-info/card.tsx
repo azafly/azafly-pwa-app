@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: 675,
             margin: '10px 0px',
             backgroundColor: 'white',
-            borderRadius: 18,
+            borderRadius: 10,
             border: '1px solid #DCDCDC',
             transition: '200ms all cubic-bezier(0.4, 0, 0.2, 1)',
             boxShadow: '0 2px 4px 0 rgba(218,228,239,0.5)',
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
             }
         },
         card: {
-            borderRadius: 18,
+            borderRadius: 10,
             cursor: 'pointer',
             [theme.breakpoints.only('xs')]: {
                 marginTop: 20

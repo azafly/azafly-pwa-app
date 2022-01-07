@@ -69,6 +69,7 @@ const CardList = () => {
     const { data, loading, error } = useGetUserCardsSubscription({ variables: { userId: user?.id ?? '' } });
 
     // TODO : use carData above other than mock once implementation si complete
+    // TODO: fix card not automatically on correct card for topup
     const formattedCardObject = useMemo(() => formatCardArrayToObject(data?.virtual_cards ?? []), [data]);
     const tabs = mockCards.map((cardObject: typeof mockCards[0], index) => {
         const { currency, countryCode } = cardObject;

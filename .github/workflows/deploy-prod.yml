@@ -1,9 +1,7 @@
-name: Deploy to Live Channel
+name: Deploy to Preview Channel
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
     # Optionally configure to run only for specific files. For example:
     # paths:
     # - "website/**"
@@ -13,18 +11,18 @@ env:
   REACT_APP_CLIENT_API_TOKEN_STAGING: ${{secrets.REACT_APP_CLIENT_API_TOKEN_STAGING}}
   REACT_APP_CLIENT_API_TOKEN_PROD: ${{secrets.REACT_APP_CLIENT_API_TOKEN_PROD}}
   CI: ''
-  REACT_APP_NODE_ENVIRONMENT: production
+  REACT_APP_NODE_ENVIRONMENT: staging
 
 jobs:
-  deploy_live_website:
+  build_and_preview:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # Add any build steps here. For example:
-      # - run: npm ci && npm run build
+      # change build to prod
+      - run: yarn add env-cmd && yarn deploy:staging
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROD }}"
-          projectId: your-Firebase-project-ID
-          channelId: live
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_PICK_SAFE }}"
+          expires: 30d
+          projectId: pick-safe

@@ -39,33 +39,6 @@ export const useFormStyles = makeStyles((theme: Theme) =>
                 fontWeight: 400
             }
         },
-        facebook: {
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            backgroundColor: 'rgb(0, 118, 251)',
-            padding: 5,
-            height: 40,
-            color: 'white',
-            fontWeight: 500,
-            textTransform: 'none',
-            fontSize: '0.875rem',
-            borderRadius: 6,
-            margin: '10px 0px',
-            zIndex: 10000,
-            textAlign: 'center',
-            boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)',
-            '& svg': {
-                flexGrow: 0,
-                width: 40,
-                height: 40
-            },
-            '& .text': {
-                margin: 'auto',
-                textAlign: 'right',
-                justifySelf: 'start'
-            }
-        },
         google: {
             cursor: 'pointer',
             display: 'flex',
@@ -73,6 +46,7 @@ export const useFormStyles = makeStyles((theme: Theme) =>
             height: 40,
             backgroundColor: 'rgb(255, 255, 255)',
             padding: 5,
+            border: '1px solid #DCDCDC',
             color: theme.palette.text.primary,
             fontWeight: 500,
             textTransform: 'none',

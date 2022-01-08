@@ -47,7 +47,6 @@ export const defaultAuthState: AuthState = {
 };
 export interface AuthContext {
     signInWithGoogle: any;
-    signInWithFacebook: any;
     confirmPasswordReset: any;
     sendPasswordResetEmail: any;
     signout: any;
@@ -59,7 +58,6 @@ export interface AuthContext {
 
 export const defaultAuhContext: AuthContext = {
     signInWithGoogle: () => new Promise(() => {}),
-    signInWithFacebook: () => new Promise(() => {}),
     confirmPasswordReset: () => new Promise(() => {}),
     sendPasswordResetEmail: () => new Promise(() => {}),
     signout: () => new Promise(() => {}),

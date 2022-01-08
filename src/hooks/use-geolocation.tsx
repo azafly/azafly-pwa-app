@@ -1,6 +1,8 @@
 import { useEffect, useReducer } from 'react';
 
 import axios from 'axios';
+import { ENV, getEnv } from 'format-env';
+
 interface LocationProps {
     isLoading: boolean;
     userCurrentCountry?: any;
@@ -35,7 +37,7 @@ export const useGeolocation = () => {
         axios.get(`https://us-central1-pick-safe.cloudfunctions.net/countryList`).then(({ data }) => data.countriesByRegion);
 
     const getUserGeoLocationData = async () =>
-        axios.get(`https://geolocation-db.com/json/${process.env.GEOLOCATION_KEY}`).then(({ data }) => data.country_name);
+        axios.get(`https://geolocation-db.com/json/${getEnv(ENV.REACT_APP_GEOLOCATION_KEY)}`).then(({ data }) => data.country_name);
 
     useEffect(() => {
         const getUserGeolocationDetails = async () => {

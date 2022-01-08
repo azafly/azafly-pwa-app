@@ -82,7 +82,7 @@
         "analyze": "source-map-explorer 'build/static/js/*.js'",
         "generate": "graphql-codegen --config codegen.js",
         "prettier": "prettier src/**/*.{ts,tsx,js,json,d.ts}",
-        "deploy:staging": "env-cmd -f .env.staging react-app-rewired build && firebase deploy -P staging",
+        "deploy:staging": "env-cmd -f .env.staging react-app-rewired build",
         "deploy:prod": "env-cmd -f .env.production react-app-rewired build && firebase deploy -P prod",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
     },

@@ -7,6 +7,13 @@ on:
     # Optionally configure to run only for specific files. For example:
     # paths:
     # - "website/**"
+env:
+  REACT_APP_FIREBASE_API_KEY_STAGING: ${{secrets.REACT_APP_FIREBASE_API_KEY_STAGING}}
+  REACT_APP_FIREBASE_API_KEY_PROD: ${{secrets.REACT_APP_FIREBASE_API_KEY_STAGING}}
+  REACT_APP_CLIENT_API_TOKEN_STAGING: ${{secrets.REACT_APP_CLIENT_API_TOKEN_STAGING}}
+  REACT_APP_CLIENT_API_TOKEN_PROD: ${{secrets.REACT_APP_CLIENT_API_TOKEN_PROD}}
+  CI: ${{}}
+  REACT_APP_NODE_ENVIRONMENT: production
 
 jobs:
   deploy_live_website:

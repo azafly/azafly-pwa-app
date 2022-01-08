@@ -43,7 +43,7 @@ export const SendFromNaija = memo(function CardContainer({ transactionData }: Ca
                             {date}
                         </Typography>
                     </div>
-                    <Chip className={classes.serviceInitiated} label={is_success_done ? 'Completed' : 'In Progress'} />
+                    <Chip className={classes.serviceInitiated} label={is_success_done ? 'Success' : 'In Progress'} />
                 </div>
                 <Box onClick={handleExpandClick}>
                     <InfoText text={data.infoText} />

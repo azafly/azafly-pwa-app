@@ -5,7 +5,7 @@ import Skeleton from 'react-loading-skeleton';
 import { CardSkeleton } from './card-skeleton';
 import { formatFirstName } from 'libs';
 import { GetUserTransactionsQuery } from 'api/generated/graphql';
-import { NewTransactionContainer } from '../local-transaction-views/new-transaction-container';
+import { NewTransactionContainer } from '../currency-conversion/new-transaction-container';
 import { RootState } from 'app/store';
 
 import { TransactionListContainer } from './transaction-list-container';

@@ -36,7 +36,6 @@ export interface IPaymentContext {
     handleCreatePaymentIntent: (params: CreatePaymentIntentBody) => void;
     paymentError: string;
     isLoading: boolean;
-    canGoNext: boolean;
     activeStep: number;
     setActiveStep: Dispatch<SetStateAction<number>>;
 }
@@ -48,7 +47,6 @@ export const PaymentContext: IPaymentContext = {
     handleCreatePaymentIntent: () => new Promise(() => {}),
     paymentError: '',
     isLoading: false,
-    canGoNext: false,
     activeStep: 0,
     setActiveStep: () => {}
 };

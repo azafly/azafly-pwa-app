@@ -63,6 +63,7 @@ export function RatesInfo() {
 
     const handleSellAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
         const amountValue = !e.target.value ? 0 : parseInt(e.target.value);
+        dispatch.payments.setOfferBasedOnRate(null);
         // set limit from server imposed limit
         const LIMIT = 10000;
         const limitAmount = amount > LIMIT ? LIMIT : amountValue;

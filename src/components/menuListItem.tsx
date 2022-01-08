@@ -1,10 +1,5 @@
-import {
-    ListItem,
-    ListItemIcon,
-    ListItemText
-} from '@material-ui/core';
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { PropsWithChildren } from 'react';
-import { motion } from 'framer-motion';
 
 interface MenuListItemProps {
     text: string;
@@ -30,21 +25,9 @@ const variants = {
     }
 };
 
-export const MenuListItem = ({
-    text,
-    children,
-    onClick
-}: PropsWithChildren<MenuListItemProps>) => {
+export const MenuListItem = ({ text, children, onClick }: PropsWithChildren<MenuListItemProps>) => {
     return (
-        <ListItem
-            variants={variants}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            component={motion.li}
-            button
-            key={text}
-            onClick={onClick}
-        >
+        <ListItem button key={text} onClick={onClick}>
             <ListItemIcon>{children}</ListItemIcon>
             <ListItemText primary={text} />
         </ListItem>

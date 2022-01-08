@@ -18,6 +18,8 @@ import { useFirebaseAuthContext } from 'providers/auth/firebase';
 
 import { ThreeDots } from 'components/css-loaders/three-dots';
 
+const IDLE_TIME = 1000 * 60 * 5;
+
 function App() {
     const { token } = useSelector((state: RootState) => state.auth);
     const preferredTheme = useMemo(() => createTheme(theme), []);
@@ -26,7 +28,7 @@ function App() {
     const client = getApolloClient(token);
 
     useIdleTimer({
-        timeout: 1000 * 60 * 5,
+        timeout: IDLE_TIME,
         onIdle: () => signout(),
         crossTab: {
             emitOnAllTabs: true

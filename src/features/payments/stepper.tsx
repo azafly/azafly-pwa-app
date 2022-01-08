@@ -151,7 +151,7 @@ export function VerticalPaymentStepper() {
                         onClick={() => dispatch.payments.DIRECT_setPaymentIntentPayload({})}
                         disabled={apiFetchState?.result === 'error' || !paymentLink}
                     >
-                        {apiFetchState?.loading ? '...loading' : 'Pay'}
+                        {'Pay'}
                     </Button>
                 );
             default:

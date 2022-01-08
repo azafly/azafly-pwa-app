@@ -1,4 +1,4 @@
-import { Avatar, Box, Chip } from '@mui/material';
+import { Avatar, Box } from '@mui/material';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import * as React from 'react';
@@ -16,7 +16,7 @@ export interface CurrencyListParams {
     country: string;
     currencyCode: string;
     active: boolean;
-    flag?: string;
+    flag: string;
 }
 
 interface CurrencyToggleProps {
@@ -70,7 +70,6 @@ export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtr
         dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
         // @ts-ignore
         dispatch.VIRTUAL_CARDS.setCurrentCard(currencyValue.currencyCode);
-        dispatch.payments.setOfferBasedOnRate(null);
         handleCurrencyChangeExtraAction && handleCurrencyChangeExtraAction({ ...payments.apiFetchState, message: PAYMENT_STATES.GROUND_ZERO });
     };
 
@@ -84,8 +83,8 @@ export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtr
                 sx={{ minWidth: 120, display: 'flex', alignItems: 'center', paddingTop: '0rem', maxWidth: 250 }}
             >
                 <Select
-                    labelId='filled-label'
-                    id='filled-label'
+                    labelId='demo-simple-select-filled-label'
+                    id='demo-simple-select-filled'
                     // @ts-ignore
                     value={getCurrentCurrency()}
                     onChange={handleRateChange}
@@ -107,18 +106,17 @@ export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtr
                                 value={option}
                                 key={option.currencyCode}
                                 disabled={!option.active}
+                                sx={{ height: '50px' }}
                             >
-                                <Stack direction={'row'} sx={{ mb: 1, mt: '-5px !important' }}>
+                                <Stack direction={'row'} sx={{ m: 'auto', mb: 1, marginTop: '-7px !important' }} alignItems={'center'}>
                                     <Avatar
                                         src={option.flag}
-                                        sx={{ mr: '0.8ch', height: '20px !important', width: '35px !important' }}
+                                        sx={{ mr: '0.8ch', height: '30px !important', width: '35px !important' }}
                                         sizes={'small'}
-                                        variant={'rounded'}
                                     />{' '}
                                     <Typography fontWeight={700} sx={{ fontFamily: 'Nunito', mr: '1ch' }}>
                                         {option.currencyCode}
                                     </Typography>
-                                    {!option.active && <Chip label={'Coming Soon'} sx={{ marginLeft: '2ch' }} size={'small'} />}
                                 </Stack>
                             </MenuItem>
                         );

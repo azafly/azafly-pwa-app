@@ -1,5 +1,6 @@
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { styled, Box } from '@mui/system';
+import { Grid } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -121,6 +122,44 @@ export default function ReviewModal() {
                 <Box sx={style}>
                     <h2 id='review-modal'>Confirm Payment Details</h2>
                     <p id='payment-review'>Here is where you will be able to edit and confirm payment details</p>
+
+                    <Grid container xs={12} spacing={2} style={{ margin: '4px' }}>
+                        <Grid xs={6}>
+                            <div>Name</div>
+                        </Grid>
+                        <Grid xs={6}>
+                            <div>{DIRECT_paymentIntentPayload?.name}</div>
+                        </Grid>
+                        <Grid xs={6}>
+                            <div>Purpose</div>
+                        </Grid>
+                        <Grid xs={6}>
+                            <div>{DIRECT_paymentIntentPayload?.purpose}</div>
+                        </Grid>
+                        <Grid xs={6}>
+                            <div>Reference</div>
+                        </Grid>
+                        <Grid xs={6}>
+                            <div>{DIRECT_paymentIntentPayload?.references}</div>
+                        </Grid>
+                        {DIRECT_paymentIntentPayload.fileUrl && (
+                            <>
+                                <Grid xs={6}>
+                                    <div>Uploaded Document</div>
+                                </Grid>
+                                <Grid xs={6}>
+                                    <div>{DIRECT_paymentIntentPayload?.fileUrl}</div>
+                                </Grid>
+                            </>
+                        )}
+                        <Grid xs={6}>
+                            <div>Total amount</div>
+                        </Grid>
+                        <Grid xs={6}>
+                            <div>{offerBasedOnRate?.total_in_target_with_charges}</div>
+                        </Grid>
+                    </Grid>
+
                     <Button onClick={goToPayment} color={'success'}>
                         I agree
                     </Button>

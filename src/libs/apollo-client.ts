@@ -2,9 +2,10 @@ import { ApolloClient, InMemoryCache, ApolloLink, from, NormalizedCacheObject, s
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';
+import { ENV, getEnv } from 'format-env';
 
-const HTTPS_URL = process.env.REACT_APP_HASURA_GRAPHQL_HTTPS_URL as string;
-const WSS_URL = process.env.REACT_APP_HASURA_GRAPHQL_WS_URL as string;
+const HTTPS_URL = getEnv(ENV.REACT_APP_HASURA_GRAPHQL_HTTPS_URL);
+const WSS_URL = getEnv(ENV.REACT_APP_HASURA_GRAPHQL_WS_URL);
 
 //log errors to the console
 const logErrors = onError(({ graphQLErrors, networkError }) => {

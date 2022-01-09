@@ -112,7 +112,7 @@ export function VerticalPaymentStepper() {
                         color={'primary'}
                         disabled={apiFetchState?.result === 'error' || apiFetchState.loading || buyAmount <= 0}
                     >
-                        {'Get offer'}
+                        {'Get offer details'}
                     </Button>
                 );
             case 1:

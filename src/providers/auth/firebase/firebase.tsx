@@ -81,7 +81,7 @@ function useFirebaseProviderAuth() {
             .signOut()
             .then(() => {
                 dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, user: null, token: null, isLoading: false });
-                location.replace('/signin');
+                history.replaceState({ from: location.pathname }, '', '/signin');
             })
             .catch(error => console.warn(error));
     };

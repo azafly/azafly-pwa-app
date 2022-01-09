@@ -122,7 +122,7 @@ export function PriceCard() {
         <div className={classes.root}>
             <Card classes={{ root: classes.card }}>
                 {loading ? (
-                    <ThreeDots variantColor={'base'} />
+                    <ThreeDots variantColor={'base'} loadingText={'fetching rates'} />
                 ) : (
                     offerBasedOnRate && (
                         <div className={classes.prices}>
@@ -142,7 +142,6 @@ export function PriceCard() {
                         </div>
                     )
                 )}
-                {offerBasedOnRate && <SupportedMethods />}
                 {offerBasedOnRate && (
                     <Stack direction={'row'} className={classes.moreInfo}>
                         <InfoIcon color={'info'} />

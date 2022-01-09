@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       # Add any build steps here. For example:
-      - run: yarn add env-cmd --dev && yarn build
+      - run: yarn add env-cmd && yarn deploy:staging
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"

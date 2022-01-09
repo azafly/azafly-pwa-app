@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       # change build to prod
-      - run: yarn add env-cmd && yarn deploy:prod
+      - run: yarn add env-cmd --dev && yarn build:prod
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"

@@ -4,7 +4,6 @@ export { ArrowUpSvgComponent } from './arrow-up';
 export { BackwardSvgComponent } from './backward';
 export { ChatSvgComponent } from './chat';
 export { DashboardSvgComponent } from './dashboard';
-export { FacebookSvgComponent } from './facebook';
 export { ForwardSvgComponent } from './forward';
 export { HeartSvgComponent } from './heart';
 export { HelpSvgComponent } from './help';

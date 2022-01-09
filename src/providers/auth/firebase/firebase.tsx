@@ -6,7 +6,6 @@ import {
     applyActionCode,
     confirmPasswordReset as confirmPassword,
     createUserWithEmailAndPassword,
-    FacebookAuthProvider,
     getAuth,
     GoogleAuthProvider,
     onAuthStateChanged,
@@ -104,10 +103,6 @@ function useFirebaseProviderAuth() {
         handleSignIn(signInWithPopup(firebaseAuth, googleProvider));
     };
 
-    const signInWithFacebook = async () => {
-        handleSignIn(signInWithPopup(firebaseAuth, new FacebookAuthProvider()));
-    };
-
     const signinWithEmailPassword = async (email: string, password: string) => {
         handleSignIn(signInWithPass(firebaseAuth, email, password));
     };
@@ -183,7 +178,6 @@ function useFirebaseProviderAuth() {
         confirmPasswordReset,
         sendPasswordResetEmail,
         signinWithEmailPassword,
-        signInWithFacebook,
         signInWithGoogle,
         signout,
         signupWithEmailPassword,

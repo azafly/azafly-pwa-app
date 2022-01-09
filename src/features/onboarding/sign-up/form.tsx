@@ -7,7 +7,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import { DefaultSnackbar } from 'components';
-import { FacebookSvgComponent } from 'components/icons';
 import { RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
@@ -46,7 +45,7 @@ export const SignUpForm = () => {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-    const { signupWithEmailPassword, signInWithFacebook, signInWithGoogle } = useFirebaseAuthContext();
+    const { signupWithEmailPassword, signInWithGoogle } = useFirebaseAuthContext();
     const { errorMessage = 'An Authentication has occurred', isError, isLoading } = useSelector((state: RootState) => state.auth);
 
     const formik = useFormik({
@@ -76,10 +75,6 @@ export const SignUpForm = () => {
         <div className={classes.signUpformRoot}>
             <DefaultSnackbar open={openSnackBar} handleClose={() => setOpenSnackBar(false)} severity={'error'} title={'Error'} info={errorMessage} />
             <div className={classes.form_container}>
-                <div className={`${classes.facebook}`} onClick={signInWithFacebook}>
-                    <FacebookSvgComponent />
-                    <div className={'text'}>Facebook</div>
-                </div>
                 <div className={` ${classes.google}`} onClick={signInWithGoogle}>
                     <img className='google-icon-svg' src={Logo} alt={'goggle-logo'} />
                     <div className={'text'}>Google</div>

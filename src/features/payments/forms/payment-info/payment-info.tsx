@@ -11,7 +11,6 @@ import { PAYMENT_INFO, validationSchema, initialValues, generateInputType } from
 import { Dispatch, RootState } from 'app/store';
 import { UploadButton } from 'components';
 import { useUpload } from 'hooks/use-upload-button';
-import { useUserContext } from 'hooks/use-user-context';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -86,7 +85,7 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
     const dispatchStore = useDispatch<Dispatch>();
 
     const { handleFileUpload, fileUploadLoading, fileUrl } = useUpload();
-    const { user } = useUserContext();
+    const user = hasuraUser ?? {};
 
     const formik = useFormik({
         initialValues: initialValues(),

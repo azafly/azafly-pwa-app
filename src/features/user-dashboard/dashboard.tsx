@@ -15,10 +15,8 @@ import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { Tour } from 'components/product-tour/tour';
 import { TOUR_DASHBOARD_LOCAL_STEPS } from './tours';
 import { Transactions as TransactionView } from './transactions';
-import { useGetExchangeRatesSubscription, useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
+import { useGetExchangeRatesSubscription, useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { UserAccount } from 'views/user-account';
-import { useUserContext } from 'hooks/use-user-context';
-import { PAYMENT_STATES } from 'app/models/payments';
 import CardList from './virtual-cards/card-list';
 
 import { useDashboardStyles, StyledBadge } from './classes';
@@ -32,14 +30,15 @@ export default function Dashboard() {
     const [verificationEmailSent, setSent] = useState('');
 
     const dispatch = useDispatch<Dispatch>();
-    const { user: userData } = useUserContext();
 
     const {
         dashboard: { currentSideBarTab },
-        payments: { sellCurrency }
+        payments: { sellCurrency },
+        auth: { hasuraUser }
     } = useSelector(({ dashboard, auth, payments }: RootState) => ({ dashboard, auth, payments }));
 
-    const [handleGetUserTransaction, { data: transactionData, loading }] = useGetUserTransactionsLazyQuery();
+    const userData = hasuraUser ?? {};
+    const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id: hasuraUser?.id ?? '' } });
     const { data: exchangeRates, error: errorRates, loading: loadingRates } = useGetExchangeRatesSubscription();
     const transactions = transactionData?.transaction;
 
@@ -93,11 +92,6 @@ export default function Dashboard() {
 
     const alertSeverity = verificationEmailSent.includes('Error') ? 'error' : 'success';
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
-
-    useEffect(() => {
-        const id = userData?.id;
-        handleGetUserTransaction({ variables: { id } }).catch(error => console.log(error));
-    }, [handleGetUserTransaction, userData]);
 
     useEffect(() => {
         fetchWallet();

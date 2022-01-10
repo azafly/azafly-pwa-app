@@ -25,7 +25,7 @@ export interface AuthState {
     action?: Action;
     errorMessage?: string;
     successMessage?: string;
-    isNewUser: boolean;
+    isNewUser?: boolean;
 }
 
 export const defaultUser: User = {

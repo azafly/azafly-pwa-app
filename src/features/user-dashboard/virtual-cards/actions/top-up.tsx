@@ -11,7 +11,6 @@ import { Dispatch, RootState } from 'app/store';
 import { formatCurrency } from 'libs';
 import { otherCountries } from 'mocks/payment';
 import { ThreeDots } from 'components/css-loaders/three-dots';
-import { useUserContext } from 'hooks/use-user-context';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -47,7 +46,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const TopUpForm = () => {
     const [showRateInfo, setShowInfo] = useState(false);
-    const { payments } = useSelector(({ payments }: RootState) => ({ payments }));
+    const {
+        auth: { hasuraUser },
+        payments
+    } = useSelector(({ auth, payments }: RootState) => ({ auth, payments }));
     const dispatch = useDispatch<Dispatch>();
     const { buyAmount: amount, buyCurrency, sellCurrency, rates, paymentLink, apiFetchState, offerBasedOnRate } = payments || {};
 
@@ -62,7 +64,7 @@ export const TopUpForm = () => {
         });
     };
 
-    const { user } = useUserContext();
+    const user = hasuraUser;
 
     const handleConfirmToPayment = async () => {
         try {

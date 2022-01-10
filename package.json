@@ -83,6 +83,7 @@
         "generate": "graphql-codegen --config codegen.js",
         "prettier": "prettier src/**/*.{ts,tsx,js,json,d.ts}",
         "build:staging": "env-cmd -f .env.staging react-app-rewired build",
+        "build:dev": "env-cmd -f .env.development react-app-rewired build",
         "build:prod": "env-cmd -f .env.production react-app-rewired build ",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
     },

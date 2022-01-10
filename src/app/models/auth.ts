@@ -2,12 +2,14 @@ import { createModel } from '@rematch/core';
 
 import { AuthState as FirebaseProviderAuthState, defaultAuthState } from 'providers/auth/firebase/constants';
 import { RootModel } from './index';
-import { Users as HasuraUser } from 'api/generated/graphql';
+import { Users } from 'api/generated/graphql';
+
+export type HasuraUser = Partial<Users> | null;
 
 type AuthState = FirebaseProviderAuthState & {
-    isAdmin: boolean;
-    isAfrica: boolean;
-    hasuraUser: Partial<HasuraUser> | null;
+    isAdmin?: boolean;
+    isAfrica?: boolean;
+    hasuraUser?: HasuraUser;
 };
 
 const authState: AuthState = {

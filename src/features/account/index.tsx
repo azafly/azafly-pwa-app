@@ -14,7 +14,6 @@ import { RootState } from 'app/store';
 import { UploadIconText } from './upload-icon-text';
 import { USER_ACCOUNT_FORM_FIELDS } from './utils';
 import { useUpdateUserMutation } from 'api/generated/graphql';
-import { useUserContext } from 'hooks/use-user-context';
 
 import { useStyles } from './classes';
 
@@ -23,8 +22,9 @@ const UserAccount = () => {
     const [makeEditable, setEditable] = useState(false);
     const [success, setSuccess] = useState('');
 
-    const { user, token } = useSelector((state: RootState) => state.auth);
-    const { user: userData } = useUserContext();
+    const { user, token, hasuraUser } = useSelector((state: RootState) => state.auth);
+
+    const userData = hasuraUser ?? {};
 
     const [updateUserMutation] = useUpdateUserMutation();
 

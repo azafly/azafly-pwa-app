@@ -11,14 +11,13 @@ import { storage } from 'providers/auth/firebase';
 import { ThreeDots } from 'components/css-loaders/three-dots';
 import { UpdateKycDocUrlMutationVariables, useUpdateKycDocUrlMutation, useUpdateNewUserMutation } from 'api/generated/graphql';
 import { uploadBytesResumable, getDownloadURL, ref as fbStorageRef } from 'firebase/storage';
-import { useUserContext } from 'hooks/use-user-context';
 import Modal from '../modal';
 
 export const KYCDocuments = () => {
     const [fileUploadLoading, setFileUploadLoading] = useState(false);
     const [alertState, setAlertState] = useState({ show: false, severity: '', title: '', text: '' });
 
-    const { user } = useSelector((state: RootState) => state.auth);
+    const { user, hasuraUser } = useSelector((state: RootState) => state.auth);
     const { address, country, document_url, phoneNumber: phone } = useSelector((state: RootState) => state.onboarding);
     const dispatch = useDispatch<Dispatch>();
 
@@ -26,7 +25,7 @@ export const KYCDocuments = () => {
         setAlertState({ ...alertState, show: false });
     };
 
-    const { user: userData } = useUserContext();
+    const userData = hasuraUser ?? {};
 
     const [handleUpdateDocUrl] = useUpdateKycDocUrlMutation();
     const [updateNewUserMutation] = useUpdateNewUserMutation({

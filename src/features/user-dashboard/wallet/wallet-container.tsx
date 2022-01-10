@@ -4,9 +4,10 @@ import { useMediaQuery } from '@material-ui/core';
 import Slider from 'react-slick';
 
 import { useGetUserTransactionsQuery } from 'api/generated/graphql';
-import { useUserContext } from 'hooks/use-user-context';
 import LocalWalletCard from './cards/local-wallet';
 import ResidenceWalletCard from './cards/residence-wallet';
+import { RootState } from 'app/store';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -45,7 +46,11 @@ const WalletContainer = () => {
         infinite: false
     };
 
-    const { user: userData } = useUserContext();
+    const {
+        auth: { hasuraUser }
+    } = useSelector(({ auth }: RootState) => ({ auth }));
+
+    const userData = hasuraUser;
 
     const id = userData?.id;
     const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id } });

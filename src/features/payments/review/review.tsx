@@ -12,6 +12,7 @@ import { isAllValueTruthy } from 'libs/index';
 import { usePaymentContext } from 'features/payments/context';
 import { useURLParams } from 'hooks/use-url-params';
 import { PAYMENT_STATES } from 'app/models/payments';
+import { formatCurrency } from 'libs';
 
 const StyledModal = styled(ModalUnstyled)`
     position: fixed;
@@ -45,10 +46,15 @@ const style = {
     px: 4,
     pb: 3
 };
+
 const StyledAlert = styled(Alert)`
         margin: 15;
         overflowWrap: 'break-word;
 `;
+
+const boldText = {
+    fontWeight: 'bold'
+};
 
 export default function ReviewModal() {
     const [open, setOpen] = React.useState(false);
@@ -92,6 +98,24 @@ export default function ReviewModal() {
         handleClose();
     };
 
+    const { destination_currency, total_in_target_with_charges } = offerBasedOnRate || {};
+    const getFormattedCurrency = () => {
+        if (offerBasedOnRate && isAllValueTruthy(destination_currency, total_in_target_with_charges)) {
+            const totalPriceToPay = formatCurrency({
+                currency: offerBasedOnRate.destination_currency ?? 'NGN',
+                amount: offerBasedOnRate.total_in_target_with_charges ?? 0,
+                countryCode: 'NG'
+            });
+
+            return {
+                totalPriceToPay
+            };
+        }
+        return {};
+    };
+
+    const { totalPriceToPay } = getFormattedCurrency();
+
     return (
         <Box>
             <Snackbar
@@ -124,39 +148,42 @@ export default function ReviewModal() {
                     <p id='payment-review'>Here is where you will be able to edit and confirm payment details</p>
 
                     <Grid container xs={12} spacing={2} style={{ margin: '4px' }}>
-                        <Grid xs={6}>
-                            <div>Name</div>
+                        <Grid xs={5}>
+                            <Box sx={boldText}>Name</Box>
                         </Grid>
-                        <Grid xs={6}>
-                            <div>{DIRECT_paymentIntentPayload?.name}</div>
+                        <Grid xs={7}>
+                            <div style={{ textTransform: 'uppercase' }}>{DIRECT_paymentIntentPayload?.name}</div>
                         </Grid>
-                        <Grid xs={6}>
-                            <div>Purpose</div>
+                        <Grid xs={5}>
+                            <Box sx={boldText}>Purpose</Box>
                         </Grid>
-                        <Grid xs={6}>
-                            <div>{DIRECT_paymentIntentPayload?.purpose}</div>
+                        <Grid xs={7}>
+                            <div style={{ textTransform: 'uppercase' }}>{DIRECT_paymentIntentPayload?.purpose}</div>
                         </Grid>
-                        <Grid xs={6}>
-                            <div>Reference</div>
+                        <Grid xs={5}>
+                            <Box sx={boldText}>Reference</Box>
                         </Grid>
-                        <Grid xs={6}>
-                            <div>{DIRECT_paymentIntentPayload?.references}</div>
+                        <Grid xs={7}>
+                            <div style={{ textTransform: 'uppercase' }}>{DIRECT_paymentIntentPayload?.references}</div>
                         </Grid>
                         {DIRECT_paymentIntentPayload.fileUrl && (
                             <>
-                                <Grid xs={6}>
-                                    <div>Uploaded Document</div>
+                                <Grid xs={5}>
+                                    <Box sx={boldText}>Uploaded Document</Box>
                                 </Grid>
-                                <Grid xs={6}>
-                                    <div>{DIRECT_paymentIntentPayload?.fileUrl}</div>
+                                <Grid xs={7}>
+                                    <img
+                                        style={{ objectFit: 'cover', maxWidth: '150px', maxHeight: '150px' }}
+                                        src={DIRECT_paymentIntentPayload?.fileUrl}
+                                    />
                                 </Grid>
                             </>
                         )}
-                        <Grid xs={6}>
-                            <div>Total amount</div>
+                        <Grid xs={5}>
+                            <Box sx={boldText}>Total Amount</Box>
                         </Grid>
-                        <Grid xs={6}>
-                            <div>{offerBasedOnRate?.total_in_target_with_charges}</div>
+                        <Grid xs={7}>
+                            <div style={{ textTransform: 'uppercase' }}>{totalPriceToPay}</div>
                         </Grid>
                     </Grid>
 

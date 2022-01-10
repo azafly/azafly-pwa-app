@@ -5,7 +5,7 @@ import { CountryListData, defaultCountryListData } from 'types/country-data';
 import { Currency } from 'libs/constants';
 import { RootModel } from './index';
 import { StepLabel } from 'features/onboarding/initial-preferences/steps/index';
-import { UK } from 'features/payments/context/constants';
+import { UK } from 'types/country-data';
 
 interface APIFetchState {
     result?: 'error' | 'success';

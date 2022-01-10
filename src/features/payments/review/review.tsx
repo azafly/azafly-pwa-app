@@ -7,12 +7,13 @@ import Button from '@mui/material/Button';
 import ModalUnstyled from '@mui/core/ModalUnstyled';
 import Snackbar from '@mui/material/Snackbar';
 
+import { createPaymentIntent } from 'services/rest-clients/user-payment';
 import { Dispatch, RootState } from 'app/store';
-import { isAllValueTruthy } from 'libs/index';
-import { usePaymentContext } from 'features/payments/context';
-import { useURLParams } from 'hooks/use-url-params';
-import { PAYMENT_STATES } from 'app/models/payments';
 import { formatCurrency } from 'libs';
+import { isAllValueTruthy } from 'libs/index';
+import { PAYMENT_STATES } from 'app/models/payments';
+import { ThreeDots } from 'components/css-loaders/three-dots';
+import { useURLParams } from 'hooks/use-url-params';
 
 const StyledModal = styled(ModalUnstyled)`
     position: fixed;
@@ -65,11 +66,10 @@ export default function ReviewModal() {
     const handleClose = () => setOpen(false);
     const handleCloseSnackBar = () => setOpenSnackBar(false);
 
-    const { handleCreatePaymentIntent } = usePaymentContext();
     const urlParamOfferId = useURLParams('offer_id');
 
     const {
-        payments: { offerBasedOnRate, DIRECT_paymentIntentPayload }
+        payments: { apiFetchState, offerBasedOnRate, DIRECT_paymentIntentPayload }
     } = useSelector(({ payments }: RootState) => ({ payments }));
 
     const dispatch = useDispatch<Dispatch>();
@@ -77,10 +77,15 @@ export default function ReviewModal() {
     const goToPayment = async () => {
         const { references, purpose, fileUrl, name } = DIRECT_paymentIntentPayload;
         const { payment_offer_id, source_currency } = offerBasedOnRate || {};
-        dispatch.payments.setApiFetchState({ result: null, loading: true, message: PAYMENT_STATES.FETCHING_PAYMENT_LINK });
+
         try {
+            dispatch.payments.setApiFetchState({ result: null, loading: true, message: PAYMENT_STATES.FETCHING_PAYMENT_LINK });
             if (isAllValueTruthy(payment_offer_id, source_currency, payment_offer_id, source_currency, name)) {
-                handleCreatePaymentIntent({
+                const {
+                    data: {
+                        data: { payment_link }
+                    }
+                } = await createPaymentIntent({
                     payment_offer_id: urlParamOfferId ?? payment_offer_id!,
                     payment_title: purpose,
                     description: references,
@@ -89,13 +94,13 @@ export default function ReviewModal() {
                     currency: source_currency ?? 'NGN',
                     document_url: fileUrl ?? null
                 });
+                dispatch.payments.setPaymentLink(payment_link);
             }
+            handleClose();
             dispatch.payments.setApiFetchState({ result: 'success', loading: false, message: PAYMENT_STATES.PAYMENT_LINK_SUCCESS });
         } catch (error) {
             dispatch.payments.setApiFetchState({ result: 'error', loading: false, message: PAYMENT_STATES.ERROR });
         }
-
-        handleClose();
     };
 
     const { destination_currency, total_in_target_with_charges } = offerBasedOnRate || {};
@@ -186,7 +191,7 @@ export default function ReviewModal() {
                             <div style={{ textTransform: 'uppercase' }}>{totalPriceToPay}</div>
                         </Grid>
                     </Grid>
-
+                    {apiFetchState?.loading && <ThreeDots variantColor={'base'} loadingText={'creating offer'} />}
                     <Button onClick={goToPayment} color={'success'}>
                         I agree
                     </Button>

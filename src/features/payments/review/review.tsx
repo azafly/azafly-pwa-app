@@ -38,6 +38,16 @@ const Backdrop = styled('div')`
     -webkit-tap-highlight-color: transparent;
 `;
 
+const FlexContainer = styled('div')`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4px;
+    padding: 8px 0;
+    border-bottom: 1px solid black;
+    width: 100%;
+`;
+
 const style = {
     width: 400,
     bgcolor: 'white',
@@ -148,56 +158,62 @@ export default function ReviewModal() {
                 onClose={handleClose}
                 BackdropComponent={Backdrop}
             >
-                <Box sx={style}>
-                    <h2 id='review-modal'>Confirm Payment Details</h2>
-                    <p id='payment-review'>Here is where you will be able to edit and confirm payment details</p>
+                <Box sx={style} className='hh'>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '6px' }}>
+                        <div>
+                            <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#ddd', marginRight: '6px' }}></div>
+                        </div>
+                        <div>
+                            <h2 id='review-modal' style={{ margin: '0' }}>
+                                Confirm Payment Details
+                            </h2>
+                            <p id='payment-review' style={{ margin: '0' }}>
+                                Here is where you will be able to edit and confirm payment details
+                            </p>
+                        </div>
+                    </div>
 
-                    <Grid container xs={12} spacing={2} style={{ margin: '4px' }}>
-                        <Grid xs={5}>
+                    <div style={{ margin: '20px 0' }}>
+                        <FlexContainer>
                             <Box sx={boldText}>Name</Box>
-                        </Grid>
-                        <Grid xs={7}>
-                            <div style={{ textTransform: 'uppercase' }}>{DIRECT_paymentIntentPayload?.name}</div>
-                        </Grid>
-                        <Grid xs={5}>
+                            <div style={{ textTransform: 'uppercase', textAlign: 'right' }}>{DIRECT_paymentIntentPayload?.name}</div>
+                        </FlexContainer>
+                        <FlexContainer>
                             <Box sx={boldText}>Purpose</Box>
-                        </Grid>
-                        <Grid xs={7}>
-                            <div style={{ textTransform: 'uppercase' }}>{DIRECT_paymentIntentPayload?.purpose}</div>
-                        </Grid>
-                        <Grid xs={5}>
+                            <div style={{ textTransform: 'uppercase', textAlign: 'right' }}>{DIRECT_paymentIntentPayload?.purpose}</div>
+                        </FlexContainer>
+                        <FlexContainer>
                             <Box sx={boldText}>Reference</Box>
-                        </Grid>
-                        <Grid xs={7}>
-                            <div style={{ textTransform: 'uppercase' }}>{DIRECT_paymentIntentPayload?.references}</div>
-                        </Grid>
+                            <div style={{ textTransform: 'uppercase', textAlign: 'right' }}>{DIRECT_paymentIntentPayload?.references}</div>
+                        </FlexContainer>
                         {DIRECT_paymentIntentPayload.fileUrl && (
-                            <>
-                                <Grid xs={5}>
-                                    <Box sx={boldText}>Uploaded Document</Box>
-                                </Grid>
-                                <Grid xs={7}>
+                            <FlexContainer>
+                                <Box sx={boldText}>Uploaded Document</Box>
+                                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                     <img
                                         style={{ objectFit: 'cover', maxWidth: '150px', maxHeight: '150px' }}
                                         src={DIRECT_paymentIntentPayload?.fileUrl}
                                     />
-                                </Grid>
-                            </>
+                                </div>
+                            </FlexContainer>
                         )}
-                        <Grid xs={5}>
-                            <Box sx={boldText}>Total Amount</Box>
-                        </Grid>
-                        <Grid xs={7}>
-                            <div style={{ textTransform: 'uppercase' }}>{totalPriceToPay}</div>
-                        </Grid>
-                    </Grid>
+                    </div>
+
+                    <div style={{ textAlign: 'center', fontSize: '150%', marginTop: '10px', fontWeight: 'bold' }}>Total: {totalPriceToPay}</div>
+
                     {apiFetchState?.loading && <ThreeDots variantColor={'base'} loadingText={'creating offer'} />}
-                    <Button onClick={goToPayment} color={'success'}>
+                    <Button
+                        style={{ width: '100%', backgroundColor: '#4990a4', color: '#fff', marginTop: '10px' }}
+                        onClick={goToPayment}
+                        color={'success'}
+                    >
                         I agree
                     </Button>
-                    <Button onClick={handleClose} color={'error'}>
-                        I disagree
-                    </Button>
+                    <div style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
+                        <Button onClick={handleClose} color={'error'}>
+                            Cancel, and go back
+                        </Button>
+                    </div>
                 </Box>
             </StyledModal>
         </Box>

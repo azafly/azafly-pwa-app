@@ -40,7 +40,6 @@
         "faker": "^5.5.3",
         "firebase": "9.6.1",
         "formik": "^2.2.9",
-        "framer-motion": "^4.1.17",
         "graphql": "^15.5.1",
         "history": "^5.0.0",
         "install": "^0.13.0",
@@ -53,6 +52,7 @@
         "react-app-rewired": "^2.1.8",
         "react-content-loader": "^6.0.3",
         "react-dom": "^17.0.2",
+        "react-idle-timer": "^4.6.4",
         "react-intersection-observer": "^8.32.0",
         "react-joyride": "^2.3.2",
         "react-loading-skeleton": "^3.0.1",
@@ -82,8 +82,8 @@
         "analyze": "source-map-explorer 'build/static/js/*.js'",
         "generate": "graphql-codegen --config codegen.js",
         "prettier": "prettier src/**/*.{ts,tsx,js,json,d.ts}",
-        "deploy:staging": "env-cmd -f .env.staging react-app-rewired build && firebase deploy -P staging",
-        "deploy:prod": "env-cmd -f .env.production react-app-rewired build && firebase deploy -P prod",
+        "build:staging": "env-cmd -f .env.development react-app-rewired build",
+        "build:prod": "env-cmd -f .env.production react-app-rewired build ",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
     },
     "eslintConfig": {

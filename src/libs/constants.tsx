@@ -156,12 +156,19 @@ const admins = [
     'ajibola.damilola90@gmail.com',
     'obasanjo.ojelade@gmail.com',
     'majeedmaryamirfan@gmail.com',
-    'oyelekeoluwasayo@gmail.com'
+    'oyelekeoluwasayo@gmail.com',
+    'maryamusman3991@gmail.com'
 ];
 
-export const computeIsAdmin = (email: string, claim: string[] | string) => {
+export const computeIsAdmin = (email: string, claim: string[] | string, isDBAdmin?: boolean) => {
     if (process.env.REACT_APP_NODE_ENVIRONMENT === 'production') return false;
-    const isHasuraAdmin = Array.isArray(claim) && Boolean(claim.find(role => role == 'admin'));
+    if (process.env.REACT_APP_NODE_ENVIRONMENT === 'dev') return true;
+    const isHasuraAdminFromClaimArray = (Array.isArray(claim) && Boolean(claim.find(role => role == 'admin'))) || isDBAdmin;
     const isHasuraAdminFromClaimString = claim === 'admin';
-    return Boolean(admins.find(adminEmail => adminEmail === email)) || email.endsWith('@azafly.com') || isHasuraAdmin || isHasuraAdminFromClaimString;
+    return (
+        Boolean(admins.find(adminEmail => adminEmail === email)) ||
+        email.endsWith('@azafly.com') ||
+        isHasuraAdminFromClaimArray ||
+        isHasuraAdminFromClaimString
+    );
 };

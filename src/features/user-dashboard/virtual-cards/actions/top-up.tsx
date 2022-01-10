@@ -2,10 +2,10 @@ import { Button, Typography } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Fade, Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { PAYMENT_STATES } from 'app/models/payments';
-import { ConversionCard } from 'features/user-dashboard/local-transaction-views/conversion-card';
+import { ConversionCard } from 'features/user-dashboard/currency-conversion/conversion-card';
 import { createPaymentIntent, getInitialOffer } from 'services/rest-clients/user-payment';
 import { Dispatch, RootState } from 'app/store';
 import { formatCurrency } from 'libs';
@@ -110,6 +110,10 @@ export const TopUpForm = () => {
     // TODO: if the current card is same as base currency. Top up shouldn't involve conversion.
     // No rates, Just go straight to checkout
     const message = payments?.apiFetchState?.message === PAYMENT_STATES.CREATING_OFFER ? 'confirming rate and charges' : 'preparing payment offer';
+    const currentRate = useMemo(
+        () => offerBasedOnRate?.exchange_rate_info?.base_rate?.toFixed(2) ?? rates?.[sellCurrency]?.[buyCurrency]?.['rate'].toFixed(2),
+        [buyCurrency, offerBasedOnRate?.exchange_rate_info?.base_rate, rates, sellCurrency]
+    );
     return (
         <Fade in mountOnEnter unmountOnExit appear timeout={300}>
             <div className={classes.container}>
@@ -125,7 +129,7 @@ export const TopUpForm = () => {
                 <Typography className={classes.topUpInfo} paragraph>
                     <span>
                         {' '}
-                        1 {buyCurrency} = {sellCurrency} {rates?.[sellCurrency]?.[buyCurrency]?.['rate']}
+                        1 {buyCurrency} = {sellCurrency} {currentRate}
                     </span>
                     <span className={'more_info'}> *Rate and fee subject to change until payment. </span>
                 </Typography>

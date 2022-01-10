@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import FW from './icons/flutterwave.svg';
+import FW from 'assets/flutterwave.svg';
 
 const supportedBy = {
     name: 'Supported By',

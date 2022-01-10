@@ -8,7 +8,6 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import * as yup from 'yup';
 
 import { DefaultSnackbar } from 'components';
-import { FacebookSvgComponent } from 'components/icons';
 import { RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
@@ -21,7 +20,7 @@ const validationSchema = yup.object().shape({
 });
 
 export const SignInForm = () => {
-    const { signInWithFacebook, signInWithGoogle, signinWithEmailPassword } = useFirebaseAuthContext();
+    const { signInWithGoogle, signinWithEmailPassword } = useFirebaseAuthContext();
 
     const { isLoading, isError, errorMessage = 'An Authentication has occurred' } = useSelector((state: RootState) => state.auth);
     const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -59,10 +58,6 @@ export const SignInForm = () => {
                 autoHideDuration={4000}
             />
             <div className={classes.form_container}>
-                <div className={classes.facebook} onClick={signInWithFacebook}>
-                    <FacebookSvgComponent />
-                    <div className='text'>Facebook</div>
-                </div>
                 <div className={classes.google} onClick={signInWithGoogle}>
                     <img className='google-icon-svg' src={Logo} />
                     <div className='text'>Google</div>

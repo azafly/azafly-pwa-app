@@ -9,7 +9,6 @@ const paymentContext = createContext<IPaymentContext>(PaymentContext);
 
 function usePaymentProvider() {
     const [isErrorState, setErrorState] = React.useState<boolean>(false);
-    const [canGoNext, setCanGoNext] = useState(false);
     const [paymentLink, setPaymentLink] = useState('');
     const [paymentError, setPaymentError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +51,6 @@ function usePaymentProvider() {
 
     return {
         activeStep,
-        canGoNext,
         handleCreatePaymentIntent,
         isErrorState,
         isLoading: isLoading || loadingPendingOffer,

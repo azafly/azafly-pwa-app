@@ -9,6 +9,8 @@ import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 
+import { getEnv, ENV } from 'format-env';
+
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         marginBottom: 30,
@@ -73,7 +75,7 @@ export function GoogleAddressAutoComplete({ setAddressValue, reduxSetAddressValu
     if (typeof window !== 'undefined' && !loaded.current) {
         if (!document.querySelector('#google-maps')) {
             loadScript(
-                `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_FIREBASE_API_KEY}&libraries=places`,
+                `https://maps.googleapis.com/maps/api/js?key=${getEnv(ENV.REACT_APP_FIREBASE_API_KEY)}&libraries=places`,
                 document.querySelector('head'),
                 'google-maps'
             );

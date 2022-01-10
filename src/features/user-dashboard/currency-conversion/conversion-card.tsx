@@ -1,7 +1,7 @@
 import { createStyles, Input, makeStyles, Theme, Typography } from '@material-ui/core';
 import { Stack } from '@mui/material';
 
-import { CurrencyToggle, CurrencyListParams } from '../currency-toggle';
+import { CurrencyToggle, CurrencyListParams } from 'components/currency-toggle';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

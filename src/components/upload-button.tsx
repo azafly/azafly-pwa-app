@@ -20,8 +20,8 @@ export function UploadButton({ icon, className, uploadCallback, label, loading }
     const type = `image/*,application/pdf`;
     const ICON = icon ? icon : <CloudUploadIcon sx={{ fontSize: '3rem', color: '#0D324D' }} />;
     return (
-        <Stack direction='row' alignItems='center' spacing={2} className={className} style={{ cursor: 'pointer' }}>
-            <label htmlFor='icon-button-file'>
+        <Stack direction='row' alignItems='center' spacing={2} className={className}>
+            <label htmlFor='icon-button-file' style={{ cursor: 'pointer' }}>
                 <span style={{ fontSize: '0.95rem' }}>{label}</span>
                 <Input accept={type} id='icon-button-file' type='file' onChange={uploadCallback} />
                 {loading ? (

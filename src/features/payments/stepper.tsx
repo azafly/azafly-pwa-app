@@ -108,9 +108,11 @@ export function VerticalPaymentStepper() {
                         endIcon={<NavigateNextIcon />}
                         className={classes.next}
                         onClick={handleGetOffersBasedOnRates}
+                        variant={'contained'}
+                        color={'primary'}
                         disabled={apiFetchState?.result === 'error' || apiFetchState.loading || buyAmount <= 0}
                     >
-                        {'Get offer'}
+                        {'Get offer details'}
                     </Button>
                 );
             case 1:
@@ -136,7 +138,7 @@ export function VerticalPaymentStepper() {
             case 2:
                 return null;
             case 3:
-                return apiFetchState?.loading ? (
+                return apiFetchState.message === PAYMENT_STATES.FETCHING_PAYMENT_LINK ? (
                     <ThreeDots variantColor={'base'} loadingText={'setting up payment'} />
                 ) : (
                     <Button

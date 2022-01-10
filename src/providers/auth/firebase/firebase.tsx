@@ -6,7 +6,6 @@ import {
     applyActionCode,
     confirmPasswordReset as confirmPassword,
     createUserWithEmailAndPassword,
-    FacebookAuthProvider,
     getAuth,
     GoogleAuthProvider,
     onAuthStateChanged,
@@ -82,7 +81,7 @@ function useFirebaseProviderAuth() {
             .signOut()
             .then(() => {
                 dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, user: null, token: null, isLoading: false });
-                location.replace('/signin');
+                history.replaceState({ from: location.pathname }, '', '/signin');
             })
             .catch(error => console.warn(error));
     };
@@ -104,10 +103,6 @@ function useFirebaseProviderAuth() {
         handleSignIn(signInWithPopup(firebaseAuth, googleProvider));
     };
 
-    const signInWithFacebook = async () => {
-        handleSignIn(signInWithPopup(firebaseAuth, new FacebookAuthProvider()));
-    };
-
     const signinWithEmailPassword = async (email: string, password: string) => {
         handleSignIn(signInWithPass(firebaseAuth, email, password));
     };
@@ -125,7 +120,7 @@ function useFirebaseProviderAuth() {
                 const token = await user.getIdToken();
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL] as Record<string, string | string[]>;
-                const allowedRoles = hasuraClaim['x-hasura-allowed-roles'];
+                const allowedRoles = hasuraClaim?.['x-hasura-allowed-roles'];
                 if (hasuraClaim) {
                     dispatch.auth.updateAuthState({
                         ...reduxAuthState,
@@ -183,7 +178,6 @@ function useFirebaseProviderAuth() {
         confirmPasswordReset,
         sendPasswordResetEmail,
         signinWithEmailPassword,
-        signInWithFacebook,
         signInWithGoogle,
         signout,
         signupWithEmailPassword,

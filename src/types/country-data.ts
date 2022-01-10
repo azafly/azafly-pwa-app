@@ -72,3 +72,20 @@ export const defaultCountryListData: CountryListData = {
     currentlySupportedCountries: [],
     isLoadingCountryList: false
 };
+
+export const UK = {
+    label: 'UK',
+    name: 'Britain',
+    currency: {
+        code: 'GBP',
+        name: 'British pound',
+        symbol: '£'
+    },
+    emoji: '🇬🇧',
+    flag: 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GB.svg',
+    code: 'GB',
+    region: 'EU',
+    isPopular: true,
+    isNotSupported: false,
+    isComingSoon: false
+};

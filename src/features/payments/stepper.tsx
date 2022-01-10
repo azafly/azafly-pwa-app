@@ -18,7 +18,6 @@ import { PriceInfo } from './forms/price-info';
 import { RatesInfo } from './forms/rates-info';
 import { ThreeDots } from 'components/css-loaders/three-dots';
 import { useGetPendingOfferByIdLazyQuery } from 'api/generated/graphql';
-import { usePaymentContext } from './context';
 import { useStepperStyles } from './classes';
 import { useURLParams } from 'hooks/use-url-params';
 
@@ -51,21 +50,27 @@ export function VerticalPaymentStepper() {
     const dispatch = useDispatch<Dispatch>();
 
     const steps = getSteps;
-    const { activeStep, paymentLink, setActiveStep } = usePaymentContext();
-    const { apiFetchState, buyAmount, buyCurrency, DIRECT_canGoNext, DIRECT_activeStep, offerBasedOnRate, sellCurrency, sellCurrencyTotalToPay } =
-        useSelector((state: RootState) => state.payments);
+    const {
+        apiFetchState,
+        buyAmount,
+        buyCurrency,
+        DIRECT_canGoNext,
+        DIRECT_activeStep,
+        offerBasedOnRate,
+        sellCurrency,
+        sellCurrencyTotalToPay,
+        paymentLink
+    } = useSelector((state: RootState) => state.payments);
 
     const handleNext = () => {
-        dispatch.payments.DIRECT_setActiveStep(activeStep + 1);
-        setActiveStep(prevActiveStep => prevActiveStep + 1);
+        dispatch.payments.DIRECT_setActiveStep(DIRECT_activeStep + 1);
     };
 
     const handleBack = () => {
-        setActiveStep(prevActiveStep => prevActiveStep - 1);
-        dispatch.payments.DIRECT_setActiveStep(activeStep - 1);
+        dispatch.payments.DIRECT_setActiveStep(DIRECT_activeStep - 1);
         history.push({
             state: {
-                step: activeStep
+                step: DIRECT_activeStep
             }
         });
     };
@@ -138,9 +143,7 @@ export function VerticalPaymentStepper() {
             case 2:
                 return null;
             case 3:
-                return apiFetchState.message === PAYMENT_STATES.FETCHING_PAYMENT_LINK ? (
-                    <ThreeDots variantColor={'base'} loadingText={'setting up payment'} />
-                ) : (
+                return (
                     <Button
                         className={classes.next}
                         href={paymentLink}
@@ -154,6 +157,7 @@ export function VerticalPaymentStepper() {
                         {'Pay'}
                     </Button>
                 );
+
             default:
                 return <div> Unknown step</div>;
         }
@@ -173,18 +177,15 @@ export function VerticalPaymentStepper() {
         const computeStepToNavigateTo = () => {
             if (urlParamOfferId) {
                 dispatch.payments.DIRECT_setActiveStep(0);
-                setActiveStep(0);
                 handleGetPendingOfferCallBack();
-            } else {
-                setActiveStep(DIRECT_activeStep);
             }
         };
         computeStepToNavigateTo();
-    }, [handleGetPendingOffer, urlParamOfferId, pendingOffer, setActiveStep, dispatch.payments, DIRECT_activeStep, activeStep]);
+    }, [handleGetPendingOffer, urlParamOfferId, pendingOffer, dispatch.payments, DIRECT_activeStep]);
 
     return (
         <div className={classes.root}>
-            <Stepper activeStep={activeStep} orientation='vertical'>
+            <Stepper activeStep={DIRECT_activeStep} orientation='vertical'>
                 {steps.map(({ label, icon }, index) => (
                     <Step key={label}>
                         <StepLabel
@@ -193,7 +194,6 @@ export function VerticalPaymentStepper() {
                             onClick={() => {
                                 if (DIRECT_canGoNext) {
                                     dispatch.payments.DIRECT_setActiveStep(index);
-                                    setActiveStep(index);
                                 }
                             }}
                             StepIconComponent={icon}
@@ -203,10 +203,10 @@ export function VerticalPaymentStepper() {
                         <StepContent>
                             <Box width={'100%'}>{getStepContent(index, handleNext)}</Box>
 
-                            {activeStep !== 2 && (
+                            {DIRECT_activeStep !== 2 && (
                                 <div className={classes.actionsContainer}>
                                     <Button
-                                        disabled={activeStep === 0}
+                                        disabled={DIRECT_activeStep === 0}
                                         onClick={handleBack}
                                         className={classes.button}
                                         color='secondary'

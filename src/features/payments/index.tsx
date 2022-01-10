@@ -1,15 +1,12 @@
-import { PaymentProvider } from './context';
-import { useSPaymentsStyles } from './classes';
+import { usePaymentsStyles } from './classes';
 import { VerticalPaymentStepper } from './stepper';
 
 const Payments = () => {
-    const classes = useSPaymentsStyles();
+    const classes = usePaymentsStyles();
     return (
         <>
             <div className={classes.root}>
-                <PaymentProvider>
-                    <VerticalPaymentStepper />
-                </PaymentProvider>
+                <VerticalPaymentStepper />
             </div>
         </>
     );

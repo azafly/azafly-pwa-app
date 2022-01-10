@@ -120,7 +120,7 @@ function useFirebaseProviderAuth() {
                 const token = await user.getIdToken();
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL] as Record<string, string | string[]>;
-                const allowedRoles = hasuraClaim['x-hasura-allowed-roles'];
+                const allowedRoles = hasuraClaim?.['x-hasura-allowed-roles'];
                 if (hasuraClaim) {
                     dispatch.auth.updateAuthState({
                         ...reduxAuthState,

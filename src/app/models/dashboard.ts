@@ -10,6 +10,11 @@ interface APIFetchState {
     message?: string;
     loading?: boolean;
 }
+export const defaultCurrentVirtualCard: CardIdentifier = {
+    currency: 'USD' as CurrencyCode,
+    openTopUpModal: false,
+    action: 'top-up'
+};
 
 export type CurrencyCode = 'NGN' | 'USD' | 'EUR' | 'GBP' | 'CAD';
 interface CardIdentifier {
@@ -29,11 +34,7 @@ const initialState: DashboardState = {
     apiFetchState: {},
     currentSideBarTab: 'transactions',
     viewState: 'abroad',
-    currentVirtualCard: {
-        currency: 'USD',
-        openTopUpModal: false,
-        action: 'top-up'
-    }
+    currentVirtualCard: defaultCurrentVirtualCard
 };
 
 export const dashboard = createModel<RootModel>()({

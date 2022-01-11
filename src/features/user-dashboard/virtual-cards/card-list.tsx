@@ -12,7 +12,7 @@ import { mockCards, formatCardArrayToObject } from 'app/models/cards/mocks';
 import { TopUpForm, VirtualCardSetting } from './actions';
 import { useGetUserCardsSubscription } from 'api/generated/graphql';
 
-import BasicModal from './modal/index';
+import BasicModal from './actions/modal/index';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

@@ -13,9 +13,9 @@ import { mockCards, formatCardArrayToObject } from 'app/models/cards';
 import { SideBar } from './side-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { Tour } from 'components/product-tour/tour';
-import { TOUR_DASHBOARD_LOCAL_STEPS } from './tours';
+import { TOUR_DASHBOARD_LOCAL_STEPS } from './product-tours';
 import { Transactions as TransactionView } from './transactions';
-import { useGetExchangeRatesSubscription, useGetUserTransactionsQuery } from 'api/generated/graphql';
+import { useGetCurrentUserLazyQuery, useGetExchangeRatesSubscription, useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { UserAccount } from 'views/user-account';
 import CardList from './virtual-cards/card-list';
 
@@ -28,16 +28,19 @@ export default function Dashboard() {
     const [openSnackBar, setOpenSnackBar] = useState(false);
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
+    const [runTour, setRunTour] = useState(false);
 
     const dispatch = useDispatch<Dispatch>();
 
     const {
         dashboard: { currentSideBarTab },
         payments: { sellCurrency },
-        auth: { hasuraUser }
+        auth
     } = useSelector(({ dashboard, auth, payments }: RootState) => ({ dashboard, auth, payments }));
 
+    const { hasuraUser } = auth;
     const userData = hasuraUser ?? {};
+
     const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id: hasuraUser?.id ?? '' } });
     const { data: exchangeRates, error: errorRates, loading: loadingRates } = useGetExchangeRatesSubscription();
     const transactions = transactionData?.transaction;
@@ -96,9 +99,8 @@ export default function Dashboard() {
     useEffect(() => {
         fetchWallet();
         dispatch.VIRTUAL_CARDS.setUserCards(formatCardArrayToObject(mockCards));
-        dispatch.dashboard.setCurrentCardIdentifier({ currency: mockCards[0].currency });
-        dispatch.dashboard.setCurrentDashboardTab('dashboard');
-    }, [dispatch.VIRTUAL_CARDS, dispatch.payments, dispatch.dashboard]);
+        dispatch.dashboard.setCurrentDashboardTab(currentSideBarTab ?? 'dashboard');
+    }, [dispatch.VIRTUAL_CARDS, dispatch.payments, dispatch.dashboard, currentSideBarTab]);
 
     useEffect(() => {
         // set rates
@@ -118,12 +120,13 @@ export default function Dashboard() {
 
     useEffect(() => {
         dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
+        setRunTour(true);
     }, [dispatch.payments]);
 
     return (
         <div className={classes.dashboard_container}>
             <Box sx={{ margin: 50 }} />
-            <Tour steps={TOUR_DASHBOARD_LOCAL_STEPS} run={true} />
+            <Tour steps={TOUR_DASHBOARD_LOCAL_STEPS} runTour={runTour} />
             <DefaultSnackbar
                 severity={alertSeverity}
                 open={openSnackBar}

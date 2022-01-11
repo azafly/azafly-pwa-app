@@ -107,7 +107,7 @@ export function VerticalPaymentStepper() {
         switch (step) {
             case 0:
                 return apiFetchState?.loading ? (
-                    <ThreeDots variantColor={'base'} loadingText={'creating offer'} />
+                    <ThreeDots variantColor={'base'} />
                 ) : (
                     <Button
                         endIcon={<NavigateNextIcon />}
@@ -117,7 +117,7 @@ export function VerticalPaymentStepper() {
                         color={'primary'}
                         disabled={apiFetchState?.result === 'error' || apiFetchState.loading || buyAmount <= 0}
                     >
-                        {'Get offer details'}
+                        {'Get details'}
                     </Button>
                 );
             case 1:

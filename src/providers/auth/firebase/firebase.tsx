@@ -47,9 +47,6 @@ function useFirebaseProviderAuth() {
     const dispatch = useDispatch<Dispatch>();
     const reduxAuthState = useSelector((state: RootState) => state.auth);
 
-    const [handleGetHasuraUser, { data: hasuraUserData, loading: loadingHasuraUser, error: errorLoadingHasuraUser }] = useGetCurrentUserLazyQuery();
-    const { location: userLocation } = useGeolocation();
-
     const handleSignIn = async (signInCallback: Promise<UserCredential>) => {
         dispatch.auth.updateAuthState({ ...reduxAuthState, isLoading: true });
         try {
@@ -57,13 +54,10 @@ function useFirebaseProviderAuth() {
             const isNewUser = parseInt(user.metadata?.lastSignInTime ?? '0') - parseInt(user.metadata?.creationTime ?? '0') < 10;
             const token = await user.getIdToken(true);
             const to = isNewUser ? '/onboarding-update' : '/dashboard';
-            handleGetHasuraUser();
             dispatch.auth.updateAuthState({
                 user,
                 isAuth: true,
-                hasuraUser: hasuraUserData?.users[0] ?? null,
                 isError: false,
-                isAfrica: getIsAfrica(hasuraUserData?.users[0]?.country, userLocation?.countriesCodeByRegion?.Africa),
                 isLoading: false,
                 token,
                 action: 'sign-in'
@@ -135,13 +129,10 @@ function useFirebaseProviderAuth() {
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL] as Record<string, string | string[]>;
                 const allowedRoles = hasuraClaim?.['x-hasura-allowed-roles'];
                 if (hasuraClaim) {
-                    handleGetHasuraUser({ variables: { email: user.email ?? '' } });
                     dispatch.auth.updateAuthState({
                         user,
                         isAuth: true,
-                        hasuraUser: hasuraUserData?.users[0] ?? null,
                         isError: false,
-                        isAfrica: getIsAfrica(hasuraUserData?.users[0]?.country, userLocation?.countriesCodeByRegion?.Africa),
                         isLoading: false,
                         token,
                         action: 'auth-changed',
@@ -157,13 +148,10 @@ function useFirebaseProviderAuth() {
                         if (data) {
                             // Force refresh to pick up the latest custom claims changes.
                             const newToken = await user.getIdToken(true);
-                            handleGetHasuraUser({ variables: { email: user.email ?? '' } });
                             dispatch.auth.updateAuthState({
                                 user,
                                 isAuth: true,
-                                hasuraUser: hasuraUserData?.users[0] ?? null,
                                 isError: false,
-                                isAfrica: getIsAfrica(hasuraUserData?.users[0]?.country, userLocation?.countriesCodeByRegion?.Africa),
                                 isLoading: false,
                                 token: newToken,
                                 action: 'auth-changed'
@@ -189,7 +177,7 @@ function useFirebaseProviderAuth() {
         });
         return () => unsubscribe();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [hasuraUserData]);
+    }, []);
 
     return {
         confirmPasswordReset,

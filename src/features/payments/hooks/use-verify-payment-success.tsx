@@ -52,6 +52,7 @@ export const useVerifyPaymentSuccess = () => {
                 .then(() => {
                     dispatch.payments.setVerificationStatus({ result: 'success', loading: false });
                     dispatch.payments.setCurrentlyVerifiedOffer(offer);
+                    dispatch.dashboard.setCurrentCardIdentifier({ currency: offer.source_currency });
                 })
                 .catch(() => {
                     dispatch.payments.setVerificationStatus({ result: 'error', loading: false });

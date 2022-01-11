@@ -93,6 +93,7 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
         onSubmit: values => {
             gotToNextStep();
             dispatchStore.payments.DIRECT_setPaymentIntentPayload({ ...values, fileUrl, name: hasuraUser?.display_name });
+            dispatchStore.payments.DIRECT_setOpenReviewModal(true);
         }
     });
 

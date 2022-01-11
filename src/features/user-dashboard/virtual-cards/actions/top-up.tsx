@@ -56,7 +56,7 @@ export const TopUpForm = () => {
     const handleAmountChange = (e: any) => {
         dispatch.payments.setBuyAmount(e.target.value);
         dispatch.payments.setSellCurrencyTotalToPay(e.target.value * rates[sellCurrency][buyCurrency]['rate']);
-        // force conform now button to show, so we can fetch new offer
+        // force confirm now button to show, so we can fetch new offer
         setShowInfo(false);
         dispatch.payments.setApiFetchState({
             ...payments?.apiFetchState,
@@ -133,7 +133,7 @@ export const TopUpForm = () => {
                         {' '}
                         1 {buyCurrency} = {sellCurrency} {currentRate}
                     </span>
-                    <span className={'more_info'}> *Rate and fee subject to change until payment. </span>
+                    <span className={'more_info'}> *Exchange rate and fee is subject to change while transaction is in progress. </span>
                 </Typography>
 
                 {payments?.apiFetchState?.message !== PAYMENT_STATES.GROUND_ZERO && showRateInfo && offerBasedOnRate && (

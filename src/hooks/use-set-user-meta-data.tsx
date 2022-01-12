@@ -20,13 +20,12 @@ export const useSetUserMetaData = async () => {
             handleGetHasuraUser({ variables: { email: user?.email ?? '' } });
             const hasuraUser = hasuraUserData?.users?.[0];
             const isUserInAfrica = getIsAfrica(hasuraUser?.country, countriesCodeByRegion?.Africa);
+            dispatch.auth.setHasuraUser(hasuraUser);
             if (isUserInAfrica) {
                 dispatch.dashboard.setViewState('local');
-                dispatch.auth.setHasuraUser(hasuraUser);
                 dispatch.auth.updateAuthState({ ...auth, hasuraUser, isAfrica: isUserInAfrica });
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [hasuraUserData, countriesCodeByRegion?.Africa, user]);
-    console.log('re-render');
 };

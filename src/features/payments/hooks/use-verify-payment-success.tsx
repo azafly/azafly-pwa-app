@@ -47,22 +47,20 @@ export const useVerifyPaymentSuccess = () => {
 
     useEffect(() => {
         const verifyOrder = async () => {
-            return axiosClient()
-                .get(path)
-                .then(() => {
-                    dispatch.payments.setVerificationStatus({ result: 'success', loading: false });
-                    dispatch.payments.setCurrentlyVerifiedOffer(offer);
-                    dispatch.dashboard.setCurrentCardIdentifier({ currency: offer.source_currency });
-                })
-                .catch(() => {
-                    dispatch.payments.setVerificationStatus({ result: 'error', loading: false });
-                });
+            return axiosClient().get(path);
         };
         handleGetOfferById()
-            .then(({ data }) => {
+            .then(async ({ data }) => {
                 setPaymentIntentPayload(data?.payment_offer[0].payment_intent_payload ?? '');
                 setOffer(data?.payment_offer[0]);
-                verifyOrder();
+                dispatch.payments.setCurrentlyVerifiedOffer(data?.payment_offer[0]);
+                const {
+                    data: {
+                        data: { status }
+                    }
+                } = await verifyOrder();
+                dispatch.payments.setVerificationStatus({ result: status, loading: false });
+                dispatch.dashboard.setCurrentCardIdentifier({ currency: offer.source_currency });
             })
             .catch(() => {
                 dispatch.payments.setVerificationStatus({ result: 'error', loading: false });

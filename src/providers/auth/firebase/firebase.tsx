@@ -23,18 +23,12 @@ import { firebaseApp } from './firebase-config';
 import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { RootState, Dispatch } from 'app/store';
 import { computeIsAdmin } from 'libs/constants';
-import { useGetCurrentUserLazyQuery } from 'api/generated/graphql';
-import useGeolocation from 'hooks/use-geolocation';
 
 export const database = getDatabase(firebaseApp);
 export const firebaseAuth = getAuth();
 export const storage = getStorage(firebaseApp);
 
 const HASURA_CLAIMS_URL = 'https://hasura.io/jwt/claims';
-const getIsAfrica = (country?: string, africa?: Record<string, any>) => {
-    if (!country || !africa) return false;
-    return country in africa;
-};
 
 export interface EmailAndPasswordSignUp {
     email: string;

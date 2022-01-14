@@ -9,7 +9,7 @@ import { africa, otherCountries } from 'mocks/payment';
 import { ConversionCard } from './conversion-card';
 import { ConversionIcon } from './conversion-icon';
 import { Dispatch, RootState } from 'app/store';
-import { TOUR_DASHBOARD_LOCAL } from '../tours';
+import { TOUR_DASHBOARD_LOCAL } from '../product-tours';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

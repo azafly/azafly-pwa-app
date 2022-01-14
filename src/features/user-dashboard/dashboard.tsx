@@ -13,12 +13,10 @@ import { mockCards, formatCardArrayToObject } from 'app/models/cards';
 import { SideBar } from './side-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { Tour } from 'components/product-tour/tour';
-import { TOUR_DASHBOARD_LOCAL_STEPS } from './tours';
+import { TOUR_DASHBOARD_LOCAL_STEPS } from './product-tours';
 import { Transactions as TransactionView } from './transactions';
-import { useGetExchangeRatesSubscription, useGetUserTransactionsLazyQuery } from 'api/generated/graphql';
+import { useGetCurrentUserLazyQuery, useGetExchangeRatesSubscription, useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { UserAccount } from 'views/user-account';
-import { useUserContext } from 'hooks/use-user-context';
-import { PAYMENT_STATES } from 'app/models/payments';
 import CardList from './virtual-cards/card-list';
 
 import { useDashboardStyles, StyledBadge } from './classes';
@@ -30,16 +28,20 @@ export default function Dashboard() {
     const [openSnackBar, setOpenSnackBar] = useState(false);
     const [openSpeedDial, setOpenSpeedDial] = useState(false);
     const [verificationEmailSent, setSent] = useState('');
+    const [runTour, setRunTour] = useState(false);
 
     const dispatch = useDispatch<Dispatch>();
-    const { user: userData } = useUserContext();
 
     const {
         dashboard: { currentSideBarTab },
-        payments: { sellCurrency }
+        payments: { sellCurrency },
+        auth
     } = useSelector(({ dashboard, auth, payments }: RootState) => ({ dashboard, auth, payments }));
 
-    const [handleGetUserTransaction, { data: transactionData, loading }] = useGetUserTransactionsLazyQuery();
+    const { hasuraUser } = auth;
+    const userData = hasuraUser ?? {};
+
+    const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id: hasuraUser?.id ?? '' } });
     const { data: exchangeRates, error: errorRates, loading: loadingRates } = useGetExchangeRatesSubscription();
     const transactions = transactionData?.transaction;
 
@@ -95,16 +97,10 @@ export default function Dashboard() {
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
 
     useEffect(() => {
-        const id = userData?.id;
-        handleGetUserTransaction({ variables: { id } }).catch(error => console.log(error));
-    }, [handleGetUserTransaction, userData]);
-
-    useEffect(() => {
         fetchWallet();
         dispatch.VIRTUAL_CARDS.setUserCards(formatCardArrayToObject(mockCards));
-        dispatch.dashboard.setCurrentCardIdentifier({ currency: mockCards[0].currency });
-        dispatch.dashboard.setCurrentDashboardTab('dashboard');
-    }, [dispatch.VIRTUAL_CARDS, dispatch.payments, dispatch.dashboard]);
+        dispatch.dashboard.setCurrentDashboardTab(currentSideBarTab ?? 'dashboard');
+    }, [dispatch.VIRTUAL_CARDS, dispatch.payments, dispatch.dashboard, currentSideBarTab]);
 
     useEffect(() => {
         // set rates
@@ -124,12 +120,13 @@ export default function Dashboard() {
 
     useEffect(() => {
         dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
+        setRunTour(true);
     }, [dispatch.payments]);
 
     return (
         <div className={classes.dashboard_container}>
             <Box sx={{ margin: 50 }} />
-            <Tour steps={TOUR_DASHBOARD_LOCAL_STEPS} run={true} />
+            <Tour steps={TOUR_DASHBOARD_LOCAL_STEPS} runTour={runTour} />
             <DefaultSnackbar
                 severity={alertSeverity}
                 open={openSnackBar}

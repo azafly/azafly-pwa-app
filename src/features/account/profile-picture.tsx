@@ -10,7 +10,6 @@ import { storage } from 'providers/auth/firebase';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { UploadButton } from 'components';
 import { useUpdateProfileImageUrlMutation, UpdateProfileImageUrlMutationVariables } from 'api/generated/graphql';
-import { useUserContext } from 'hooks/use-user-context';
 
 interface ProfilePictureProps {
     classes: Record<string, string>;
@@ -20,8 +19,9 @@ export const ProfilePicture = memo(function ProfilePicture({ classes }: ProfileP
     const [fileUploadLoading, setFileUploadLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const { user } = useSelector((state: RootState) => state.auth);
-    const { user: userData, loading } = useUserContext();
+    const { user, hasuraUser } = useSelector((state: RootState) => state.auth);
+
+    const userData = hasuraUser ?? {};
 
     const [handleUpdateDocUrl] = useUpdateProfileImageUrlMutation();
 
@@ -68,7 +68,8 @@ export const ProfilePicture = memo(function ProfilePicture({ classes }: ProfileP
                 />
             }
         >
-            {(loading || fileUploadLoading) && <ThreeDots variantColor={'base'} />}
+            {/* // TODO: update loadind state */}
+            {(false || fileUploadLoading) && <ThreeDots variantColor={'base'} />}
         </Badge>
     );
 });

@@ -45,3 +45,8 @@ export const isAllValueTruthy = (...args: any) => {
     const isTruthy = (values: any) => values.every((arg: unknown) => arg !== null && typeof arg !== undefined);
     return isTruthy([...args]);
 };
+
+export const getIsAfrica = (country?: string, africa?: Record<string, any>) => {
+    if (!country || !africa) return false;
+    return country in africa;
+};

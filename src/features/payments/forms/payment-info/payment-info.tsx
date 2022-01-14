@@ -11,19 +11,18 @@ import { PAYMENT_INFO, validationSchema, initialValues, generateInputType } from
 import { Dispatch, RootState } from 'app/store';
 import { UploadButton } from 'components';
 import { useUpload } from 'hooks/use-upload-button';
-import { useUserContext } from 'hooks/use-user-context';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
-            padding: '80px',
+            padding: '30px',
             justifyContent: 'center',
             backgroundColor: 'rgb(254,254,250)',
             margin: 50,
             width: '100%',
             borderRadius: 18,
-            [theme.breakpoints.up('sm')]: {
+            [theme.breakpoints.up('xs')]: {
                 border: '1px solid #DCDCDC',
                 transition: '200ms all cubic-bezier(0.4, 0, 0.2, 1)',
                 boxShadow: '0 2px 4px 0 rgba(218,228,239,0.5)'
@@ -86,7 +85,7 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
     const dispatchStore = useDispatch<Dispatch>();
 
     const { handleFileUpload, fileUploadLoading, fileUrl } = useUpload();
-    const { user } = useUserContext();
+    const user = hasuraUser ?? {};
 
     const formik = useFormik({
         initialValues: initialValues(),
@@ -94,6 +93,7 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
         onSubmit: values => {
             gotToNextStep();
             dispatchStore.payments.DIRECT_setPaymentIntentPayload({ ...values, fileUrl, name: hasuraUser?.display_name });
+            dispatchStore.payments.DIRECT_setOpenReviewModal(true);
         }
     });
 
@@ -140,7 +140,7 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
                         );
                     })}
                     <Grid item xs={12} sm={6} className={classes.formControl}>
-                        <Stack>
+                        <Stack style={{ cursor: 'pointer' }}>
                             <Button
                                 variant='contained'
                                 color={'default'}
@@ -149,8 +149,7 @@ export function PaymentInfo({ gotToNextStep }: PaymentInfoProps) {
                                     fontSize: '12px',
                                     fontWeight: 400,
                                     width: '100%',
-                                    height: 40,
-                                    cursor: 'pointer'
+                                    height: 40
                                 }}
                                 endIcon={
                                     <UploadButton

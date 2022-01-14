@@ -14,8 +14,9 @@ import { CardSkeleton } from './card-skeleton';
 import { EmptyCardContainer } from '../empty-transaction/card';
 import { EmptyDataSvgComponent } from 'components';
 import { PendingOfferCardContainer } from '../pending-offer/index';
+import { RootState } from 'app/store';
 import { useGetUserPendingOffersQuery, useFilterTransactionsByDateRangeLazyQuery } from 'api/generated/graphql';
-import { useUserContext } from 'hooks/use-user-context';
+import { useSelector } from 'react-redux';
 
 interface TransactionListContainerProps {
     transactions: readonly any[];
@@ -73,8 +74,11 @@ export const TransactionListContainer = memo(function TransactionListContainer({
     const [openDatePicker, setOpenDatePicker] = useState(false);
     const [filterTransactionByDate, { data: filteredTransactions, loading: isLoadingFilter }] = useFilterTransactionsByDateRangeLazyQuery();
     const classes = useStyles();
+    const {
+        auth: { hasuraUser }
+    } = useSelector(({ auth }: RootState) => ({ auth }));
 
-    const { user: userData } = useUserContext();
+    const userData = hasuraUser ?? {};
     const id = userData?.id;
 
     const handleDateRangeSelect = useCallback(

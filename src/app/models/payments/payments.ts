@@ -53,6 +53,7 @@ export interface PaymentState {
     DIRECT_activeStep: number;
     DIRECT_paymentIntentPayload: Record<string, any>;
     DIRECT_canGoNext: boolean;
+    DIRECT_openReviewModal: boolean;
 }
 
 const initialState: PaymentState = {
@@ -73,7 +74,8 @@ const initialState: PaymentState = {
     currentlyVerifiedOffer: {},
     DIRECT_activeStep: 0,
     DIRECT_paymentIntentPayload: {},
-    DIRECT_canGoNext: false
+    DIRECT_canGoNext: false,
+    DIRECT_openReviewModal: false
 };
 
 export const payments = createModel<RootModel>()({
@@ -87,6 +89,9 @@ export const payments = createModel<RootModel>()({
         },
         DIRECT_setPaymentIntentPayload(state, payload: PaymentState['DIRECT_paymentIntentPayload']) {
             return { ...state, DIRECT_paymentIntentPayload: payload };
+        },
+        DIRECT_setOpenReviewModal(state, payload: boolean) {
+            return { ...state, DIRECT_openReviewModal: payload };
         },
         setOfferBasedOnRate(state, payload: GetOffersResponseData | null) {
             return { ...state, offerBasedOnRate: payload };

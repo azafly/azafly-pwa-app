@@ -12,7 +12,7 @@ import { TransactionListContainer } from './transaction-list-container';
 import WalletContainer from '../wallet/wallet-container';
 
 import { useDashboardStyles } from '../classes';
-import { TOUR_DASHBOARD_LOCAL } from '../tours';
+import { TOUR_DASHBOARD_LOCAL } from '../product-tours';
 
 interface TransactionsViewProps {
     transactions: any;

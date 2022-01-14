@@ -1,10 +1,10 @@
 import { Provider as ReduxProvider } from 'react-redux';
+import { ApolloProvider } from '@apollo/client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { ErrorBoundary } from 'components/error-boundary';
-import { FirebaseAuthProvider } from 'providers/auth/firebase';
-
+import { getApolloClient } from 'libs/apollo-client';
 import { store } from 'app/store';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import App from './App';
@@ -14,13 +14,21 @@ import './index.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { FirebaseAuthProvider } from 'providers/auth/firebase';
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
+
+const token = localStorage.getItem(LOCAL_STORAGE_KEY.TOKEN);
+
+const client = getApolloClient(token);
 
 ReactDOM.render(
     <React.StrictMode>
         <ErrorBoundary>
             <ReduxProvider store={store}>
                 <FirebaseAuthProvider>
-                    <App />
+                    <ApolloProvider client={client}>
+                        <App />
+                    </ApolloProvider>
                 </FirebaseAuthProvider>
             </ReduxProvider>
         </ErrorBoundary>

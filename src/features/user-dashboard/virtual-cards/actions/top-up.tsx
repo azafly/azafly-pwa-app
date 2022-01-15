@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme: Theme) =>
             '& .amounts': {
                 fontWeight: 700
             }
+        },
+        error: {
+            color: 'red'
         }
     })
 );
@@ -135,43 +138,53 @@ export const TopUpForm = () => {
                     </span>
                     <span className={'more_info'}> *Exchange rate and fee is subject to change while transaction is in progress. </span>
                 </Typography>
-
-                {payments?.apiFetchState?.message !== PAYMENT_STATES.GROUND_ZERO && showRateInfo && offerBasedOnRate && (
-                    <>
-                        <Stack>
-                            <Typography className={classes.topUpInfo} paragraph>
-                                You will be charged a total of{' '}
-                                {offerBasedOnRate.total_in_target_with_charges && (
-                                    <strong>
-                                        {formatCurrency({
-                                            currency: sellCurrency,
-                                            amount: offerBasedOnRate.total_in_target_with_charges,
-                                            countryCode: 'NG'
-                                        })}
-                                    </strong>
-                                )}
-                            </Typography>
-                            <Typography className={classes.additional_rate_info}>
-                                Our fees:&nbsp;
-                                {offerBasedOnRate.fees_info?.total && (
-                                    <span className={'amounts'}>
-                                        {formatCurrency({ currency: sellCurrency, amount: offerBasedOnRate.fees_info?.total, countryCode: 'NG' })}
-                                    </span>
-                                )}
-                            </Typography>
-                        </Stack>
-                    </>
+                {payments?.apiFetchState?.message === PAYMENT_STATES.ERROR && (
+                    <Typography className={`${classes.topUpInfo} ${classes.error} `} paragraph>
+                        An Error has occurred, Try again!
+                    </Typography>
                 )}
+
+                {payments?.apiFetchState?.result !== 'error' &&
+                    payments?.apiFetchState?.message !== PAYMENT_STATES.GROUND_ZERO &&
+                    showRateInfo &&
+                    offerBasedOnRate && (
+                        <>
+                            <Stack>
+                                <Typography className={classes.topUpInfo} paragraph>
+                                    You will be charged a total of{' '}
+                                    {offerBasedOnRate.total_in_target_with_charges && (
+                                        <strong>
+                                            {formatCurrency({
+                                                currency: sellCurrency,
+                                                amount: offerBasedOnRate.total_in_target_with_charges,
+                                                countryCode: 'NG'
+                                            })}
+                                        </strong>
+                                    )}
+                                </Typography>
+                                <Typography className={classes.additional_rate_info}>
+                                    Our fees:&nbsp;
+                                    {offerBasedOnRate.fees_info?.total && (
+                                        <span className={'amounts'}>
+                                            {formatCurrency({ currency: sellCurrency, amount: offerBasedOnRate.fees_info?.total, countryCode: 'NG' })}
+                                        </span>
+                                    )}
+                                </Typography>
+                            </Stack>
+                        </>
+                    )}
 
                 {payments?.apiFetchState?.loading && <ThreeDots variantColor={'base'} loadingText={message} />}
 
-                {!payments?.apiFetchState?.loading && payments?.apiFetchState?.message === PAYMENT_STATES.GROUND_ZERO && (
-                    <Button onClick={handleConfirmToPayment} variant={'outlined'} color={'primary'} className={'payment-action'} fullWidth>
-                        {'Confirm'}{' '}
-                    </Button>
-                )}
+                {!payments?.apiFetchState?.loading &&
+                    (payments?.apiFetchState?.message === PAYMENT_STATES.GROUND_ZERO ||
+                        payments?.apiFetchState?.message === PAYMENT_STATES.ERROR) && (
+                        <Button onClick={handleConfirmToPayment} variant={'outlined'} color={'primary'} className={'payment-action'} fullWidth>
+                            {'Confirm'}{' '}
+                        </Button>
+                    )}
 
-                {payments?.apiFetchState?.result &&
+                {payments?.apiFetchState?.result !== 'error' &&
                     !payments?.apiFetchState?.loading &&
                     payments?.apiFetchState?.message !== PAYMENT_STATES.GROUND_ZERO &&
                     payments?.apiFetchState?.message === PAYMENT_STATES.PAYMENT_LINK_SUCCESS && (

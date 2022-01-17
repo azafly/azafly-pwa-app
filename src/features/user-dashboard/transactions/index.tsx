@@ -27,31 +27,43 @@ export const Transactions = ({ transactions, userData, loading, handleSendVerifi
     const classes = useDashboardStyles();
     const { viewState } = useSelector(({ dashboard }: RootState) => dashboard);
     return (
+        // <div className='boxContainer'>
         <Grid item md={10} className={classes.data__section}>
-            <Typography color={'textSecondary'} className={classes.name} gutterBottom>
-                <span className={`${TOUR_DASHBOARD_LOCAL.START_TOUR}`} /> Hey 👋🏾{' '}
-                {!userData?.display_name ? <Skeleton width={'10ch'} /> : `${formatFirstName(userData?.display_name)}!`}{' '}
-            </Typography>{' '}
-            {viewState === 'local' ? <NewTransactionContainer /> : <WalletContainer />}
-            <Typography className={'heading'}>Recent Activities</Typography>{' '}
-            {loading || !transactionData ? (
-                <>
-                    {Array(5)
-                        .fill('')
-                        .map((_, index) => (
-                            <CardSkeleton key={index} />
-                        ))}
-                </>
-            ) : (
-                <>
-                    <TransactionListContainer
-                        transactions={transactions ?? []}
-                        emailLink={emailLink}
-                        loading={loading}
-                        handleSendVerificationEmail={handleSendVerificationEmail}
-                    />
-                </>
-            )}
+            <div className='boxContainer'>
+                <div className='innerBox'>
+                    <Grid item md={10} className={classes.data__section}>
+                        <Typography color={'textSecondary'} className={classes.name} gutterBottom>
+                            <span className={`${TOUR_DASHBOARD_LOCAL.START_TOUR}`} /> Hey 👋🏾{' '}
+                            {!userData?.display_name ? <Skeleton width={'10ch'} /> : `${formatFirstName(userData?.display_name)}!`}{' '}
+                        </Typography>{' '}
+                        {viewState === 'local' ? <NewTransactionContainer /> : <WalletContainer />}
+                        <Typography className={'heading'}>Recent Activities</Typography>
+                    </Grid>
+                </div>
+                <div className='scrollableHeight'>
+                    <div className='restrainHeight'>
+                        {loading || !transactionData ? (
+                            <>
+                                {Array(5)
+                                    .fill('')
+                                    .map((_, index) => (
+                                        <CardSkeleton key={index} />
+                                    ))}
+                            </>
+                        ) : (
+                            <>
+                                <TransactionListContainer
+                                    transactions={transactions ?? []}
+                                    emailLink={emailLink}
+                                    loading={loading}
+                                    handleSendVerificationEmail={handleSendVerificationEmail}
+                                />
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
         </Grid>
+        // </div>
     );
 };

@@ -59,7 +59,7 @@ export const SignUpForm = () => {
         },
         validationSchema: validationSchema,
         onSubmit: ({ email, password }) => {
-            signupWithEmailPassword({ email, password });
+            signupWithEmailPassword(email, password);
         }
     });
 

@@ -142,7 +142,7 @@ export default function ReviewModal() {
             )}
             {!DIRECT_openReviewModal && (
                 <ReviewContent
-                    styles={{ width: '100%', maxWidth: 800, margin: 10 }}
+                    styles={{ width: '100%', maxWidth: 800, margin: 10, marginLeft: -10 }}
                     open={true}
                     apiFetchState={apiFetchState}
                     timeOut={500}

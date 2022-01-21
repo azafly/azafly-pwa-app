@@ -72,7 +72,7 @@ function useFirebaseProviderAuth() {
         }
     };
 
-    const signupWithEmailPassword = async ({ email, password }: EmailAndPasswordSignUp) => {
+    const signupWithEmailPassword = async (email: string, password: string) => {
         handleSignIn(createUserWithEmailAndPassword(firebaseAuth, email, password));
     };
 
@@ -104,6 +104,7 @@ function useFirebaseProviderAuth() {
     };
 
     const signinWithEmailPassword = async (email: string, password: string) => {
+        console.log(email, password);
         handleSignIn(signInWithPass(firebaseAuth, email, password));
     };
 

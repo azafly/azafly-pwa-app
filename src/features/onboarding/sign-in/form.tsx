@@ -35,8 +35,8 @@ export const SignInForm = () => {
             password: ''
         },
         validationSchema,
-        onSubmit: (email, password) => {
-            signinWithEmailPassword({ email, password });
+        onSubmit: ({ email, password }) => {
+            signinWithEmailPassword(email, password);
         }
     });
 

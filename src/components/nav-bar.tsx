@@ -102,7 +102,8 @@ export const NavBar = memo(function NavBar() {
     };
 
     const handleRestDashboardTab = () => {
-        dispatch.dashboard.setCurrentDashboardTab('dashboard');
+        dispatch.dashboard.setCurrentDashboardTab('transactions');
+        console.log('heyeyy');
     };
 
     const menuId = 'primary-account-menu';
@@ -129,7 +130,7 @@ export const NavBar = memo(function NavBar() {
                 <Typography className={classes.menuItem_text}>Help</Typography>
             </MenuItem>
             {!isOnboardingPage && (
-                <MenuItem component={Link} to={'/dashboard'}>
+                <MenuItem component={Link} to={'/dashboard'} onClick={handleRestDashboardTab}>
                     <IconButton aria-label='account of current user' aria-controls='menu' aria-haspopup='true' color='inherit'>
                         <DashboardSvgComponent />
                     </IconButton>
@@ -174,7 +175,7 @@ export const NavBar = memo(function NavBar() {
                 <Typography>Help</Typography>
             </MenuItem>
             {!isOnboardingPage && (
-                <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }}>
+                <MenuItem component={Link} to={'/dashboard'} style={{ margin: 2 }} onClick={handleRestDashboardTab}>
                     <IconButton aria-label='dashboard' aria-controls='dashboard' aria-haspopup='true' color='inherit'>
                         <DashboardSvgComponent />
                     </IconButton>

@@ -14,13 +14,14 @@ import { ThreeDots } from 'components/css-loaders/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useSetUserMetaData } from 'hooks/use-set-user-meta-data';
 
-const IDLE_TIME = 1000 * 60 * 5;
+const IDLE_TIME = 1000 * 60 * 3;
 
 function App() {
     const preferredTheme = useMemo(() => createTheme(theme), []);
 
     const { signout } = useFirebaseAuthContext();
 
+    useSetUserMetaData();
     useIdleTimer({
         timeout: IDLE_TIME,
         onIdle: () => signout(),
@@ -29,7 +30,6 @@ function App() {
         }
     });
 
-    useSetUserMetaData();
     return (
         <PersistGate loading={<ThreeDots />} persistor={getPersistor()}>
             <LocalizationProvider dateAdapter={DateAdapter}>

@@ -21,7 +21,7 @@ export const formatCurrency = ({ countryCode, amount, currency }: IFormatCurrenc
     return new Intl.NumberFormat(`en-${countryCode}`, { style: 'currency', currency }).format(amount);
 };
 
-export function delay(delayTime: number) {
+export function delay(delayTime = 1500) {
     return new Promise(res => setTimeout(res, delayTime));
 }
 

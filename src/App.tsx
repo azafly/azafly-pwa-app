@@ -13,6 +13,7 @@ import { Routes } from 'routes';
 import { ThreeDots } from 'components/css-loaders/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useSetUserMetaData } from 'hooks/use-set-user-meta-data';
+import usePWAInstallPrompt from 'hooks/use-prompt-pwa-install';
 
 const IDLE_TIME = 1000 * 60 * 3;
 
@@ -30,6 +31,7 @@ function App() {
         }
     });
 
+    usePWAInstallPrompt({});
     return (
         <PersistGate loading={<ThreeDots />} persistor={getPersistor()}>
             <LocalizationProvider dateAdapter={DateAdapter}>

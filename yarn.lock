@@ -12651,6 +12651,11 @@ react-proptype-conditional-require@^1.0.4:
   resolved "https://registry.yarnpkg.com/react-proptype-conditional-require/-/react-proptype-conditional-require-1.0.4.tgz#69c2d5741e6df5e08f230f36bbc2944ee1222555"
   integrity sha1-acLVdB5t9eCPIw82u8KUTuEiJVU=
 
+react-pwa-install-prompt@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-pwa-install-prompt/-/react-pwa-install-prompt-1.0.5.tgz#c3f8dfcce398847eb0ed24a0f349115137abb278"
+  integrity sha512-sOMFTd9gkSkqy60S4Iabg2I/KvihvSPOAx3oDkounOG7m3P22tBn5hI0j6ryKCV8OKqXGzuoAUwywKUO3oCgrQ==
+
 react-redux@^7.2.0:
   version "7.2.6"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.2.6.tgz#49633a24fe552b5f9caf58feb8a138936ddfe9aa"
@@ -15811,7 +15816,7 @@ yargs@^17.0.0:
     y18n "^5.0.5"
     yargs-parser "^21.0.0"
 
-yarn@^1.22.11:
+yarn@^1.22.17:
   version "1.22.17"
   resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.22.17.tgz#bf910747d22497b573131f7341c0e1d15c74036c"
   integrity sha512-H0p241BXaH0UN9IeH//RT82tl5PfNraVpSpEoW+ET7lmopNC61eZ+A+IDvU8FM6Go5vx162SncDL8J1ZjRBriQ==

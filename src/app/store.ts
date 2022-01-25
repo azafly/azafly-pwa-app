@@ -7,7 +7,7 @@ const persistPlugin = createPersistPlugin<RematchRootState<RootModel>, RootModel
     key: 'root',
     storage,
     version: 2,
-    blacklist: ['auth', 'payments', 'VIRTUAL_CARDS', 'dashboard']
+
 });
 
 const trace = process.env.NODE_ENV !== 'production';

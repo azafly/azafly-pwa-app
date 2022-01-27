@@ -18,6 +18,8 @@ import { useFirebaseAuthContext } from 'providers/auth/firebase';
 
 import { ThreeDots } from 'components/css-loaders/three-dots';
 
+import PWAPrompt from 'react-ios-pwa-prompt';
+
 const IDLE_TIME = 1000 * 60 * 5;
 
 function App() {
@@ -43,6 +45,7 @@ function App() {
                     {' '}
                     <ThemeProvider theme={preferredTheme}>
                         <CssBaseline />
+                        <PWAPrompt copyTitle='Install AzaFly App' />
                         <Routes />
                     </ThemeProvider>
                 </LocalizationProvider>

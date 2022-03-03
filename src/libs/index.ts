@@ -21,7 +21,7 @@ export const formatCurrency = ({ countryCode, amount, currency }: IFormatCurrenc
     return new Intl.NumberFormat(`en-${countryCode}`, { style: 'currency', currency }).format(amount);
 };
 
-export function delay(delayTime: number) {
+export function delay(delayTime = 1500) {
     return new Promise(res => setTimeout(res, delayTime));
 }
 
@@ -44,4 +44,9 @@ export const debounce = (callback: any, wait: number) => {
 export const isAllValueTruthy = (...args: any) => {
     const isTruthy = (values: any) => values.every((arg: unknown) => arg !== null && typeof arg !== undefined);
     return isTruthy([...args]);
+};
+
+export const getIsAfrica = (country?: string, africa?: Record<string, any>) => {
+    if (!country || !africa) return false;
+    return country in africa;
 };

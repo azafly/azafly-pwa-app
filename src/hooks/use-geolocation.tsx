@@ -9,6 +9,7 @@ interface LocationProps {
     isAfrica?: boolean;
     error?: string;
     countriesByRegion?: any;
+    countriesCodeByRegion?: any;
 }
 
 const initialState = { isLoading: false, userCurrentCountry: null };
@@ -20,7 +21,13 @@ const geolocationReducer = (state: LocationProps = initialState, action: Action)
         case 'request':
             return { isLoading: true };
         case 'success':
-            return { isLoading: false, userCurrentCountry: action.payload.userCurrentCountry, isAfrica: action.payload.isAfrica };
+            return {
+                isLoading: false,
+                userCurrentCountry: action.payload.userCurrentCountry,
+                isAfrica: action.payload.isAfrica,
+                countriesByRegion: action.payload.countriesByRegion,
+                countriesCodeByRegion: action.payload.countriesCodeByRegion
+            };
         case 'failure':
             return { isLoading: false, error: 'Error getting location' };
         default:
@@ -34,7 +41,9 @@ export const useGeolocation = () => {
     const [location, dispatch] = useReducer(geolocationReducer, initialState);
 
     const getCountriesByRegion = async () =>
-        axios.get(`https://us-central1-pick-safe.cloudfunctions.net/countryList`).then(({ data }) => data.countriesByRegion);
+        axios
+            .get(`https://us-central1-pick-safe.cloudfunctions.net/countryList`)
+            .then(({ data: { countriesCodeByRegion, countriesByRegion } }) => ({ countriesCodeByRegion, countriesByRegion }));
 
     const getUserGeoLocationData = async () =>
         axios.get(`https://geolocation-db.com/json/${getEnv(ENV.REACT_APP_GEOLOCATION_KEY)}`).then(({ data }) => data.country_name);
@@ -43,9 +52,12 @@ export const useGeolocation = () => {
         const getUserGeolocationDetails = async () => {
             dispatch({ type: 'request' });
             try {
-                const [countriesByRegion, userCurrentCountry] = await Promise.all([getCountriesByRegion(), getUserGeoLocationData()]);
-                const isAfrica = getIsAfrica(userCurrentCountry.code, countriesByRegion.Africa);
-                dispatch({ type: 'success', payload: { isAfrica, userCurrentCountry, countriesByRegion } });
+                const [{ countriesCodeByRegion, countriesByRegion }, userCurrentCountry] = await Promise.all([
+                    getCountriesByRegion(),
+                    getUserGeoLocationData()
+                ]);
+                const isAfrica = getIsAfrica(userCurrentCountry.code, countriesCodeByRegion.Africa);
+                dispatch({ type: 'success', payload: { isAfrica, userCurrentCountry, countriesByRegion, countriesCodeByRegion } });
             } catch (error) {
                 dispatch({ type: 'failure' });
             }

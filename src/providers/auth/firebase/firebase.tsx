@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo } from 'react';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { getStorage } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
@@ -49,7 +49,6 @@ function useFirebaseProviderAuth() {
             const token = await user.getIdToken(true);
             const to = isNewUser ? '/onboarding-update' : '/dashboard';
             dispatch.auth.updateAuthState({
-                ...reduxAuthState,
                 user,
                 isAuth: true,
                 isError: false,
@@ -61,18 +60,19 @@ function useFirebaseProviderAuth() {
             dispatch.dashboard.setCurrentDashboardTab('dashboard');
         } catch ({ message }) {
             dispatch.auth.updateAuthState({
-                ...reduxAuthState,
                 isAuth: false,
                 isError: true,
                 isLoading: false,
+                hasuraUser: null,
                 user: null,
+                token: null,
                 action: 'sign-in',
                 errorMessage: `${message}`
             });
         }
     };
 
-    const signupWithEmailPassword = async ({ email, password }: EmailAndPasswordSignUp) => {
+    const signupWithEmailPassword = async (email: string, password: string) => {
         handleSignIn(createUserWithEmailAndPassword(firebaseAuth, email, password));
     };
 
@@ -81,7 +81,7 @@ function useFirebaseProviderAuth() {
             .signOut()
             .then(() => {
                 dispatch.auth.updateAuthState({ ...reduxAuthState, isAuth: false, user: null, token: null, isLoading: false });
-                location.replace('/signin');
+                history.replaceState({ from: location.pathname }, '', '/signin');
             })
             .catch(error => console.warn(error));
     };
@@ -104,6 +104,7 @@ function useFirebaseProviderAuth() {
     };
 
     const signinWithEmailPassword = async (email: string, password: string) => {
+        console.log(email, password);
         handleSignIn(signInWithPass(firebaseAuth, email, password));
     };
 
@@ -114,16 +115,16 @@ function useFirebaseProviderAuth() {
     setPersistence(firebaseAuth, browserSessionPersistence).catch(error => {
         console.log(error);
     });
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, async user => {
             if (user) {
                 const token = await user.getIdToken();
                 const idTokenResult = await user.getIdTokenResult();
                 const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL] as Record<string, string | string[]>;
-                const allowedRoles = hasuraClaim['x-hasura-allowed-roles'];
+                const allowedRoles = hasuraClaim?.['x-hasura-allowed-roles'];
                 if (hasuraClaim) {
                     dispatch.auth.updateAuthState({
-                        ...reduxAuthState,
                         user,
                         isAuth: true,
                         isError: false,
@@ -143,7 +144,6 @@ function useFirebaseProviderAuth() {
                             // Force refresh to pick up the latest custom claims changes.
                             const newToken = await user.getIdToken(true);
                             dispatch.auth.updateAuthState({
-                                ...reduxAuthState,
                                 user,
                                 isAuth: true,
                                 isError: false,

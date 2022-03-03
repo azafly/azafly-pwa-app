@@ -1,6 +1,6 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-export const useSPaymentsStyles = makeStyles(() =>
+export const usePaymentsStyles = makeStyles(() =>
     createStyles({
         root: {
             width: '100vw',

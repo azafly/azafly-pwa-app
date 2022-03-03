@@ -111,7 +111,7 @@ export function CurrencyToggle({ options, initialValue, handleCurrencyChangeExtr
                                 <Stack direction={'row'} sx={{ mb: 1, mt: '-5px !important' }}>
                                     <Avatar
                                         src={option.flag}
-                                        sx={{ mr: '0.8ch', height: '20px !important', width: '35px !important' }}
+                                        sx={{ mr: '0.8ch', height: '25px !important', width: '35px !important' }}
                                         sizes={'small'}
                                         variant={'rounded'}
                                     />{' '}

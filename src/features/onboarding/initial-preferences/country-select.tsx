@@ -7,7 +7,7 @@ import { NIGERIA } from 'types/country-data';
 import { Country } from 'types/country-data';
 import { RenderOptions } from './render-option-label';
 import { RootState } from 'app/store';
-import { UK } from 'features/payments/context/constants';
+import { UK } from 'types/country-data';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {

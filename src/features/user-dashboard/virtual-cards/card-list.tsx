@@ -11,9 +11,8 @@ import { Dispatch, RootState } from 'app/store';
 import { mockCards, formatCardArrayToObject } from 'app/models/cards/mocks';
 import { TopUpForm, VirtualCardSetting } from './actions';
 import { useGetUserCardsSubscription } from 'api/generated/graphql';
-import { useUserContext } from 'hooks/use-user-context';
 
-import BasicModal from './modal/index';
+import BasicModal from './actions/modal/index';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -59,13 +58,15 @@ function getActionModal(action: any) {
 const CardList = () => {
     const {
         dashboard: { currentVirtualCard },
-        VIRTUAL_CARDS: { userCards }
-    } = useSelector(({ dashboard, VIRTUAL_CARDS }: RootState) => ({ dashboard, VIRTUAL_CARDS }));
+        VIRTUAL_CARDS: { userCards },
+        auth: { hasuraUser }
+    } = useSelector(({ auth, dashboard, VIRTUAL_CARDS }: RootState) => ({ auth, dashboard, VIRTUAL_CARDS }));
     const dispatch = useDispatch<Dispatch>();
     const classes = useStyles();
     const { action = 'top-up', currency: currencyKey, openTopUpModal = false } = currentVirtualCard ?? {};
     const [openModal, setOpenModal] = useState(openTopUpModal);
-    const { user } = useUserContext();
+    const user = hasuraUser;
+
     const { data, loading, error } = useGetUserCardsSubscription({ variables: { userId: user?.id ?? '' } });
 
     // TODO : use carData above other than mock once implementation si complete

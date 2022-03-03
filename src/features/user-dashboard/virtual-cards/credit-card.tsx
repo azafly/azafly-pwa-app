@@ -4,7 +4,7 @@ import { memo, useState } from 'react';
 import { Slide, Stack } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
-import { formatCurrency } from 'libs';
+import { formatCurrency, delay, formatFirstName } from 'libs';
 import { Logo2SvgComponent } from 'components/icons';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -61,12 +61,26 @@ interface VirtualCardProps {
 export const CreditCard = memo(function CreditCard({ balance, currency, cardNumber, countryCode, last4digits, expiry, cvv }: VirtualCardProps) {
     const classes = useStyles();
     const [show, setShow] = useState(false);
+    const [loadingDetails, setLoadingDetails] = useState(false);
 
     const _balance = formatCurrency({
         currency,
         amount: balance,
         countryCode
     });
+
+    const handleSetShowCardDetails = () => {
+        // TODO :server rendered later
+        if (show) {
+            setShow(false);
+        } else {
+            setLoadingDetails(true);
+            delay(44444444);
+            setLoadingDetails(false);
+            setShow(true);
+        }
+    };
+    console.log(formatFirstName('Iberibe'));
     return (
         <div className={classes.credit_card__container}>
             <Card elevation={3} className={classes.card}>
@@ -91,7 +105,7 @@ export const CreditCard = memo(function CreditCard({ balance, currency, cardNumb
                         </Slide>
                     </Box>
                     <Typography variant='h5' className={classes.cardNumber} align={'center'}>
-                        {show ? cardNumber : '**** **** ****'} {last4digits}
+                        {!loadingDetails && show ? cardNumber : '**** **** ****'} {last4digits}
                     </Typography>
                 </CardContent>
                 <CardActions>
@@ -109,13 +123,13 @@ export const CreditCard = memo(function CreditCard({ balance, currency, cardNumb
                                 {'CVV'}
                             </Typography>
                             <Button size='small' className={classes.action}>
-                                {show ? cvv : '***'}
+                                {!loadingDetails && show ? cvv : '***'}
                             </Button>
                         </Stack>
                     </Box>
                 </CardActions>
             </Card>
-            <VisibilityIcon className={classes.visible} onClick={() => setShow(!show)} />
+            <VisibilityIcon className={classes.visible} onClick={handleSetShowCardDetails} />
         </div>
     );
 });

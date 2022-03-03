@@ -4,6 +4,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
 import { Dispatch, RootState } from 'app/store';
+import { getEnv } from 'format-env';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 62,
@@ -59,9 +60,10 @@ export function CountryViewToggleSwitch() {
     const dispatch = useDispatch<Dispatch>();
 
     const label = isAfrica ? 'Local' : 'Abroad';
+    const isDevEnvironment = process.env.REACT_APP_NODE_ENVIRONMENT === 'dev';
     return (
         <>
-            {isAdmin && (
+            {(isAdmin || isDevEnvironment) && (
                 <FormControlLabel
                     control={<MaterialUISwitch defaultChecked onChange={() => dispatch.dashboard.toggleViewState(null)} />}
                     label={`${label}`}

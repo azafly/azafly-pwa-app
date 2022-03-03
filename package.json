@@ -56,6 +56,7 @@
         "react-intersection-observer": "^8.32.0",
         "react-joyride": "^2.3.2",
         "react-loading-skeleton": "^3.0.1",
+        "react-pwa-install-prompt": "^1.0.5",
         "react-redux": "^7.2.0",
         "react-router-dom": "^5.2.0",
         "react-router-transition": "^2.1.0",
@@ -71,7 +72,7 @@
         "typescript": "~4.1.5",
         "uuid": "^8.3.2",
         "web-vitals": "^2.1.0",
-        "yarn": "^1.22.11",
+        "yarn": "^1.22.17",
         "yup": "^0.32.9"
     },
     "scripts": {
@@ -83,6 +84,7 @@
         "generate": "graphql-codegen --config codegen.js",
         "prettier": "prettier src/**/*.{ts,tsx,js,json,d.ts}",
         "build:staging": "env-cmd -f .env.staging react-app-rewired build",
+        "build:dev": "env-cmd -f .env.development react-app-rewired build",
         "build:prod": "env-cmd -f .env.production react-app-rewired build ",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
     },

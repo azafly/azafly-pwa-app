@@ -1,7 +1,7 @@
-import { EmailAndPasswordSignUp } from './firebase';
 import { User as FirebaseUser } from 'firebase/auth';
 
 import 'firebase/firestore';
+import { States_Aggregate_FieldsCountArgs } from 'api/generated/graphql';
 
 export interface LocalUser {
     displayName: string | null;
@@ -25,7 +25,7 @@ export interface AuthState {
     action?: Action;
     errorMessage?: string;
     successMessage?: string;
-    isNewUser: boolean;
+    isNewUser?: boolean;
 }
 
 export const defaultUser: User = {
@@ -51,7 +51,7 @@ export interface AuthContext {
     sendPasswordResetEmail: any;
     signout: any;
     signinWithEmailPassword: any;
-    signupWithEmailPassword: (additionalInfo: EmailAndPasswordSignUp) => Promise<void>;
+    signupWithEmailPassword: (email: string, password: string) => Promise<void>;
     verifyPasswordCode: any;
     verifyEmail: any;
 }

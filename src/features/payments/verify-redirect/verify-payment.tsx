@@ -28,10 +28,10 @@ export default function RedirectCallback() {
 
     const { verificationStatus, loading } = useVerifyPaymentSuccess();
 
-    const goToNext = async () => {
+    const goToNext = () => {
         if (verificationStatus?.referer === 'cards') {
             dispatch.dashboard.setCurrentDashboardTab('cards');
-            dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'USD', openTopUpModal: false });
+            dispatch.dashboard.setCurrentCardIdentifier({ ...currentVirtualCard, openTopUpModal: false });
         }
         history.replace('/dashboard');
     };
@@ -39,7 +39,7 @@ export default function RedirectCallback() {
     const goToPayments = async () => {
         if (verificationStatus?.referer === 'cards') {
             dispatch.dashboard.setCurrentDashboardTab('cards');
-            dispatch.dashboard.setCurrentCardIdentifier({ currency: currentVirtualCard?.currency ?? 'USD', openTopUpModal: true });
+            dispatch.dashboard.setCurrentCardIdentifier({ ...currentVirtualCard, openTopUpModal: true });
         }
         history.replace('/dashboard');
     };

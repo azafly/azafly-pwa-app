@@ -8624,13 +8624,13 @@ export type FilterTransactionsByDateRangeQuery = (
 );
 
 export type GetCurrentUserQueryVariables = Exact<{
-  id: Scalars['uuid'];
+  email: Scalars['String'];
 }>;
 
 
 export type GetCurrentUserQuery = (
   { readonly __typename?: 'query_root' }
-  & { readonly users_by_pk?: Maybe<(
+  & { readonly users: ReadonlyArray<(
     { readonly __typename?: 'users' }
     & Pick<Users, 'display_name' | 'email' | 'email_verified' | 'firebase_id' | 'id' | 'image_url' | 'phone' | 'is_new_user' | 'address' | 'country' | 'document_url'>
   )> }
@@ -9094,8 +9094,8 @@ export type FilterTransactionsByDateRangeQueryHookResult = ReturnType<typeof use
 export type FilterTransactionsByDateRangeLazyQueryHookResult = ReturnType<typeof useFilterTransactionsByDateRangeLazyQuery>;
 export type FilterTransactionsByDateRangeQueryResult = Apollo.QueryResult<FilterTransactionsByDateRangeQuery, FilterTransactionsByDateRangeQueryVariables>;
 export const GetCurrentUserDocument = gql`
-    query getCurrentUser($id: uuid!) {
-  users_by_pk(id: $id) {
+    query getCurrentUser($email: String!) {
+  users(where: {email: {_eq: $email}}) {
     display_name
     email
     email_verified
@@ -9124,7 +9124,7 @@ export const GetCurrentUserDocument = gql`
  * @example
  * const { data, loading, error } = useGetCurrentUserQuery({
  *   variables: {
- *      id: // value for 'id'
+ *      email: // value for 'email'
  *   },
  * });
  */

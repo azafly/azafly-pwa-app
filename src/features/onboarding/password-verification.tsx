@@ -35,13 +35,13 @@ export const PasswordVerification = ({ setError }: PasswordVerificationProps) =>
     const handlePasswordReset = async () => {
         verifyPasswordCode(verificationCode)
             .then(() => {
-                confirmPasswordReset(verificationCode, password).then(() => {
+                confirmPasswordReset(verificationCode, password.password).then(() => {
                     history.push('/dashboard');
                 });
             })
             .catch(() => setError('Error occurred with the password reset. Try again'));
     };
-
+    const noMatch = password.confirm !== password.password;
     return (
         <>
             <Input
@@ -73,10 +73,10 @@ export const PasswordVerification = ({ setError }: PasswordVerificationProps) =>
                 }
             />
 
-            {password.confirm !== password.password && <Typography style={{ color: 'red' }}>Password do not match </Typography>}
+            {noMatch && <Typography style={{ color: 'red' }}>Password do not match </Typography>}
 
             <div>
-                <Button className={classes.submit} disabled={!password} size={'large'} color='inherit' onClick={handlePasswordReset}>
+                <Button className={classes.submit} disabled={noMatch} size={'large'} color='inherit' onClick={handlePasswordReset}>
                     Reset Password
                 </Button>
             </div>

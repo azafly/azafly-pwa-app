@@ -6,8 +6,8 @@ In the project directory, you can run:
 
 ### Starting
 
-for mac : `yarn start:os`
-for windows : `yarn start`
+for mac : `yarn && yarn start:os`
+for windows : `yarn && yarn start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.

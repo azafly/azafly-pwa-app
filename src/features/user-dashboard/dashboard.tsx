@@ -9,15 +9,13 @@ import { DefaultSnackbar, SpeedDialTooltip } from 'components';
 import { Dispatch, RootState } from 'app/store';
 import { fetchWallet } from './mock';
 import { firebaseAuth } from 'providers/auth/firebase/firebase';
-import { mockCards, formatCardArrayToObject } from 'app/models/cards';
 import { SideBar } from './side-bar';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { Tour } from 'components/product-tour/tour';
 import { TOUR_DASHBOARD_LOCAL_STEPS } from './product-tours';
 import { Transactions as TransactionView } from './transactions';
-import { useGetCurrentUserLazyQuery, useGetExchangeRatesSubscription, useGetUserTransactionsQuery } from 'api/generated/graphql';
+import { useGetExchangeRatesSubscription, useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { UserAccount } from 'views/user-account';
-import CardList from './virtual-cards/card-list';
 
 import { useDashboardStyles, StyledBadge } from './classes';
 import { formatHasuraExchangeRates, ExchangeRates } from './utils';
@@ -96,27 +94,26 @@ export default function Dashboard() {
     const alertSeverity = verificationEmailSent.includes('Error') ? 'error' : 'success';
     const alertTitle = verificationEmailSent.includes('Error') ? 'Error' : 'Success';
 
-    useEffect(() => {
-        fetchWallet();
-        dispatch.VIRTUAL_CARDS.setUserCards(formatCardArrayToObject(mockCards));
-        dispatch.dashboard.setCurrentDashboardTab(currentSideBarTab ?? 'dashboard');
-    }, [dispatch.VIRTUAL_CARDS, dispatch.payments, dispatch.dashboard, currentSideBarTab]);
+    // useEffect(() => {
+    //     fetchWallet();
+    //     dispatch.dashboard.setCurrentDashboardTab(currentSideBarTab ?? 'dashboard');
+    // }, [dispatch.VIRTUAL_CARDS, dispatch.payments, dispatch.dashboard, currentSideBarTab]);
 
-    useEffect(() => {
-        // set rates
-        if (exchangeRates) {
-            const rates = formatHasuraExchangeRates(sellCurrency, exchangeRates.exchange_rates as unknown as ExchangeRates[]);
-            dispatch.payments.setRates(rates);
-        }
-        if (errorRates) {
-            dispatch.dashboard.setFetchAPIState({
-                loading: loadingRates,
-                result: 'error',
-                message: `${errorRates}`
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [exchangeRates, errorRates, loadingRates]);
+    // useEffect(() => {
+    //     // set rates
+    //     if (exchangeRates) {
+    //         const rates = formatHasuraExchangeRates(sellCurrency, exchangeRates.exchange_rates as unknown as ExchangeRates[]);
+    //         dispatch.payments.setRates(rates);
+    //     }
+    //     if (errorRates) {
+    //         dispatch.dashboard.setFetchAPIState({
+    //             loading: loadingRates,
+    //             result: 'error',
+    //             message: `${errorRates}`
+    //         });
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [exchangeRates, errorRates, loadingRates]);
 
     useEffect(() => {
         dispatch.payments.setTotalToPayInSellCurrencyAsync(null);
@@ -125,7 +122,7 @@ export default function Dashboard() {
 
     return (
         <div className={classes.dashboard_container}>
-            <Box sx={{ margin: 50 }} />
+            {/* <Box sx={{ margin: 50 }} />
             <Tour steps={TOUR_DASHBOARD_LOCAL_STEPS} runTour={runTour} />
             <DefaultSnackbar
                 severity={alertSeverity}
@@ -151,7 +148,6 @@ export default function Dashboard() {
                         userData={userData}
                     />
                 )}
-                {currentSideBarTab === 'cards' && <CardList />}
                 {currentSideBarTab === 'account' && <UserAccount />}
                 {currentSideBarTab === 'payment' && <Redirect to={'/payment'} />}
             </Grid>
@@ -162,7 +158,7 @@ export default function Dashboard() {
                 openSpeedDial={openSpeedDial}
                 hidden={hidden}
                 handleSpeedDialVisibility={handleSpeedDialVisibility}
-            />
+            /> */}
         </div>
     );
 }

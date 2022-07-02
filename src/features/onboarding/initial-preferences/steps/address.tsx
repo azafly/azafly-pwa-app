@@ -17,7 +17,7 @@ export const Address = () => {
 
     return (
         <Slide
-            direction='up'
+            direction='left'
             in
             mountOnEnter
             unmountOnExit
@@ -42,14 +42,18 @@ export const Address = () => {
                     This is for compliance reasons. Your information is private and secure.
                 </Typography>
                 <GoogleAddressAutoComplete reduxSetAddressValue={value => dispatch.onboarding.setAddress(value)} />
+
                 <Button
                     onClick={() => dispatch.onboarding.setActiveStep('kyc')}
                     variant={'contained'}
                     color={'primary'}
                     style={{ marginTop: 20 }}
-                    disabled={disableNext}
+                    disabled={!Boolean(address)}
                 >
                     Continue
+                </Button>
+                <Button onClick={() => dispatch.onboarding.setActiveStep('kyc')} variant={'contained'} color={'secondary'} style={{ marginTop: 20 }}>
+                    Skip
                 </Button>
             </Stack>
         </Slide>

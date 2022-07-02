@@ -1,15 +1,21 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { createStyles, makeStyles, Theme, useMediaQuery } from '@material-ui/core';
 import { Box } from '@material-ui/core';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-
 import { DateRange } from '@mui/lab/DateRangePicker';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import React, { Dispatch, ReactNode, SetStateAction, useEffect } from 'react';
 
 interface TabPanelProps {
     children?: React.ReactNode;
     index: any;
     value: any;
+}
+
+interface TabViewProps {
+    key?: string;
+    heading: ReactNode;
+    headingClickHandler?: any;
+    component: ReactNode;
 }
 
 export const useStyles = makeStyles((theme: Theme) =>
@@ -49,7 +55,7 @@ function a11yProps(index: any) {
     };
 }
 interface TransactionFilterTabProps {
-    tabViews: any[];
+    tabViews: TabViewProps[];
     handleSetDateValue?: Dispatch<SetStateAction<DateRange<Date>>>;
     dateValue?: any;
     openDatePicker?: boolean;
@@ -88,7 +94,7 @@ export const FilterTab = ({ tabViews, currentKey }: TransactionFilterTabProps) =
                 visibleScrollbar
             >
                 {tabViews.map(({ heading, headingClickHandler }, index) => {
-                    return <Tab key={index} label={heading} {...a11yProps(index)} onClick={() => headingClickHandler && headingClickHandler(true)} />;
+                    return <Tab key={index} label={heading} {...a11yProps(index)} onClick={() => headingClickHandler && headingClickHandler()} />;
                 })}
             </Tabs>
             {tabViews.map(({ component }, index) => {

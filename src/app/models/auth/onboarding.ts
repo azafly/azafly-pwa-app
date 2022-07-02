@@ -1,11 +1,7 @@
 import { createModel } from '@rematch/core';
 
-import { Country } from 'types//country-data';
-import { CountryListData, defaultCountryListData } from 'types/country-data';
-import { Currency } from 'libs/constants';
-import { RootModel } from './index';
+import { RootModel } from '../index';
 import { StepLabel } from 'features/onboarding/initial-preferences/steps/index';
-import { UK } from 'types/country-data';
 
 interface APIFetchState {
     result?: 'error' | 'success';
@@ -15,32 +11,30 @@ interface APIFetchState {
 }
 interface OnboardingPreference {
     phoneNumber: string;
-    currencies: Currency[];
-    country: Country & { isAfrica?: boolean };
     address: string;
-    countryList: CountryListData;
-    userGeolocation: any;
     activeStep: StepLabel;
     disableNext: boolean;
+    isPhoneVerified: boolean;
+    displayName: string;
     verificationId: string;
     apiFetchState: APIFetchState;
     document_url: string | null;
     isNewUser: boolean;
+    country: string;
 }
 
 const initialState: OnboardingPreference = {
     phoneNumber: '',
-    currencies: [],
-    country: UK,
     address: '',
-    countryList: defaultCountryListData,
-    userGeolocation: {},
+    displayName: '',
     activeStep: 'phone',
     disableNext: true,
     verificationId: '',
     apiFetchState: {},
+    isPhoneVerified: false,
     document_url: null,
-    isNewUser: false
+    isNewUser: false,
+    country: 'ng'
 };
 
 export const onboarding = createModel<RootModel>()({
@@ -58,29 +52,23 @@ export const onboarding = createModel<RootModel>()({
         setAddress(state, payload: string) {
             return { ...state, address: payload, isNewUser: false };
         },
-        setCurrencies(state, payload: OnboardingPreference['currencies']) {
-            return { ...state, currencies: payload };
-        },
         setCountry(state, payload: OnboardingPreference['country']) {
-            return { ...state, country: payload };
-        },
-        setCountryList(state, payload: OnboardingPreference['countryList']) {
-            return { ...state, countryList: payload };
-        },
-        setUserGeolocation(state, payload: any) {
-            return { ...state, userGeolocation: payload };
-        },
-        setDerivedCountryOfResidence(state, payload: OnboardingPreference['country']) {
             return { ...state, country: payload };
         },
         setVerificationId(state, payload: string) {
             return { ...state, verificationId: payload };
+        },
+        setPhoneVerified(state, payload: boolean) {
+            return { ...state, isPhoneVerified: payload };
         },
         setApiFetchState(state, payload: APIFetchState) {
             return { ...state, apiFetchState: payload };
         },
         setDocumentUrl(state, payload: string) {
             return { ...state, document_url: payload };
+        },
+        setDisplayName(state, payload: string) {
+            return { ...state, displayName: payload };
         }
     }
 });

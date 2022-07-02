@@ -26,6 +26,9 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
             },
             '& .info': {
                 color: '#4990A4'
+            },
+            '& input': {
+                fontSize: '0.95rem'
             }
         },
         name: {
@@ -39,10 +42,8 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
             '& .MuiFormLabel-root': {
                 opacity: 0.7,
                 marginLeft: 15,
-                fontSize: '0.8rem',
                 [theme.breakpoints.down('md')]: {
-                    marginLeft: 5,
-                    fontSize: '0.7rem'
+                    marginLeft: 5
                 }
             },
             [theme.breakpoints.down('sm')]: {
@@ -66,10 +67,8 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
             '& .MuiFormLabel-root': {
                 opacity: 0.7,
                 marginLeft: 15,
-                fontSize: '0.8rem',
                 [theme.breakpoints.down('md')]: {
-                    marginLeft: 5,
-                    fontSize: '0.7rem'
+                    marginLeft: 5
                 }
             }
         },
@@ -83,7 +82,6 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
         },
         terms: {
             display: 'flex',
-            fontSize: 12,
             fontWeight: 450,
             color: '#77838F'
         },
@@ -116,10 +114,10 @@ export const useSignUpFormStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             alignItems: 'center',
             height: 40,
-            backgroundColor: 'rgb(255, 255, 255)',
+            backgroundColor: '#2F5BB7',
             padding: 5,
-            border: '1px solid #DCDCDC',
-            color: theme.palette.text.primary,
+            border: '1.5px solid rgb(51, 100, 114)',
+            color: theme.colors.white,
             fontWeight: 500,
             textTransform: 'none',
             fontSize: '0.875rem',

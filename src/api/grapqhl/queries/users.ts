@@ -18,3 +18,11 @@ export const GET_CURRENT_USER = gql`
         }
     }
 `;
+
+export const CHECK_PHONE_NUMBER = gql`
+    query checkPhoneExists($phone: String!) {
+        users(where: { phone: { _eq: $phone } }) {
+            phone
+        }
+    }
+`;

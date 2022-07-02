@@ -1,8 +1,8 @@
 import { Models } from '@rematch/core';
 
-import { auth } from './auth';
-import { dashboard } from './dashboard';
-import { onboarding } from './onboarding';
+import { auth } from './auth/auth';
+import { dashboard } from './dashboards/dashboard';
+import { onboarding } from './auth/onboarding';
 import { payments } from './payments/payments';
 import { VIRTUAL_CARDS } from './cards';
 

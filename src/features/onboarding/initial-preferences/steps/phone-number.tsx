@@ -8,15 +8,27 @@ import { DefaultSnackbar } from 'components';
 import { Dispatch, RootState } from 'app/store';
 import { sendAuthSMS } from 'providers/auth/firebase/phone-verification';
 import { ThreeDots } from 'components/css-loaders/three-dots';
+import { useCheckPhoneExistsLazyQuery } from 'api/generated/graphql';
 
 import 'react-phone-input-2/lib/style.css';
 
 export const PhoneNumber = () => {
     const [_, setOpen] = useState(false);
     const dispatch = useDispatch<Dispatch>();
-    const { phoneNumber, country, apiFetchState } = useSelector((state: RootState) => state.onboarding);
+    const { phoneNumber, apiFetchState } = useSelector((state: RootState) => state.onboarding);
+
+    const [handleCheckPhoneNumber, { data, error }] = useCheckPhoneExistsLazyQuery({
+        variables: {
+            phone: phoneNumber
+        }
+    });
+    console.log(data, error);
+    const checkIfPhoneNumberExists = () => {
+        handleCheckPhoneNumber();
+    };
 
     const handleSendVerificationCode = () => {
+        checkIfPhoneNumberExists();
         dispatch.onboarding.setApiFetchState({
             ...apiFetchState,
             loading: true
@@ -29,7 +41,7 @@ export const PhoneNumber = () => {
                     ...apiFetchState,
                     result: 'success',
                     loading: false,
-                    message: `We have successfully sent your verification code`
+                    message: `We have sent you a verification code`
                 });
                 dispatch.onboarding.setDisableNext(false);
             })
@@ -58,7 +70,7 @@ export const PhoneNumber = () => {
     return (
         <>
             <DefaultSnackbar open={result === 'error'} handleClose={handleCloseSnackBar} severity={'error'} title={'Error'} info={message ?? ''} />
-            <Slide direction='down' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+            <Slide direction='left' in={true} mountOnEnter unmountOnExit appear timeout={800}>
                 <Stack sx={{ width: '100%' }}>
                     <Typography variant={'h6'} align={'center'} style={{ fontWeight: 700, fontFamily: 'Nunito', color: '#0d324d', marginBottom: 10 }}>
                         {' '}
@@ -77,7 +89,7 @@ export const PhoneNumber = () => {
                             required: true,
                             autoFocus: true
                         }}
-                        country={country?.code.toLocaleLowerCase() ?? 'us'}
+                        country={'de'}
                         value={phoneNumber}
                         onChange={phone => dispatch.onboarding.setPhoneNumber(phone)}
                         regions={['america', 'europe', 'oceania', 'africa']}

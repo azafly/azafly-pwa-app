@@ -2,15 +2,19 @@ import { PropsWithChildren } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { NavBar } from 'components/nav-bar';
 import { BottomNavBar } from 'features/user-dashboard/bottom-navbar';
+import { useSelector } from 'react-redux';
+import { RootState } from 'app/store';
 
 export function PrivateRoute({ children, ...rest }: PropsWithChildren<any>) {
-    const token = localStorage.getItem('token');
+    const {
+        auth: { isAuth }
+    } = useSelector(({ auth }: RootState) => ({ auth }));
 
     return (
         <Route
             {...rest}
             render={({ location }) => {
-                return token ? (
+                return isAuth ? (
                     <>
                         <NavBar />
 
@@ -20,7 +24,7 @@ export function PrivateRoute({ children, ...rest }: PropsWithChildren<any>) {
                 ) : (
                     <Redirect
                         to={{
-                            pathname: '/signin',
+                            pathname: 'auth/signin',
                             state: { from: location }
                         }}
                     />

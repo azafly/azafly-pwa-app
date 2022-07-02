@@ -1,5 +1,4 @@
 import { delay } from 'libs';
-import { mockCards } from '../cards';
 
 export type CurrencyCode = 'NGN' | 'USD' | 'EUR' | 'GBP' | 'CAD';
 
@@ -35,13 +34,15 @@ interface TopUpMockArgs {
     amount: number;
 }
 export function topUpCard({ currency, amount }: TopUpMockArgs) {
-    const updatedCards = mockCards.map(card => {
-        if (card.currency === currency) {
-            return {
-                ...card,
-                amount: card.balance + amount
-            };
-        }
+    const updatedCards = [
+        /*mockCards*/
+    ].map(card => {
+        // if (card.currency === currency) {
+        //     return {
+        //         ...card,
+        //         amount: card.balance + amount
+        //     };
+        // }
         return card;
     });
     return mockAPIRequest(updatedCards, 10000);

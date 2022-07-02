@@ -1,7 +1,7 @@
 import { Button, Checkbox, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -12,6 +12,8 @@ import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { useSignUpFormStyles } from './classes';
 import Logo from 'assets/google.svg';
+import { ROUTE_MAP } from 'routes/utils';
+import { formatFirebaseErrorMessage } from 'providers/auth/firebase/constants';
 
 const formFieldArray = [
     {
@@ -44,9 +46,11 @@ export const SignUpForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
+    const dispatch = useDispatch();
+    const reduxAuthState = useSelector((state: RootState) => state.auth);
 
     const { signupWithEmailPassword, signInWithGoogle } = useFirebaseAuthContext();
-    const { errorMessage = 'An Authentication has occurred', isError, isLoading } = useSelector((state: RootState) => state.auth);
+    const { errorMessage = 'An Authentication has occurred', isLoading, isError } = useSelector((state: RootState) => state.auth);
 
     const formik = useFormik({
         initialValues: {
@@ -58,26 +62,28 @@ export const SignUpForm = () => {
             terms: ''
         },
         validationSchema: validationSchema,
-        onSubmit: ({ email, password }) => {
-            signupWithEmailPassword(email, password);
+        onSubmit: async ({ email, password, firstName, lastName }) => {
+            await signupWithEmailPassword({ email, password, firstName, lastName });
+            if (!isLoading && isError) setOpenSnackBar(true);
         }
     });
 
     type FormValue = keyof typeof formik.initialValues;
 
-    useEffect(() => {
-        if (isError && !isLoading) {
-            setOpenSnackBar(true);
-        }
-    }, [isLoading, isError]);
-
     return (
         <div className={classes.signUpformRoot}>
-            <DefaultSnackbar open={openSnackBar} handleClose={() => setOpenSnackBar(false)} severity={'error'} title={'Error'} info={errorMessage} />
+            <DefaultSnackbar
+                autoHideDuration={30000}
+                open={openSnackBar}
+                handleClose={() => setOpenSnackBar(false)}
+                severity={'error'}
+                title={'Error'}
+                info={errorMessage}
+            />
             <div className={classes.form_container}>
                 <div className={` ${classes.google}`} onClick={signInWithGoogle}>
                     <img className='google-icon-svg' src={Logo} alt={'goggle-logo'} />
-                    <div className={'text'}>Google</div>
+                    <div className={'text'}>Signup with Google</div>
                 </div>
                 <div className={`${classes.divider}`}>
                     <div className='line' />

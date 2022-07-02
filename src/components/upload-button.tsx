@@ -2,8 +2,8 @@ import { ChangeEvent, ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import Stack from '@mui/material/Stack';
 import { ThreeDots } from './css-loaders/three-dots';
+import { Button } from '@material-ui/core';
 
 const Input = styled('input')({
     display: 'none'
@@ -16,22 +16,28 @@ interface UploadButtonProps {
     label?: string;
     loading?: boolean;
 }
-export function UploadButton({ icon, className, uploadCallback, label, loading }: UploadButtonProps) {
+export function UploadButton({ icon, uploadCallback, label, loading }: UploadButtonProps) {
     const type = `image/*,application/pdf`;
-    const ICON = icon ? icon : <CloudUploadIcon sx={{ fontSize: '3rem', color: '#0D324D' }} />;
+    const ICON = icon ? icon : <CloudUploadIcon sx={{ fontSize: '2rem', color: 'white' }} />;
     return (
-        <Stack direction='row' alignItems='center' spacing={2} className={className}>
+        <Button
+            variant={'contained'}
+            color={'primary'}
+            size={'small'}
+            style={{ textTransform: 'capitalize', width: 'max-content', cursor: 'pointer', color: 'white', height: '40px' }}
+            fullWidth
+        >
             <label htmlFor='icon-button-file' style={{ cursor: 'pointer' }}>
                 <span style={{ fontSize: '0.95rem' }}>{label}</span>
                 <Input accept={type} id='icon-button-file' type='file' onChange={uploadCallback} />
                 {loading ? (
                     <ThreeDots variantColor={'base'} />
                 ) : (
-                    <IconButton color='primary' aria-label='upload picture' component='span'>
+                    <IconButton aria-label='upload picture' component='span' style={{ color: 'white' }}>
                         {ICON}
                     </IconButton>
                 )}
             </label>
-        </Stack>
+        </Button>
     );
 }

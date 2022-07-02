@@ -2,7 +2,7 @@ import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import * as yup from 'yup';
@@ -35,17 +35,15 @@ export const SignInForm = () => {
             password: ''
         },
         validationSchema,
-        onSubmit: ({ email, password }) => {
+        onSubmit: async ({ email, password }) => {
             signinWithEmailPassword(email, password);
+            if (isError) {
+                setOpenSnackBar(true);
+            }
         }
     });
 
     const classes = useFormStyles();
-    useEffect(() => {
-        if (isError && !isLoading) {
-            setOpenSnackBar(true);
-        }
-    }, [isLoading, isError]);
 
     return (
         <div className={classes.signInformRoot}>

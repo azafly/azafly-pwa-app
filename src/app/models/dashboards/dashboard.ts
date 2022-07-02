@@ -1,6 +1,6 @@
 import { createModel } from '@rematch/core';
 
-import { RootModel } from './index';
+import { RootModel } from '../index';
 
 export type SideBarTabs = 'transactions' | 'cards' | 'payment' | 'account' | 'dashboard';
 export type ViewState = 'local' | 'abroad';
@@ -26,14 +26,12 @@ interface CardIdentifier {
 interface DashboardState {
     apiFetchState: APIFetchState;
     currentSideBarTab: SideBarTabs;
-    viewState: ViewState;
     currentVirtualCard: CardIdentifier;
 }
 
 const initialState: DashboardState = {
     apiFetchState: {},
     currentSideBarTab: 'transactions',
-    viewState: 'abroad',
     currentVirtualCard: defaultCurrentVirtualCard
 };
 
@@ -43,25 +41,11 @@ export const dashboard = createModel<RootModel>()({
         setCurrentDashboardTab(state, payload: SideBarTabs) {
             return { ...state, currentSideBarTab: payload };
         },
-        setViewState(state, payload: ViewState) {
-            return { ...state, viewState: payload };
-        },
         setFetchAPIState(state, payload: APIFetchState) {
             return { ...state, apiFetchState: payload };
         },
         setCurrentCardIdentifier(state, payload: CardIdentifier) {
             return { ...state, currentVirtualCard: payload };
         }
-    },
-    effects: dispatch => {
-        return {
-            async toggleViewState(_, getState) {
-                if (getState.auth.isAdmin) {
-                    const viewState = getState.dashboard.viewState === 'abroad' ? 'local' : 'abroad';
-                    dispatch.dashboard.setViewState(viewState);
-                    dispatch.auth.setIsUserCountryAfrican(!getState.auth.isAfrica);
-                }
-            }
-        };
     }
 });

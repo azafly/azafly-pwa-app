@@ -1,7 +1,7 @@
 import { createModel } from '@rematch/core';
 
 import { RootModel } from '../index';
-import { formatCardArrayToObject, CardObject, mockCards, VirtualCardObject } from './mocks';
+import { VirtualCardObject } from './mocks';
 
 interface APIFetchState {
     result?: 'error' | 'success';
@@ -12,16 +12,16 @@ interface APIFetchState {
 
 interface VirtualCardState {
     apiFetchState: APIFetchState;
-    userCards: CardObject;
-    currentCard: VirtualCardObject;
+    userCards: any;
+    currentCard: VirtualCardObject | null;
     // store information if the user was referred to to-up from dashboard or from within card
     topUpReferer: 'dashboard' | 'card';
 }
 
 const initialState: VirtualCardState = {
     apiFetchState: {},
-    userCards: formatCardArrayToObject(),
-    currentCard: mockCards[0],
+    userCards: {},
+    currentCard: null,
     topUpReferer: 'card'
 };
 

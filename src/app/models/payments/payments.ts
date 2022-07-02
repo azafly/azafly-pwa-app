@@ -1,6 +1,5 @@
 import { createModel } from '@rematch/core';
 
-import { Country } from 'types/country-data';
 import { currencies, getCurrencyRates } from 'app/models/payments/mock';
 import { GetOffersResponseData, getInitialOffer, GetOffersRequestBody } from 'services/rest-clients/user-payment';
 import { RootModel } from '../index';
@@ -17,8 +16,8 @@ export enum PAYMENT_STATES {
 }
 
 export interface RateInfo {
-    targetCountry: Country;
-    sourceCountry: Country;
+    targetCountry: string;
+    sourceCountry: string;
     amount: number;
 }
 export type CurrencyCode = 'NGN' | 'USD' | 'EUR' | 'GBP' | 'CAD';

@@ -1,7 +1,6 @@
 import { User as FirebaseUser } from 'firebase/auth';
 
 import 'firebase/firestore';
-import { States_Aggregate_FieldsCountArgs } from 'api/generated/graphql';
 
 export interface LocalUser {
     displayName: string | null;
@@ -10,6 +9,13 @@ export interface LocalUser {
     uid: string;
     emailVerified: boolean;
     phone?: string | null;
+}
+
+export interface EmailAndPasswordSignUpUser {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
 }
 
 export type User = LocalUser & Partial<FirebaseUser>;
@@ -30,7 +36,7 @@ export interface AuthState {
 
 export const defaultUser: User = {
     displayName: '',
-    email: 'olajohn@gmail.com',
+    email: '',
     photoURL: '',
     uid: '',
     emailVerified: false,
@@ -51,7 +57,7 @@ export interface AuthContext {
     sendPasswordResetEmail: any;
     signout: any;
     signinWithEmailPassword: any;
-    signupWithEmailPassword: (email: string, password: string) => Promise<void>;
+    signupWithEmailPassword: (user: EmailAndPasswordSignUpUser) => Promise<any>;
     verifyPasswordCode: any;
     verifyEmail: any;
 }
@@ -66,3 +72,20 @@ export const defaultAuhContext: AuthContext = {
     verifyPasswordCode: () => new Promise(() => {}),
     verifyEmail: () => new Promise(() => {})
 };
+
+export function formatFirebaseErrorMessage(message: string) {
+    // strings to replace and replacement
+    const STRINGS_TO_REPLACE = [
+        ['Firebase', ' '],
+        ['auth/', ' '],
+        ['-', ' '],
+        [':', ''],
+        ['(', ''],
+        [')', '']
+    ];
+    let newString = message;
+    STRINGS_TO_REPLACE.forEach(([original, replacement]) => {
+        newString = newString.replaceAll(original, replacement);
+    });
+    return newString;
+}

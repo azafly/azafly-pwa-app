@@ -4,6 +4,20 @@ interface RouteConfig {
     isPrivate?: boolean;
 }
 
+export enum ROUTE_MAP {
+    'AUTH' = '/auth',
+    'SIGN_IN' = 'auth/signin',
+    'SIGN_UP' = 'auth/signup',
+    'HOME' = '/',
+    'PAYMENTS' = '/payment',
+    'ONBOARDING' = '/onboarding-update',
+    'PAYMENTS_CALLBACK' = '/payments-callback',
+    'FORGOT_PASSWORD' = '/forgot-password',
+    'AUTH_VERIFY' = '/auth-verify',
+    'DASHBOARD' = '/dashboard',
+    'ACCOUNT' = '/account',
+    'ANY' = '*'
+}
 export const routes: RouteConfig[] = [
     {
         name: 'Home',

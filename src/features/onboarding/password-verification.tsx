@@ -80,7 +80,7 @@ export const PasswordVerification = ({ setError }: PasswordVerificationProps) =>
                     Reset Password
                 </Button>
             </div>
-            <Link to='/signin' className={classes.loginLink}>
+            <Link to='auth/signin' className={classes.loginLink}>
                 {' '}
                 Login with your new password
             </Link>

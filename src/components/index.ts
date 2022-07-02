@@ -1,4 +1,3 @@
-export { CountryViewToggleSwitch } from './country-view-toggle';
 export { CurrencyToggle } from './currency-toggle';
 export { DefaultSnackbar } from './snackbar';
 export { EmptyDataSvgComponent } from './empty-data';

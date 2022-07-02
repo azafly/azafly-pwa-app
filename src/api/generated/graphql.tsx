@@ -13,6 +13,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   bpchar: any;
+  enum_transaction_status: any;
   numeric: any;
   timestamp: any;
   timestamptz: any;
@@ -20,8 +21,13 @@ export type Scalars = {
 };
 
 
+export type Boolean_Cast_Exp = {
+  readonly String?: Maybe<String_Comparison_Exp>;
+};
+
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
 export type Boolean_Comparison_Exp = {
+  readonly _cast?: Maybe<Boolean_Cast_Exp>;
   readonly _eq?: Maybe<Scalars['Boolean']>;
   readonly _gt?: Maybe<Scalars['Boolean']>;
   readonly _gte?: Maybe<Scalars['Boolean']>;
@@ -33,8 +39,13 @@ export type Boolean_Comparison_Exp = {
   readonly _nin?: Maybe<ReadonlyArray<Scalars['Boolean']>>;
 };
 
+export type Int_Cast_Exp = {
+  readonly String?: Maybe<String_Comparison_Exp>;
+};
+
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
+  readonly _cast?: Maybe<Int_Cast_Exp>;
   readonly _eq?: Maybe<Scalars['Int']>;
   readonly _gt?: Maybe<Scalars['Int']>;
   readonly _gte?: Maybe<Scalars['Int']>;
@@ -305,8 +316,13 @@ export type Accounts_Set_Input = {
 };
 
 
+export type Bpchar_Cast_Exp = {
+  readonly String?: Maybe<String_Comparison_Exp>;
+};
+
 /** Boolean expression to compare columns of type "bpchar". All fields are combined with logical 'AND'. */
 export type Bpchar_Comparison_Exp = {
+  readonly _cast?: Maybe<Bpchar_Cast_Exp>;
   readonly _eq?: Maybe<Scalars['bpchar']>;
   readonly _gt?: Maybe<Scalars['bpchar']>;
   readonly _gte?: Maybe<Scalars['bpchar']>;
@@ -403,7 +419,7 @@ export type Cities_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "cities" */
 export type Cities_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<Cities_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Cities_On_Conflict>;
 };
 
@@ -437,7 +453,7 @@ export type Cities_Bool_Exp = {
 
 /** unique or primary key constraints on table "cities" */
 export enum Cities_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   CitiesPkey = 'cities_pkey'
 }
 
@@ -515,7 +531,7 @@ export type Cities_Mutation_Response = {
   readonly returning: ReadonlyArray<Cities>;
 };
 
-/** on conflict condition type for table "cities" */
+/** on_conflict condition type for table "cities" */
 export type Cities_On_Conflict = {
   readonly constraint: Cities_Constraint;
   readonly update_columns?: ReadonlyArray<Cities_Update_Column>;
@@ -814,9 +830,9 @@ export type Countries_Bool_Exp = {
 
 /** unique or primary key constraints on table "countries" */
 export enum Countries_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   CountriesPkey = 'countries_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "code" */
   UidxCountriesCode = 'uidx_countries_code'
 }
 
@@ -880,11 +896,11 @@ export type Countries_Mutation_Response = {
 /** input type for inserting object relation for remote table "countries" */
 export type Countries_Obj_Rel_Insert_Input = {
   readonly data: Countries_Insert_Input;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Countries_On_Conflict>;
 };
 
-/** on conflict condition type for table "countries" */
+/** on_conflict condition type for table "countries" */
 export type Countries_On_Conflict = {
   readonly constraint: Countries_Constraint;
   readonly update_columns?: ReadonlyArray<Countries_Update_Column>;
@@ -1068,9 +1084,9 @@ export type Currencies_Bool_Exp = {
 
 /** unique or primary key constraints on table "currencies" */
 export enum Currencies_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   CurrenciesPkey = 'currencies_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "code" */
   UidxCurrenciesCode = 'uidx_currencies_code'
 }
 
@@ -1116,7 +1132,7 @@ export type Currencies_Mutation_Response = {
   readonly returning: ReadonlyArray<Currencies>;
 };
 
-/** on conflict condition type for table "currencies" */
+/** on_conflict condition type for table "currencies" */
 export type Currencies_On_Conflict = {
   readonly constraint: Currencies_Constraint;
   readonly update_columns?: ReadonlyArray<Currencies_Update_Column>;
@@ -1186,6 +1202,20 @@ export enum Currencies_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+
+/** Boolean expression to compare columns of type "enum_transaction_status". All fields are combined with logical 'AND'. */
+export type Enum_Transaction_Status_Comparison_Exp = {
+  readonly _eq?: Maybe<Scalars['enum_transaction_status']>;
+  readonly _gt?: Maybe<Scalars['enum_transaction_status']>;
+  readonly _gte?: Maybe<Scalars['enum_transaction_status']>;
+  readonly _in?: Maybe<ReadonlyArray<Scalars['enum_transaction_status']>>;
+  readonly _is_null?: Maybe<Scalars['Boolean']>;
+  readonly _lt?: Maybe<Scalars['enum_transaction_status']>;
+  readonly _lte?: Maybe<Scalars['enum_transaction_status']>;
+  readonly _neq?: Maybe<Scalars['enum_transaction_status']>;
+  readonly _nin?: Maybe<ReadonlyArray<Scalars['enum_transaction_status']>>;
+};
+
 /** columns and relationships of "exchange_rates" */
 export type Exchange_Rates = {
   readonly __typename?: 'exchange_rates';
@@ -1250,7 +1280,7 @@ export type Exchange_Rates_Bool_Exp = {
 
 /** unique or primary key constraints on table "exchange_rates" */
 export enum Exchange_Rates_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   ExchangeRatesPkey = 'exchange_rates_pkey'
 }
 
@@ -1301,7 +1331,7 @@ export type Exchange_Rates_Mutation_Response = {
   readonly returning: ReadonlyArray<Exchange_Rates>;
 };
 
-/** on conflict condition type for table "exchange_rates" */
+/** on_conflict condition type for table "exchange_rates" */
 export type Exchange_Rates_On_Conflict = {
   readonly constraint: Exchange_Rates_Constraint;
   readonly update_columns?: ReadonlyArray<Exchange_Rates_Update_Column>;
@@ -1473,6 +1503,10 @@ export type Mutation_Root = {
   readonly delete_task_by_pk?: Maybe<Task>;
   /** delete data from the table: "transaction" */
   readonly delete_transaction?: Maybe<Transaction_Mutation_Response>;
+  /** delete data from the table: "transaction_audit_trail" */
+  readonly delete_transaction_audit_trail?: Maybe<Transaction_Audit_Trail_Mutation_Response>;
+  /** delete single row from the table: "transaction_audit_trail" */
+  readonly delete_transaction_audit_trail_by_pk?: Maybe<Transaction_Audit_Trail>;
   /** delete single row from the table: "transaction" */
   readonly delete_transaction_by_pk?: Maybe<Transaction>;
   /** delete data from the table: "user_email_verification" */
@@ -1553,6 +1587,10 @@ export type Mutation_Root = {
   readonly insert_task_one?: Maybe<Task>;
   /** insert data into the table: "transaction" */
   readonly insert_transaction?: Maybe<Transaction_Mutation_Response>;
+  /** insert data into the table: "transaction_audit_trail" */
+  readonly insert_transaction_audit_trail?: Maybe<Transaction_Audit_Trail_Mutation_Response>;
+  /** insert a single row into the table: "transaction_audit_trail" */
+  readonly insert_transaction_audit_trail_one?: Maybe<Transaction_Audit_Trail>;
   /** insert a single row into the table: "transaction" */
   readonly insert_transaction_one?: Maybe<Transaction>;
   /** insert data into the table: "user_email_verification" */
@@ -1631,6 +1669,10 @@ export type Mutation_Root = {
   readonly update_task_by_pk?: Maybe<Task>;
   /** update data of the table: "transaction" */
   readonly update_transaction?: Maybe<Transaction_Mutation_Response>;
+  /** update data of the table: "transaction_audit_trail" */
+  readonly update_transaction_audit_trail?: Maybe<Transaction_Audit_Trail_Mutation_Response>;
+  /** update single row of the table: "transaction_audit_trail" */
+  readonly update_transaction_audit_trail_by_pk?: Maybe<Transaction_Audit_Trail>;
   /** update single row of the table: "transaction" */
   readonly update_transaction_by_pk?: Maybe<Transaction>;
   /** update data of the table: "user_email_verification" */
@@ -1827,6 +1869,18 @@ export type Mutation_RootDelete_Task_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootDelete_TransactionArgs = {
   where: Transaction_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Transaction_Audit_TrailArgs = {
+  where: Transaction_Audit_Trail_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Transaction_Audit_Trail_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -2094,6 +2148,20 @@ export type Mutation_RootInsert_Task_OneArgs = {
 export type Mutation_RootInsert_TransactionArgs = {
   objects: ReadonlyArray<Transaction_Insert_Input>;
   on_conflict?: Maybe<Transaction_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Transaction_Audit_TrailArgs = {
+  objects: ReadonlyArray<Transaction_Audit_Trail_Insert_Input>;
+  on_conflict?: Maybe<Transaction_Audit_Trail_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Transaction_Audit_Trail_OneArgs = {
+  object: Transaction_Audit_Trail_Insert_Input;
+  on_conflict?: Maybe<Transaction_Audit_Trail_On_Conflict>;
 };
 
 
@@ -2382,6 +2450,20 @@ export type Mutation_RootUpdate_TransactionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Transaction_Audit_TrailArgs = {
+  _set?: Maybe<Transaction_Audit_Trail_Set_Input>;
+  where: Transaction_Audit_Trail_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Transaction_Audit_Trail_By_PkArgs = {
+  _set?: Maybe<Transaction_Audit_Trail_Set_Input>;
+  pk_columns: Transaction_Audit_Trail_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Transaction_By_PkArgs = {
   _inc?: Maybe<Transaction_Inc_Input>;
   _set?: Maybe<Transaction_Set_Input>;
@@ -2461,8 +2543,13 @@ export type Mutation_RootUpdate_Virtual_Cards_By_PkArgs = {
 };
 
 
+export type Numeric_Cast_Exp = {
+  readonly String?: Maybe<String_Comparison_Exp>;
+};
+
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
 export type Numeric_Comparison_Exp = {
+  readonly _cast?: Maybe<Numeric_Cast_Exp>;
   readonly _eq?: Maybe<Scalars['numeric']>;
   readonly _gt?: Maybe<Scalars['numeric']>;
   readonly _gte?: Maybe<Scalars['numeric']>;
@@ -2539,7 +2626,7 @@ export type Payment_Intent_Failures_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "payment_intent_failures" */
 export type Payment_Intent_Failures_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<Payment_Intent_Failures_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Payment_Intent_Failures_On_Conflict>;
 };
 
@@ -2562,7 +2649,7 @@ export type Payment_Intent_Failures_Bool_Exp = {
 
 /** unique or primary key constraints on table "payment_intent_failures" */
 export enum Payment_Intent_Failures_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PaymentIntentFailuresPkey = 'payment_intent_failures_pkey'
 }
 
@@ -2639,7 +2726,7 @@ export type Payment_Intent_Failures_Mutation_Response = {
   readonly returning: ReadonlyArray<Payment_Intent_Failures>;
 };
 
-/** on conflict condition type for table "payment_intent_failures" */
+/** on_conflict condition type for table "payment_intent_failures" */
 export type Payment_Intent_Failures_On_Conflict = {
   readonly constraint: Payment_Intent_Failures_Constraint;
   readonly update_columns?: ReadonlyArray<Payment_Intent_Failures_Update_Column>;
@@ -2724,6 +2811,7 @@ export type Payment_Offer = {
   readonly created_at?: Maybe<Scalars['timestamp']>;
   readonly fees_with_promo: Scalars['numeric'];
   readonly id: Scalars['uuid'];
+  readonly load_on_card: Scalars['Boolean'];
   readonly metadata?: Maybe<Scalars['String']>;
   readonly our_fee: Scalars['numeric'];
   /** An array relationship */
@@ -2840,7 +2928,7 @@ export type Payment_Offer_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "payment_offer" */
 export type Payment_Offer_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<Payment_Offer_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Payment_Offer_On_Conflict>;
 };
 
@@ -2876,6 +2964,7 @@ export type Payment_Offer_Bool_Exp = {
   readonly created_at?: Maybe<Timestamp_Comparison_Exp>;
   readonly fees_with_promo?: Maybe<Numeric_Comparison_Exp>;
   readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly load_on_card?: Maybe<Boolean_Comparison_Exp>;
   readonly metadata?: Maybe<String_Comparison_Exp>;
   readonly our_fee?: Maybe<Numeric_Comparison_Exp>;
   readonly payment_intent_failures?: Maybe<Payment_Intent_Failures_Bool_Exp>;
@@ -2899,7 +2988,7 @@ export type Payment_Offer_Bool_Exp = {
 
 /** unique or primary key constraints on table "payment_offer" */
 export enum Payment_Offer_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PaymentOfferPkey = 'payment_offer_pkey'
 }
 
@@ -2920,6 +3009,7 @@ export type Payment_Offer_Insert_Input = {
   readonly created_at?: Maybe<Scalars['timestamp']>;
   readonly fees_with_promo?: Maybe<Scalars['numeric']>;
   readonly id?: Maybe<Scalars['uuid']>;
+  readonly load_on_card?: Maybe<Scalars['Boolean']>;
   readonly metadata?: Maybe<Scalars['String']>;
   readonly our_fee?: Maybe<Scalars['numeric']>;
   readonly payment_intent_failures?: Maybe<Payment_Intent_Failures_Arr_Rel_Insert_Input>;
@@ -3051,11 +3141,11 @@ export type Payment_Offer_Mutation_Response = {
 /** input type for inserting object relation for remote table "payment_offer" */
 export type Payment_Offer_Obj_Rel_Insert_Input = {
   readonly data: Payment_Offer_Insert_Input;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Payment_Offer_On_Conflict>;
 };
 
-/** on conflict condition type for table "payment_offer" */
+/** on_conflict condition type for table "payment_offer" */
 export type Payment_Offer_On_Conflict = {
   readonly constraint: Payment_Offer_Constraint;
   readonly update_columns?: ReadonlyArray<Payment_Offer_Update_Column>;
@@ -3068,6 +3158,7 @@ export type Payment_Offer_Order_By = {
   readonly created_at?: Maybe<Order_By>;
   readonly fees_with_promo?: Maybe<Order_By>;
   readonly id?: Maybe<Order_By>;
+  readonly load_on_card?: Maybe<Order_By>;
   readonly metadata?: Maybe<Order_By>;
   readonly our_fee?: Maybe<Order_By>;
   readonly payment_intent_failures_aggregate?: Maybe<Payment_Intent_Failures_Aggregate_Order_By>;
@@ -3104,6 +3195,8 @@ export enum Payment_Offer_Select_Column {
   FeesWithPromo = 'fees_with_promo',
   /** column name */
   Id = 'id',
+  /** column name */
+  LoadOnCard = 'load_on_card',
   /** column name */
   Metadata = 'metadata',
   /** column name */
@@ -3144,6 +3237,7 @@ export type Payment_Offer_Set_Input = {
   readonly created_at?: Maybe<Scalars['timestamp']>;
   readonly fees_with_promo?: Maybe<Scalars['numeric']>;
   readonly id?: Maybe<Scalars['uuid']>;
+  readonly load_on_card?: Maybe<Scalars['Boolean']>;
   readonly metadata?: Maybe<Scalars['String']>;
   readonly our_fee?: Maybe<Scalars['numeric']>;
   readonly payment_intent_payload?: Maybe<Scalars['String']>;
@@ -3264,6 +3358,8 @@ export enum Payment_Offer_Update_Column {
   FeesWithPromo = 'fees_with_promo',
   /** column name */
   Id = 'id',
+  /** column name */
+  LoadOnCard = 'load_on_card',
   /** column name */
   Metadata = 'metadata',
   /** column name */
@@ -3394,6 +3490,7 @@ export type Payments = {
   readonly flw_ref?: Maybe<Scalars['String']>;
   readonly id: Scalars['uuid'];
   readonly ip?: Maybe<Scalars['String']>;
+  readonly load_on_card: Scalars['Boolean'];
   readonly merchant_fee: Scalars['numeric'];
   readonly narration?: Maybe<Scalars['String']>;
   readonly payment_created_at?: Maybe<Scalars['String']>;
@@ -3506,7 +3603,7 @@ export type Payments_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "payments" */
 export type Payments_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<Payments_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Payments_On_Conflict>;
 };
 
@@ -3558,6 +3655,7 @@ export type Payments_Bool_Exp = {
   readonly flw_ref?: Maybe<String_Comparison_Exp>;
   readonly id?: Maybe<Uuid_Comparison_Exp>;
   readonly ip?: Maybe<String_Comparison_Exp>;
+  readonly load_on_card?: Maybe<Boolean_Comparison_Exp>;
   readonly merchant_fee?: Maybe<Numeric_Comparison_Exp>;
   readonly narration?: Maybe<String_Comparison_Exp>;
   readonly payment_created_at?: Maybe<String_Comparison_Exp>;
@@ -3577,7 +3675,7 @@ export type Payments_Bool_Exp = {
 
 /** unique or primary key constraints on table "payments" */
 export enum Payments_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PaymentsPkey = 'payments_pkey'
 }
 
@@ -3616,6 +3714,7 @@ export type Payments_Insert_Input = {
   readonly flw_ref?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['uuid']>;
   readonly ip?: Maybe<Scalars['String']>;
+  readonly load_on_card?: Maybe<Scalars['Boolean']>;
   readonly merchant_fee?: Maybe<Scalars['numeric']>;
   readonly narration?: Maybe<Scalars['String']>;
   readonly payment_created_at?: Maybe<Scalars['String']>;
@@ -3807,11 +3906,11 @@ export type Payments_Mutation_Response = {
 /** input type for inserting object relation for remote table "payments" */
 export type Payments_Obj_Rel_Insert_Input = {
   readonly data: Payments_Insert_Input;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Payments_On_Conflict>;
 };
 
-/** on conflict condition type for table "payments" */
+/** on_conflict condition type for table "payments" */
 export type Payments_On_Conflict = {
   readonly constraint: Payments_Constraint;
   readonly update_columns?: ReadonlyArray<Payments_Update_Column>;
@@ -3844,6 +3943,7 @@ export type Payments_Order_By = {
   readonly flw_ref?: Maybe<Order_By>;
   readonly id?: Maybe<Order_By>;
   readonly ip?: Maybe<Order_By>;
+  readonly load_on_card?: Maybe<Order_By>;
   readonly merchant_fee?: Maybe<Order_By>;
   readonly narration?: Maybe<Order_By>;
   readonly payment_created_at?: Maybe<Order_By>;
@@ -3917,6 +4017,8 @@ export enum Payments_Select_Column {
   /** column name */
   Ip = 'ip',
   /** column name */
+  LoadOnCard = 'load_on_card',
+  /** column name */
   MerchantFee = 'merchant_fee',
   /** column name */
   Narration = 'narration',
@@ -3968,6 +4070,7 @@ export type Payments_Set_Input = {
   readonly flw_ref?: Maybe<Scalars['String']>;
   readonly id?: Maybe<Scalars['uuid']>;
   readonly ip?: Maybe<Scalars['String']>;
+  readonly load_on_card?: Maybe<Scalars['Boolean']>;
   readonly merchant_fee?: Maybe<Scalars['numeric']>;
   readonly narration?: Maybe<Scalars['String']>;
   readonly payment_created_at?: Maybe<Scalars['String']>;
@@ -4109,6 +4212,8 @@ export enum Payments_Update_Column {
   /** column name */
   Ip = 'ip',
   /** column name */
+  LoadOnCard = 'load_on_card',
+  /** column name */
   MerchantFee = 'merchant_fee',
   /** column name */
   Narration = 'narration',
@@ -4237,7 +4342,7 @@ export type Payout_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "payout" */
 export type Payout_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<Payout_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Payout_On_Conflict>;
 };
 
@@ -4257,7 +4362,7 @@ export type Payout_Bool_Exp = {
 
 /** unique or primary key constraints on table "payout" */
 export enum Payout_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PayoutPkey = 'payout_pkey'
 }
 
@@ -4319,7 +4424,7 @@ export type Payout_Mutation_Response = {
   readonly returning: ReadonlyArray<Payout>;
 };
 
-/** on conflict condition type for table "payout" */
+/** on_conflict condition type for table "payout" */
 export type Payout_On_Conflict = {
   readonly constraint: Payout_Constraint;
   readonly update_columns?: ReadonlyArray<Payout_Update_Column>;
@@ -4467,6 +4572,12 @@ export type Query_Root = {
   readonly transaction: ReadonlyArray<Transaction>;
   /** fetch aggregated fields from the table: "transaction" */
   readonly transaction_aggregate: Transaction_Aggregate;
+  /** fetch data from the table: "transaction_audit_trail" */
+  readonly transaction_audit_trail: ReadonlyArray<Transaction_Audit_Trail>;
+  /** fetch aggregated fields from the table: "transaction_audit_trail" */
+  readonly transaction_audit_trail_aggregate: Transaction_Audit_Trail_Aggregate;
+  /** fetch data from the table: "transaction_audit_trail" using primary key columns */
+  readonly transaction_audit_trail_by_pk?: Maybe<Transaction_Audit_Trail>;
   /** fetch data from the table: "transaction" using primary key columns */
   readonly transaction_by_pk?: Maybe<Transaction>;
   /** fetch data from the table: "user_email_verification" */
@@ -4837,6 +4948,29 @@ export type Query_RootTransaction_AggregateArgs = {
 };
 
 
+export type Query_RootTransaction_Audit_TrailArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Order_By>>;
+  where?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
+};
+
+
+export type Query_RootTransaction_Audit_Trail_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Order_By>>;
+  where?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
+};
+
+
+export type Query_RootTransaction_Audit_Trail_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Query_RootTransaction_By_PkArgs = {
   id: Scalars['uuid'];
 };
@@ -5003,7 +5137,7 @@ export type Service_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "service" */
 export type Service_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<Service_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Service_On_Conflict>;
 };
 
@@ -5023,9 +5157,9 @@ export type Service_Bool_Exp = {
 
 /** unique or primary key constraints on table "service" */
 export enum Service_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PkService = 'pk_service',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "transaction_id" */
   ServiceTransactionIdKey = 'service_transaction_id_key'
 }
 
@@ -5086,11 +5220,11 @@ export type Service_Mutation_Response = {
 /** input type for inserting object relation for remote table "service" */
 export type Service_Obj_Rel_Insert_Input = {
   readonly data: Service_Insert_Input;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Service_On_Conflict>;
 };
 
-/** on conflict condition type for table "service" */
+/** on_conflict condition type for table "service" */
 export type Service_On_Conflict = {
   readonly constraint: Service_Constraint;
   readonly update_columns?: ReadonlyArray<Service_Update_Column>;
@@ -5198,7 +5332,7 @@ export type Service_Type_Bool_Exp = {
 
 /** unique or primary key constraints on table "service_type" */
 export enum Service_Type_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "value" */
   ServiceTypePkey = 'service_type_pkey'
 }
 
@@ -5235,11 +5369,11 @@ export type Service_Type_Mutation_Response = {
 /** input type for inserting object relation for remote table "service_type" */
 export type Service_Type_Obj_Rel_Insert_Input = {
   readonly data: Service_Type_Insert_Input;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Service_Type_On_Conflict>;
 };
 
-/** on conflict condition type for table "service_type" */
+/** on_conflict condition type for table "service_type" */
 export type Service_Type_On_Conflict = {
   readonly constraint: Service_Type_Constraint;
   readonly update_columns?: ReadonlyArray<Service_Type_Update_Column>;
@@ -5338,7 +5472,7 @@ export type Sessions_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "sessions" */
 export type Sessions_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<Sessions_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Sessions_On_Conflict>;
 };
 
@@ -5359,7 +5493,7 @@ export type Sessions_Bool_Exp = {
 
 /** unique or primary key constraints on table "sessions" */
 export enum Sessions_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PkSessions = 'pk_sessions'
 }
 
@@ -5430,7 +5564,7 @@ export type Sessions_Mutation_Response = {
   readonly returning: ReadonlyArray<Sessions>;
 };
 
-/** on conflict condition type for table "sessions" */
+/** on_conflict condition type for table "sessions" */
 export type Sessions_On_Conflict = {
   readonly constraint: Sessions_Constraint;
   readonly update_columns?: ReadonlyArray<Sessions_Update_Column>;
@@ -5574,7 +5708,7 @@ export type States_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "states" */
 export type States_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<States_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<States_On_Conflict>;
 };
 
@@ -5598,9 +5732,9 @@ export type States_Bool_Exp = {
 
 /** unique or primary key constraints on table "states" */
 export enum States_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   StatesPkey = 'states_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "country_id", "code" */
   UidxStatesCountryCode = 'uidx_states_country_code'
 }
 
@@ -5677,11 +5811,11 @@ export type States_Mutation_Response = {
 /** input type for inserting object relation for remote table "states" */
 export type States_Obj_Rel_Insert_Input = {
   readonly data: States_Insert_Input;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<States_On_Conflict>;
 };
 
-/** on conflict condition type for table "states" */
+/** on_conflict condition type for table "states" */
 export type States_On_Conflict = {
   readonly constraint: States_Constraint;
   readonly update_columns?: ReadonlyArray<States_Update_Column>;
@@ -5848,6 +5982,12 @@ export type Subscription_Root = {
   readonly transaction: ReadonlyArray<Transaction>;
   /** fetch aggregated fields from the table: "transaction" */
   readonly transaction_aggregate: Transaction_Aggregate;
+  /** fetch data from the table: "transaction_audit_trail" */
+  readonly transaction_audit_trail: ReadonlyArray<Transaction_Audit_Trail>;
+  /** fetch aggregated fields from the table: "transaction_audit_trail" */
+  readonly transaction_audit_trail_aggregate: Transaction_Audit_Trail_Aggregate;
+  /** fetch data from the table: "transaction_audit_trail" using primary key columns */
+  readonly transaction_audit_trail_by_pk?: Maybe<Transaction_Audit_Trail>;
   /** fetch data from the table: "transaction" using primary key columns */
   readonly transaction_by_pk?: Maybe<Transaction>;
   /** fetch data from the table: "user_email_verification" */
@@ -6218,6 +6358,29 @@ export type Subscription_RootTransaction_AggregateArgs = {
 };
 
 
+export type Subscription_RootTransaction_Audit_TrailArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Order_By>>;
+  where?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
+};
+
+
+export type Subscription_RootTransaction_Audit_Trail_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Order_By>>;
+  where?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
+};
+
+
+export type Subscription_RootTransaction_Audit_Trail_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Subscription_RootTransaction_By_PkArgs = {
   id: Scalars['uuid'];
 };
@@ -6385,7 +6548,7 @@ export type Task_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "task" */
 export type Task_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<Task_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Task_On_Conflict>;
 };
 
@@ -6407,7 +6570,7 @@ export type Task_Bool_Exp = {
 
 /** unique or primary key constraints on table "task" */
 export enum Task_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PkTask = 'pk_task'
 }
 
@@ -6475,7 +6638,7 @@ export type Task_Mutation_Response = {
   readonly returning: ReadonlyArray<Task>;
 };
 
-/** on conflict condition type for table "task" */
+/** on_conflict condition type for table "task" */
 export type Task_On_Conflict = {
   readonly constraint: Task_Constraint;
   readonly update_columns?: ReadonlyArray<Task_Update_Column>;
@@ -6548,8 +6711,13 @@ export enum Task_Update_Column {
 }
 
 
+export type Timestamp_Cast_Exp = {
+  readonly String?: Maybe<String_Comparison_Exp>;
+};
+
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
 export type Timestamp_Comparison_Exp = {
+  readonly _cast?: Maybe<Timestamp_Cast_Exp>;
   readonly _eq?: Maybe<Scalars['timestamp']>;
   readonly _gt?: Maybe<Scalars['timestamp']>;
   readonly _gte?: Maybe<Scalars['timestamp']>;
@@ -6562,8 +6730,13 @@ export type Timestamp_Comparison_Exp = {
 };
 
 
+export type Timestamptz_Cast_Exp = {
+  readonly String?: Maybe<String_Comparison_Exp>;
+};
+
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
+  readonly _cast?: Maybe<Timestamptz_Cast_Exp>;
   readonly _eq?: Maybe<Scalars['timestamptz']>;
   readonly _gt?: Maybe<Scalars['timestamptz']>;
   readonly _gte?: Maybe<Scalars['timestamptz']>;
@@ -6596,10 +6769,15 @@ export type Transaction = {
   /** An object relationship */
   readonly service?: Maybe<Service>;
   readonly service_type?: Maybe<Scalars['String']>;
+  readonly status: Scalars['enum_transaction_status'];
   /** An array relationship */
   readonly tasks: ReadonlyArray<Task>;
   /** An aggregate relationship */
   readonly tasks_aggregate: Task_Aggregate;
+  /** An array relationship */
+  readonly transaction_audit_trails: ReadonlyArray<Transaction_Audit_Trail>;
+  /** An aggregate relationship */
+  readonly transaction_audit_trails_aggregate: Transaction_Audit_Trail_Aggregate;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
   readonly user?: Maybe<Users>;
@@ -6644,6 +6822,26 @@ export type TransactionTasks_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<ReadonlyArray<Task_Order_By>>;
   where?: Maybe<Task_Bool_Exp>;
+};
+
+
+/** columns and relationships of "transaction" */
+export type TransactionTransaction_Audit_TrailsArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Order_By>>;
+  where?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
+};
+
+
+/** columns and relationships of "transaction" */
+export type TransactionTransaction_Audit_Trails_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Order_By>>;
+  where?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
 };
 
 /** aggregated selection of "transaction" */
@@ -6694,9 +6892,236 @@ export type Transaction_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "transaction" */
 export type Transaction_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<Transaction_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Transaction_On_Conflict>;
 };
+
+/** columns and relationships of "transaction_audit_trail" */
+export type Transaction_Audit_Trail = {
+  readonly __typename?: 'transaction_audit_trail';
+  readonly action_by_user_id?: Maybe<Scalars['uuid']>;
+  readonly action_type?: Maybe<Scalars['String']>;
+  readonly created_at: Scalars['timestamptz'];
+  readonly id: Scalars['uuid'];
+  readonly new_value?: Maybe<Scalars['String']>;
+  readonly previous_value?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  readonly transaction?: Maybe<Transaction>;
+  readonly transaction_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at: Scalars['timestamptz'];
+  /** An object relationship */
+  readonly user?: Maybe<Users>;
+};
+
+/** aggregated selection of "transaction_audit_trail" */
+export type Transaction_Audit_Trail_Aggregate = {
+  readonly __typename?: 'transaction_audit_trail_aggregate';
+  readonly aggregate?: Maybe<Transaction_Audit_Trail_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<Transaction_Audit_Trail>;
+};
+
+/** aggregate fields of "transaction_audit_trail" */
+export type Transaction_Audit_Trail_Aggregate_Fields = {
+  readonly __typename?: 'transaction_audit_trail_aggregate_fields';
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<Transaction_Audit_Trail_Max_Fields>;
+  readonly min?: Maybe<Transaction_Audit_Trail_Min_Fields>;
+};
+
+
+/** aggregate fields of "transaction_audit_trail" */
+export type Transaction_Audit_Trail_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "transaction_audit_trail" */
+export type Transaction_Audit_Trail_Aggregate_Order_By = {
+  readonly count?: Maybe<Order_By>;
+  readonly max?: Maybe<Transaction_Audit_Trail_Max_Order_By>;
+  readonly min?: Maybe<Transaction_Audit_Trail_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "transaction_audit_trail" */
+export type Transaction_Audit_Trail_Arr_Rel_Insert_Input = {
+  readonly data: ReadonlyArray<Transaction_Audit_Trail_Insert_Input>;
+  /** upsert condition */
+  readonly on_conflict?: Maybe<Transaction_Audit_Trail_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "transaction_audit_trail". All fields are combined with a logical 'AND'. */
+export type Transaction_Audit_Trail_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Bool_Exp>>;
+  readonly _not?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Bool_Exp>>;
+  readonly action_by_user_id?: Maybe<Uuid_Comparison_Exp>;
+  readonly action_type?: Maybe<String_Comparison_Exp>;
+  readonly created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly new_value?: Maybe<String_Comparison_Exp>;
+  readonly previous_value?: Maybe<String_Comparison_Exp>;
+  readonly transaction?: Maybe<Transaction_Bool_Exp>;
+  readonly transaction_id?: Maybe<Uuid_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  readonly user?: Maybe<Users_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "transaction_audit_trail" */
+export enum Transaction_Audit_Trail_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  TransactionAuditTrailPkey = 'transaction_audit_trail_pkey'
+}
+
+/** input type for inserting data into table "transaction_audit_trail" */
+export type Transaction_Audit_Trail_Insert_Input = {
+  readonly action_by_user_id?: Maybe<Scalars['uuid']>;
+  readonly action_type?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly new_value?: Maybe<Scalars['String']>;
+  readonly previous_value?: Maybe<Scalars['String']>;
+  readonly transaction?: Maybe<Transaction_Obj_Rel_Insert_Input>;
+  readonly transaction_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+  readonly user?: Maybe<Users_Obj_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Transaction_Audit_Trail_Max_Fields = {
+  readonly __typename?: 'transaction_audit_trail_max_fields';
+  readonly action_by_user_id?: Maybe<Scalars['uuid']>;
+  readonly action_type?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly new_value?: Maybe<Scalars['String']>;
+  readonly previous_value?: Maybe<Scalars['String']>;
+  readonly transaction_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "transaction_audit_trail" */
+export type Transaction_Audit_Trail_Max_Order_By = {
+  readonly action_by_user_id?: Maybe<Order_By>;
+  readonly action_type?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly new_value?: Maybe<Order_By>;
+  readonly previous_value?: Maybe<Order_By>;
+  readonly transaction_id?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Transaction_Audit_Trail_Min_Fields = {
+  readonly __typename?: 'transaction_audit_trail_min_fields';
+  readonly action_by_user_id?: Maybe<Scalars['uuid']>;
+  readonly action_type?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly new_value?: Maybe<Scalars['String']>;
+  readonly previous_value?: Maybe<Scalars['String']>;
+  readonly transaction_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "transaction_audit_trail" */
+export type Transaction_Audit_Trail_Min_Order_By = {
+  readonly action_by_user_id?: Maybe<Order_By>;
+  readonly action_type?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly new_value?: Maybe<Order_By>;
+  readonly previous_value?: Maybe<Order_By>;
+  readonly transaction_id?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "transaction_audit_trail" */
+export type Transaction_Audit_Trail_Mutation_Response = {
+  readonly __typename?: 'transaction_audit_trail_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<Transaction_Audit_Trail>;
+};
+
+/** on_conflict condition type for table "transaction_audit_trail" */
+export type Transaction_Audit_Trail_On_Conflict = {
+  readonly constraint: Transaction_Audit_Trail_Constraint;
+  readonly update_columns?: ReadonlyArray<Transaction_Audit_Trail_Update_Column>;
+  readonly where?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "transaction_audit_trail". */
+export type Transaction_Audit_Trail_Order_By = {
+  readonly action_by_user_id?: Maybe<Order_By>;
+  readonly action_type?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly new_value?: Maybe<Order_By>;
+  readonly previous_value?: Maybe<Order_By>;
+  readonly transaction?: Maybe<Transaction_Order_By>;
+  readonly transaction_id?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+  readonly user?: Maybe<Users_Order_By>;
+};
+
+/** primary key columns input for table: transaction_audit_trail */
+export type Transaction_Audit_Trail_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** select columns of table "transaction_audit_trail" */
+export enum Transaction_Audit_Trail_Select_Column {
+  /** column name */
+  ActionByUserId = 'action_by_user_id',
+  /** column name */
+  ActionType = 'action_type',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NewValue = 'new_value',
+  /** column name */
+  PreviousValue = 'previous_value',
+  /** column name */
+  TransactionId = 'transaction_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "transaction_audit_trail" */
+export type Transaction_Audit_Trail_Set_Input = {
+  readonly action_by_user_id?: Maybe<Scalars['uuid']>;
+  readonly action_type?: Maybe<Scalars['String']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly new_value?: Maybe<Scalars['String']>;
+  readonly previous_value?: Maybe<Scalars['String']>;
+  readonly transaction_id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** update columns of table "transaction_audit_trail" */
+export enum Transaction_Audit_Trail_Update_Column {
+  /** column name */
+  ActionByUserId = 'action_by_user_id',
+  /** column name */
+  ActionType = 'action_type',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NewValue = 'new_value',
+  /** column name */
+  PreviousValue = 'previous_value',
+  /** column name */
+  TransactionId = 'transaction_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
 
 /** aggregate avg on columns */
 export type Transaction_Avg_Fields = {
@@ -6726,7 +7151,9 @@ export type Transaction_Bool_Exp = {
   readonly payouts?: Maybe<Payout_Bool_Exp>;
   readonly service?: Maybe<Service_Bool_Exp>;
   readonly service_type?: Maybe<String_Comparison_Exp>;
+  readonly status?: Maybe<Enum_Transaction_Status_Comparison_Exp>;
   readonly tasks?: Maybe<Task_Bool_Exp>;
+  readonly transaction_audit_trails?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
   readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   readonly user?: Maybe<Users_Bool_Exp>;
   readonly user_id?: Maybe<Uuid_Comparison_Exp>;
@@ -6734,7 +7161,7 @@ export type Transaction_Bool_Exp = {
 
 /** unique or primary key constraints on table "transaction" */
 export enum Transaction_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PkTransaction = 'pk_transaction'
 }
 
@@ -6757,7 +7184,9 @@ export type Transaction_Insert_Input = {
   readonly payouts?: Maybe<Payout_Arr_Rel_Insert_Input>;
   readonly service?: Maybe<Service_Obj_Rel_Insert_Input>;
   readonly service_type?: Maybe<Scalars['String']>;
+  readonly status?: Maybe<Scalars['enum_transaction_status']>;
   readonly tasks?: Maybe<Task_Arr_Rel_Insert_Input>;
+  readonly transaction_audit_trails?: Maybe<Transaction_Audit_Trail_Arr_Rel_Insert_Input>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
   readonly user?: Maybe<Users_Obj_Rel_Insert_Input>;
   readonly user_id?: Maybe<Scalars['uuid']>;
@@ -6773,6 +7202,7 @@ export type Transaction_Max_Fields = {
   readonly payment_id?: Maybe<Scalars['uuid']>;
   readonly payment_offer_id?: Maybe<Scalars['uuid']>;
   readonly service_type?: Maybe<Scalars['String']>;
+  readonly status?: Maybe<Scalars['enum_transaction_status']>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
   readonly user_id?: Maybe<Scalars['uuid']>;
 };
@@ -6786,6 +7216,7 @@ export type Transaction_Max_Order_By = {
   readonly payment_id?: Maybe<Order_By>;
   readonly payment_offer_id?: Maybe<Order_By>;
   readonly service_type?: Maybe<Order_By>;
+  readonly status?: Maybe<Order_By>;
   readonly updated_at?: Maybe<Order_By>;
   readonly user_id?: Maybe<Order_By>;
 };
@@ -6800,6 +7231,7 @@ export type Transaction_Min_Fields = {
   readonly payment_id?: Maybe<Scalars['uuid']>;
   readonly payment_offer_id?: Maybe<Scalars['uuid']>;
   readonly service_type?: Maybe<Scalars['String']>;
+  readonly status?: Maybe<Scalars['enum_transaction_status']>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
   readonly user_id?: Maybe<Scalars['uuid']>;
 };
@@ -6813,6 +7245,7 @@ export type Transaction_Min_Order_By = {
   readonly payment_id?: Maybe<Order_By>;
   readonly payment_offer_id?: Maybe<Order_By>;
   readonly service_type?: Maybe<Order_By>;
+  readonly status?: Maybe<Order_By>;
   readonly updated_at?: Maybe<Order_By>;
   readonly user_id?: Maybe<Order_By>;
 };
@@ -6829,11 +7262,11 @@ export type Transaction_Mutation_Response = {
 /** input type for inserting object relation for remote table "transaction" */
 export type Transaction_Obj_Rel_Insert_Input = {
   readonly data: Transaction_Insert_Input;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Transaction_On_Conflict>;
 };
 
-/** on conflict condition type for table "transaction" */
+/** on_conflict condition type for table "transaction" */
 export type Transaction_On_Conflict = {
   readonly constraint: Transaction_Constraint;
   readonly update_columns?: ReadonlyArray<Transaction_Update_Column>;
@@ -6854,7 +7287,9 @@ export type Transaction_Order_By = {
   readonly payouts_aggregate?: Maybe<Payout_Aggregate_Order_By>;
   readonly service?: Maybe<Service_Order_By>;
   readonly service_type?: Maybe<Order_By>;
+  readonly status?: Maybe<Order_By>;
   readonly tasks_aggregate?: Maybe<Task_Aggregate_Order_By>;
+  readonly transaction_audit_trails_aggregate?: Maybe<Transaction_Audit_Trail_Aggregate_Order_By>;
   readonly updated_at?: Maybe<Order_By>;
   readonly user?: Maybe<Users_Order_By>;
   readonly user_id?: Maybe<Order_By>;
@@ -6884,6 +7319,8 @@ export enum Transaction_Select_Column {
   /** column name */
   ServiceType = 'service_type',
   /** column name */
+  Status = 'status',
+  /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
   UserId = 'user_id'
@@ -6899,6 +7336,7 @@ export type Transaction_Set_Input = {
   readonly payment_id?: Maybe<Scalars['uuid']>;
   readonly payment_offer_id?: Maybe<Scalars['uuid']>;
   readonly service_type?: Maybe<Scalars['String']>;
+  readonly status?: Maybe<Scalars['enum_transaction_status']>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
   readonly user_id?: Maybe<Scalars['uuid']>;
 };
@@ -6965,6 +7403,8 @@ export enum Transaction_Update_Column {
   PaymentOfferId = 'payment_offer_id',
   /** column name */
   ServiceType = 'service_type',
+  /** column name */
+  Status = 'status',
   /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
@@ -7049,7 +7489,7 @@ export type User_Email_Verification_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "user_email_verification" */
 export type User_Email_Verification_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<User_Email_Verification_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<User_Email_Verification_On_Conflict>;
 };
 
@@ -7069,9 +7509,9 @@ export type User_Email_Verification_Bool_Exp = {
 
 /** unique or primary key constraints on table "user_email_verification" */
 export enum User_Email_Verification_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PkUserEmailVerification = 'pk_user_email_verification',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "code" */
   UidxUserEmailVerificationCode = 'uidx_user_email_verification_code'
 }
 
@@ -7137,7 +7577,7 @@ export type User_Email_Verification_Mutation_Response = {
   readonly returning: ReadonlyArray<User_Email_Verification>;
 };
 
-/** on conflict condition type for table "user_email_verification" */
+/** on_conflict condition type for table "user_email_verification" */
 export type User_Email_Verification_On_Conflict = {
   readonly constraint: User_Email_Verification_Constraint;
   readonly update_columns?: ReadonlyArray<User_Email_Verification_Update_Column>;
@@ -7248,7 +7688,7 @@ export type User_Meta_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "user_meta" */
 export type User_Meta_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<User_Meta_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<User_Meta_On_Conflict>;
 };
 
@@ -7269,7 +7709,7 @@ export type User_Meta_Bool_Exp = {
 
 /** unique or primary key constraints on table "user_meta" */
 export enum User_Meta_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PkUserMeta = 'pk_user_meta'
 }
 
@@ -7340,7 +7780,7 @@ export type User_Meta_Mutation_Response = {
   readonly returning: ReadonlyArray<User_Meta>;
 };
 
-/** on conflict condition type for table "user_meta" */
+/** on_conflict condition type for table "user_meta" */
 export type User_Meta_On_Conflict = {
   readonly constraint: User_Meta_Constraint;
   readonly update_columns?: ReadonlyArray<User_Meta_Update_Column>;
@@ -7419,7 +7859,7 @@ export type Users = {
   /** An aggregate relationship */
   readonly accounts_aggregate: Accounts_Aggregate;
   readonly address?: Maybe<Scalars['String']>;
-  readonly country: Scalars['String'];
+  readonly country?: Maybe<Scalars['String']>;
   readonly created_at: Scalars['timestamptz'];
   readonly display_name: Scalars['String'];
   readonly document_url?: Maybe<Scalars['String']>;
@@ -7455,6 +7895,10 @@ export type Users = {
   readonly tasks: ReadonlyArray<Task>;
   /** An aggregate relationship */
   readonly tasks_aggregate: Task_Aggregate;
+  /** An array relationship */
+  readonly transaction_audit_trails: ReadonlyArray<Transaction_Audit_Trail>;
+  /** An aggregate relationship */
+  readonly transaction_audit_trails_aggregate: Transaction_Audit_Trail_Aggregate;
   /** An array relationship */
   readonly transactions: ReadonlyArray<Transaction>;
   /** An aggregate relationship */
@@ -7616,6 +8060,26 @@ export type UsersTasks_AggregateArgs = {
 
 
 /** columns and relationships of "users" */
+export type UsersTransaction_Audit_TrailsArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Order_By>>;
+  where?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersTransaction_Audit_Trails_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Transaction_Audit_Trail_Order_By>>;
+  where?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
 export type UsersTransactionsArgs = {
   distinct_on?: Maybe<ReadonlyArray<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -7741,6 +8205,7 @@ export type Users_Bool_Exp = {
   readonly services?: Maybe<Service_Bool_Exp>;
   readonly sessions?: Maybe<Sessions_Bool_Exp>;
   readonly tasks?: Maybe<Task_Bool_Exp>;
+  readonly transaction_audit_trails?: Maybe<Transaction_Audit_Trail_Bool_Exp>;
   readonly transactions?: Maybe<Transaction_Bool_Exp>;
   readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   readonly user_email_verifications?: Maybe<User_Email_Verification_Bool_Exp>;
@@ -7750,11 +8215,11 @@ export type Users_Bool_Exp = {
 
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PkUsers = 'pk_users',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "firebase_id" */
   UserFirebaseIdKey = 'user_firebase_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "email" */
   UsersEmailKey = 'users_email_key'
 }
 
@@ -7780,6 +8245,7 @@ export type Users_Insert_Input = {
   readonly services?: Maybe<Service_Arr_Rel_Insert_Input>;
   readonly sessions?: Maybe<Sessions_Arr_Rel_Insert_Input>;
   readonly tasks?: Maybe<Task_Arr_Rel_Insert_Input>;
+  readonly transaction_audit_trails?: Maybe<Transaction_Audit_Trail_Arr_Rel_Insert_Input>;
   readonly transactions?: Maybe<Transaction_Arr_Rel_Insert_Input>;
   readonly updated_at?: Maybe<Scalars['timestamptz']>;
   readonly user_email_verifications?: Maybe<User_Email_Verification_Arr_Rel_Insert_Input>;
@@ -7831,11 +8297,11 @@ export type Users_Mutation_Response = {
 /** input type for inserting object relation for remote table "users" */
 export type Users_Obj_Rel_Insert_Input = {
   readonly data: Users_Insert_Input;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Users_On_Conflict>;
 };
 
-/** on conflict condition type for table "users" */
+/** on_conflict condition type for table "users" */
 export type Users_On_Conflict = {
   readonly constraint: Users_Constraint;
   readonly update_columns?: ReadonlyArray<Users_Update_Column>;
@@ -7864,6 +8330,7 @@ export type Users_Order_By = {
   readonly services_aggregate?: Maybe<Service_Aggregate_Order_By>;
   readonly sessions_aggregate?: Maybe<Sessions_Aggregate_Order_By>;
   readonly tasks_aggregate?: Maybe<Task_Aggregate_Order_By>;
+  readonly transaction_audit_trails_aggregate?: Maybe<Transaction_Audit_Trail_Aggregate_Order_By>;
   readonly transactions_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   readonly updated_at?: Maybe<Order_By>;
   readonly user_email_verifications_aggregate?: Maybe<User_Email_Verification_Aggregate_Order_By>;
@@ -7959,8 +8426,13 @@ export enum Users_Update_Column {
 }
 
 
+export type Uuid_Cast_Exp = {
+  readonly String?: Maybe<String_Comparison_Exp>;
+};
+
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
 export type Uuid_Comparison_Exp = {
+  readonly _cast?: Maybe<Uuid_Cast_Exp>;
   readonly _eq?: Maybe<Scalars['uuid']>;
   readonly _gt?: Maybe<Scalars['uuid']>;
   readonly _gte?: Maybe<Scalars['uuid']>;
@@ -8020,7 +8492,7 @@ export type Verification_Requests_Bool_Exp = {
 
 /** unique or primary key constraints on table "verification_requests" */
 export enum Verification_Requests_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   VerificationRequestsPkey = 'verification_requests_pkey'
 }
 
@@ -8065,7 +8537,7 @@ export type Verification_Requests_Mutation_Response = {
   readonly returning: ReadonlyArray<Verification_Requests>;
 };
 
-/** on conflict condition type for table "verification_requests" */
+/** on_conflict condition type for table "verification_requests" */
 export type Verification_Requests_On_Conflict = {
   readonly constraint: Verification_Requests_Constraint;
   readonly update_columns?: ReadonlyArray<Verification_Requests_Update_Column>;
@@ -8193,7 +8665,7 @@ export type Virtual_Cards_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "virtual_cards" */
 export type Virtual_Cards_Arr_Rel_Insert_Input = {
   readonly data: ReadonlyArray<Virtual_Cards_Insert_Input>;
-  /** on conflict condition */
+  /** upsert condition */
   readonly on_conflict?: Maybe<Virtual_Cards_On_Conflict>;
 };
 
@@ -8227,7 +8699,7 @@ export type Virtual_Cards_Bool_Exp = {
 
 /** unique or primary key constraints on table "virtual_cards" */
 export enum Virtual_Cards_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   VirtualCardsPkey = 'virtual_cards_pkey'
 }
 
@@ -8309,7 +8781,7 @@ export type Virtual_Cards_Mutation_Response = {
   readonly returning: ReadonlyArray<Virtual_Cards>;
 };
 
-/** on conflict condition type for table "virtual_cards" */
+/** on_conflict condition type for table "virtual_cards" */
 export type Virtual_Cards_On_Conflict = {
   readonly constraint: Virtual_Cards_Constraint;
   readonly update_columns?: ReadonlyArray<Virtual_Cards_Update_Column>;
@@ -8636,6 +9108,19 @@ export type GetCurrentUserQuery = (
   )> }
 );
 
+export type CheckPhoneExistsQueryVariables = Exact<{
+  phone: Scalars['String'];
+}>;
+
+
+export type CheckPhoneExistsQuery = (
+  { readonly __typename?: 'query_root' }
+  & { readonly users: ReadonlyArray<(
+    { readonly __typename?: 'users' }
+    & Pick<Users, 'phone'>
+  )> }
+);
+
 export type GetExchangeRatesSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -8656,7 +9141,7 @@ export type GetUserCardsSubscription = (
   { readonly __typename?: 'subscription_root' }
   & { readonly virtual_cards: ReadonlyArray<(
     { readonly __typename?: 'virtual_cards' }
-    & Pick<Virtual_Cards, 'balance' | 'card_last_4digits' | 'currency' | 'id' | 'is_active' | 'issuer_virtual_card_id'>
+    & Pick<Virtual_Cards, 'currency' | 'id' | 'is_active' | 'issuer_virtual_card_id'>
   )> }
 );
 
@@ -9139,6 +9624,41 @@ export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
+export const CheckPhoneExistsDocument = gql`
+    query checkPhoneExists($phone: String!) {
+  users(where: {phone: {_eq: $phone}}) {
+    phone
+  }
+}
+    `;
+
+/**
+ * __useCheckPhoneExistsQuery__
+ *
+ * To run a query within a React component, call `useCheckPhoneExistsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckPhoneExistsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckPhoneExistsQuery({
+ *   variables: {
+ *      phone: // value for 'phone'
+ *   },
+ * });
+ */
+export function useCheckPhoneExistsQuery(baseOptions: Apollo.QueryHookOptions<CheckPhoneExistsQuery, CheckPhoneExistsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckPhoneExistsQuery, CheckPhoneExistsQueryVariables>(CheckPhoneExistsDocument, options);
+      }
+export function useCheckPhoneExistsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckPhoneExistsQuery, CheckPhoneExistsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckPhoneExistsQuery, CheckPhoneExistsQueryVariables>(CheckPhoneExistsDocument, options);
+        }
+export type CheckPhoneExistsQueryHookResult = ReturnType<typeof useCheckPhoneExistsQuery>;
+export type CheckPhoneExistsLazyQueryHookResult = ReturnType<typeof useCheckPhoneExistsLazyQuery>;
+export type CheckPhoneExistsQueryResult = Apollo.QueryResult<CheckPhoneExistsQuery, CheckPhoneExistsQueryVariables>;
 export const GetExchangeRatesDocument = gql`
     subscription GetExchangeRates {
   exchange_rates {
@@ -9174,8 +9694,6 @@ export type GetExchangeRatesSubscriptionResult = Apollo.SubscriptionResult<GetEx
 export const GetUserCardsDocument = gql`
     subscription GetUserCards($userId: uuid!) {
   virtual_cards(where: {user_id: {_eq: $userId}}) {
-    balance
-    card_last_4digits
     currency
     id
     is_active

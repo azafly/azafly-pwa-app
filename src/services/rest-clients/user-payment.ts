@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { axiosClient, RATES_URL } from './index';
 import { PURPOSE } from 'features/payments/forms/payment-info/form-fields';
+
+import { axiosClient, RATES_URL } from './index';
 
 export type ApiRequestMethods = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
 

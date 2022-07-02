@@ -25,14 +25,15 @@ interface TransactionsViewProps {
 
 export const Transactions = ({ transactions, userData, loading, handleSendVerificationEmail, transactionData, emailLink }: TransactionsViewProps) => {
     const classes = useDashboardStyles();
-    const { viewState } = useSelector(({ dashboard }: RootState) => dashboard);
+
     return (
         <Grid item md={10} className={classes.data__section}>
             <Typography color={'textSecondary'} className={classes.name} gutterBottom>
                 <span className={`${TOUR_DASHBOARD_LOCAL.START_TOUR}`} /> Hey 👋🏾{' '}
                 {!userData?.display_name ? <Skeleton width={'10ch'} /> : `${formatFirstName(userData?.display_name)}!`}{' '}
             </Typography>{' '}
-            {viewState === 'local' ? <NewTransactionContainer /> : <WalletContainer />}
+            {/* // TOD remove manual toggle */}
+            {true ? <NewTransactionContainer /> : <WalletContainer />}
             <Typography className={'heading'}>Recent Activities</Typography>{' '}
             {loading || !transactionData ? (
                 <>

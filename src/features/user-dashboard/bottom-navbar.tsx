@@ -8,7 +8,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import PaymentIcon from '@mui/icons-material/Payment';
+import NewTardeIcon from '@mui/icons-material/Addchart';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import React from 'react';
 
@@ -141,7 +141,7 @@ export function BottomNavBar() {
                 dispatch.dashboard.setCurrentDashboardTab('dashboard');
                 break;
             case 1:
-                currentHistory.push('/dashboard/cards');
+                currentHistory.push('/dashboard/trade');
                 dispatch.dashboard.setCurrentDashboardTab('cards');
                 break;
             case 2:
@@ -169,8 +169,8 @@ export function BottomNavBar() {
                 showLabels
             >
                 <BottomNavigationAction label='Dashboard' icon={<DashboardSvgComponent />} />
-                <BottomNavigationAction label='My Cards' icon={<PaymentsIcon />} />
-                <BottomNavigationAction label='New Payment' icon={<PaymentIcon />} />
+                <BottomNavigationAction label='New Trade' icon={<NewTardeIcon />} />
+                <BottomNavigationAction label='Wallet' icon={<PaymentsIcon />} />
                 <BottomNavigationAction label='Profile' icon={<AccountCircle />} />
             </BottomNavigation>
             {renderMobileMenu}

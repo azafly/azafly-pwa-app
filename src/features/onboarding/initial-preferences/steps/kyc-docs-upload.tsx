@@ -32,7 +32,7 @@ export const KYCDocuments = () => {
         variables: {
             email: user?.email ?? '',
             address,
-            country: country.code,
+            country,
             document_url,
             phone
         }
@@ -85,13 +85,19 @@ export const KYCDocuments = () => {
             <DefaultSnackbar open={show} handleClose={handleCloseSnackBar} severity={severity as 'error' | 'success'} title={title} info={text} />
             {severity === 'success' && <Modal successCallBack={successCallBack} />}
             {severity !== 'success' && (
-                <Slide direction='down' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+                <Slide direction='left' in={true} mountOnEnter unmountOnExit appear timeout={800}>
                     <Box sx={{ width: '100%' }}>
-                        <Typography variant={'h6'} gutterBottom align={'center'} sx={{ fontWeight: 700, fontFamily: 'Nunito', marginBottom: 2 }}>
-                            {'Update your Identification document'}
+                        <Typography
+                            variant={'h6'}
+                            style={{ fontWeight: 700, fontFamily: 'Nunito', color: '#0d324d', marginBottom: 20 }}
+                            align={'center'}
+                            gutterBottom
+                        >
+                            {'Upload your Identification document'}
                         </Typography>
                         <Typography paragraph gutterBottom align={'center'} sx={{ fontWeight: 400, fontFamily: 'Nunito', marginBottom: 2 }}>
-                            {'Upload a means of identification as a part of Know-Your-Customer(KYC)'}
+                            {'Upload a means of identification as a part of Know-Your-Customer(KYC), '}
+                            {'ex: passport, drivers license etc.'}
                         </Typography>
 
                         <Typography
@@ -106,17 +112,17 @@ export const KYCDocuments = () => {
                             <ThreeDots variantColor={'base'} />
                         ) : (
                             <Stack direction={'row'} spacing={2} justifyContent={'center'}>
+                                {' '}
                                 <UploadButton
                                     label={'Upload document'}
                                     icon={<PostAddIcon />}
                                     uploadCallback={e => handleFileUpload(e, `/images/user-kyc/${user?.uid}-id`)}
                                 />
-
                                 <Link to={'/dashboard'} style={{ textDecoration: 'none' }}>
                                     <Button
                                         variant={'contained'}
                                         color={'secondary'}
-                                        sx={{ textTransform: 'capitalize', width: 'max-content' }}
+                                        style={{ textTransform: 'capitalize', width: 'max-content', height: 40 }}
                                         fullWidth
                                         onClick={() => handleSetNoLongerNewUser()}
                                         disabled={fileUploadLoading}

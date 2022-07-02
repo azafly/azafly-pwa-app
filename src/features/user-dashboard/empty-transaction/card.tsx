@@ -20,7 +20,6 @@ interface EmptyCardContainerProps {
 export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, handleSendVerificationEmail, loading }: EmptyCardContainerProps) {
     const classes = useEmptyCardStyles();
     const { user } = useSelector((state: RootState) => state.auth);
-    const { viewState } = useSelector((state: RootState) => state.dashboard);
 
     const emailVerified = user?.emailVerified;
 
@@ -36,7 +35,8 @@ export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, 
                         <CardMedia>
                             <EmptyServiceSvgComponent />
                         </CardMedia>
-                        {viewState === 'local' && (
+                        {/* // TODO remove manual toggle */}
+                        {true && (
                             <>
                                 <CardActions>
                                     <Link

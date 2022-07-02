@@ -2,11 +2,10 @@ import { Button, Paper } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Dispatch, RootState } from 'app/store';
-import { SideBarTabs } from 'app/models/dashboard';
+import { SideBarTabs } from 'app/models/dashboards/dashboard';
 import { TransactionSvgComponent } from 'components/icons';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import PaymentsIcon from '@mui/icons-material/Payments';
 import Stack from '@mui/material/Stack';
 import { TOUR_DASHBOARD_LOCAL } from './product-tours';
 
@@ -17,11 +16,6 @@ const sideMenu = [
         label: 'Dashboard',
         route: 'dashboard',
         icon: <DashboardIcon sx={{ fontSize: '1.1em' }} style={{ marginRight: '16px' }} className={TOUR_DASHBOARD_LOCAL.START_TOUR} />
-    },
-    {
-        label: 'Cards',
-        route: 'cards',
-        icon: <PaymentsIcon sx={{ fill: '#0D324D' }} style={{ marginRight: '16px' }} />
     },
     {
         label: 'Transactions',

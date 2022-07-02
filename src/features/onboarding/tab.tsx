@@ -5,6 +5,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Logo1SvgComponent } from 'components/icons/logo-1';
 import { SignInForm } from './sign-in/form';
 import { SignUpForm } from './sign-up/form';
+import { useLocation } from 'react-router-dom';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -61,10 +62,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 export function OnboardingTab() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const location = useLocation();
 
     const handleChange = (_: React.ChangeEvent<unknown>, newValue: number) => {
         setValue(newValue);
     };
+
+    React.useEffect(() => {
+        location.pathname.includes('signin') ? setValue(1) : setValue(0);
+    }, [location]);
 
     return (
         <Grid item xs={12} sm={6} className={classes.onboardingTabRoot}>

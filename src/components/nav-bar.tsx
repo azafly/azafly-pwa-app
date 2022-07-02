@@ -13,7 +13,6 @@ import React, { memo } from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-import { CountryViewToggleSwitch } from 'components/country-view-toggle';
 import { DashboardSvgComponent, SignOutSvgComponent, ProfileSvgComponent, HelpSvgComponent } from 'components/icons';
 import { Dispatch, RootState } from 'app/store';
 import { Logo2SvgComponent } from 'components/icons/logo-style-2';
@@ -103,7 +102,6 @@ export const NavBar = memo(function NavBar() {
 
     const handleRestDashboardTab = () => {
         dispatch.dashboard.setCurrentDashboardTab('transactions');
-        console.log('heyeyy');
     };
 
     const menuId = 'primary-account-menu';
@@ -203,7 +201,6 @@ export const NavBar = memo(function NavBar() {
                         <Logo2SvgComponent />
                     </Link>
                     <div className={classes.grow} />
-                    <CountryViewToggleSwitch />
                     <div className={classes.sectionDesktop}>
                         {!isOnboardingPage && (
                             <>

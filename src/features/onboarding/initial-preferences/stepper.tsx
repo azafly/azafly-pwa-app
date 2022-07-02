@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { Stack } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,10 +8,8 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import MobileStepper from '@mui/material/MobileStepper';
 
-import axios from 'axios';
-import { Country } from '../../../types/country-data';
 import { Dispatch, RootState } from 'app/store';
-import { getEnv, ENV } from 'format-env';
+
 import { steps, StepLabel } from './steps';
 
 export const useStyles = makeStyles((theme: Theme) =>
@@ -60,7 +57,10 @@ export default function MobileOnboardingStepper() {
     const theme = useTheme();
 
     const dispatch = useDispatch<Dispatch>();
-    const { activeStep = 'phone', disableNext } = useSelector((state: RootState) => state.onboarding);
+    const {
+        onboarding: { activeStep = 'phone', disableNext, isPhoneVerified },
+        auth: { token, user }
+    } = useSelector(({ auth, onboarding }: RootState) => ({ auth, onboarding }));
 
     const step = steps[activeStep]?.index;
     const next = steps[activeStep]?.next;
@@ -73,24 +73,6 @@ export default function MobileOnboardingStepper() {
     const handleBack = () => {
         dispatch.onboarding.setActiveStep(steps[(prev as StepLabel) ?? 'phone'].name as StepLabel);
     };
-
-    React.useEffect(() => {
-        const URL = `${getEnv(ENV.REACT_APP_FUNCTIONS_BASE_URL)}/countryList`;
-        const computeCountryData = async () => {
-            const fetchGeoData = async () => axios.get(`https://geolocation-db.com/json/${getEnv(ENV.REACT_APP_GEOLOCATION_KEY)}`);
-            const fetchCountryList = async () => axios.get(URL);
-            try {
-                const [{ data: countryList }, { data: geoData }] = await Promise.all([fetchCountryList(), fetchGeoData()]);
-                dispatch.onboarding.setCountryList(countryList);
-                dispatch.onboarding.setUserGeolocation(geoData);
-
-                const countryOfResidence = countryList.formattedCountries?.filter(({ code }: Country) => code === geoData.country_code)[0];
-                const isAfrica = countryOfResidence?.region === 'AF';
-                dispatch.onboarding.setDerivedCountryOfResidence({ ...countryOfResidence, isAfrica });
-            } catch {}
-        };
-        computeCountryData();
-    }, [dispatch.onboarding]);
 
     const disableNextLocal = disableNext || step === totalNumberOfSteps - 1;
     const disableBack = step === 0;
@@ -124,7 +106,7 @@ export default function MobileOnboardingStepper() {
                         size='small'
                         variant={'text'}
                         onClick={handleNext}
-                        disabled={disableNextLocal}
+                        disabled={disableNextLocal && isPhoneVerified}
                     >
                         {step === totalNumberOfSteps - 1 ? 'Done' : steps[next as StepLabel]?.name}
                         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}

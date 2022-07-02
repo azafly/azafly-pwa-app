@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { styled, Box } from '@mui/system';
 import Button from '@mui/material/Button';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';

@@ -12,17 +12,17 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 import { Routes } from 'routes';
 import { ThreeDots } from 'components/css-loaders/three-dots';
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
-import { useSetUserMetaData } from 'hooks/use-set-user-meta-data';
+import { getEnv, ENV } from 'format-env';
+
 import usePWAInstallPrompt from 'hooks/use-prompt-pwa-install';
 
-const IDLE_TIME = 1000 * 60 * 3;
+const IDLE_TIME = 1000 * 60 * parseInt(getEnv(ENV.REACT_APP_IDLE_TIME));
 
 function App() {
     const preferredTheme = useMemo(() => createTheme(theme), []);
 
     const { signout } = useFirebaseAuthContext();
 
-    useSetUserMetaData();
     useIdleTimer({
         timeout: IDLE_TIME,
         onIdle: () => signout(),

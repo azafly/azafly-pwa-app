@@ -11,19 +11,12 @@ import Payments from 'views/payments';
 import { UserAccount } from 'views/user-account';
 import { PaymentsCallback } from 'views/payments-callback';
 import { OnboardingPreferences } from 'features/onboarding/initial-preferences';
-import { CardsPage } from 'views/cards';
 
 export const Routes = () => {
     return (
         <Router>
             <Switch>
-                <Route exact path='/signin'>
-                    <Onboarding />
-                </Route>
-                <Route exact path='/'>
-                    <Onboarding />
-                </Route>
-                <Route exact path='/signup'>
+                <Route path='/auth'>
                     <Onboarding />
                 </Route>
                 <PrivateRoute exact path='/payment'>
@@ -43,9 +36,6 @@ export const Routes = () => {
                 </Route>
                 <PrivateRoute exact path='/dashboard'>
                     <UserDashboard />
-                </PrivateRoute>
-                <PrivateRoute exact path='/dashboard/cards'>
-                    <CardsPage />
                 </PrivateRoute>
                 <PrivateRoute path='/account'>
                     <UserAccount />

@@ -2,14 +2,14 @@ import { Box, Slide, Stack } from '@mui/material';
 import { Button, Typography } from '@mui/material';
 import { ChangeEvent, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 
 import { DefaultSnackbar, UploadButton } from 'components';
 import { Dispatch, RootState } from 'app/store';
 import { storage } from 'providers/auth/firebase';
 import { ThreeDots } from 'components/css-loaders/three-dots';
-import { UpdateKycDocUrlMutationVariables, useUpdateKycDocUrlMutation, useUpdateNewUserMutation } from 'api/generated/graphql';
+import { UpdateKycDocUrlMutationVariables, useUpdateKycDocUrlMutation } from 'api/generated/graphql';
 import { uploadBytesResumable, getDownloadURL, ref as fbStorageRef } from 'firebase/storage';
 import Modal from '../modal';
 
@@ -18,9 +18,7 @@ export const KYCDocuments = () => {
     const [alertState, setAlertState] = useState({ show: false, severity: '', title: '', text: '' });
 
     const { user, hasuraUser } = useSelector((state: RootState) => state.auth);
-    const { address, country, document_url, phoneNumber: phone } = useSelector((state: RootState) => state.onboarding);
     const dispatch = useDispatch<Dispatch>();
-
     const handleCloseSnackBar = () => {
         setAlertState({ ...alertState, show: false });
     };
@@ -28,19 +26,7 @@ export const KYCDocuments = () => {
     const userData = hasuraUser ?? {};
 
     const [handleUpdateDocUrl] = useUpdateKycDocUrlMutation();
-    const [updateNewUserMutation] = useUpdateNewUserMutation({
-        variables: {
-            email: user?.email ?? '',
-            address,
-            country,
-            document_url,
-            phone
-        }
-    });
 
-    const handleSetNoLongerNewUser = () => {
-        updateNewUserMutation();
-    };
     const handleFileUpload = (e: ChangeEvent<HTMLInputElement>, ref: string) => {
         const file = e?.target?.files?.[0];
         if (!file) return;
@@ -65,7 +51,6 @@ export const KYCDocuments = () => {
                     dispatch.onboarding.setDocumentUrl(url);
                     setAlertState({ ...alertState, show: true, text: 'Profile updated successfully 🎉', severity: 'success', title: 'Success' });
                     setFileUploadLoading(false);
-                    handleSetNoLongerNewUser();
                     const variables: UpdateKycDocUrlMutationVariables = { id: userData?.id ?? '', document_url: url };
                     handleUpdateDocUrl({ variables }).catch(error => console.log(error));
                 });
@@ -124,7 +109,6 @@ export const KYCDocuments = () => {
                                         color={'secondary'}
                                         style={{ textTransform: 'capitalize', width: 'max-content', height: 40 }}
                                         fullWidth
-                                        onClick={() => handleSetNoLongerNewUser()}
                                         disabled={fileUploadLoading}
                                     >
                                         Skip for Now

@@ -39,7 +39,7 @@ export default function Dashboard() {
     const { hasuraUser } = auth;
     const userData = hasuraUser ?? {};
 
-    const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id: hasuraUser?.id ?? '' } });
+    const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id: '8e12fca6-58a2-4ed9-836c-a11f3f51bffe' } });
     const { data: exchangeRates, error: errorRates, loading: loadingRates } = useGetExchangeRatesSubscription();
     const transactions = transactionData?.transaction;
 

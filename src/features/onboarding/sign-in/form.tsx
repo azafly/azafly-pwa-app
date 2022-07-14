@@ -36,10 +36,12 @@ export const SignInForm = () => {
         },
         validationSchema,
         onSubmit: async ({ email, password }) => {
-            signinWithEmailPassword(email, password);
-            if (isError) {
-                setOpenSnackBar(true);
-            }
+            setOpenSnackBar(false);
+            signinWithEmailPassword(email, password).then(() => {
+                if (isError) {
+                    setOpenSnackBar(true);
+                }
+            });
         }
     });
 
@@ -48,7 +50,7 @@ export const SignInForm = () => {
     return (
         <div className={classes.signInformRoot}>
             <DefaultSnackbar
-                open={isError && !isLoading && openSnackBar}
+                open={openSnackBar}
                 handleClose={() => setOpenSnackBar(false)}
                 severity={'error'}
                 title={'Error'}

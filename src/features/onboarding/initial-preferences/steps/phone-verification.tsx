@@ -5,14 +5,12 @@ import { Button } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { signInAnonymously } from 'firebase/auth';
 
 import { DefaultSnackbar } from 'components';
 import { Dispatch, RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots';
 import { verifyPhoneNumber } from 'providers/auth/firebase/phone-verification';
 import { ENV, getEnv } from 'format-env';
-import { firebaseAuth } from 'providers/auth/firebase';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -80,9 +78,6 @@ export const PhoneVerification = () => {
             dispatch.onboarding.setActiveStep('address');
             dispatch.onboarding.setPhoneVerified(true);
             if (user && token) {
-                const result = await signInAnonymously(firebaseAuth);
-                console.log(result);
-                debugger;
                 const { email, emailVerified, photoURL } = user;
                 registerUserInDB(
                     {

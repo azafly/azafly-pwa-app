@@ -79,6 +79,7 @@ export const SignUpForm = () => {
                 severity={'error'}
                 title={'Error'}
                 info={errorMessage}
+                position={{ vertical: 'top', horizontal: 'right' }}
             />
             <div className={classes.form_container}>
                 <div className={` ${classes.google}`} onClick={signInWithGoogle}>

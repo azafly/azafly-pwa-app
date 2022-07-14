@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
-import { getDatabase, ref, onValue } from 'firebase/database';
+import { getDatabase } from 'firebase/database';
 import { getStorage } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -28,6 +28,9 @@ export const firebaseAuth = getAuth();
 export const storage = getStorage(firebaseApp);
 
 const authContext = createContext<AuthContext>(defaultAuhContext);
+const NO_USER_AUTH = { isAuth: false, isError: true, isLoading: false, hasuraUser: null, user: null, token: null };
+const USER_AUTH = { isAuth: true, isError: false, isLoading: false, errorMessage: '' };
+const NO_USER = { ...NO_USER_AUTH, isError: false, isLoading: true, errorMessage: '' };
 
 function useFirebaseProviderAuth() {
     const dispatch = useDispatch<Dispatch>();
@@ -38,37 +41,18 @@ function useFirebaseProviderAuth() {
      * Otherwise just take user to dashboard
      */
     const handleSignIn = async (signInCallback: Promise<UserCredential>) => {
-        dispatch.auth.updateAuthState({ ...reduxAuthState, isLoading: true });
         try {
             const userCredential = await signInCallback;
             const { user } = userCredential;
             const token = await user.getIdToken(true);
             const { isNewUser } = getAdditionalUserInfo(userCredential) ?? { isNewUser: false };
-            const to = isNewUser ? '/onboarding-update' : '/dashboard';
-
-            dispatch.auth.updateAuthState({
-                user,
-                isAuth: true,
-                isError: false,
-                isLoading: false,
-                token,
-                isNewUser,
-                action: 'sign-in'
-            });
-            debugger;
-            location.replace(to);
+            dispatch.auth.updateAuthState({ ...USER_AUTH, user, token, isNewUser, action: 'sign-in' });
+            const to = isNewUser ? ROUTE_MAP.ONBOARDING : ROUTE_MAP.DASHBOARD;
+            localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
             dispatch.dashboard.setCurrentDashboardTab('dashboard');
+            location.replace(to);
         } catch ({ message }) {
-            dispatch.auth.updateAuthState({
-                isAuth: false,
-                isError: true,
-                isLoading: false,
-                hasuraUser: null,
-                user: null,
-                token: null,
-                action: 'sign-in',
-                errorMessage: formatFirebaseErrorMessage(message as string)
-            });
+            dispatch.auth.updateAuthState({ ...NO_USER_AUTH, action: 'sign-in', errorMessage: formatFirebaseErrorMessage(message as string) });
         }
     };
 
@@ -80,16 +64,14 @@ function useFirebaseProviderAuth() {
      */
     const signupWithEmailPassword = async ({ email, password, firstName, lastName }: EmailAndPasswordSignUpUser) => {
         try {
-            await createUserWithEmailAndPassword(firebaseAuth, email, password);
+            const { user } = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+            const token = await user.getIdToken();
             dispatch.onboarding.setDisplayName(`${firstName} ${lastName}`);
+            dispatch.auth.updateAuthState({ ...USER_AUTH, user, token, isNewUser: true, action: 'sign-up' });
+            localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
             location.replace(ROUTE_MAP.ONBOARDING);
         } catch ({ message }) {
-            dispatch.auth.updateAuthState({
-                ...reduxAuthState,
-                isError: true,
-                action: 'sign-up',
-                errorMessage: formatFirebaseErrorMessage(message as string)
-            });
+            dispatch.auth.updateAuthState({ ...NO_USER_AUTH, errorMessage: formatFirebaseErrorMessage(message as string) });
         }
     };
     const signout = async () => {
@@ -126,38 +108,17 @@ function useFirebaseProviderAuth() {
     const verifyEmail = async (actionCode: string) => {
         return applyActionCode(firebaseAuth, actionCode);
     };
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, async user => {
-            if (user) {
-                const token = await user.getIdToken();
-                dispatch.auth.updateAuthState({
-                    ...reduxAuthState,
-                    user,
-                    isAuth: true,
-                    isError: false,
-                    isLoading: false,
-                    token,
-                    action: 'auth-changed'
-                });
-
-                localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
-            } else {
-                dispatch.auth.updateAuthState({
-                    user: null,
-                    isAuth: false,
-                    isError: false,
-                    isLoading: false,
-                    token: null,
-                    action: 'auth-changed'
-                });
-                localStorage.clear();
+            if (!user) {
+                localStorage.removeItem(LOCAL_STORAGE_KEY.TOKEN);
+                dispatch.auth.updateAuthState({ ...NO_USER_AUTH });
             }
         });
         return () => unsubscribe();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reduxAuthState.isNewUser]);
-    console.log('re-renders');
+    }, []);
+
     return {
         confirmPasswordReset,
         sendPasswordResetEmail,

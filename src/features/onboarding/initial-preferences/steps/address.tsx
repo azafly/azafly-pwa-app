@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { Button } from '@material-ui/core';
 import { GoogleAddressAutoComplete } from 'components';
-import { Slide, Stack, Typography } from '@mui/material';
+import { Fade, Stack, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Dispatch, RootState } from 'app/store';
@@ -16,13 +16,12 @@ export const Address = () => {
     }, [dispatch, disableNext]);
 
     return (
-        <Slide
-            direction='left'
+        <Fade
             in
             mountOnEnter
             unmountOnExit
             appear
-            timeout={800}
+            timeout={1500}
             easing={{ enter: 'cubic-bezier(0.0, 0, 0.2, 1)', exit: 'cubic-bezier(0.4, 0, 1, 1)' }}
         >
             <Stack sx={{ width: '100%' }}>
@@ -56,6 +55,6 @@ export const Address = () => {
                     Skip
                 </Button>
             </Stack>
-        </Slide>
+        </Fade>
     );
 };

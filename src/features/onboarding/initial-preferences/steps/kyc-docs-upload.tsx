@@ -1,7 +1,7 @@
 import { Box, Slide, Stack } from '@mui/material';
 import { Button, Typography } from '@mui/material';
 import { ChangeEvent, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 
@@ -60,9 +60,9 @@ export const KYCDocuments = () => {
 
     const { show, severity, text, title } = alertState;
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const successCallBack = () => {
-        history.push('/dashboard');
+        navigate('/dashboard');
     };
 
     return (
@@ -70,7 +70,7 @@ export const KYCDocuments = () => {
             <DefaultSnackbar open={show} handleClose={handleCloseSnackBar} severity={severity as 'error' | 'success'} title={title} info={text} />
             {severity === 'success' && <Modal successCallBack={successCallBack} />}
             {severity !== 'success' && (
-                <Slide direction='left' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+                <Slide direction='up' in={true} mountOnEnter unmountOnExit appear timeout={800}>
                     <Box sx={{ width: '100%' }}>
                         <Typography
                             variant={'h6'}

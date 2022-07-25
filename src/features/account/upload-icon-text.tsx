@@ -1,7 +1,7 @@
 import { Box, Button, Grid, Typography } from '@material-ui/core';
 import { memo } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 import { Dispatch as ReduxDispatch } from 'app/store';
 
@@ -9,13 +9,12 @@ interface UploadIconTextProps {
     classes: Record<string, string>;
 }
 export const UploadIconText = memo(function UploadIconText({ classes }: UploadIconTextProps) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch<ReduxDispatch>();
 
     const handleGoToUpload = () => {
         dispatch.onboarding.setActiveStep('kyc');
-        history.push({
-            pathname: '/onboarding-update',
+        navigate('/onboarding-update', {
             state: {
                 referer: '/account'
             }

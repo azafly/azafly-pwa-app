@@ -3,9 +3,11 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { ENV, getEnv } from 'format-env';
+import { getToken } from './local-storage-client';
 
 const HTTPS_URL = getEnv(ENV.REACT_APP_HASURA_GRAPHQL_HTTPS_URL);
 const WSS_URL = getEnv(ENV.REACT_APP_HASURA_GRAPHQL_WS_URL);
+const token = getToken;
 
 //log errors to the console
 const logErrors = onError(({ graphQLErrors, networkError }) => {
@@ -13,11 +15,11 @@ const logErrors = onError(({ graphQLErrors, networkError }) => {
         graphQLErrors.map(({ message, locations, path }) =>
             console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
         );
-    if (networkError) console.log(`[Network error]: ${networkError}`);
+    if (networkError) console.log(`[Network error]: ${networkError.message}`);
 });
 
-const webSocketLink = (authToken: string | null) =>
-    new WebSocketLink({
+const webSocketLink = () => {
+    return new WebSocketLink({
         uri: WSS_URL,
         lazy: true,
         options: {
@@ -25,50 +27,50 @@ const webSocketLink = (authToken: string | null) =>
             connectionParams: async () => {
                 return {
                     headers: {
-                        Authorization: authToken ? `Bearer ${authToken}` : ''
+                        Authorization: token ? `Bearer ${token}` : ''
                     }
                 };
             }
         }
     });
+};
 // Instance of a cache
 const cache = new InMemoryCache();
 
 // pass authentication header when exists
-const authMiddleware = (token: string | null) => {
+const authMiddleware = () => {
     return new ApolloLink((operation: any, forward: any) => {
-        if (token) {
-            operation.setContext({
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            });
-        }
+        operation.setContext({
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return forward(operation);
     });
 };
 
 // Set up http link
-const httpLink = (token: string | null) =>
-    new HttpLink({
+const httpLink = () => {
+    return new HttpLink({
         uri: HTTPS_URL,
         headers: {
             Authorization: `Bearer ${token}`
         }
     });
+};
 
-const splitLink = (token: string | null) =>
+const splitLink = () =>
     split(
         ({ query }) => {
             const definition = getMainDefinition(query);
             return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
         },
-        webSocketLink(token),
-        httpLink(token)
+        webSocketLink(),
+        httpLink()
     );
 // Apollo
-export const getApolloClient = (token: string | null): ApolloClient<NormalizedCacheObject> =>
+export const getApolloClient = (): ApolloClient<NormalizedCacheObject> =>
     new ApolloClient({
-        link: from([logErrors, authMiddleware(token), splitLink(token)]),
+        link: from([logErrors, authMiddleware(), splitLink()]),
         cache
     });

@@ -38,7 +38,7 @@ const UserAccount = () => {
         })
             .then(() => {
                 setSuccess('Profile updated successfully 🙌');
-                getApolloClient(token).refetchQueries({
+                getApolloClient().refetchQueries({
                     include: ['getCurrentUserByEmail']
                 });
             })

@@ -57,7 +57,6 @@ export interface AuthContext {
     sendPasswordResetEmail: any;
     signout: any;
     signinWithEmailPassword: any;
-    signupWithEmailPassword: (user: EmailAndPasswordSignUpUser) => Promise<any>;
     verifyPasswordCode: any;
     verifyEmail: any;
 }
@@ -68,7 +67,6 @@ export const defaultAuhContext: AuthContext = {
     sendPasswordResetEmail: () => new Promise(() => {}),
     signout: () => new Promise(() => {}),
     signinWithEmailPassword: () => new Promise(() => {}),
-    signupWithEmailPassword: () => new Promise(() => {}),
     verifyPasswordCode: () => new Promise(() => {}),
     verifyEmail: () => new Promise(() => {})
 };

@@ -2,6 +2,7 @@ import { Button, Checkbox, IconButton, InputAdornment, TextField } from '@materi
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -9,11 +10,13 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { DefaultSnackbar } from 'components';
 import { RootState } from 'app/store';
 import { ThreeDots } from 'components/css-loaders/three-dots/three-dots';
-import { useFirebaseAuthContext } from 'providers/auth/firebase';
+import { firebaseAuth, NO_USER_AUTH, useFirebaseAuthContext, USER_AUTH } from 'providers/auth/firebase';
 import { useSignUpFormStyles } from './classes';
 import Logo from 'assets/google.svg';
-import { ROUTE_MAP } from 'routes/utils';
+import { LOCAL_STORAGE_KEY } from 'libs/local-storage-client';
 import { formatFirebaseErrorMessage } from 'providers/auth/firebase/constants';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { ROUTE_MAP_ENUM } from 'routes/utils';
 
 const formFieldArray = [
     {
@@ -47,10 +50,11 @@ export const SignUpForm = () => {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
     const dispatch = useDispatch();
-    const reduxAuthState = useSelector((state: RootState) => state.auth);
 
-    const { signupWithEmailPassword, signInWithGoogle } = useFirebaseAuthContext();
-    const { errorMessage = 'An Authentication has occurred', isLoading, isError } = useSelector((state: RootState) => state.auth);
+    const navigate = useNavigate();
+
+    const { signInWithGoogle } = useFirebaseAuthContext();
+    const { errorMessage = 'An Authentication has occurred', isLoading } = useSelector((state: RootState) => state.auth);
 
     const formik = useFormik({
         initialValues: {
@@ -63,8 +67,17 @@ export const SignUpForm = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async ({ email, password, firstName, lastName }) => {
-            await signupWithEmailPassword({ email, password, firstName, lastName });
-            if (!isLoading && isError) setOpenSnackBar(true);
+            try {
+                const { user } = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+                const token = await user.getIdToken();
+                dispatch.onboarding.setDisplayName(`${firstName} ${lastName}`);
+                dispatch.auth.updateAuthState({ ...USER_AUTH, user, token, isNewUser: true, action: 'sign-up' });
+                localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
+                navigate(ROUTE_MAP_ENUM.ONBOARDING);
+            } catch ({ message }) {
+                dispatch.auth.updateAuthState({ ...NO_USER_AUTH, errorMessage: formatFirebaseErrorMessage(message as string) });
+                setOpenSnackBar(true);
+            }
         }
     });
 

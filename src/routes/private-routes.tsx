@@ -1,35 +1,25 @@
 import { PropsWithChildren } from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { NavBar } from 'components/nav-bar';
+import { Navigate, useLocation } from 'react-router-dom';
 import { BottomNavBar } from 'features/user-dashboard/bottom-navbar';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/store';
+import { ROUTE_MAP_ENUM } from 'routes/utils';
 
-export function PrivateRoute({ children, ...rest }: PropsWithChildren<any>) {
+export function PrivateRoute({ children }: PropsWithChildren<any>) {
     const {
         auth: { isAuth }
     } = useSelector(({ auth }: RootState) => ({ auth }));
 
-    return (
-        <Route
-            {...rest}
-            render={({ location }) => {
-                return isAuth ? (
-                    <>
-                        <NavBar />
+    const location = useLocation();
 
-                        {children}
-                        <BottomNavBar />
-                    </>
-                ) : (
-                    <Redirect
-                        to={{
-                            pathname: 'auth/signin',
-                            state: { from: location }
-                        }}
-                    />
-                );
-            }}
-        />
-    );
+    if (!isAuth) {
+        return <Navigate to={`${ROUTE_MAP_ENUM.AUTH}/signin`} state={{ from: location.pathname }} replace />;
+    } else {
+        return (
+            <>
+                {' '}
+                {children} <BottomNavBar />{' '}
+            </>
+        );
+    }
 }

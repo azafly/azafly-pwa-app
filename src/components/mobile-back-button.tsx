@@ -1,12 +1,7 @@
 import { BackwardSvgComponent } from 'components/icons';
-import {
-    createStyles,
-    makeStyles,
-    Theme,
-    Hidden
-} from '@material-ui/core';
+import { createStyles, makeStyles, Theme, Hidden } from '@material-ui/core';
 
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -21,25 +16,17 @@ interface MobileBackButtonProps {
     fill?: string;
 }
 
-export const MobileBackButton = ({
-    stroke,
-    fill
-}: MobileBackButtonProps) => {
-    const locationHistory = useHistory();
+export const MobileBackButton = ({ stroke, fill }: MobileBackButtonProps) => {
+    const navigate = useNavigate();
     const classes = useStyles();
 
     const goBack = () => {
-        locationHistory.go(-1);
+        navigate(-1);
     };
 
     return (
         <Hidden smUp>
-            <BackwardSvgComponent
-                onClick={goBack}
-                fill={fill}
-                stroke={stroke}
-                className={classes.back}
-            />
+            <BackwardSvgComponent onClick={goBack} fill={fill} stroke={stroke} className={classes.back} />
         </Hidden>
     );
 };

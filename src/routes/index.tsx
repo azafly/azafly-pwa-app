@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes as Switch, Route } from 'react-router-dom';
 
 import { PrivateRoute } from './private-routes';
 
@@ -16,33 +16,54 @@ export const Routes = () => {
     return (
         <Router>
             <Switch>
-                <Route path='/auth'>
-                    <Onboarding />
+                <Route path='/' element={<Onboarding />} />
+                <Route path='/auth' element={<Onboarding />}>
+                    <Route path='signin' element={<Onboarding />} />
+                    <Route path='signup' element={<Onboarding />} />
                 </Route>
-                <PrivateRoute exact path='/payment'>
-                    <Payments />
-                </PrivateRoute>
-                <PrivateRoute exact path='/onboarding-update'>
-                    <OnboardingPreferences />
-                </PrivateRoute>
-                <PrivateRoute exact path='/payments-callback'>
-                    <PaymentsCallback />
-                </PrivateRoute>
-                <Route exact path='/forgot-password'>
-                    <ForgotPassword />
-                </Route>
-                <Route exact path='/auth-verify'>
-                    <VerifyUser />
-                </Route>
-                <PrivateRoute exact path='/dashboard'>
-                    <UserDashboard />
-                </PrivateRoute>
-                <PrivateRoute path='/account'>
-                    <UserAccount />
-                </PrivateRoute>
-                <Route exact path='*'>
-                    <Page404 />
-                </Route>
+                <Route path='/forgot-password' element={<ForgotPassword />} />
+                <Route element={<VerifyUser />} path='/auth-verify' />
+                <Route
+                    path='/payment'
+                    element={
+                        <PrivateRoute>
+                            <Payments />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path='/onboarding-update'
+                    element={
+                        <PrivateRoute>
+                            <OnboardingPreferences />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path='/payments-callback'
+                    element={
+                        <PrivateRoute>
+                            <PaymentsCallback />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path='/dashboard'
+                    element={
+                        <PrivateRoute>
+                            <UserDashboard />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path='/account'
+                    element={
+                        <PrivateRoute>
+                            <UserAccount />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route path='*' element={<Page404 />}></Route>
             </Switch>
         </Router>
     );

@@ -1,5 +1,5 @@
 import { Box } from '@mui/system';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -20,7 +20,7 @@ const style = {
 };
 
 export default function RedirectCallback() {
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch<Dispatch>();
     const {
         dashboard: { currentVirtualCard }
@@ -33,7 +33,7 @@ export default function RedirectCallback() {
             dispatch.dashboard.setCurrentDashboardTab('cards');
             dispatch.dashboard.setCurrentCardIdentifier({ ...currentVirtualCard, openTopUpModal: false });
         }
-        history.replace('/dashboard');
+        navigate('/dashboard');
     };
 
     const goToPayments = async () => {
@@ -41,7 +41,7 @@ export default function RedirectCallback() {
             dispatch.dashboard.setCurrentDashboardTab('cards');
             dispatch.dashboard.setCurrentCardIdentifier({ ...currentVirtualCard, openTopUpModal: true });
         }
-        history.replace('/dashboard');
+        navigate('/dashboard');
     };
 
     return (

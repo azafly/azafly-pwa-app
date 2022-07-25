@@ -22,11 +22,12 @@ export const PhoneNumber = () => {
             phone: phoneNumber
         }
     });
-    console.log(data, error);
+
     const checkIfPhoneNumberExists = () => {
         handleCheckPhoneNumber();
     };
 
+    // todo : check if phone exits if not local or staging
     const handleSendVerificationCode = () => {
         checkIfPhoneNumberExists();
         dispatch.onboarding.setApiFetchState({
@@ -53,10 +54,13 @@ export const PhoneNumber = () => {
                     message: 'There was an error sending verification code. Try again'
                 });
             })
-            .finally(() => dispatch.onboarding.setDisableNext(true));
+            .finally(() => {
+                dispatch.onboarding.setDisableNext(true);
+                dispatch.onboarding.setApiFetchState({});
+            });
     };
 
-    const { loading, result, message } = apiFetchState;
+    const { loading = false, result, message } = apiFetchState;
 
     const handleCloseSnackBar = () => {
         setOpen(false);
@@ -66,7 +70,7 @@ export const PhoneNumber = () => {
     useEffect(() => {
         dispatch.onboarding.setDisableNext(true);
     }, [dispatch]);
-
+    debugger;
     return (
         <>
             <DefaultSnackbar open={result === 'error'} handleClose={handleCloseSnackBar} severity={'error'} title={'Error'} info={message ?? ''} />
@@ -94,8 +98,8 @@ export const PhoneNumber = () => {
                         onChange={phone => dispatch.onboarding.setPhoneNumber(phone)}
                         regions={['america', 'europe', 'oceania', 'africa']}
                     />
-                    {loading ? (
-                        <ThreeDots variantColor={'base'} />
+                    {apiFetchState.loading ? (
+                        <ThreeDots variantColor={'base'} loadingText={'sending code'} textPosition={'end'} />
                     ) : (
                         <Button
                             onClick={handleSendVerificationCode}

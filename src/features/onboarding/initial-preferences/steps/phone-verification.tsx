@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { Box, Slide, TextField } from '@mui/material';
+import { Box, Slide, TextField, Fade } from '@mui/material';
 import { Button } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
 import { DefaultSnackbar } from 'components';
 import { Dispatch, RootState } from 'app/store';
@@ -36,18 +37,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const registerUserInDB = (user: any, token: string) => {
     const FUNCTIONS_BASE_URL = getEnv(ENV.REACT_APP_FUNCTIONS_BASE_URL);
-    axios
-        .post(
-            `${FUNCTIONS_BASE_URL}/newUser/register`,
-            { user },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+    axios.post(
+        `${FUNCTIONS_BASE_URL}/register/`,
+        { user },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
             }
-        )
-        .then(result => console.log(result))
-        .catch(error => console.log(error));
+        }
+    );
 };
 
 export const PhoneVerification = () => {
@@ -78,18 +76,31 @@ export const PhoneVerification = () => {
             dispatch.onboarding.setActiveStep('address');
             dispatch.onboarding.setPhoneVerified(true);
             if (user && token) {
-                const { email, emailVerified, photoURL } = user;
+                const { email, emailVerified, photoURL, uid } = user;
+                const id = uuidv4();
                 registerUserInDB(
                     {
+                        id,
+                        uid,
                         email,
                         emailVerified,
                         displayName,
                         photoURL,
                         phoneNumber,
+                        token,
                         isNewUser: false
                     },
                     token
                 );
+                dispatch.auth.setHasuraUser({
+                    id,
+                    firebase_id: uid,
+                    email: email ?? '',
+                    phone: phoneNumber,
+                    is_new_user: false,
+                    display_name: displayName,
+                    image_url: photoURL
+                });
             }
         } catch (error) {
             dispatch.onboarding.setDisableNext(true);
@@ -111,7 +122,7 @@ export const PhoneVerification = () => {
     return (
         <>
             <DefaultSnackbar open={result === 'error'} handleClose={handleCloseSnackBar} severity={'error'} title={'Error'} info={message ?? ''} />
-            <Slide direction='left' in={true} mountOnEnter unmountOnExit appear timeout={800}>
+            <Fade in={true} mountOnEnter unmountOnExit appear timeout={1800}>
                 <Box sx={{ width: '100%' }}>
                     <Typography
                         variant={'h6'}
@@ -145,7 +156,7 @@ export const PhoneVerification = () => {
                         </Button>
                     )}
                 </Box>
-            </Slide>
+            </Fade>
         </>
     );
 };

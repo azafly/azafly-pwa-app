@@ -1,10 +1,14 @@
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { Grid, Snackbar, SnackbarCloseReason, SnackbarOrigin } from '@material-ui/core';
-import { useState, SyntheticEvent } from 'react';
+import { useState, SyntheticEvent, useEffect } from 'react';
 
 import { OnboardingIllustration } from 'features/onboarding/illustration';
 import { OnboardingTab } from 'features/onboarding/tab';
 import { useOnboardingMainStyles } from 'features/onboarding/sign-up/classes';
+import { RootState } from 'app/store';
+import { useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { ROUTE_MAP_ENUM } from 'routes/utils';
 
 interface SnackBarAlertState {
     open: boolean;
@@ -14,12 +18,18 @@ interface SnackBarAlertState {
 
 const Onboarding = () => {
     const classes = useOnboardingMainStyles();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [alertState, setAlertState] = useState<SnackBarAlertState>({
         open: false,
         vertical: 'top',
         horizontal: 'center'
     });
+
+    const {
+        auth: { isAuth }
+    } = useSelector(({ auth }: RootState) => ({ auth }));
 
     const { vertical, horizontal, open } = alertState;
 
@@ -31,6 +41,13 @@ const Onboarding = () => {
         setAlertState({ ...alertState, open: false });
     };
 
+    useEffect(() => {
+        if (isAuth) {
+            const to = (location.state as Record<string, string> | null)?.from ?? ROUTE_MAP_ENUM.DASHBOARD;
+            navigate(to);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <div className={classes.onboarding}>
             <div className={classes.signup_container}>

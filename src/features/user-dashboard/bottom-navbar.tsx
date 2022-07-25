@@ -1,7 +1,7 @@
 import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -132,24 +132,24 @@ export function BottomNavBar() {
         </Menu>
     );
 
-    const currentHistory = useHistory();
+    const navigate = useNavigate();
 
     const goToLink = (key: number) => {
         switch (key) {
             case 0:
-                currentHistory.push('/dashboard');
+                navigate('/dashboard');
                 dispatch.dashboard.setCurrentDashboardTab('dashboard');
                 break;
             case 1:
-                currentHistory.push('/dashboard/trade');
+                navigate('/dashboard/trade');
                 dispatch.dashboard.setCurrentDashboardTab('cards');
                 break;
             case 2:
-                currentHistory.push('/payment');
+                navigate('/payment');
                 dispatch.dashboard.setCurrentDashboardTab('payment');
                 break;
             case 3:
-                currentHistory.push('/account');
+                navigate('/account');
                 dispatch.dashboard.setCurrentDashboardTab('account');
                 break;
             default:

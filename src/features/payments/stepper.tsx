@@ -1,6 +1,6 @@
 import { Box, Button, Stepper, Step, StepContent, StepLabel } from '@material-ui/core';
 import { useEffect } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -46,7 +46,7 @@ function getStepContent(step: number, handleNext: () => void) {
 
 export function VerticalPaymentStepper() {
     const classes = useStepperStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch<Dispatch>();
 
     const steps = getSteps;
@@ -68,7 +68,8 @@ export function VerticalPaymentStepper() {
 
     const handleBack = () => {
         dispatch.payments.DIRECT_setActiveStep(DIRECT_activeStep - 1);
-        history.push({
+        // TODO - check this behaviour later
+        navigate('.', {
             state: {
                 step: DIRECT_activeStep
             }

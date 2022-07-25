@@ -81,9 +81,9 @@ const ForgotPassword = () => {
                     </Button>
                     <div>
                         {resetState.success && (
-                            <Link component={Button} to={'/auth/signin'} style={{ width: '100%', border: '1px solid grey' }}>
-                                Go to Login
-                            </Link>
+                            <Button style={{ width: '100%', border: '1px solid grey' }}>
+                                <Link to={'/auth/signin'}>Go to Login</Link>
+                            </Button>
                         )}
                     </div>
                 </div>

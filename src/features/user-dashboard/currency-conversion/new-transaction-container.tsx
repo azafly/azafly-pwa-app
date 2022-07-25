@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Stack, useMediaQuery } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { africa, otherCountries } from 'mocks/payment';
 import { ConversionCard } from './conversion-card';
@@ -40,7 +40,7 @@ export const NewTransactionContainer = () => {
         VIRTUAL_CARDS: { userCards }
     } = useSelector(({ payments, dashboard, VIRTUAL_CARDS }: RootState) => ({ payments, dashboard, VIRTUAL_CARDS }));
     const dispatch = useDispatch<Dispatch>();
-    const browserHistory = useHistory();
+    const browserNavigate = useNavigate();
     const isDesktop = useMediaQuery('(min-width:800px)');
     const isMobile = useMediaQuery('(max-width:450px)');
 
@@ -69,8 +69,7 @@ export const NewTransactionContainer = () => {
             dispatch.VIRTUAL_CARDS.setCardTopUpReferer('dashboard');
         } else {
             dispatch.payments.setInitialOffer({ source_currency: buyCurrency, source_amount: buyAmount, target_currency: sellCurrency });
-            browserHistory.push({
-                pathname: '/payment',
+            browserNavigate('/payment', {
                 state: {
                     refer: 'local-DIRECT',
                     buyCurrency,

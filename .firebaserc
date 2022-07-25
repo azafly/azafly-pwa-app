@@ -3,5 +3,7 @@
     "default": "pick-safe",
     "staging": "pick-safe",
     "prod": "azafly-prod"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }

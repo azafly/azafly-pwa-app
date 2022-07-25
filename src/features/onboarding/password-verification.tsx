@@ -1,6 +1,6 @@
 import { Dispatch, useState, SetStateAction } from 'react';
 import { Button, Input, IconButton } from '@material-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
@@ -19,7 +19,7 @@ export const PasswordVerification = ({ setError }: PasswordVerificationProps) =>
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const classes = useForgotPasswordStyles();
     const { confirmPasswordReset, verifyPasswordCode } = useFirebaseAuthContext();
@@ -36,7 +36,7 @@ export const PasswordVerification = ({ setError }: PasswordVerificationProps) =>
         verifyPasswordCode(verificationCode)
             .then(() => {
                 confirmPasswordReset(verificationCode, password.password).then(() => {
-                    history.push('/dashboard');
+                    navigate('/dashboard');
                 });
             })
             .catch(() => setError('Error occurred with the password reset. Try again'));

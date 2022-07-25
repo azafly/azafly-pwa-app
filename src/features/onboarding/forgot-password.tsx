@@ -1,6 +1,5 @@
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { Button, Input, Snackbar, SnackbarCloseReason, SnackbarOrigin, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 import { SyntheticEvent, useState } from 'react';
 
 import { useFirebaseAuthContext } from 'providers/auth/firebase';
@@ -79,13 +78,6 @@ const ForgotPassword = () => {
                     <Button className={classes.submit} disabled={!email} onClick={handleSendResetEmail}>
                         Send Reset Link
                     </Button>
-                    <div>
-                        {resetState.success && (
-                            <Button style={{ width: '100%', border: '1px solid grey' }}>
-                                <Link to={'/auth/signin'}>Go to Login</Link>
-                            </Button>
-                        )}
-                    </div>
                 </div>
             </div>
         </div>

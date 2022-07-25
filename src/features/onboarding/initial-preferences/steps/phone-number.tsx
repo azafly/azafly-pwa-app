@@ -17,50 +17,52 @@ export const PhoneNumber = () => {
     const dispatch = useDispatch<Dispatch>();
     const { phoneNumber, apiFetchState } = useSelector((state: RootState) => state.onboarding);
 
-    const [handleCheckPhoneNumber, { data, error }] = useCheckPhoneExistsLazyQuery({
+    const [handleCheckPhoneNumber, { data }] = useCheckPhoneExistsLazyQuery({
         variables: {
             phone: phoneNumber
         }
     });
 
-    const checkIfPhoneNumberExists = () => {
-        handleCheckPhoneNumber();
+    const checkIfPhoneNumberExists = async () => {
+        if (process.env.NODE_ENV === 'production') {
+            await handleCheckPhoneNumber();
+            if (data?.users?.length) {
+                const errorObject: typeof apiFetchState = { ...apiFetchState, message: 'Phone Number Already exits', result: 'error' };
+                dispatch.onboarding.setApiFetchState(errorObject);
+                throw errorObject;
+            }
+        }
     };
 
     // todo : check if phone exits if not local or staging
-    const handleSendVerificationCode = () => {
-        checkIfPhoneNumberExists();
+    const handleSendVerificationCode = async () => {
         dispatch.onboarding.setApiFetchState({
             ...apiFetchState,
             loading: true
         });
-        sendAuthSMS(phoneNumber)
-            .then(({ verificationId }) => {
-                dispatch.onboarding.setVerificationId(verificationId);
-                dispatch.onboarding.setActiveStep('verification');
-                dispatch.onboarding.setApiFetchState({
-                    ...apiFetchState,
-                    result: 'success',
-                    loading: false,
-                    message: `We have sent you a verification code`
-                });
-                dispatch.onboarding.setDisableNext(false);
-            })
-            .catch(() => {
-                dispatch.onboarding.setApiFetchState({
-                    ...apiFetchState,
-                    result: 'error',
-                    loading: false,
-                    message: 'There was an error sending verification code. Try again'
-                });
-            })
-            .finally(() => {
-                dispatch.onboarding.setDisableNext(true);
-                dispatch.onboarding.setApiFetchState({});
+        try {
+            await checkIfPhoneNumberExists();
+            const { verificationId } = await sendAuthSMS(phoneNumber);
+            dispatch.onboarding.setVerificationId(verificationId);
+            dispatch.onboarding.setActiveStep('verification');
+            dispatch.onboarding.setApiFetchState({
+                ...apiFetchState,
+                result: 'success',
+                loading: false,
+                message: `We have sent you a verification code`
             });
+            dispatch.onboarding.setDisableNext(false);
+        } catch (err) {
+            dispatch.onboarding.setApiFetchState({
+                ...apiFetchState,
+                result: 'error',
+                loading: false,
+                message: (err as Record<string, string>)?.message ?? 'There was an error sending verification code. Try again'
+            });
+        }
     };
 
-    const { loading = false, result, message } = apiFetchState;
+    const { loading, result, message } = apiFetchState;
 
     const handleCloseSnackBar = () => {
         setOpen(false);
@@ -70,10 +72,22 @@ export const PhoneNumber = () => {
     useEffect(() => {
         dispatch.onboarding.setDisableNext(true);
     }, [dispatch]);
-    debugger;
+
+    useEffect(() => {
+        dispatch.onboarding.setApiFetchState({});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <>
-            <DefaultSnackbar open={result === 'error'} handleClose={handleCloseSnackBar} severity={'error'} title={'Error'} info={message ?? ''} />
+            <DefaultSnackbar
+                autoHideDuration={60000}
+                open={result === 'error'}
+                handleClose={handleCloseSnackBar}
+                severity={'error'}
+                title={'Error'}
+                info={message ?? ''}
+            />
             <Slide direction='left' in={true} mountOnEnter unmountOnExit appear timeout={800}>
                 <Stack sx={{ width: '100%' }}>
                     <Typography variant={'h6'} align={'center'} style={{ fontWeight: 700, fontFamily: 'Nunito', color: '#0d324d', marginBottom: 10 }}>
@@ -98,7 +112,7 @@ export const PhoneNumber = () => {
                         onChange={phone => dispatch.onboarding.setPhoneNumber(phone)}
                         regions={['america', 'europe', 'oceania', 'africa']}
                     />
-                    {apiFetchState.loading ? (
+                    {loading ? (
                         <ThreeDots variantColor={'base'} loadingText={'sending code'} textPosition={'end'} />
                     ) : (
                         <Button

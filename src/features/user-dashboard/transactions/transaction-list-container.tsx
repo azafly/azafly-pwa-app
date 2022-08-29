@@ -1,7 +1,7 @@
 import { Box, Typography, useMediaQuery } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core';
-import { FilterTab } from '../filter-tab-heading';
 import { memo, ReactNode, useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
 import MobileDateRangePicker from '@mui/lab/MobileDateRangePicker';
@@ -11,19 +11,16 @@ import TextField from '@mui/material/TextField';
 
 import { CardContainer } from './card-container';
 import { CardSkeleton } from './card-skeleton';
-import { EmptyCardContainer } from '../empty-transaction/card';
-import { EmptyDataSvgComponent } from 'components';
 import { PendingOfferCardContainer } from '../pending-offer/index';
 import { RootState } from 'app/store';
 import { useGetUserPendingOffersQuery, useFilterTransactionsByDateRangeLazyQuery } from 'api/generated/graphql';
-import { useSelector } from 'react-redux';
+import { EmptyDataSvgComponent } from 'components';
+import { FilterTab } from '../filter-tab-heading';
 
 interface TransactionListContainerProps {
-    transactions: readonly any[];
+    allOffers: ReactNode | null;
     classes?: Record<string, string>;
-    emailLink: ReactNode;
     loading: boolean;
-    handleSendVerificationEmail: () => void;
 }
 
 export const useStyles = makeStyles(() =>
@@ -64,12 +61,7 @@ export const useStyles = makeStyles(() =>
         }
     })
 );
-export const TransactionListContainer = memo(function TransactionListContainer({
-    transactions,
-    emailLink,
-    loading,
-    handleSendVerificationEmail
-}: TransactionListContainerProps) {
+export const TransactionListContainer = memo(function TransactionListContainer({ allOffers }: TransactionListContainerProps) {
     const [dateValue, setDateValue] = useState<DateRange<Date>>([null, null]);
     const [openDatePicker, setOpenDatePicker] = useState(false);
     const [filterTransactionByDate, { data: filteredTransactions, loading: isLoadingFilter }] = useFilterTransactionsByDateRangeLazyQuery();
@@ -96,17 +88,9 @@ export const TransactionListContainer = memo(function TransactionListContainer({
 
     const isMobile = useMediaQuery('(max-width:960px)');
 
-    const all = transactions?.map((transaction: any) => <CardContainer transactionData={transaction} key={transaction.id} />);
-
     const pending = offerData?.payment_offer?.map((transaction: any) => (
         <PendingOfferCardContainer transactionData={transaction} key={transaction.id} />
     ));
-
-    const allOffers = transactions.length ? (
-        all
-    ) : (
-        <EmptyCardContainer emailLink={emailLink} handleSendVerificationEmail={handleSendVerificationEmail} loading={loading} />
-    );
 
     const pendingTransactions = pending?.length ? (
         pending

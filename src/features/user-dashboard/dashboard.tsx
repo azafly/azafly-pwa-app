@@ -1,5 +1,5 @@
 import { Box, Grid, Hidden } from '@material-ui/core';
-import { Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes as Switch, Route, Outlet } from 'react-router-dom';
 import { sendEmailVerification } from 'firebase/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
@@ -19,6 +19,7 @@ import { UserAccount } from 'views/user-account';
 
 import { useDashboardStyles, StyledBadge } from './classes';
 import { formatHasuraExchangeRates, ExchangeRates } from './utils';
+import Payments from '../payments/index';
 
 export default function Dashboard() {
     const [hidden, setHidden] = useState(false);
@@ -36,12 +37,7 @@ export default function Dashboard() {
         auth
     } = useSelector(({ dashboard, auth, payments }: RootState) => ({ dashboard, auth, payments }));
 
-    const { hasuraUser } = auth;
-    const userData = hasuraUser ?? {};
-
-    const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id: '8e12fca6-58a2-4ed9-836c-a11f3f51bffe' } });
     const { data: exchangeRates, error: errorRates, loading: loadingRates } = useGetExchangeRatesSubscription();
-    const transactions = transactionData?.transaction;
 
     const handleSpeedDialVisibility = () => {
         setHidden(prevHidden => !prevHidden);
@@ -122,7 +118,7 @@ export default function Dashboard() {
 
     return (
         <div className={classes.dashboard_container}>
-            {/* <Box sx={{ margin: 50 }} />
+            <Box sx={{ margin: 50 }} />
             <Tour steps={TOUR_DASHBOARD_LOCAL_STEPS} runTour={runTour} />
             <DefaultSnackbar
                 severity={alertSeverity}
@@ -138,18 +134,7 @@ export default function Dashboard() {
                         <SideBar />
                     </Grid>
                 </Hidden>
-                {(currentSideBarTab === 'transactions' || currentSideBarTab === 'dashboard') && (
-                    <TransactionView
-                        loading={loading}
-                        emailLink={emailLink}
-                        transactionData={transactionData}
-                        handleSendVerificationEmail={handleSendVerificationEmail}
-                        transactions={transactions}
-                        userData={userData}
-                    />
-                )}
-                {currentSideBarTab === 'account' && <UserAccount />}
-                {currentSideBarTab === 'payment' && <Navigate to={'/payment'} />}
+                <Outlet />
             </Grid>
 
             <SpeedDialTooltip
@@ -158,7 +143,7 @@ export default function Dashboard() {
                 openSpeedDial={openSpeedDial}
                 hidden={hidden}
                 handleSpeedDialVisibility={handleSpeedDialVisibility}
-            /> */}
+            />
         </div>
     );
 }

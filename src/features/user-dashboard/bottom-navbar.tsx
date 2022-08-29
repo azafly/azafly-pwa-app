@@ -141,15 +141,15 @@ export function BottomNavBar() {
                 dispatch.dashboard.setCurrentDashboardTab('dashboard');
                 break;
             case 1:
-                navigate('/dashboard/trade');
+                navigate('/dashboard/trades');
                 dispatch.dashboard.setCurrentDashboardTab('cards');
                 break;
             case 2:
-                navigate('/payment');
+                navigate('/dashboard/payments');
                 dispatch.dashboard.setCurrentDashboardTab('payment');
                 break;
             case 3:
-                navigate('/account');
+                navigate('/dashboard/account');
                 dispatch.dashboard.setCurrentDashboardTab('account');
                 break;
             default:

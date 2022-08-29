@@ -11,6 +11,7 @@ import Payments from 'views/payments';
 import { UserAccount } from 'views/user-account';
 import { PaymentsCallback } from 'views/payments-callback';
 import { OnboardingPreferences } from 'features/onboarding/initial-preferences';
+import { Transactions } from '../features/user-dashboard/transactions/index';
 
 export const Routes = () => {
     return (
@@ -24,13 +25,19 @@ export const Routes = () => {
                 <Route path='/forgot-password' element={<ForgotPassword />} />
                 <Route element={<VerifyUser />} path='/auth-verify' />
                 <Route
-                    path='/payment'
+                    path='/dashboard'
                     element={
                         <PrivateRoute>
-                            <Payments />
+                            <UserDashboard />
                         </PrivateRoute>
                     }
-                ></Route>
+                >
+                    <Route index element={<Transactions />}></Route>
+                    <Route path='account' element={<UserAccount />}></Route>
+                    <Route path='payments' element={<Payments />}></Route>
+                    <Route path='trades' element={<Payments />}></Route>
+                </Route>
+
                 <Route
                     path='/onboarding-update'
                     element={
@@ -47,22 +54,7 @@ export const Routes = () => {
                         </PrivateRoute>
                     }
                 ></Route>
-                <Route
-                    path='/dashboard'
-                    element={
-                        <PrivateRoute>
-                            <UserDashboard />
-                        </PrivateRoute>
-                    }
-                ></Route>
-                <Route
-                    path='/account'
-                    element={
-                        <PrivateRoute>
-                            <UserAccount />
-                        </PrivateRoute>
-                    }
-                ></Route>
+
                 <Route path='*' element={<Page404 />}></Route>
             </Switch>
         </Router>

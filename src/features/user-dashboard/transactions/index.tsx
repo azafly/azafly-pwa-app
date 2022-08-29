@@ -4,7 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 
 import { CardSkeleton } from './card-skeleton';
 import { formatFirstName } from 'libs';
-import { GetUserTransactionsQuery } from 'api/generated/graphql';
+import { useGetUserTransactionsQuery } from 'api/generated/graphql';
 import { NewTransactionContainer } from '../currency-conversion/new-transaction-container';
 import { RootState } from 'app/store';
 
@@ -13,18 +13,23 @@ import WalletContainer from '../wallet/wallet-container';
 
 import { useDashboardStyles } from '../classes';
 import { TOUR_DASHBOARD_LOCAL } from '../product-tours';
+import { EmptyCardContainer } from '../empty-transaction/card';
+import { CardContainer } from './card-container';
 
-interface TransactionsViewProps {
-    transactions: any;
-    userData: any;
-    loading: boolean;
-    handleSendVerificationEmail: () => void;
-    emailLink: JSX.Element;
-    transactionData: GetUserTransactionsQuery | undefined;
-}
-
-export const Transactions = ({ transactions, userData, loading, handleSendVerificationEmail, transactionData, emailLink }: TransactionsViewProps) => {
+export const Transactions = () => {
     const classes = useDashboardStyles();
+
+    const {
+        auth: { hasuraUser }
+    } = useSelector(({ auth }: RootState) => ({ auth }));
+    const userData = hasuraUser ?? {};
+
+    const { data: transactionData, loading } = useGetUserTransactionsQuery({ variables: { id: userData.id } });
+    debugger;
+    const transactions = transactionData?.transaction;
+
+    const all = transactions?.map((transaction: any) => <CardContainer transactionData={transaction} key={transaction.id} />);
+    const allOffers = transactions?.length ? all : <EmptyCardContainer loading={loading} />;
 
     return (
         <Grid item md={10} className={classes.data__section}>
@@ -45,12 +50,7 @@ export const Transactions = ({ transactions, userData, loading, handleSendVerifi
                 </>
             ) : (
                 <>
-                    <TransactionListContainer
-                        transactions={transactions ?? []}
-                        emailLink={emailLink}
-                        loading={loading}
-                        handleSendVerificationEmail={handleSendVerificationEmail}
-                    />
+                    <TransactionListContainer allOffers={allOffers ?? null} loading={loading} />{' '}
                 </>
             )}
         </Grid>

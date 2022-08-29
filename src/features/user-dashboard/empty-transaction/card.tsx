@@ -1,33 +1,24 @@
 import { Box, Button, Card, CardActions, CardMedia, Chip, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { memo, ReactNode } from 'react';
+import { memo } from 'react';
 import clsx from 'clsx';
 
 import { EmptyServiceSvgComponent } from 'components/illustrations';
-import { VerificationRequestBox } from './verification-request-box';
 
 import { useEmptyCardStyles } from '../classes';
-import { RootState } from 'app/store';
-import { useSelector } from 'react-redux';
 
 const services = ['WES', 'IELTS', 'School Fees', 'Medical Bills', 'Others'];
 
 interface EmptyCardContainerProps {
-    handleSendVerificationEmail: () => void;
-    emailLink: ReactNode;
     loading: boolean;
 }
-export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, handleSendVerificationEmail, loading }: EmptyCardContainerProps) {
+export const EmptyCardContainer = memo(function EmptyCardContainer({ loading }: EmptyCardContainerProps) {
     const classes = useEmptyCardStyles();
-    const { user } = useSelector((state: RootState) => state.auth);
-
-    const emailVerified = user?.emailVerified;
 
     return (
         <div className={classes.empty_card_root}>
             {!loading && (
                 <>
-                    {!emailVerified && <VerificationRequestBox emailLink={emailLink} handleSendVerificationEmail={handleSendVerificationEmail} />}
                     <Card className={classes.card}>
                         <Typography variant={'h5'} className={classes.nothing}>
                             {`You do not have any transactions yet`}{' '}
@@ -42,15 +33,15 @@ export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, 
                                     <Link
                                         to='/payment'
                                         className={clsx(classes.button, {
-                                            [classes.disabled]: !emailVerified
+                                            [classes.disabled]: false
                                         })}
                                         style={{ textDecoration: 'none' }}
                                     >
                                         <Button
                                             className={clsx(classes.button, {
-                                                [classes.disabled]: !emailVerified
+                                                [classes.disabled]: true
                                             })}
-                                            title={emailVerified ? 'Go to payments' : 'Verify your  email to proceed'}
+                                            title={true ? 'Go to payments' : 'Verify your  email to proceed'}
                                             color={'primary'}
                                             variant={'contained'}
                                             size={'medium'}
@@ -79,7 +70,7 @@ export const EmptyCardContainer = memo(function EmptyCardContainer({ emailLink, 
                                             key={service}
                                             style={{ textDecoration: 'none' }}
                                             className={clsx({
-                                                [classes.disabled]: !emailVerified
+                                                [classes.disabled]: false
                                             })}
                                         >
                                             {' '}

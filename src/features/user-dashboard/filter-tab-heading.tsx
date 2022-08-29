@@ -15,7 +15,7 @@ interface TabViewProps {
     key?: string;
     heading: ReactNode;
     headingClickHandler?: any;
-    component: ReactNode;
+    component: ReactNode | null;
 }
 
 export const useStyles = makeStyles((theme: Theme) =>

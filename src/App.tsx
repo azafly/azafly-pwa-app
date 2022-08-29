@@ -4,7 +4,7 @@ import { theme } from 'providers/theme';
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { useIdleTimer } from 'react-idle-timer';
-import { useEffect, useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -17,18 +17,13 @@ import { useFirebaseAuthContext } from 'providers/auth/firebase';
 import { getEnv, ENV } from 'format-env';
 
 import usePWAInstallPrompt from 'hooks/use-prompt-pwa-install';
-import { RootState } from 'app/store';
-import { useSelector } from 'react-redux';
-import { ROUTE_MAP_ENUM } from 'routes/utils';
+import VisitorAPI from 'visitorapi';
 
 const IDLE_TIME = 1000 * 60 * parseInt(getEnv(ENV.REACT_APP_IDLE_TIME));
 
 function App() {
     const preferredTheme = useMemo(() => createTheme(theme), []);
 
-    const {
-        auth: { isAuth }
-    } = useSelector(({ auth }: RootState) => ({ auth }));
     const { signout } = useFirebaseAuthContext();
 
     useIdleTimer({
@@ -43,11 +38,17 @@ function App() {
     const client = getApolloClient();
 
     useEffect(() => {
-        if (isAuth) {
-            location.replace(ROUTE_MAP_ENUM.DASHBOARD);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        VisitorAPI(
+            '5T7E6zMLqLKoW8PuFg49',
+            (data: any) => {
+                console.log(data);
+            },
+            (error: any) => {
+                console.log(error);
+            }
+        );
     }, []);
+
     return (
         <ApolloProvider client={client}>
             <PersistGate loading={<ThreeDots />} persistor={getPersistor()}>

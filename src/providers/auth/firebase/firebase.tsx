@@ -29,7 +29,7 @@ export const firebaseAuth = getAuth();
 export const storage = getStorage(firebaseApp);
 
 const HASURA_CLAIMS_URL = 'https://hasura.io/jwt/claims';
-
+export const NO_USER_AUTH = { isAuth: false, isError: true, isLoading: false, hasuraUser: null, user: null, token: null, isNewUser: false };
 export interface EmailAndPasswordSignUp {
     email: string;
     password: string;
@@ -116,58 +116,8 @@ function useFirebaseProviderAuth() {
     });
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, async user => {
-            if (user) {
-                const token = await user.getIdToken();
-                const idTokenResult = await user.getIdTokenResult();
-                const hasuraClaim = idTokenResult.claims[HASURA_CLAIMS_URL] as Record<string, string | string[]>;
-                const allowedRoles = hasuraClaim['x-hasura-allowed-roles'];
-                if (hasuraClaim) {
-                    dispatch.auth.updateAuthState({
-                        ...reduxAuthState,
-                        user,
-                        isAuth: true,
-                        isError: false,
-                        isLoading: false,
-                        token,
-                        action: 'auth-changed',
-                        isAdmin: computeIsAdmin(user?.email ?? '', allowedRoles)
-                    });
-
-                    localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
-                } else {
-                    // Check if refresh is required.
-                    const metadataRef = ref(database, 'metadata/' + user.uid + '/refreshTime');
-                    onValue(metadataRef, async snapshot => {
-                        const data = snapshot.val();
-                        if (data) {
-                            // Force refresh to pick up the latest custom claims changes.
-                            const newToken = await user.getIdToken(true);
-                            dispatch.auth.updateAuthState({
-                                ...reduxAuthState,
-                                user,
-                                isAuth: true,
-                                isError: false,
-                                isLoading: false,
-                                token: newToken,
-                                action: 'auth-changed'
-                            });
-                            localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, newToken);
-                        } else {
-                            return;
-                        }
-                    });
-                }
-            } else {
-                dispatch.auth.updateAuthState({
-                    ...reduxAuthState,
-                    user: null,
-                    isAuth: false,
-                    isError: false,
-                    isLoading: false,
-                    token: null,
-                    action: 'auth-changed'
-                });
-                localStorage.removeItem(LOCAL_STORAGE_KEY.TOKEN);
+            if (!user) {
+                localStorage.clear();
             }
         });
         return () => unsubscribe();
